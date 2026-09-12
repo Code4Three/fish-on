@@ -1,0 +1,3650 @@
+{
+  "days": [
+    {
+      "date": "2026-09-08",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "05:43",
+            "height": 0.261
+          },
+          {
+            "time": "18:16",
+            "height": 0.906
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "11:37",
+            "height": -0.776
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "Unknown",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Unknown",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Unknown",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Unknown",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Unknown",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Unknown",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-09",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "06:31",
+            "height": 0.389
+          },
+          {
+            "time": "18:59",
+            "height": 0.954
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "00:50",
+            "height": -0.695
+          },
+          {
+            "time": "12:28",
+            "height": -0.861
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-10",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "07:15",
+            "height": 0.5
+          },
+          {
+            "time": "19:38",
+            "height": 0.945
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "01:27",
+            "height": -0.774
+          },
+          {
+            "time": "13:13",
+            "height": -0.898
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-11",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "07:56",
+            "height": 0.582
+          },
+          {
+            "time": "20:15",
+            "height": 0.878
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "02:01",
+            "height": -0.823
+          },
+          {
+            "time": "13:56",
+            "height": -0.879
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-12",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "08:37",
+            "height": 0.631
+          },
+          {
+            "time": "20:49",
+            "height": 0.765
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "02:33",
+            "height": -0.841
+          },
+          {
+            "time": "14:37",
+            "height": -0.809
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-13",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "09:16",
+            "height": 0.647
+          },
+          {
+            "time": "21:20",
+            "height": 0.622
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "03:04",
+            "height": -0.831
+          },
+          {
+            "time": "15:18",
+            "height": -0.703
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-14",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "09:55",
+            "height": 0.631
+          },
+          {
+            "time": "21:51",
+            "height": 0.468
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "03:33",
+            "height": -0.796
+          },
+          {
+            "time": "15:59",
+            "height": -0.578
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-15",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "10:34",
+            "height": 0.59
+          },
+          {
+            "time": "22:22",
+            "height": 0.318
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "04:02",
+            "height": -0.74
+          },
+          {
+            "time": "16:43",
+            "height": -0.452
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-16",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "11:17",
+            "height": 0.528
+          },
+          {
+            "time": "22:56",
+            "height": 0.179
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "04:32",
+            "height": -0.669
+          },
+          {
+            "time": "17:34",
+            "height": -0.34
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "12:08",
+            "height": 0.457
+          },
+          {
+            "time": "23:39",
+            "height": 0.058
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "05:05",
+            "height": -0.585
+          },
+          {
+            "time": "18:43",
+            "height": -0.255
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-18",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "13:19",
+            "height": 0.396
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "05:48",
+            "height": -0.495
+          },
+          {
+            "time": "20:24",
+            "height": -0.229
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-19",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "00:46",
+            "height": -0.035
+          },
+          {
+            "time": "14:48",
+            "height": 0.385
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "06:51",
+            "height": -0.415
+          },
+          {
+            "time": "21:53",
+            "height": -0.274
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-20",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "02:48",
+            "height": -0.055
+          },
+          {
+            "time": "16:01",
+            "height": 0.432
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "08:29",
+            "height": -0.385
+          },
+          {
+            "time": "22:53",
+            "height": -0.353
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-21",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "04:12",
+            "height": 0.014
+          },
+          {
+            "time": "16:55",
+            "height": 0.508
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "09:54",
+            "height": -0.43
+          },
+          {
+            "time": "23:35",
+            "height": -0.442
+          }
+        ],
+        "sunrise": null,
+        "sunset": null,
+        "moonrise": null,
+        "moonset": null,
+        "moonPhase": null,
+        "solunarPeaks": [],
+        "weatherSummary": null,
+        "tempRange": [
+          null,
+          null
+        ],
+        "windBaseline": null,
+        "cloudBaseline": null,
+        "pressureRange": [
+          null,
+          null
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "tideStage": "Incoming",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "tideStage": "High Tide Peak",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "tideStage": "Outgoing",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "tideStage": "Low Tide Trough",
+          "solunarStrength": null,
+          "pressureTrend": null,
+          "weatherCondition": null,
+          "wind": null,
+          "hourScore": null
+        }
+      ]
+    }
+  ]
+}
