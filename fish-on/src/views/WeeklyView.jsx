@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+const CELL_WIDTH = "100px";
+
 export default function WeeklyView() {
   const [conditions, setConditions] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,7 +36,13 @@ export default function WeeklyView() {
 
 function DayBlock({ day }) {
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem" }}>
+    <div
+      style={{
+      border: "2px solid red",
+      padding: "1rem",
+      marginBottom: "1rem"
+      }}
+    >
       <h2>{day.date}</h2>
 
       <div style={{ display: "flex", flexDirection: "row" }}>
@@ -81,17 +89,37 @@ function HourlyTimeline({ hours }) {
   return (
     <div
       style={{
-        overflowX: "scroll",
-        whiteSpace: "nowrap",
-        borderLeft: "1px solid #ccc",
-        paddingLeft: "1rem",
-        flexGrow: 1
+      overflowX: "scroll",
+      whiteSpace: "nowrap",
+      border: "2px solid green",
+      paddingLeft: "1rem",
+      flexGrow: 1
       }}
     >
       {/* Header row */}
       <div style={{ display: "flex", marginBottom: "1rem" }}>
+      <div
+        style={{
+          width: "200px", 
+          minWidth: "200px",
+          border: "1px solid black",
+          padding: "4px",
+          fontWeight: "bold"
+        }}
+      >
+        Hour
+      </div>
         {hours.map((h) => (
-          <div key={h.time} style={{ minWidth: "80px", textAlign: "center" }}>
+          <div
+            key={h.time}
+            style={{
+            width: CELL_WIDTH,
+            minWidth: CELL_WIDTH,
+            textAlign: "center",
+            border: "1px solid orange",
+            padding: "4px"
+            }}
+          >
             {h.time}
           </div>
         ))}
@@ -121,8 +149,30 @@ function HourlyTimeline({ hours }) {
 function Row({ label, values }) {
   return (
     <div style={{ display: "flex", marginBottom: "0.5rem" }}>
+    <div
+      style={{
+        width: "200px", 
+        minWidth: "200px",
+        border: "1px solid black",
+        padding: "4px",
+        fontWeight: "bold"
+      }}
+    >
+{label}
+</div>
       {values.map((v, i) => (
-        <div key={i} style={{ minWidth: "80px", textAlign: "center" }}>
+        <div
+          key={i}
+          style={{
+          width: CELL_WIDTH,
+          minWidth: CELL_WIDTH,
+          textAlign: "center",
+          border: "1px solid purple",
+          padding: "4px",
+          whiteSpace: "normal",
+          wordBreak: "normal"
+          }}
+        >
           {v ?? "-"}
         </div>
       ))}

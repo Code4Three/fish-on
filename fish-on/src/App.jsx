@@ -1,4 +1,11 @@
+import WeeklyView from "./views/WeeklyView";
+ 
 function App() {
-  return <h1>Hello World</h1>;
+return (
+<div>
+<WeeklyView />
+</div>
+);
 }
+ 
 export default App;

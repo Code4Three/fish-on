@@ -1,5 +1,5 @@
 // test-tides.js
-import { updateTideCache } from "./src/cache/tideCache.js";
+import { updateTideCache } from "../cache/tideCache.js";
 
 (async () => {
   const lat = -26.681;
