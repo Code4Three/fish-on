@@ -12,10 +12,7 @@ export async function fetchBulkTideData(
     return { extremes: [], nextHigh: null, nextLow: null };
   }
 
-  // Load API key from Vite (browser) or Node (test script)
-  const apiKey =
-    import.meta.env?.VITE_WORLDTIDES_KEY ||
-    process.env.VITE_WORLDTIDES_KEY;
+  const apiKey = process.env.WORLDTIDES_KEY;
 
   // Prevent accidental credit burn if key missing
   if (!apiKey) {
@@ -27,8 +24,7 @@ export async function fetchBulkTideData(
 
   const API_URL = `https://www.worldtides.info/api/v3?lat=${lat}&lon=${lon}&extremes&days=${days}&key=${apiKey}`;
 
-  // Log the exact URL so you can track credit usage
-  console.log("API CALL:", API_URL);
+  console.log("Calling WorldTides API");
 
   try {
     const response = await fetch(API_URL);

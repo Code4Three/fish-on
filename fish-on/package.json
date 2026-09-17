@@ -6,12 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:tides": "node src/scripts/buildTides.js",
+    "build:tides": "node --env-file=.env src/scripts/buildTides.js",
     "build:sun-moon": "node src/scripts/buildSunMoon.js",
     "build:solunar": "node src/scripts/buildSolunar.js",
     "build:weather": "node src/scripts/buildWeather.js",
     "build:unified": "node src/scripts/buildUnified.js",
-    "build:data": "npm run build:tides && npm run build:sun-moon && npm run build:solunar && npm run build:weather && npm run build:unified",
+    "build:data": "node --env-file=.env src/scripts/buildAll.js",
     "lint": "oxlint",
     "preview": "vite preview"
   },

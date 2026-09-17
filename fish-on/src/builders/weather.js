@@ -51,18 +51,36 @@ function getWindDirectionLabel(degrees) {
   return directions[index];
 }
 
-function makeHourTime(isoTime) {
-  return new Date(isoTime).toLocaleTimeString("en-AU", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-    timeZone: TIME_ZONE
-  });
-}
-
 function round(value) {
   if (value == null || Number.isNaN(value)) return null;
   return Math.round(value);
+}
+
+async function fetchWeatherWithRetry(url, attempts = 3) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    let response;
+
+    try {
+      response = await fetch(url);
+    } catch (error) {
+      lastError = error;
+    }
+
+    if (response?.ok) return response;
+
+    if (response) {
+      lastError = new Error(`Open-Meteo request failed with status ${response.status}`);
+      if (response.status < 500 && response.status !== 429) throw lastError;
+    }
+
+    if (attempt < attempts) {
+      await new Promise(resolve => setTimeout(resolve, attempt * 1000));
+    }
+  }
+
+  throw lastError;
 }
 
 export async function buildWeatherData() {
@@ -96,16 +114,15 @@ export async function buildWeatherData() {
     });
 
     const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`Open-Meteo request failed with status ${response.status}`);
-    }
+    const response = await fetchWeatherWithRetry(url);
 
     const weather = await response.json();
     return processWeatherResponse(weather);
   } catch (error) {
-    console.warn("Open-Meteo weather fetch failed; using cached weather data fallback.", error.message);
+    console.warn("Open-Meteo weather fetch failed after retries; using cached weather data fallback.", {
+      message: error.message,
+      cause: error.cause?.code ?? error.cause?.message ?? null
+    });
 
     if (fs.existsSync(fallbackPath)) {
       const cachedWeather = JSON.parse(fs.readFileSync(fallbackPath, "utf8"));
@@ -124,15 +141,11 @@ function processWeatherResponse(weather) {
 
   for (let i = 0; i < (weather.hourly?.time ?? []).length; i += 1) {
     const isoTime = weather.hourly.time[i];
-    const date = formatLocalDate(new Date(isoTime));
-    const hour = new Date(isoTime).toLocaleTimeString("en-AU", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-      timeZone: TIME_ZONE
-    }).slice(0, 2);
+    // Open-Meteo returns hourly timestamps in the requested local timezone.
+    const [date, localTime] = isoTime.split("T");
+    const hour = localTime.slice(0, 2);
     const entry = {
-      time: makeHourTime(isoTime),
+      time: `${hour}:00`,
       temperature: round(weather.hourly.temperature_2m?.[i]),
       pressure: round(weather.hourly.pressure_msl?.[i]),
       cloudCover: round(weather.hourly.cloud_cover?.[i]),
