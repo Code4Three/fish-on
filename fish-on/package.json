@@ -9,8 +9,9 @@
     "build:tides": "node src/scripts/buildTides.js",
     "build:sun-moon": "node src/scripts/buildSunMoon.js",
     "build:solunar": "node src/scripts/buildSolunar.js",
+    "build:weather": "node src/scripts/buildWeather.js",
     "build:unified": "node src/scripts/buildUnified.js",
-    "build:data": "npm run build:tides && npm run build:sun-moon && npm run build:solunar && npm run build:unified",
+    "build:data": "npm run build:tides && npm run build:sun-moon && npm run build:solunar && npm run build:weather && npm run build:unified",
     "lint": "oxlint",
     "preview": "vite preview"
   },

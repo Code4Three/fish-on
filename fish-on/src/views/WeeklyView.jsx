@@ -74,11 +74,10 @@ function AnchoredEvents({ anchored }) {
     ["Moon illumination", formatPercentage(anchored.illumination)],
     ["Solunar peaks", formatSolunarPeaks(anchored.solunarPeaks)],
     ["Weather summary", anchored.weatherSummary],
-    ["Temperature range", anchored.tempRange?.join(" - ")],
-    ["Wind baseline", anchored.windBaseline],
-    ["Cloud baseline", anchored.cloudBaseline],
-    ["Pressure range", anchored.pressureRange?.join(" - ")],
-    ["Day score", anchored.dayScore],
+    ["Temperature range", formatRange(anchored.tempRange)],
+    ["Wind range", formatRange(anchored.windRange) ?? anchored.windBaseline],
+    ["Cloud cover", formatCloud(anchored.cloudBaseline)],
+    ["Pressure range", formatRange(anchored.pressureRange)],
   ];
 
   return (
@@ -97,6 +96,19 @@ function formatPercentage(value) {
   return value == null ? null : `${value}%`;
 }
 
+function formatRange(values) {
+  if (!values) return null;
+  const [min, max] = values;
+  if (min == null && max == null) return null;
+  if (min == null) return String(max);
+  if (max == null) return String(min);
+  return `${min} - ${max}`;
+}
+
+function formatCloud(value) {
+  return value == null ? null : `${value}%`;
+}
+
 function formatSolunarPeaks(peaks) {
   return peaks
     ?.map(peak => `${peak.type} ${peak.time ?? "-"}`)
@@ -107,9 +119,7 @@ function HourlyTimeline({ hours }) {
   return (
     <div className="hourly-timeline">
       <div className="timeline-row timeline-header">
-      <div className="timeline-label">
-        Hour
-      </div>
+        <div className="timeline-label">Hour</div>
         {hours.map((h) => (
           <div
             key={h.time}
@@ -122,10 +132,12 @@ function HourlyTimeline({ hours }) {
 
       <Row label="Tide Stage" values={hours.map(h => h.tideStage)} />
       <Row label="Solunar" values={hours.map(h => h.solunarCondition)} />
-      <Row label="Pressure" values={hours.map(h => h.pressureTrend)} />
       <Row label="Weather" values={hours.map(h => h.weatherCondition)} />
+      <Row label="Pressure" values={hours.map(h => h.pressureTrend)} />
       <Row label="Wind" values={hours.map(h => h.wind)} />
-      <Row label="Score" values={hours.map(h => h.hourScore)} />
+      <Row label="Temp" values={hours.map(h => h.temperature == null ? null : `${h.temperature}°C`)} />
+      <Row label="Cloud" values={hours.map(h => h.cloudCover == null ? null : `${h.cloudCover}%`)} />
+      <Row label="Rain" values={hours.map(h => h.rainChance == null ? null : `${h.rainChance}%`)} />
     </div>
   );
 }

@@ -27,6 +27,10 @@ export function buildUnifiedConditions() {
   const solunar = JSON.parse(
     fs.readFileSync(solunarPath, "utf8")
   );
+  const weatherPath = path.join("src", "data", "weather.json");
+  const weather = fs.existsSync(weatherPath)
+    ? JSON.parse(fs.readFileSync(weatherPath, "utf8"))
+    : { days: [] };
 
   const groupedTides = groupTidesByDay(tides.records);
   const tideDays = new Map(groupedTides.map(day => [day.date, day]));
@@ -63,18 +67,24 @@ export function buildUnifiedConditions() {
         solunar.days.find(
           d => d.date === day.date
         );
+      const weatherDay =
+        weather.days.find(
+          d => d.date === day.date
+        );
 
       return {
         date: day.date,
         anchored: buildAnchored(
           day,
           sunMoonDay,
-          solunarDay
+          solunarDay,
+          weatherDay
         ),
         hours: buildHourly(
           day,
           combinedEvents,
-          solunarDay?.peaks ?? []
+          solunarDay?.peaks ?? [],
+          weatherDay?.hours ?? []
         )
       };
     })
@@ -86,7 +96,7 @@ export function buildUnifiedConditions() {
   console.log("Unified conditions written → public/conditions.json");
 }
 
-function buildAnchored(day, sunMoonDay, solunarDay) {
+function buildAnchored(day, sunMoonDay, solunarDay, weatherDay) {
   return {
     highTides: day.highTides,
     lowTides: day.lowTides,
@@ -101,11 +111,12 @@ function buildAnchored(day, sunMoonDay, solunarDay) {
     illumination: sunMoonDay?.illumination ?? null,
     solunarPeaks: solunarDay?.peaks ?? [],
 
-    weatherSummary: null,
-    tempRange: [null, null],
-    windBaseline: null,
-    cloudBaseline: null,
-    pressureRange: [null, null],
+    weatherSummary: weatherDay?.summary ?? null,
+    tempRange: weatherDay?.tempRange ?? [null, null],
+    windRange: weatherDay?.windRange ?? [null, null],
+    windBaseline: weatherDay?.windBaseline ?? null,
+    cloudBaseline: weatherDay?.cloudBaseline ?? null,
+    pressureRange: weatherDay?.pressureRange ?? [null, null],
 
     dayScore: null
   };
@@ -202,7 +213,7 @@ function findBoundingTides(hourStr, tideEvents) {
   };
 }
 
-function buildHourly(day, tideEvents, solunarPeaks) {
+function buildHourly(day, tideEvents, solunarPeaks, weatherHours = []) {
   const hours = [];
 
   for (let h = 0; h < 24; h++) {
@@ -214,6 +225,9 @@ function buildHourly(day, tideEvents, solunarPeaks) {
     });
   }
 
+  const weatherLookup = new Map(
+    (weatherHours ?? []).map(hour => [hour.time, hour])
+  );
 
   return hours.map((hour) => {
     const boundingTides = findBoundingTides(
@@ -228,15 +242,25 @@ function buildHourly(day, tideEvents, solunarPeaks) {
         )
       : "Unknown";
 
+    const weather = weatherLookup.get(hour.time) ?? {};
+
     return {
       time: hour.time,
       height: hour.height,
       tideStage,
 
       solunarCondition: getSolunarCondition(day.date, hour.time, solunarPeaks),
-      pressureTrend: null,
-      weatherCondition: null,
-      wind: null,
+      pressureTrend: weather.pressure != null ? `${weather.pressure} hPa` : null,
+      pressure: weather.pressure ?? null,
+      weatherCondition: weather.weatherCondition ?? null,
+      wind: weather.windSpeed != null
+        ? `${weather.windSpeed} km/h${weather.windDirection ? ` ${weather.windDirection}` : ""}`
+        : null,
+      windSpeed: weather.windSpeed ?? null,
+      windDirection: weather.windDirection ?? null,
+      temperature: weather.temperature ?? null,
+      cloudCover: weather.cloudCover ?? null,
+      rainChance: weather.rainChance ?? null,
 
       hourScore: null
     };
