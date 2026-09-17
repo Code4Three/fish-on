@@ -18,9 +18,21 @@ export function buildUnifiedConditions() {
   const sunMoon = JSON.parse(
     fs.readFileSync(sunMoonPath, "utf8")
   );
+  const solunarPath = path.join(
+    "src",
+    "data",
+    "solunar.json"
+  );
+
+  const solunar = JSON.parse(
+    fs.readFileSync(solunarPath, "utf8")
+  );
 
   const groupedTides = groupTidesByDay(tides.records);
   const tideDays = new Map(groupedTides.map(day => [day.date, day]));
+  const sortedTideDays = [...groupedTides].sort((a, b) =>
+    a.date.localeCompare(b.date)
+  );
   const days = getBuildDateKeys().map(date => tideDays.get(date) ?? {
     date,
     highTides: [],
@@ -29,9 +41,12 @@ export function buildUnifiedConditions() {
   });
 
   const unified = {
-    days: days.map((day, index) => {
-      const prevDay = days[index - 1];
-      const nextDay = days[index + 1];
+    days: days.map(day => {
+      const prevDay = sortedTideDays
+        .filter(candidate => candidate.date < day.date)
+        .at(-1);
+      const nextDay = sortedTideDays
+        .find(candidate => candidate.date > day.date);
 
       // Build combined tide events for interpolation
       const combinedEvents = [
@@ -44,14 +59,23 @@ export function buildUnifiedConditions() {
         sunMoon.days.find(
           d => d.date === day.date
         );
+      const solunarDay =
+        solunar.days.find(
+          d => d.date === day.date
+        );
 
       return {
         date: day.date,
         anchored: buildAnchored(
           day,
-          sunMoonDay
+          sunMoonDay,
+          solunarDay
         ),
-        hours: buildHourly(day, combinedEvents)
+        hours: buildHourly(
+          day,
+          combinedEvents,
+          solunarDay?.peaks ?? []
+        )
       };
     })
   };
@@ -62,7 +86,7 @@ export function buildUnifiedConditions() {
   console.log("Unified conditions written → public/conditions.json");
 }
 
-function buildAnchored(day, sunMoonDay) {
+function buildAnchored(day, sunMoonDay, solunarDay) {
   return {
     highTides: day.highTides,
     lowTides: day.lowTides,
@@ -75,6 +99,7 @@ function buildAnchored(day, sunMoonDay) {
 
     moonPhase: sunMoonDay?.moonPhase ?? null,
     illumination: sunMoonDay?.illumination ?? null,
+    solunarPeaks: solunarDay?.peaks ?? [],
 
     weatherSummary: null,
     tempRange: [null, null],
@@ -177,7 +202,7 @@ function findBoundingTides(hourStr, tideEvents) {
   };
 }
 
-function buildHourly(day, tideEvents) {
+function buildHourly(day, tideEvents, solunarPeaks) {
   const hours = [];
 
   for (let h = 0; h < 24; h++) {
@@ -208,7 +233,7 @@ function buildHourly(day, tideEvents) {
       height: hour.height,
       tideStage,
 
-      solunarStrength: null,
+      solunarCondition: getSolunarCondition(day.date, hour.time, solunarPeaks),
       pressureTrend: null,
       weatherCondition: null,
       wind: null,
@@ -216,4 +241,58 @@ function buildHourly(day, tideEvents) {
       hourScore: null
     };
   });
+}
+
+function getSolunarCondition(date, hourStr, peaks) {
+  const hour = Number(hourStr.slice(0, 2));
+  const hourStart = hour * 60;
+  const hourEnd = hourStart + 60;
+  const conditions = [];
+
+  for (const peak of peaks) {
+    if (!peak.start || !peak.end) continue;
+
+    const start = getDayMinutes(date, peak.start);
+    const end = getDayMinutes(date, peak.end);
+
+    const hasBoundary =
+      isWithinHour(start, hourStart, hourEnd) ||
+      isWithinHour(end, hourStart, hourEnd);
+
+    if (isWithinHour(start, hourStart, hourEnd)) {
+      conditions.push(
+        formatSolunarBoundary(peak.type, "start", peak.start.time)
+      );
+    }
+
+    if (isWithinHour(end, hourStart, hourEnd)) {
+      conditions.push(
+        formatSolunarBoundary(peak.type, "end", peak.end.time)
+      );
+    }
+
+    if (!hasBoundary && start < hourEnd && end > hourStart) {
+      conditions.push(`${peak.type}: ${peak.time}`);
+    }
+  }
+
+  return conditions.length ? conditions.join(" / ") : "Normal";
+}
+
+function formatSolunarBoundary(type, boundary, time) {
+  const match = type.match(/^(Major|Minor) (\d+) \((.+)\)$/);
+
+  return match
+    ? `${match[1]} ${match[2]} ${boundary} (${match[3]}): ${time}`
+    : `${type} ${boundary}: ${time}`;
+}
+
+function getDayMinutes(dayDate, point) {
+  const dayOffset = point.date < dayDate ? -1 : point.date > dayDate ? 1 : 0;
+  const [hour, minute] = point.time.split(":").map(Number);
+  return dayOffset * 24 * 60 + hour * 60 + minute;
+}
+
+function isWithinHour(minutes, start, end) {
+  return minutes >= start && minutes < end;
 }

@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Code4Three/fish-on/issues"
   },
-  "homepage": "https://github.com/Code4Three/fish-on#readme"
+  "homepage": "https://github.com/Code4Three/fish-on#readme",
+  "dependencies": {
+    "suncalc": "^2.0.2"
+  }
 }

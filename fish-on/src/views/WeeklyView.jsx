@@ -72,7 +72,7 @@ function AnchoredEvents({ anchored }) {
     ["Moonset", anchored.moonset],
     ["Moon phase", anchored.moonPhase],
     ["Moon illumination", formatPercentage(anchored.illumination)],
-    ["Solunar peaks", anchored.solunarPeaks?.join(", ")],
+    ["Solunar peaks", formatSolunarPeaks(anchored.solunarPeaks)],
     ["Weather summary", anchored.weatherSummary],
     ["Temperature range", anchored.tempRange?.join(" - ")],
     ["Wind baseline", anchored.windBaseline],
@@ -97,6 +97,12 @@ function formatPercentage(value) {
   return value == null ? null : `${value}%`;
 }
 
+function formatSolunarPeaks(peaks) {
+  return peaks
+    ?.map(peak => `${peak.type} ${peak.time ?? "-"}`)
+    .join(", ");
+}
+
 function HourlyTimeline({ hours }) {
   return (
     <div className="hourly-timeline">
@@ -115,7 +121,7 @@ function HourlyTimeline({ hours }) {
       </div>
 
       <Row label="Tide Stage" values={hours.map(h => h.tideStage)} />
-      <Row label="Solunar" values={hours.map(h => h.solunarStrength)} />
+      <Row label="Solunar" values={hours.map(h => h.solunarCondition)} />
       <Row label="Pressure" values={hours.map(h => h.pressureTrend)} />
       <Row label="Weather" values={hours.map(h => h.weatherCondition)} />
       <Row label="Wind" values={hours.map(h => h.wind)} />
