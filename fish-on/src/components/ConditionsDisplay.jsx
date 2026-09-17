@@ -1,5 +1,9 @@
 // src/components/ConditionsDisplay.jsx
 import { useEffect, useState } from "react";
+import {
+  formatLocalDate,
+  formatLocalTime
+} from "../utils/dateUtils.js";
 
 export default function ConditionsDisplay() {
   const [extremes, setExtremes] = useState([]);
@@ -38,7 +42,9 @@ export default function ConditionsDisplay() {
           >
             <strong>{e.type}</strong> — {e.height.toFixed(2)}m  
             <br />
-            <span>{new Date(e.date).toLocaleString()}</span>
+            <span>
+              {formatLocalDate(new Date(e.date))} {formatLocalTime(new Date(e.date))}
+            </span>
           </div>
         ))}
       </div>

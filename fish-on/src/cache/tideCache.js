@@ -8,6 +8,10 @@ import {
 } from "./cache.js";
 
 import { fetchBulkTideData } from "../api/tides.js";
+import {
+  BUILD_DAYS,
+  TIDE_REFRESH_DAYS
+} from "../config/constants.js";
 
 const CACHE_FILE = path.resolve("tides.json");
 
@@ -17,10 +21,9 @@ export async function updateTideCache(lat, lon) {
 
   let records = cache.records || [];
 
-  // If empty → fetch 14 days
   if (records.length === 0) {
-    console.log("Cache empty → fetching initial 14 days...");
-    const data = await fetchBulkTideData(lat, lon, 14);
+    console.log(`Cache empty → fetching initial ${BUILD_DAYS} days...`);
+    const data = await fetchBulkTideData(lat, lon, BUILD_DAYS);
     cache.records = data.extremes;
     saveCache(CACHE_FILE, cache);
     return cache;
@@ -35,10 +38,9 @@ export async function updateTideCache(lat, lon) {
   const daysAhead = daysBetween(now, lastFuture);
   console.log(`Future coverage: ${daysAhead} days`);
 
-  // If <7 days ahead → fetch 7 more days
-  if (daysAhead < 7) {
-    console.log("Fetching 7 more days...");
-    const newData = await fetchBulkTideData(lat, lon, 7);
+  if (daysAhead < TIDE_REFRESH_DAYS) {
+    console.log(`Fetching ${TIDE_REFRESH_DAYS} more days...`);
+    const newData = await fetchBulkTideData(lat, lon, TIDE_REFRESH_DAYS);
     cache.records = mergeByDate(records, newData.extremes);
     saveCache(CACHE_FILE, cache);
   } else {

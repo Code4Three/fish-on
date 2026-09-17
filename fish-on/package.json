@@ -6,13 +6,18 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:tides": "node src/scripts/buildTides.js",
+    "build:sun-moon": "node src/scripts/buildSunMoon.js",
+    "build:unified": "node src/scripts/buildUnified.js",
+    "build:data": "npm run build:tides && npm run build:sun-moon && npm run build:unified",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^1.20.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "suncalc": "^2.0.2"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",

@@ -1,0 +1,130 @@
+{
+  "days": [
+    {
+      "date": "2026-09-17",
+      "sunrise": "05:43",
+      "sunset": "17:41",
+      "moonrise": "09:54",
+      "moonset": "23:32",
+      "moonPhase": "Waxing Crescent",
+      "illumination": 37
+    },
+    {
+      "date": "2026-09-18",
+      "sunrise": "05:42",
+      "sunset": "17:41",
+      "moonrise": null,
+      "moonset": "00:26",
+      "moonPhase": "First Quarter",
+      "illumination": 47
+    },
+    {
+      "date": "2026-09-19",
+      "sunrise": "05:41",
+      "sunset": "17:42",
+      "moonrise": "10:44",
+      "moonset": "01:16",
+      "moonPhase": "First Quarter",
+      "illumination": 56
+    },
+    {
+      "date": "2026-09-20",
+      "sunrise": "05:39",
+      "sunset": "17:42",
+      "moonrise": "11:38",
+      "moonset": "02:02",
+      "moonPhase": "Waxing Gibbous",
+      "illumination": 65
+    },
+    {
+      "date": "2026-09-21",
+      "sunrise": "05:38",
+      "sunset": "17:43",
+      "moonrise": "12:34",
+      "moonset": "02:43",
+      "moonPhase": "Waxing Gibbous",
+      "illumination": 74
+    },
+    {
+      "date": "2026-09-22",
+      "sunrise": "05:37",
+      "sunset": "17:43",
+      "moonrise": "13:31",
+      "moonset": "03:20",
+      "moonPhase": "Waxing Gibbous",
+      "illumination": 82
+    },
+    {
+      "date": "2026-09-23",
+      "sunrise": "05:36",
+      "sunset": "17:43",
+      "moonrise": "14:28",
+      "moonset": "03:54",
+      "moonPhase": "Waxing Gibbous",
+      "illumination": 89
+    },
+    {
+      "date": "2026-09-24",
+      "sunrise": "05:35",
+      "sunset": "17:44",
+      "moonrise": "15:25",
+      "moonset": "04:26",
+      "moonPhase": "Waxing Gibbous",
+      "illumination": 95
+    },
+    {
+      "date": "2026-09-25",
+      "sunrise": "05:34",
+      "sunset": "17:44",
+      "moonrise": "16:22",
+      "moonset": "04:57",
+      "moonPhase": "Waxing Gibbous",
+      "illumination": 98
+    },
+    {
+      "date": "2026-09-26",
+      "sunrise": "05:33",
+      "sunset": "17:45",
+      "moonrise": "17:20",
+      "moonset": "05:28",
+      "moonPhase": "Full Moon",
+      "illumination": 100
+    },
+    {
+      "date": "2026-09-27",
+      "sunrise": "05:31",
+      "sunset": "17:45",
+      "moonrise": "18:20",
+      "moonset": "06:02",
+      "moonPhase": "Full Moon",
+      "illumination": 99
+    },
+    {
+      "date": "2026-09-28",
+      "sunrise": "05:30",
+      "sunset": "17:46",
+      "moonrise": "19:22",
+      "moonset": "06:39",
+      "moonPhase": "Waning Gibbous",
+      "illumination": 96
+    },
+    {
+      "date": "2026-09-29",
+      "sunrise": "05:29",
+      "sunset": "17:46",
+      "moonrise": "20:27",
+      "moonset": "07:21",
+      "moonPhase": "Waning Gibbous",
+      "illumination": 90
+    },
+    {
+      "date": "2026-09-30",
+      "sunrise": "05:28",
+      "sunset": "17:46",
+      "moonrise": "21:35",
+      "moonset": "08:10",
+      "moonPhase": "Waning Gibbous",
+      "illumination": 82
+    }
+  ]
+}

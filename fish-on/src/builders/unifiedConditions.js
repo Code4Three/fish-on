@@ -4,12 +4,29 @@ import fs from "fs";
 import path from "path";
 import { groupTidesByDay } from "./groupTidesByDay.js";
 import { classifyTideStage } from "./tideStageClassifier.js";
+import { getBuildDateKeys } from "../utils/dateUtils.js";
 
 export function buildUnifiedConditions() {
   const tidesPath = path.join("src", "data", "tides.json");
   const tides = JSON.parse(fs.readFileSync(tidesPath, "utf8"));
+  const sunMoonPath = path.join(
+    "src",
+    "data",
+    "sunMoon.json"
+  );
 
-  const days = groupTidesByDay(tides.records);
+  const sunMoon = JSON.parse(
+    fs.readFileSync(sunMoonPath, "utf8")
+  );
+
+  const groupedTides = groupTidesByDay(tides.records);
+  const tideDays = new Map(groupedTides.map(day => [day.date, day]));
+  const days = getBuildDateKeys().map(date => tideDays.get(date) ?? {
+    date,
+    highTides: [],
+    lowTides: [],
+    tideEvents: []
+  });
 
   const unified = {
     days: days.map((day, index) => {
@@ -23,9 +40,17 @@ export function buildUnifiedConditions() {
         ...(nextDay?.tideEvents.slice(0, 1).map(ev => ({ ...ev, isNextDay: true })) ?? [])
       ];
 
+      const sunMoonDay =
+        sunMoon.days.find(
+          d => d.date === day.date
+        );
+
       return {
         date: day.date,
-        anchored: buildAnchored(day),
+        anchored: buildAnchored(
+          day,
+          sunMoonDay
+        ),
         hours: buildHourly(day, combinedEvents)
       };
     })
@@ -37,17 +62,19 @@ export function buildUnifiedConditions() {
   console.log("Unified conditions written → public/conditions.json");
 }
 
-function buildAnchored(day) {
+function buildAnchored(day, sunMoonDay) {
   return {
     highTides: day.highTides,
     lowTides: day.lowTides,
 
-    sunrise: null,
-    sunset: null,
-    moonrise: null,
-    moonset: null,
-    moonPhase: null,
-    solunarPeaks: [],
+    sunrise: sunMoonDay?.sunrise ?? null,
+    sunset: sunMoonDay?.sunset ?? null,
+
+    moonrise: sunMoonDay?.moonrise ?? null,
+    moonset: sunMoonDay?.moonset ?? null,
+
+    moonPhase: sunMoonDay?.moonPhase ?? null,
+    illumination: sunMoonDay?.illumination ?? null,
 
     weatherSummary: null,
     tempRange: [null, null],
@@ -92,6 +119,64 @@ function interpolateHeight(tideEvents, hourStr) {
   return before.height + ratio * (after.height - before.height);
 }
 
+function findBoundingTides(hourStr, tideEvents) {
+  const [h, m] = hourStr.split(":").map(Number);
+  const targetMinutes = h * 60 + m;
+
+  const events = tideEvents.map(event => {
+    const [eh, em] = event.time.split(":").map(Number);
+
+    let minutes = eh * 60 + em;
+
+    if (event.isPrevDay) {
+      minutes -= 24 * 60;
+    }
+
+    if (event.isNextDay) {
+      minutes += 24 * 60;
+    }
+
+    return {
+      ...event,
+      minutes
+    };
+  });
+
+  let previous = null;
+  let next = null;
+
+  for (const event of events) {
+    if (event.minutes <= targetMinutes) {
+      previous = event;
+    }
+
+    if (event.minutes > targetMinutes && !next) {
+      next = event;
+    }
+  }
+
+  if (!previous || !next) {
+    return null;
+  }
+
+  const progress =
+    (targetMinutes - previous.minutes) /
+    (next.minutes - previous.minutes);
+
+  const direction =
+    previous.type === "Low" &&
+    next.type === "High"
+      ? "incoming"
+      : "outgoing";
+
+  return {
+    start: previous,
+    end: next,
+    direction,
+    progress
+  };
+}
+
 function buildHourly(day, tideEvents) {
   const hours = [];
 
@@ -104,16 +189,24 @@ function buildHourly(day, tideEvents) {
     });
   }
 
-  console.log(day);
-  console.log(hours);
 
-  return hours.map((hour, i) => {
-    const prev = hours[i - 1]?.height ?? null;
-    const next = hours[i + 1]?.height ?? null;
+  return hours.map((hour) => {
+    const boundingTides = findBoundingTides(
+      hour.time,
+      tideEvents
+    );
+
+    const tideStage = boundingTides
+      ? classifyTideStage(
+          boundingTides.progress,
+          boundingTides.direction
+        )
+      : "Unknown";
 
     return {
       time: hour.time,
-      tideStage: classifyTideStage(prev, hour.height, next),
+      height: hour.height,
+      tideStage,
 
       solunarStrength: null,
       pressureTrend: null,

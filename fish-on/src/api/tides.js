@@ -1,7 +1,11 @@
 // src/api/tides.js
-console.log("TEST SCRIPT EXECUTED");
+import { TIDE_REFRESH_DAYS } from "../config/constants.js";
 
-export async function fetchBulkTideData(lat, lon, days = 7) {
+export async function fetchBulkTideData(
+  lat,
+  lon,
+  days = TIDE_REFRESH_DAYS
+) {
   // HARD BLOCK: Prevent ALL browser/Vite/React/HMR calls
   if (typeof window !== "undefined") {
     console.log("BROWSER CALL BLOCKED — preventing credit burn.");

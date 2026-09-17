@@ -1,23 +1,25 @@
 // src/builders/tideStageClassifier.js
 
-export function classifyTideStage(prevHeight, currentHeight, nextHeight) {
-  if (currentHeight === null) return "Unknown";
-
-  if (prevHeight < currentHeight && currentHeight < nextHeight) {
-    return "Incoming";
+export function classifyTideStage(progress, direction) {
+  if (progress == null || direction == null) {
+    return "Unknown";
   }
 
-  if (prevHeight > currentHeight && currentHeight > nextHeight) {
-    return "Outgoing";
+  if (direction === "incoming") {
+    if (progress < 0.25) return "Run In Start";
+    if (progress < 0.5) return "Run In Building";
+    if (progress < 0.75) return "Run In Mid";
+
+    return "Run In Late";
   }
 
-  if (prevHeight < currentHeight && currentHeight > nextHeight) {
-    return "High Tide Peak";
+  if (direction === "outgoing") {
+    if (progress < 0.25) return "Run Out Start";
+    if (progress < 0.5) return "Run Out Building";
+    if (progress < 0.75) return "Run Out Mid";
+
+    return "Run Out Late";
   }
 
-  if (prevHeight > currentHeight && currentHeight < nextHeight) {
-    return "Low Tide Trough";
-  }
-
-  return "Flat";
+  return "Unknown";
 }

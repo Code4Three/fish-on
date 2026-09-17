@@ -1,47 +1,42 @@
 // src/builders/groupTidesByDay.js
 
+import {
+  formatLocalDate,
+  formatLocalTime
+} from "../utils/dateUtils.js";
+
 export function groupTidesByDay(records) {
   const days = {};
 
   records.forEach(rec => {
-    // --- FORCE UTC → AEST (UTC+10) ---
-    const utc = new Date(rec.date);
-    const local = new Date(utc.getTime() + 10 * 60 * 60 * 1000); // add 10 hours
+    const date = new Date(rec.date);
+    const localDate = formatLocalDate(date);
+    const localTime = formatLocalTime(date);
 
-    // --- Extract local date (YYYY-MM-DD) ---
-    const date = local.toLocaleDateString("en-CA"); // e.g., 2026-09-08
-
-    // --- Extract local time (HH:MM) ---
-    const time = local.toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false
-    });
-
-    // --- Ensure day exists ---
-    if (!days[date]) {
-      days[date] = {
-        date,
+    if (!days[localDate]) {
+      days[localDate] = {
+        date: localDate,
         highTides: [],
         lowTides: [],
         tideEvents: []
       };
     }
 
-    // --- Add high/low tide ---
     if (rec.type === "High") {
-      days[date].highTides.push({ time, height: rec.height });
+      days[localDate].highTides.push({ time: localTime, height: rec.height });
     }
 
     if (rec.type === "Low") {
-      days[date].lowTides.push({ time, height: rec.height });
+      days[localDate].lowTides.push({ time: localTime, height: rec.height });
     }
 
-    // --- Add unified tide event ---
-    days[date].tideEvents.push({ time, height: rec.height });
+    days[localDate].tideEvents.push({
+      time: localTime,
+      height: rec.height,
+      type: rec.type
+    });
   });
 
-  // --- Sort tide events by time for each day ---
   const sortedDays = Object.values(days).map(day => {
     day.tideEvents.sort((a, b) => {
       const [ah, am] = a.time.split(":").map(Number);

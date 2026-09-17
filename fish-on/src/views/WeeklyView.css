@@ -1,0 +1,139 @@
+.weekly-view {
+  width: min(100% - 32px, 1120px);
+  margin: 0 auto;
+  padding: 32px 0 56px;
+  text-align: left;
+}
+
+.weekly-header {
+  margin-bottom: 28px;
+}
+
+.weekly-header h1,
+.day-heading h2 {
+  margin-top: 0;
+}
+
+.weekly-header p:last-child {
+  margin-top: 16px;
+  color: var(--text);
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: #2c6e68;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.day-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.day-block {
+  overflow: hidden;
+  border: 1px solid #d9e2df;
+  border-radius: 8px;
+  background: #fbfdfc;
+  box-shadow: 0 8px 24px rgba(25, 63, 59, 0.08);
+}
+
+.day-heading {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #d9e2df;
+  background: #eef6f2;
+}
+
+.day-content {
+  display: flex;
+  min-width: 0;
+  gap: 20px;
+  padding: 20px;
+}
+
+.anchored-events {
+  flex: 0 0 230px;
+}
+
+.event-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5ece9;
+}
+
+.event-row span {
+  color: #55716d;
+  font-size: 13px;
+}
+
+.event-row strong {
+  color: var(--text-h);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.hourly-timeline {
+  min-width: 0;
+  flex: 1;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.timeline-row {
+  display: flex;
+  min-width: max-content;
+}
+
+.timeline-label,
+.timeline-cell {
+  box-sizing: border-box;
+  padding: 8px 6px;
+  border-right: 1px solid #e1e9e6;
+  border-bottom: 1px solid #e1e9e6;
+}
+
+.timeline-label {
+  width: 96px;
+  min-width: 96px;
+  color: #55716d;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.timeline-cell {
+  width: 100px;
+  min-width: 100px;
+  color: var(--text-h);
+  font-size: 13px;
+  text-align: center;
+  white-space: normal;
+}
+
+.timeline-header .timeline-label,
+.timeline-header .timeline-cell {
+  color: #2c6e68;
+  font-weight: 700;
+  background: #eef6f2;
+}
+
+@media (max-width: 760px) {
+  .weekly-view {
+    width: min(100% - 24px, 1120px);
+    padding-top: 24px;
+  }
+
+  .day-content {
+    flex-direction: column;
+    padding: 14px;
+  }
+
+  .anchored-events {
+    flex-basis: auto;
+  }
+}
