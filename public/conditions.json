@@ -1,0 +1,3371 @@
+{
+  "days": [
+    {
+      "date": "2026-09-18",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "13:17",
+            "height": 0.391
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "05:48",
+            "height": -0.495
+          },
+          {
+            "time": "20:27",
+            "height": -0.223
+          }
+        ],
+        "sunrise": "05:42",
+        "sunset": "17:41",
+        "moonrise": null,
+        "moonset": "00:26",
+        "moonPhase": "First Quarter",
+        "illumination": 47,
+        "solunarPeaks": [
+          {
+            "type": "Major 1 (Moon overhead)",
+            "time": "17:09",
+            "start": {
+              "date": "2026-09-18",
+              "time": "16:09"
+            },
+            "end": {
+              "date": "2026-09-18",
+              "time": "18:09"
+            }
+          },
+          {
+            "type": "Major 2 (Moon underfoot)",
+            "time": "04:43",
+            "start": {
+              "date": "2026-09-18",
+              "time": "03:43"
+            },
+            "end": {
+              "date": "2026-09-18",
+              "time": "05:43"
+            }
+          },
+          {
+            "type": "Minor 1 (Moon rise)",
+            "time": null,
+            "start": null,
+            "end": null
+          },
+          {
+            "type": "Minor 2 (Moon set)",
+            "time": "00:26",
+            "start": {
+              "date": "2026-09-17",
+              "time": "23:56"
+            },
+            "end": {
+              "date": "2026-09-18",
+              "time": "00:56"
+            }
+          }
+        ],
+        "weatherSummary": "Light drizzle",
+        "tempRange": [
+          14,
+          21
+        ],
+        "windRange": [
+          11,
+          17
+        ],
+        "windBaseline": "17 km/h S",
+        "cloudBaseline": 8,
+        "pressureRange": [
+          1026,
+          1030
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "height": 0.03460655737704918,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Minor 2 end (Moon set): 00:56",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "15 km/h SSW",
+          "windSpeed": 15,
+          "windDirection": "SSW",
+          "temperature": 15,
+          "cloudCover": 13,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "height": -0.056704918032786863,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "16 km/h SW",
+          "windSpeed": 16,
+          "windDirection": "SW",
+          "temperature": 14,
+          "cloudCover": 13,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "height": -0.1480163934426229,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "17 km/h SW",
+          "windSpeed": 17,
+          "windDirection": "SW",
+          "temperature": 14,
+          "cloudCover": 1,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "height": -0.239327868852459,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 start (Moon underfoot): 03:43",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "17 km/h SSW",
+          "windSpeed": 17,
+          "windDirection": "SSW",
+          "temperature": 14,
+          "cloudCover": 5,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "height": -0.330639344262295,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 (Moon underfoot): 04:43",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h SSW",
+          "windSpeed": 15,
+          "windDirection": "SSW",
+          "temperature": 14,
+          "cloudCover": 1,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "height": -0.42195081967213105,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Major 2 end (Moon underfoot): 05:43",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h SSW",
+          "windSpeed": 15,
+          "windDirection": "SSW",
+          "temperature": 14,
+          "cloudCover": 1,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "height": -0.4713207126948775,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h SSW",
+          "windSpeed": 14,
+          "windDirection": "SSW",
+          "temperature": 14,
+          "cloudCover": 2,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "height": -0.352924276169265,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h SSW",
+          "windSpeed": 14,
+          "windDirection": "SSW",
+          "temperature": 15,
+          "cloudCover": 5,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "height": -0.23452783964365254,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h SSW",
+          "windSpeed": 14,
+          "windDirection": "SSW",
+          "temperature": 17,
+          "cloudCover": 8,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "height": -0.1161314031180401,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1030 hPa",
+          "pressure": 1030,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h S",
+          "windSpeed": 15,
+          "windDirection": "S",
+          "temperature": 19,
+          "cloudCover": 12,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "height": 0.002265033407572392,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Mainly clear",
+          "wind": "15 km/h SSE",
+          "windSpeed": 15,
+          "windDirection": "SSE",
+          "temperature": 21,
+          "cloudCover": 23,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "height": 0.12066146993318483,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Mainly clear",
+          "wind": "16 km/h SSE",
+          "windSpeed": 16,
+          "windDirection": "SSE",
+          "temperature": 21,
+          "cloudCover": 33,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "height": 0.23905790645879743,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Mainly clear",
+          "wind": "15 km/h SE",
+          "windSpeed": 15,
+          "windDirection": "SE",
+          "temperature": 21,
+          "cloudCover": 31,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "height": 0.3574543429844098,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Clear sky",
+          "wind": "12 km/h SE",
+          "windSpeed": 12,
+          "windDirection": "SE",
+          "temperature": 21,
+          "cloudCover": 16,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "height": 0.3296,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Mainly clear",
+          "wind": "11 km/h SE",
+          "windSpeed": 11,
+          "windDirection": "SE",
+          "temperature": 21,
+          "cloudCover": 21,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "height": 0.24392558139534884,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "11 km/h ESE",
+          "windSpeed": 11,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 3,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "height": 0.1582511627906977,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 start (Moon overhead): 16:09",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Clear sky",
+          "wind": "10 km/h E",
+          "windSpeed": 10,
+          "windDirection": "E",
+          "temperature": 20,
+          "cloudCover": 1,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "height": 0.07257674418604648,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 1 (Moon overhead): 17:09",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "7 km/h E",
+          "windSpeed": 7,
+          "windDirection": "E",
+          "temperature": 20,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "height": -0.013097674418604599,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 1 end (Moon overhead): 18:09",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "4 km/h NE",
+          "windSpeed": 4,
+          "windDirection": "NE",
+          "temperature": 18,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "height": -0.09877209302325579,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "1 km/h N",
+          "windSpeed": 1,
+          "windDirection": "N",
+          "temperature": 17,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "height": -0.18444651162790693,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Clear sky",
+          "wind": "2 km/h NW",
+          "windSpeed": 2,
+          "windDirection": "NW",
+          "temperature": 17,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "height": -0.19875,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Clear sky",
+          "wind": "4 km/h WNW",
+          "windSpeed": 4,
+          "windDirection": "WNW",
+          "temperature": 15,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "height": -0.1546590909090909,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Clear sky",
+          "wind": "7 km/h W",
+          "windSpeed": 7,
+          "windDirection": "W",
+          "temperature": 14,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "height": -0.11056818181818182,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Clear sky",
+          "wind": "7 km/h WNW",
+          "windSpeed": 7,
+          "windDirection": "WNW",
+          "temperature": 14,
+          "cloudCover": 3,
+          "rainChance": 0,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-19",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "00:51",
+            "height": -0.029
+          },
+          {
+            "time": "14:50",
+            "height": 0.381
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "06:46",
+            "height": -0.406
+          },
+          {
+            "time": "21:57",
+            "height": -0.27
+          }
+        ],
+        "sunrise": "05:41",
+        "sunset": "17:42",
+        "moonrise": "10:44",
+        "moonset": "01:16",
+        "moonPhase": "First Quarter",
+        "illumination": 56,
+        "solunarPeaks": [
+          {
+            "type": "Major 1 (Moon overhead)",
+            "time": "18:01",
+            "start": {
+              "date": "2026-09-19",
+              "time": "17:01"
+            },
+            "end": {
+              "date": "2026-09-19",
+              "time": "19:01"
+            }
+          },
+          {
+            "type": "Major 2 (Moon underfoot)",
+            "time": "05:35",
+            "start": {
+              "date": "2026-09-19",
+              "time": "04:35"
+            },
+            "end": {
+              "date": "2026-09-19",
+              "time": "06:35"
+            }
+          },
+          {
+            "type": "Minor 1 (Moon rise)",
+            "time": "10:44",
+            "start": {
+              "date": "2026-09-19",
+              "time": "10:14"
+            },
+            "end": {
+              "date": "2026-09-19",
+              "time": "11:14"
+            }
+          },
+          {
+            "type": "Minor 2 (Moon set)",
+            "time": "01:16",
+            "start": {
+              "date": "2026-09-19",
+              "time": "00:46"
+            },
+            "end": {
+              "date": "2026-09-19",
+              "time": "01:46"
+            }
+          }
+        ],
+        "weatherSummary": "Mainly clear",
+        "tempRange": [
+          11,
+          24
+        ],
+        "windRange": [
+          11,
+          17
+        ],
+        "windBaseline": "17 km/h N",
+        "cloudBaseline": 4,
+        "pressureRange": [
+          1022,
+          1028
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "height": -0.06647727272727275,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Minor 2 start (Moon set): 00:46",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Clear sky",
+          "wind": "7 km/h W",
+          "windSpeed": 7,
+          "windDirection": "W",
+          "temperature": 13,
+          "cloudCover": 7,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "height": -0.038557746478873244,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Minor 2 end (Moon set): 01:46",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "8 km/h W",
+          "windSpeed": 8,
+          "windDirection": "W",
+          "temperature": 13,
+          "cloudCover": 2,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "height": -0.10227605633802817,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "7 km/h W",
+          "windSpeed": 7,
+          "windDirection": "W",
+          "temperature": 12,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "height": -0.1659943661971831,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Clear sky",
+          "wind": "6 km/h W",
+          "windSpeed": 6,
+          "windDirection": "W",
+          "temperature": 12,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "height": -0.22971267605633802,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 start (Moon underfoot): 04:35",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Clear sky",
+          "wind": "5 km/h W",
+          "windSpeed": 5,
+          "windDirection": "W",
+          "temperature": 11,
+          "cloudCover": 5,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "height": -0.293430985915493,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 (Moon underfoot): 05:35",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Mainly clear",
+          "wind": "6 km/h W",
+          "windSpeed": 6,
+          "windDirection": "W",
+          "temperature": 11,
+          "cloudCover": 30,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "height": -0.3571492957746479,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Major 2 end (Moon underfoot): 06:35",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Mainly clear",
+          "wind": "6 km/h W",
+          "windSpeed": 6,
+          "windDirection": "W",
+          "temperature": 11,
+          "cloudCover": 48,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "height": -0.3832355371900827,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "6 km/h WNW",
+          "windSpeed": 6,
+          "windDirection": "WNW",
+          "temperature": 14,
+          "cloudCover": 8,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "height": -0.28567355371900827,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "6 km/h NNW",
+          "windSpeed": 6,
+          "windDirection": "NNW",
+          "temperature": 18,
+          "cloudCover": 1,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "height": -0.18811157024793387,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "7 km/h N",
+          "windSpeed": 7,
+          "windDirection": "N",
+          "temperature": 21,
+          "cloudCover": 2,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "height": -0.09054958677685954,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 start (Moon rise): 10:14",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Clear sky",
+          "wind": "6 km/h N",
+          "windSpeed": 6,
+          "windDirection": "N",
+          "temperature": 23,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "height": 0.007012396694214884,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Minor 1 end (Moon rise): 11:14",
+          "pressureTrend": "1025 hPa",
+          "pressure": 1025,
+          "weatherCondition": "Clear sky",
+          "wind": "8 km/h NNE",
+          "windSpeed": 8,
+          "windDirection": "NNE",
+          "temperature": 24,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "height": 0.1045743801652892,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1024 hPa",
+          "pressure": 1024,
+          "weatherCondition": "Clear sky",
+          "wind": "13 km/h NNE",
+          "windSpeed": 13,
+          "windDirection": "NNE",
+          "temperature": 24,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "height": 0.20213636363636367,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "16 km/h NNE",
+          "windSpeed": 16,
+          "windDirection": "NNE",
+          "temperature": 24,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "height": 0.29969834710743803,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "17 km/h NNE",
+          "windSpeed": 17,
+          "windDirection": "NNE",
+          "temperature": 23,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "height": 0.36575409836065575,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "16 km/h NNE",
+          "windSpeed": 16,
+          "windDirection": "NNE",
+          "temperature": 23,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "height": 0.27427868852459014,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "16 km/h NNE",
+          "windSpeed": 16,
+          "windDirection": "NNE",
+          "temperature": 22,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "height": 0.18280327868852458,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 start (Moon overhead): 17:01",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h N",
+          "windSpeed": 14,
+          "windDirection": "N",
+          "temperature": 21,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "height": 0.09132786885245903,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 (Moon overhead): 18:01",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h N",
+          "windSpeed": 14,
+          "windDirection": "N",
+          "temperature": 20,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "height": -0.00014754098360653112,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 1 end (Moon overhead): 19:01",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h N",
+          "windSpeed": 15,
+          "windDirection": "N",
+          "temperature": 19,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "height": -0.09162295081967214,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h NNW",
+          "windSpeed": 15,
+          "windDirection": "NNW",
+          "temperature": 19,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "height": -0.1830983606557377,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h NNW",
+          "windSpeed": 15,
+          "windDirection": "NNW",
+          "temperature": 18,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "height": -0.2676931034482759,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h N",
+          "windSpeed": 14,
+          "windDirection": "N",
+          "temperature": 18,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "height": -0.22155517241379313,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h N",
+          "windSpeed": 14,
+          "windDirection": "N",
+          "temperature": 17,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-20",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "02:47",
+            "height": -0.047
+          },
+          {
+            "time": "16:05",
+            "height": 0.43
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "08:22",
+            "height": -0.373
+          },
+          {
+            "time": "22:56",
+            "height": -0.352
+          }
+        ],
+        "sunrise": "05:39",
+        "sunset": "17:42",
+        "moonrise": "11:38",
+        "moonset": "02:02",
+        "moonPhase": "Waxing Gibbous",
+        "illumination": 65,
+        "solunarPeaks": [
+          {
+            "type": "Major 1 (Moon overhead)",
+            "time": "18:52",
+            "start": {
+              "date": "2026-09-20",
+              "time": "17:52"
+            },
+            "end": {
+              "date": "2026-09-20",
+              "time": "19:52"
+            }
+          },
+          {
+            "type": "Major 2 (Moon underfoot)",
+            "time": "06:27",
+            "start": {
+              "date": "2026-09-20",
+              "time": "05:27"
+            },
+            "end": {
+              "date": "2026-09-20",
+              "time": "07:27"
+            }
+          },
+          {
+            "type": "Minor 1 (Moon rise)",
+            "time": "11:38",
+            "start": {
+              "date": "2026-09-20",
+              "time": "11:08"
+            },
+            "end": {
+              "date": "2026-09-20",
+              "time": "12:08"
+            }
+          },
+          {
+            "type": "Minor 2 (Moon set)",
+            "time": "02:02",
+            "start": {
+              "date": "2026-09-20",
+              "time": "01:32"
+            },
+            "end": {
+              "date": "2026-09-20",
+              "time": "02:32"
+            }
+          }
+        ],
+        "weatherSummary": "Clear sky",
+        "tempRange": [
+          11,
+          22
+        ],
+        "windRange": [
+          8,
+          14
+        ],
+        "windBaseline": "14 km/h NNE",
+        "cloudBaseline": 2,
+        "pressureRange": [
+          1020,
+          1024
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "height": -0.17541724137931036,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h N",
+          "windSpeed": 14,
+          "windDirection": "N",
+          "temperature": 17,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "height": -0.12927931034482756,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Minor 2 start (Moon set): 01:32",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "11 km/h N",
+          "windSpeed": 11,
+          "windDirection": "N",
+          "temperature": 16,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "height": -0.08314137931034482,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Minor 2 end (Moon set): 02:32",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "8 km/h NNW",
+          "windSpeed": 8,
+          "windDirection": "NNW",
+          "temperature": 14,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "height": -0.05965074626865671,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "5 km/h NW",
+          "windSpeed": 5,
+          "windDirection": "NW",
+          "temperature": 13,
+          "cloudCover": 1,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "height": -0.11803880597014926,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "4 km/h W",
+          "windSpeed": 4,
+          "windDirection": "W",
+          "temperature": 12,
+          "cloudCover": 6,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "height": -0.17642686567164179,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 2 start (Moon underfoot): 05:27",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "5 km/h W",
+          "windSpeed": 5,
+          "windDirection": "W",
+          "temperature": 11,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "height": -0.2348149253731343,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 (Moon underfoot): 06:27",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "5 km/h WSW",
+          "windSpeed": 5,
+          "windDirection": "WSW",
+          "temperature": 11,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "height": -0.2932029850746269,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Major 2 end (Moon underfoot): 07:27",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "4 km/h SW",
+          "windSpeed": 4,
+          "windDirection": "SW",
+          "temperature": 14,
+          "cloudCover": 1,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "height": -0.3515910447761194,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1024 hPa",
+          "pressure": 1024,
+          "weatherCondition": "Clear sky",
+          "wind": "2 km/h SE",
+          "windSpeed": 2,
+          "windDirection": "SE",
+          "temperature": 17,
+          "cloudCover": 2,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "height": -0.3070950323974082,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1024 hPa",
+          "pressure": 1024,
+          "weatherCondition": "Clear sky",
+          "wind": "5 km/h ESE",
+          "windSpeed": 5,
+          "windDirection": "ESE",
+          "temperature": 20,
+          "cloudCover": 4,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "height": -0.2030345572354212,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1024 hPa",
+          "pressure": 1024,
+          "weatherCondition": "Clear sky",
+          "wind": "6 km/h E",
+          "windSpeed": 6,
+          "windDirection": "E",
+          "temperature": 21,
+          "cloudCover": 8,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "height": -0.09897408207343411,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 start (Moon rise): 11:08",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Clear sky",
+          "wind": "7 km/h E",
+          "windSpeed": 7,
+          "windDirection": "E",
+          "temperature": 22,
+          "cloudCover": 5,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "height": 0.00508639308855291,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 end (Moon rise): 12:08",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "10 km/h ENE",
+          "windSpeed": 10,
+          "windDirection": "ENE",
+          "temperature": 22,
+          "cloudCover": 8,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "height": 0.10914686825053993,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "11 km/h ENE",
+          "windSpeed": 11,
+          "windDirection": "ENE",
+          "temperature": 22,
+          "cloudCover": 2,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "height": 0.2132073434125269,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "12 km/h NE",
+          "windSpeed": 12,
+          "windDirection": "NE",
+          "temperature": 22,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "height": 0.3172678185745139,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1020 hPa",
+          "pressure": 1020,
+          "weatherCondition": "Clear sky",
+          "wind": "12 km/h NE",
+          "windSpeed": 12,
+          "windDirection": "NE",
+          "temperature": 22,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "height": 0.42132829373650105,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1020 hPa",
+          "pressure": 1020,
+          "weatherCondition": "Clear sky",
+          "wind": "12 km/h NNE",
+          "windSpeed": 12,
+          "windDirection": "NNE",
+          "temperature": 22,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "height": 0.32535279805352796,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Major 1 start (Moon overhead): 17:52",
+          "pressureTrend": "1020 hPa",
+          "pressure": 1020,
+          "weatherCondition": "Clear sky",
+          "wind": "13 km/h NNE",
+          "windSpeed": 13,
+          "windDirection": "NNE",
+          "temperature": 21,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "height": 0.21119221411192213,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 (Moon overhead): 18:52",
+          "pressureTrend": "1020 hPa",
+          "pressure": 1020,
+          "weatherCondition": "Clear sky",
+          "wind": "13 km/h NNE",
+          "windSpeed": 13,
+          "windDirection": "NNE",
+          "temperature": 20,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "height": 0.0970316301703163,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 end (Moon overhead): 19:52",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "13 km/h NNE",
+          "windSpeed": 13,
+          "windDirection": "NNE",
+          "temperature": 20,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "height": -0.017128953771289535,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "13 km/h N",
+          "windSpeed": 13,
+          "windDirection": "N",
+          "temperature": 20,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "height": -0.13128953771289537,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "13 km/h NNW",
+          "windSpeed": 13,
+          "windDirection": "NNW",
+          "temperature": 19,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "height": -0.24545012165450125,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "13 km/h NNW",
+          "windSpeed": 13,
+          "windDirection": "NNW",
+          "temperature": 19,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "height": -0.34727848101265824,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h NNW",
+          "windSpeed": 14,
+          "windDirection": "NNW",
+          "temperature": 18,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-21",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "04:12",
+            "height": 0.021
+          },
+          {
+            "time": "16:57",
+            "height": 0.506
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "09:54",
+            "height": -0.416
+          },
+          {
+            "time": "23:37",
+            "height": -0.441
+          }
+        ],
+        "sunrise": "05:38",
+        "sunset": "17:43",
+        "moonrise": "12:34",
+        "moonset": "02:43",
+        "moonPhase": "Waxing Gibbous",
+        "illumination": 74,
+        "solunarPeaks": [
+          {
+            "type": "Major 1 (Moon overhead)",
+            "time": "19:41",
+            "start": {
+              "date": "2026-09-21",
+              "time": "18:41"
+            },
+            "end": {
+              "date": "2026-09-21",
+              "time": "20:41"
+            }
+          },
+          {
+            "type": "Major 2 (Moon underfoot)",
+            "time": "07:18",
+            "start": {
+              "date": "2026-09-21",
+              "time": "06:18"
+            },
+            "end": {
+              "date": "2026-09-21",
+              "time": "08:18"
+            }
+          },
+          {
+            "type": "Minor 1 (Moon rise)",
+            "time": "12:34",
+            "start": {
+              "date": "2026-09-21",
+              "time": "12:04"
+            },
+            "end": {
+              "date": "2026-09-21",
+              "time": "13:04"
+            }
+          },
+          {
+            "type": "Minor 2 (Moon set)",
+            "time": "02:43",
+            "start": {
+              "date": "2026-09-21",
+              "time": "02:13"
+            },
+            "end": {
+              "date": "2026-09-21",
+              "time": "03:13"
+            }
+          }
+        ],
+        "weatherSummary": "Overcast",
+        "tempRange": [
+          15,
+          24
+        ],
+        "windRange": [
+          12,
+          18
+        ],
+        "windBaseline": "18 km/h N",
+        "cloudBaseline": 11,
+        "pressureRange": [
+          1018,
+          1022
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "height": -0.27645569620253163,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "12 km/h NNW",
+          "windSpeed": 12,
+          "windDirection": "NNW",
+          "temperature": 18,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "height": -0.20563291139240505,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "9 km/h NNW",
+          "windSpeed": 9,
+          "windDirection": "NNW",
+          "temperature": 17,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "height": -0.13481012658227845,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Minor 2 start (Moon set): 02:13",
+          "pressureTrend": "1020 hPa",
+          "pressure": 1020,
+          "weatherCondition": "Clear sky",
+          "wind": "8 km/h NNW",
+          "windSpeed": 8,
+          "windDirection": "NNW",
+          "temperature": 16,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "height": -0.06398734177215187,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Minor 2 end (Moon set): 03:13",
+          "pressureTrend": "1020 hPa",
+          "pressure": 1020,
+          "weatherCondition": "Clear sky",
+          "wind": "8 km/h NNW",
+          "windSpeed": 8,
+          "windDirection": "NNW",
+          "temperature": 16,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "height": 0.006835443037974731,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1020 hPa",
+          "pressure": 1020,
+          "weatherCondition": "Clear sky",
+          "wind": "10 km/h NNW",
+          "windSpeed": 10,
+          "windDirection": "NNW",
+          "temperature": 15,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "height": -0.04033333333333333,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Overcast",
+          "wind": "11 km/h NNW",
+          "windSpeed": 11,
+          "windDirection": "NNW",
+          "temperature": 15,
+          "cloudCover": 90,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "height": -0.11699999999999998,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 2 start (Moon underfoot): 06:18",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Overcast",
+          "wind": "11 km/h NNW",
+          "windSpeed": 11,
+          "windDirection": "NNW",
+          "temperature": 15,
+          "cloudCover": 91,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "height": -0.19366666666666665,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 2 (Moon underfoot): 07:18",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Overcast",
+          "wind": "10 km/h NNW",
+          "windSpeed": 10,
+          "windDirection": "NNW",
+          "temperature": 16,
+          "cloudCover": 84,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "height": -0.2703333333333333,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 end (Moon underfoot): 08:18",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "10 km/h N",
+          "windSpeed": 10,
+          "windDirection": "N",
+          "temperature": 18,
+          "cloudCover": 2,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "height": -0.347,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "12 km/h N",
+          "windSpeed": 12,
+          "windDirection": "N",
+          "temperature": 21,
+          "cloudCover": 1,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "height": -0.40292198581560285,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "13 km/h N",
+          "windSpeed": 13,
+          "windDirection": "N",
+          "temperature": 23,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "height": -0.2721418439716312,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h NNE",
+          "windSpeed": 15,
+          "windDirection": "NNE",
+          "temperature": 24,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "height": -0.14136170212765958,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 start (Moon rise): 12:04",
+          "pressureTrend": "1020 hPa",
+          "pressure": 1020,
+          "weatherCondition": "Clear sky",
+          "wind": "17 km/h NNE",
+          "windSpeed": 17,
+          "windDirection": "NNE",
+          "temperature": 24,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "height": -0.010581560283687952,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 end (Moon rise): 13:04",
+          "pressureTrend": "1019 hPa",
+          "pressure": 1019,
+          "weatherCondition": "Clear sky",
+          "wind": "18 km/h NNE",
+          "windSpeed": 18,
+          "windDirection": "NNE",
+          "temperature": 23,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "height": 0.12019858156028357,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1019 hPa",
+          "pressure": 1019,
+          "weatherCondition": "Clear sky",
+          "wind": "18 km/h NNE",
+          "windSpeed": 18,
+          "windDirection": "NNE",
+          "temperature": 23,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "height": 0.25097872340425537,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1018 hPa",
+          "pressure": 1018,
+          "weatherCondition": "Clear sky",
+          "wind": "18 km/h NNE",
+          "windSpeed": 18,
+          "windDirection": "NNE",
+          "temperature": 23,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "height": 0.38175886524822694,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1019 hPa",
+          "pressure": 1019,
+          "weatherCondition": "Clear sky",
+          "wind": "18 km/h NNE",
+          "windSpeed": 18,
+          "windDirection": "NNE",
+          "temperature": 23,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "height": 0.4988975,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1019 hPa",
+          "pressure": 1019,
+          "weatherCondition": "Clear sky",
+          "wind": "16 km/h NNE",
+          "windSpeed": 16,
+          "windDirection": "NNE",
+          "temperature": 22,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "height": 0.3568475,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Major 1 start (Moon overhead): 18:41",
+          "pressureTrend": "1020 hPa",
+          "pressure": 1020,
+          "weatherCondition": "Clear sky",
+          "wind": "16 km/h NNE",
+          "windSpeed": 16,
+          "windDirection": "NNE",
+          "temperature": 21,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "height": 0.21479749999999997,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 (Moon overhead): 19:41",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h NNE",
+          "windSpeed": 15,
+          "windDirection": "NNE",
+          "temperature": 21,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "height": 0.07274749999999996,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 end (Moon overhead): 20:41",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "16 km/h N",
+          "windSpeed": 16,
+          "windDirection": "N",
+          "temperature": 20,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "height": -0.06930250000000004,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h N",
+          "windSpeed": 15,
+          "windDirection": "N",
+          "temperature": 20,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "height": -0.21135249999999994,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h NNW",
+          "windSpeed": 15,
+          "windDirection": "NNW",
+          "temperature": 19,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "height": -0.35340250000000006,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "15 km/h NNW",
+          "windSpeed": 15,
+          "windDirection": "NNW",
+          "temperature": 18,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-22",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "05:05",
+            "height": 0.119
+          },
+          {
+            "time": "17:37",
+            "height": 0.586
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "10:54",
+            "height": -0.503
+          }
+        ],
+        "sunrise": "05:37",
+        "sunset": "17:43",
+        "moonrise": "13:31",
+        "moonset": "03:20",
+        "moonPhase": "Waxing Gibbous",
+        "illumination": 82,
+        "solunarPeaks": [
+          {
+            "type": "Major 1 (Moon overhead)",
+            "time": "20:28",
+            "start": {
+              "date": "2026-09-22",
+              "time": "19:28"
+            },
+            "end": {
+              "date": "2026-09-22",
+              "time": "21:28"
+            }
+          },
+          {
+            "type": "Major 2 (Moon underfoot)",
+            "time": "08:07",
+            "start": {
+              "date": "2026-09-22",
+              "time": "07:07"
+            },
+            "end": {
+              "date": "2026-09-22",
+              "time": "09:07"
+            }
+          },
+          {
+            "type": "Minor 1 (Moon rise)",
+            "time": "13:31",
+            "start": {
+              "date": "2026-09-22",
+              "time": "13:01"
+            },
+            "end": {
+              "date": "2026-09-22",
+              "time": "14:01"
+            }
+          },
+          {
+            "type": "Minor 2 (Moon set)",
+            "time": "03:20",
+            "start": {
+              "date": "2026-09-22",
+              "time": "02:50"
+            },
+            "end": {
+              "date": "2026-09-22",
+              "time": "03:50"
+            }
+          }
+        ],
+        "weatherSummary": "Light drizzle",
+        "tempRange": [
+          15,
+          24
+        ],
+        "windRange": [
+          8,
+          14
+        ],
+        "windBaseline": "14 km/h ESE",
+        "cloudBaseline": 19,
+        "pressureRange": [
+          1021,
+          1028
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "height": -0.4017317073170732,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "14 km/h NNW",
+          "windSpeed": 14,
+          "windDirection": "NNW",
+          "temperature": 18,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "height": -0.29929268292682926,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "11 km/h NNW",
+          "windSpeed": 11,
+          "windDirection": "NNW",
+          "temperature": 17,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "height": -0.19685365853658535,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 2 start (Moon set): 02:50",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "10 km/h NNW",
+          "windSpeed": 10,
+          "windDirection": "NNW",
+          "temperature": 16,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "height": -0.09441463414634144,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Minor 2 end (Moon set): 03:50",
+          "pressureTrend": "1021 hPa",
+          "pressure": 1021,
+          "weatherCondition": "Clear sky",
+          "wind": "8 km/h NNW",
+          "windSpeed": 8,
+          "windDirection": "NNW",
+          "temperature": 16,
+          "cloudCover": 0,
+          "rainChance": 1,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "height": 0.008024390243902502,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1022 hPa",
+          "pressure": 1022,
+          "weatherCondition": "Clear sky",
+          "wind": "6 km/h NW",
+          "windSpeed": 6,
+          "windDirection": "NW",
+          "temperature": 15,
+          "cloudCover": 0,
+          "rainChance": 2,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "height": 0.11046341463414638,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1023 hPa",
+          "pressure": 1023,
+          "weatherCondition": "Mainly clear",
+          "wind": "4 km/h W",
+          "windSpeed": 4,
+          "windDirection": "W",
+          "temperature": 15,
+          "cloudCover": 33,
+          "rainChance": 4,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "height": 0.020977077363896854,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1024 hPa",
+          "pressure": 1024,
+          "weatherCondition": "Partly cloudy",
+          "wind": "7 km/h SW",
+          "windSpeed": 7,
+          "windDirection": "SW",
+          "temperature": 15,
+          "cloudCover": 78,
+          "rainChance": 7,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "height": -0.0859570200573066,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 2 start (Moon underfoot): 07:07",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Overcast",
+          "wind": "9 km/h SSW",
+          "windSpeed": 9,
+          "windDirection": "SSW",
+          "temperature": 15,
+          "cloudCover": 100,
+          "rainChance": 12,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "height": -0.19289111747851,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 (Moon underfoot): 08:07",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Partly cloudy",
+          "wind": "8 km/h SSW",
+          "windSpeed": 8,
+          "windDirection": "SSW",
+          "temperature": 17,
+          "cloudCover": 79,
+          "rainChance": 22,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "height": -0.2998252148997135,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 end (Moon underfoot): 09:07",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Mainly clear",
+          "wind": "6 km/h SSE",
+          "windSpeed": 6,
+          "windDirection": "SSE",
+          "temperature": 20,
+          "cloudCover": 35,
+          "rainChance": 34,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "height": -0.4067593123209169,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "6 km/h SE",
+          "windSpeed": 6,
+          "windDirection": "SE",
+          "temperature": 22,
+          "cloudCover": 3,
+          "rainChance": 43,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "height": -0.4867866004962779,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Clear sky",
+          "wind": "8 km/h ESE",
+          "windSpeed": 8,
+          "windDirection": "ESE",
+          "temperature": 23,
+          "cloudCover": 0,
+          "rainChance": 47,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "height": -0.32465260545905705,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Clear sky",
+          "wind": "10 km/h E",
+          "windSpeed": 10,
+          "windDirection": "E",
+          "temperature": 24,
+          "cloudCover": 0,
+          "rainChance": 49,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "height": -0.16251861042183624,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 start (Moon rise): 13:01",
+          "pressureTrend": "1025 hPa",
+          "pressure": 1025,
+          "weatherCondition": "Clear sky",
+          "wind": "12 km/h E",
+          "windSpeed": 12,
+          "windDirection": "E",
+          "temperature": 24,
+          "cloudCover": 4,
+          "rainChance": 49,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "height": -0.00038461538461542766,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 end (Moon rise): 14:01",
+          "pressureTrend": "1025 hPa",
+          "pressure": 1025,
+          "weatherCondition": "Clear sky",
+          "wind": "12 km/h E",
+          "windSpeed": 12,
+          "windDirection": "E",
+          "temperature": 23,
+          "cloudCover": 3,
+          "rainChance": 49,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "height": 0.16174937965260539,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1025 hPa",
+          "pressure": 1025,
+          "weatherCondition": "Clear sky",
+          "wind": "11 km/h E",
+          "windSpeed": 11,
+          "windDirection": "E",
+          "temperature": 23,
+          "cloudCover": 1,
+          "rainChance": 48,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "height": 0.3238833746898262,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1025 hPa",
+          "pressure": 1025,
+          "weatherCondition": "Clear sky",
+          "wind": "11 km/h ESE",
+          "windSpeed": 11,
+          "windDirection": "ESE",
+          "temperature": 23,
+          "cloudCover": 2,
+          "rainChance": 47,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "height": 0.4860173697270471,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Clear sky",
+          "wind": "11 km/h ESE",
+          "windSpeed": 11,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 8,
+          "rainChance": 47,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "height": 0.520579081632653,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Clear sky",
+          "wind": "12 km/h ESE",
+          "windSpeed": 12,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 16,
+          "rainChance": 46,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "height": 0.34991581632653057,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Major 1 start (Moon overhead): 19:28",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Mainly clear",
+          "wind": "13 km/h ESE",
+          "windSpeed": 13,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 21,
+          "rainChance": 47,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "height": 0.17925255102040816,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 (Moon overhead): 20:28",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Mainly clear",
+          "wind": "12 km/h ESE",
+          "windSpeed": 12,
+          "windDirection": "ESE",
+          "temperature": 20,
+          "cloudCover": 20,
+          "rainChance": 49,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "height": 0.008589285714285633,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 1 end (Moon overhead): 21:28",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Clear sky",
+          "wind": "11 km/h ESE",
+          "windSpeed": 11,
+          "windDirection": "ESE",
+          "temperature": 20,
+          "cloudCover": 17,
+          "rainChance": 51,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "height": -0.16207397959183678,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Clear sky",
+          "wind": "10 km/h ESE",
+          "windSpeed": 10,
+          "windDirection": "ESE",
+          "temperature": 20,
+          "cloudCover": 17,
+          "rainChance": 53,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "height": -0.3327372448979593,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "10 km/h SE",
+          "windSpeed": 10,
+          "windDirection": "SE",
+          "temperature": 19,
+          "cloudCover": 23,
+          "rainChance": 54,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-23",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "05:46",
+            "height": 0.226
+          },
+          {
+            "time": "18:10",
+            "height": 0.658
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "00:09",
+            "height": -0.529
+          },
+          {
+            "time": "11:40",
+            "height": -0.597
+          }
+        ],
+        "sunrise": "05:36",
+        "sunset": "17:43",
+        "moonrise": "14:28",
+        "moonset": "03:54",
+        "moonPhase": "Waxing Gibbous",
+        "illumination": 89,
+        "solunarPeaks": [
+          {
+            "type": "Major 1 (Moon overhead)",
+            "time": "21:13",
+            "start": {
+              "date": "2026-09-23",
+              "time": "20:13"
+            },
+            "end": {
+              "date": "2026-09-23",
+              "time": "22:13"
+            }
+          },
+          {
+            "type": "Major 2 (Moon underfoot)",
+            "time": "08:54",
+            "start": {
+              "date": "2026-09-23",
+              "time": "07:54"
+            },
+            "end": {
+              "date": "2026-09-23",
+              "time": "09:54"
+            }
+          },
+          {
+            "type": "Minor 1 (Moon rise)",
+            "time": "14:28",
+            "start": {
+              "date": "2026-09-23",
+              "time": "13:58"
+            },
+            "end": {
+              "date": "2026-09-23",
+              "time": "14:58"
+            }
+          },
+          {
+            "type": "Minor 2 (Moon set)",
+            "time": "03:54",
+            "start": {
+              "date": "2026-09-23",
+              "time": "03:24"
+            },
+            "end": {
+              "date": "2026-09-23",
+              "time": "04:24"
+            }
+          }
+        ],
+        "weatherSummary": "Drizzle",
+        "tempRange": [
+          18,
+          22
+        ],
+        "windRange": [
+          16,
+          22
+        ],
+        "windBaseline": "22 km/h SE",
+        "cloudBaseline": 46,
+        "pressureRange": [
+          1027,
+          1029
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "height": -0.5034005102040816,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "10 km/h SE",
+          "windSpeed": 10,
+          "windDirection": "SE",
+          "temperature": 19,
+          "cloudCover": 34,
+          "rainChance": 54,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "height": -0.4147418397626113,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "10 km/h SSE",
+          "windSpeed": 10,
+          "windDirection": "SSE",
+          "temperature": 19,
+          "cloudCover": 45,
+          "rainChance": 53,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "height": -0.2803204747774481,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "9 km/h SSE",
+          "windSpeed": 9,
+          "windDirection": "SSE",
+          "temperature": 18,
+          "cloudCover": 59,
+          "rainChance": 51,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "height": -0.14589910979228493,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Minor 2 start (Moon set): 03:24",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "9 km/h S",
+          "windSpeed": 9,
+          "windDirection": "S",
+          "temperature": 18,
+          "cloudCover": 75,
+          "rainChance": 48,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "height": -0.011477744807121715,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Minor 2 end (Moon set): 04:24",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "9 km/h S",
+          "windSpeed": 9,
+          "windDirection": "S",
+          "temperature": 18,
+          "cloudCover": 86,
+          "rainChance": 47,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "height": 0.1229436201780415,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Drizzle",
+          "wind": "10 km/h SSE",
+          "windSpeed": 10,
+          "windDirection": "SSE",
+          "temperature": 18,
+          "cloudCover": 91,
+          "rainChance": 49,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "height": 0.19345197740112996,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Drizzle",
+          "wind": "13 km/h SSE",
+          "windSpeed": 13,
+          "windDirection": "SSE",
+          "temperature": 18,
+          "cloudCover": 91,
+          "rainChance": 53,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "height": 0.05396045197740115,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Major 2 start (Moon underfoot): 07:54",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Drizzle",
+          "wind": "15 km/h SSE",
+          "windSpeed": 15,
+          "windDirection": "SSE",
+          "temperature": 18,
+          "cloudCover": 88,
+          "rainChance": 57,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "height": -0.08553107344632768,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 2 (Moon underfoot): 08:54",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Drizzle",
+          "wind": "14 km/h SE",
+          "windSpeed": 14,
+          "windDirection": "SE",
+          "temperature": 18,
+          "cloudCover": 82,
+          "rainChance": 63,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "height": -0.2250225988700564,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 end (Moon underfoot): 09:54",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Drizzle",
+          "wind": "12 km/h SE",
+          "windSpeed": 12,
+          "windDirection": "SE",
+          "temperature": 19,
+          "cloudCover": 72,
+          "rainChance": 70,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "height": -0.3645141242937854,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Drizzle",
+          "wind": "11 km/h SE",
+          "windSpeed": 11,
+          "windDirection": "SE",
+          "temperature": 20,
+          "cloudCover": 60,
+          "rainChance": 73,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "height": -0.5040056497175142,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "13 km/h ESE",
+          "windSpeed": 13,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 43,
+          "rainChance": 71,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "height": -0.5326410256410257,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "16 km/h ESE",
+          "windSpeed": 16,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 24,
+          "rainChance": 66,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "height": -0.3395641025641026,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Minor 1 start (Moon rise): 13:58",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 11,
+          "rainChance": 61,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "height": -0.1464871794871795,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 end (Moon rise): 14:58",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "21 km/h ESE",
+          "windSpeed": 21,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 11,
+          "rainChance": 57,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "height": 0.04658974358974355,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "22 km/h ESE",
+          "windSpeed": 22,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 17,
+          "rainChance": 52,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "height": 0.23966666666666658,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "22 km/h ESE",
+          "windSpeed": 22,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 23,
+          "rainChance": 47,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "height": 0.4327435897435896,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "22 km/h ESE",
+          "windSpeed": 22,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 27,
+          "rainChance": 39,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "height": 0.6258205128205128,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "20 km/h ESE",
+          "windSpeed": 20,
+          "windDirection": "ESE",
+          "temperature": 20,
+          "cloudCover": 31,
+          "rainChance": 30,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "height": 0.49369587628865985,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 20,
+          "cloudCover": 32,
+          "rainChance": 25,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "height": 0.29653092783505164,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 start (Moon overhead): 20:13",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 20,
+          "cloudCover": 27,
+          "rainChance": 26,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "height": 0.09936597938144343,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 1 (Moon overhead): 21:13",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 20,
+          "cloudCover": 20,
+          "rainChance": 31,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "height": -0.0977989690721649,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 1 end (Moon overhead): 22:13",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "18 km/h ESE",
+          "windSpeed": 18,
+          "windDirection": "ESE",
+          "temperature": 19,
+          "cloudCover": 19,
+          "rainChance": 35,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "height": -0.2949639175257731,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "18 km/h ESE",
+          "windSpeed": 18,
+          "windDirection": "ESE",
+          "temperature": 19,
+          "cloudCover": 32,
+          "rainChance": 37,
+          "hourScore": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "anchored": {
+        "highTides": [
+          {
+            "time": "06:23",
+            "height": 0.337
+          },
+          {
+            "time": "18:42",
+            "height": 0.713
+          }
+        ],
+        "lowTides": [
+          {
+            "time": "00:38",
+            "height": -0.617
+          },
+          {
+            "time": "12:19",
+            "height": -0.68
+          }
+        ],
+        "sunrise": "05:35",
+        "sunset": "17:44",
+        "moonrise": "15:25",
+        "moonset": "04:26",
+        "moonPhase": "Waxing Gibbous",
+        "illumination": 95,
+        "solunarPeaks": [
+          {
+            "type": "Major 1 (Moon overhead)",
+            "time": "21:57",
+            "start": {
+              "date": "2026-09-24",
+              "time": "20:57"
+            },
+            "end": {
+              "date": "2026-09-24",
+              "time": "22:57"
+            }
+          },
+          {
+            "type": "Major 2 (Moon underfoot)",
+            "time": "09:39",
+            "start": {
+              "date": "2026-09-24",
+              "time": "08:39"
+            },
+            "end": {
+              "date": "2026-09-24",
+              "time": "10:39"
+            }
+          },
+          {
+            "type": "Minor 1 (Moon rise)",
+            "time": "15:25",
+            "start": {
+              "date": "2026-09-24",
+              "time": "14:55"
+            },
+            "end": {
+              "date": "2026-09-24",
+              "time": "15:55"
+            }
+          },
+          {
+            "type": "Minor 2 (Moon set)",
+            "time": "04:26",
+            "start": {
+              "date": "2026-09-24",
+              "time": "03:56"
+            },
+            "end": {
+              "date": "2026-09-24",
+              "time": "04:56"
+            }
+          }
+        ],
+        "weatherSummary": "Rain showers",
+        "tempRange": [
+          17,
+          22
+        ],
+        "windRange": [
+          14,
+          20
+        ],
+        "windBaseline": "20 km/h ESE",
+        "cloudBaseline": 39,
+        "pressureRange": [
+          1026,
+          1029
+        ],
+        "dayScore": null
+      },
+      "hours": [
+        {
+          "time": "00:00",
+          "height": -0.4921288659793813,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "17 km/h ESE",
+          "windSpeed": 17,
+          "windDirection": "ESE",
+          "temperature": 18,
+          "cloudCover": 52,
+          "rainChance": 39,
+          "hourScore": null
+        },
+        {
+          "time": "01:00",
+          "height": -0.5561652173913043,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "17 km/h SE",
+          "windSpeed": 17,
+          "windDirection": "SE",
+          "temperature": 18,
+          "cloudCover": 63,
+          "rainChance": 41,
+          "hourScore": null
+        },
+        {
+          "time": "02:00",
+          "height": -0.39025217391304345,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "16 km/h SE",
+          "windSpeed": 16,
+          "windDirection": "SE",
+          "temperature": 18,
+          "cloudCover": 56,
+          "rainChance": 45,
+          "hourScore": null
+        },
+        {
+          "time": "03:00",
+          "height": -0.22433913043478265,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 2 start (Moon set): 03:56",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "16 km/h SE",
+          "windSpeed": 16,
+          "windDirection": "SE",
+          "temperature": 18,
+          "cloudCover": 40,
+          "rainChance": 49,
+          "hourScore": null
+        },
+        {
+          "time": "04:00",
+          "height": -0.05842608695652174,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Minor 2 end (Moon set): 04:56",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "15 km/h SE",
+          "windSpeed": 15,
+          "windDirection": "SE",
+          "temperature": 18,
+          "cloudCover": 27,
+          "rainChance": 55,
+          "hourScore": null
+        },
+        {
+          "time": "05:00",
+          "height": 0.10748695652173912,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "14 km/h SE",
+          "windSpeed": 14,
+          "windDirection": "SE",
+          "temperature": 18,
+          "cloudCover": 21,
+          "rainChance": 63,
+          "hourScore": null
+        },
+        {
+          "time": "06:00",
+          "height": 0.2734,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "13 km/h SE",
+          "windSpeed": 13,
+          "windDirection": "SE",
+          "temperature": 19,
+          "cloudCover": 19,
+          "rainChance": 71,
+          "hourScore": null
+        },
+        {
+          "time": "07:00",
+          "height": 0.23130056179775282,
+          "tideStage": "Run Out Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "13 km/h SE",
+          "windSpeed": 13,
+          "windDirection": "SE",
+          "temperature": 19,
+          "cloudCover": 18,
+          "rainChance": 78,
+          "hourScore": null
+        },
+        {
+          "time": "08:00",
+          "height": 0.059896067415730336,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 2 start (Moon underfoot): 08:39",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "18 km/h ESE",
+          "windSpeed": 18,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 25,
+          "rainChance": 82,
+          "hourScore": null
+        },
+        {
+          "time": "09:00",
+          "height": -0.1115084269662922,
+          "tideStage": "Run Out Building",
+          "solunarCondition": "Major 2 (Moon underfoot): 09:39",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 24,
+          "rainChance": 83,
+          "hourScore": null
+        },
+        {
+          "time": "10:00",
+          "height": -0.28291292134831464,
+          "tideStage": "Run Out Mid",
+          "solunarCondition": "Major 2 end (Moon underfoot): 10:39",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 23,
+          "rainChance": 84,
+          "hourScore": null
+        },
+        {
+          "time": "11:00",
+          "height": -0.45431741573033707,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 21,
+          "rainChance": 84,
+          "hourScore": null
+        },
+        {
+          "time": "12:00",
+          "height": -0.6257219101123597,
+          "tideStage": "Run Out Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "20 km/h ESE",
+          "windSpeed": 20,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 19,
+          "rainChance": 82,
+          "hourScore": null
+        },
+        {
+          "time": "13:00",
+          "height": -0.5308798955613577,
+          "tideStage": "Run In Start",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 16,
+          "rainChance": 80,
+          "hourScore": null
+        },
+        {
+          "time": "14:00",
+          "height": -0.3126553524804178,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 start (Moon rise): 14:55",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 14,
+          "rainChance": 78,
+          "hourScore": null
+        },
+        {
+          "time": "15:00",
+          "height": -0.0944308093994779,
+          "tideStage": "Run In Building",
+          "solunarCondition": "Minor 1 end (Moon rise): 15:55",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Light drizzle",
+          "wind": "19 km/h ESE",
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "temperature": 22,
+          "cloudCover": 14,
+          "rainChance": 75,
+          "hourScore": null
+        },
+        {
+          "time": "16:00",
+          "height": 0.12379373368146207,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Light drizzle",
+          "wind": "18 km/h ESE",
+          "windSpeed": 18,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 18,
+          "rainChance": 71,
+          "hourScore": null
+        },
+        {
+          "time": "17:00",
+          "height": 0.34201827676240215,
+          "tideStage": "Run In Mid",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Light drizzle",
+          "wind": "17 km/h ESE",
+          "windSpeed": 17,
+          "windDirection": "ESE",
+          "temperature": 21,
+          "cloudCover": 27,
+          "rainChance": 66,
+          "hourScore": null
+        },
+        {
+          "time": "18:00",
+          "height": 0.5602428198433421,
+          "tideStage": "Run In Late",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1026 hPa",
+          "pressure": 1026,
+          "weatherCondition": "Light drizzle",
+          "wind": "15 km/h ESE",
+          "windSpeed": 15,
+          "windDirection": "ESE",
+          "temperature": 20,
+          "cloudCover": 41,
+          "rainChance": 59,
+          "hourScore": null
+        },
+        {
+          "time": "19:00",
+          "height": null,
+          "tideStage": "Unknown",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1027 hPa",
+          "pressure": 1027,
+          "weatherCondition": "Light drizzle",
+          "wind": "13 km/h ESE",
+          "windSpeed": 13,
+          "windDirection": "ESE",
+          "temperature": 19,
+          "cloudCover": 58,
+          "rainChance": 53,
+          "hourScore": null
+        },
+        {
+          "time": "20:00",
+          "height": null,
+          "tideStage": "Unknown",
+          "solunarCondition": "Major 1 start (Moon overhead): 20:57",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "11 km/h ESE",
+          "windSpeed": 11,
+          "windDirection": "ESE",
+          "temperature": 18,
+          "cloudCover": 73,
+          "rainChance": 47,
+          "hourScore": null
+        },
+        {
+          "time": "21:00",
+          "height": null,
+          "tideStage": "Unknown",
+          "solunarCondition": "Major 1 (Moon overhead): 21:57",
+          "pressureTrend": "1028 hPa",
+          "pressure": 1028,
+          "weatherCondition": "Light drizzle",
+          "wind": "10 km/h ESE",
+          "windSpeed": 10,
+          "windDirection": "ESE",
+          "temperature": 18,
+          "cloudCover": 85,
+          "rainChance": 42,
+          "hourScore": null
+        },
+        {
+          "time": "22:00",
+          "height": null,
+          "tideStage": "Unknown",
+          "solunarCondition": "Major 1 end (Moon overhead): 22:57",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Light drizzle",
+          "wind": "8 km/h SE",
+          "windSpeed": 8,
+          "windDirection": "SE",
+          "temperature": 17,
+          "cloudCover": 91,
+          "rainChance": 39,
+          "hourScore": null
+        },
+        {
+          "time": "23:00",
+          "height": null,
+          "tideStage": "Unknown",
+          "solunarCondition": "Normal",
+          "pressureTrend": "1029 hPa",
+          "pressure": 1029,
+          "weatherCondition": "Rain showers",
+          "wind": "8 km/h SE",
+          "windSpeed": 8,
+          "windDirection": "SE",
+          "temperature": 17,
+          "cloudCover": 88,
+          "rainChance": 39,
+          "hourScore": null
+        }
+      ]
+    }
+  ]
+}

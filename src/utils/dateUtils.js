@@ -1,8 +1,8 @@
 // src/utils/dateUtils.js
 
-import { BUILD_DAYS, TIME_ZONE } from "../config/constants.js";
+import { DISPLAY_DAYS, TIME_ZONE } from "../config/constants.js";
 
-export function getBuildDates(days = BUILD_DAYS) {
+export function getBuildDates(days = DISPLAY_DAYS) {
   const [year, month, day] = formatLocalDate(new Date())
     .split("-")
     .map(Number);
@@ -15,7 +15,7 @@ export function getBuildDates(days = BUILD_DAYS) {
   );
 }
 
-export function getBuildDateKeys(days = BUILD_DAYS) {
+export function getBuildDateKeys(days = DISPLAY_DAYS) {
   return getBuildDates(days).map(formatLocalDate);
 }
 

@@ -33,7 +33,7 @@ export default function WeeklyView() {
     <main className="weekly-view">
       <header className="weekly-header">
         <p className="eyebrow">Fishing conditions</p>
-        <h1>Fortnightly outlook</h1>
+        <h1>Weekly outlook</h1>
         <p>Tides, daylight, and lunar timing for the next available days.</p>
       </header>
 

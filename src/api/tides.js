@@ -1,10 +1,10 @@
 // src/api/tides.js
-import { TIDE_REFRESH_DAYS } from "../config/constants.js";
+import { TIDE_CACHE_DAYS } from "../config/constants.js";
 
 export async function fetchBulkTideData(
   lat,
   lon,
-  days = TIDE_REFRESH_DAYS
+  days = TIDE_CACHE_DAYS
 ) {
   // HARD BLOCK: Prevent ALL browser/Vite/React/HMR calls
   if (typeof window !== "undefined") {

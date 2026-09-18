@@ -1,6 +1,5 @@
 // src/cache/cache.js
 import fs from "fs";
-import path from "path";
 
 // Ensure JSON file exists
 export function ensureCacheFile(filePath) {
@@ -28,10 +27,29 @@ export function daysBetween(a, b) {
   return Math.floor((b - a) / (1000 * 60 * 60 * 24));
 }
 
-// Merge records by unique date
+// Merge records while replacing overlapping API predictions.
 export function mergeByDate(existing, incoming) {
-  const merged = [...existing, ...incoming];
-  const unique = Array.from(new Map(merged.map(r => [r.date, r])).values());
-  unique.sort((a, b) => new Date(a.date) - new Date(b.date));
-  return unique;
+  const merged = [
+    ...existing.map(record => ({ record, source: 0 })),
+    ...incoming.map(record => ({ record, source: 1 }))
+  ].sort((a, b) => new Date(a.record.date) - new Date(b.record.date));
+  const unique = [];
+  const overlapWindowMs = 2 * 60 * 60 * 1000;
+
+  for (const candidate of merged) {
+    const previous = unique[unique.length - 1];
+    const overlaps = previous &&
+      new Date(candidate.record.date) - new Date(previous.record.date) <= overlapWindowMs;
+
+    if (overlaps) {
+      if (candidate.source >= previous.source) {
+        unique[unique.length - 1] = candidate;
+      }
+      continue;
+    }
+
+    unique.push(candidate);
+  }
+
+  return unique.map(({ record }) => record);
 }

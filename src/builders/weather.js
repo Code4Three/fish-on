@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { BUILD_DAYS, LOCATION, TIME_ZONE } from "../config/constants.js";
+import { DISPLAY_DAYS, LOCATION, TIME_ZONE } from "../config/constants.js";
 import { formatLocalDate } from "../utils/dateUtils.js";
 
 const WEATHER_CODE_LABELS = {
@@ -91,7 +91,7 @@ export async function buildWeatherData() {
       latitude: String(LOCATION.lat),
       longitude: String(LOCATION.lon),
       timezone: TIME_ZONE,
-      forecast_days: String(BUILD_DAYS),
+      forecast_days: String(DISPLAY_DAYS),
       hourly: [
         "temperature_2m",
         "pressure_msl",

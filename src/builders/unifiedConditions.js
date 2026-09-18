@@ -2,8 +2,10 @@
 
 import fs from "fs";
 import path from "path";
-import { groupTidesByDay } from "./groupTidesByDay.js";
-import { classifyTideStage } from "./tideStageClassifier.js";
+import {
+  classifyTideStage,
+  groupTidesByDay
+} from "../utils/tides.js";
 import { getBuildDateKeys } from "../utils/dateUtils.js";
 
 export function buildUnifiedConditions() {
