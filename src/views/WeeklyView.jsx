@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import "./WeeklyView.css";
 import { formatDisplayDate } from "../utils/dateUtils.js";
+import scoringRules from "../config/scoringRules.json";
+import {
+  calculateConditionScore,
+  calculateTideRating
+} from "../utils/scoringEngine.js";
 
 export default function WeeklyView() {
   const [conditions, setConditions] = useState(null);
@@ -39,14 +44,14 @@ export default function WeeklyView() {
 
       <div className="day-list">
       {conditions.days.map((day) => (
-        <DayBlock key={day.date} day={day} />
+        <DayBlock key={day.date} day={day} allDays={conditions.days} />
       ))}
       </div>
     </main>
   );
 }
 
-function DayBlock({ day }) {
+function DayBlock({ day, allDays }) {
   return (
     <section className="day-block">
       <div className="day-heading">
@@ -56,7 +61,10 @@ function DayBlock({ day }) {
 
       <div className="day-content">
         <AnchoredEvents anchored={day.anchored} />
-        <HourlyTimeline hours={day.hours} />
+        <div className="timeline-panel">
+          <HourlyTimeline hours={day.hours} date={day.date} allDays={allDays} />
+          <ScoreLegend />
+        </div>
       </div>
     </section>
   );
@@ -115,12 +123,22 @@ function formatSolunarPeaks(peaks) {
     .join(", ");
 }
 
-function HourlyTimeline({ hours }) {
+function HourlyTimeline({ hours, date, allDays }) {
+  const tideEvents = buildTideEvents(allDays);
+  const scoredHours = hours.map(hour => {
+    const at = toTimestamp(date, hour.time);
+    const tideRating = calculateTideRating(at, tideEvents, scoringRules);
+    const solunarRating = getSolunarRating(hour.solunarCondition);
+    const result = calculateConditionScore(tideRating, solunarRating, scoringRules);
+
+    return { ...hour, ...result };
+  });
+
   return (
     <div className="hourly-timeline">
       <div className="timeline-row timeline-header">
         <div className="timeline-label">Hour</div>
-        {hours.map((h) => (
+        {scoredHours.map((h) => (
           <div
             key={h.time}
             className="timeline-cell"
@@ -130,30 +148,90 @@ function HourlyTimeline({ hours }) {
         ))}
       </div>
 
-      <Row label="Tide Stage" values={hours.map(h => h.tideStage)} />
-      <Row label="Solunar" values={hours.map(h => h.solunarCondition)} />
-      <Row label="Weather" values={hours.map(h => h.weatherCondition)} />
-      <Row label="Pressure" values={hours.map(h => h.pressureTrend)} />
-      <Row label="Wind" values={hours.map(h => h.wind)} />
-      <Row label="Temp" values={hours.map(h => h.temperature == null ? null : `${h.temperature}°C`)} />
-      <Row label="Cloud" values={hours.map(h => h.cloudCover == null ? null : `${h.cloudCover}%`)} />
-      <Row label="Rain" values={hours.map(h => h.rainChance == null ? null : `${h.rainChance}%`)} />
+      <Row
+        label="Score"
+        values={scoredHours.map(h => `${h.band.name} (${Math.round(h.score)})`)}
+        scoredHours={scoredHours}
+      />
+      <Row label="Tide Stage" values={scoredHours.map(h => h.tideStage)} scoredHours={scoredHours} />
+      <Row label="Solunar" values={scoredHours.map(h => h.solunarCondition)} scoredHours={scoredHours} />
+      <Row label="Weather" values={scoredHours.map(h => h.weatherCondition)} scoredHours={scoredHours} />
+      <Row label="Pressure" values={scoredHours.map(h => h.pressureTrend)} scoredHours={scoredHours} />
+      <Row label="Wind" values={scoredHours.map(h => h.wind)} scoredHours={scoredHours} />
+      <Row label="Temp" values={scoredHours.map(h => h.temperature == null ? null : `${h.temperature}°C`)} scoredHours={scoredHours} />
+      <Row label="Cloud" values={scoredHours.map(h => h.cloudCover == null ? null : `${h.cloudCover}%`)} scoredHours={scoredHours} />
+      <Row label="Rain" values={scoredHours.map(h => h.rainChance == null ? null : `${h.rainChance}%`)} scoredHours={scoredHours} />
     </div>
   );
 }
 
-function Row({ label, values }) {
+function ScoreLegend() {
+  const bands = [
+    ["score-neutral", "Neutral (0-19)"],
+    ["score-very-low", "Very Low (20-39)"],
+    ["score-low", "Low (40-49)"],
+    ["score-favorable", "Favorable (50-64)"],
+    ["score-strong", "Strong (65-79)"],
+    ["score-peak", "Peak (80-100)"]
+  ];
+
+  return (
+    <div className="score-legend" aria-label="Fishing score colour key">
+      {bands.map(([className, label]) => (
+        <div className="score-legend-item" key={className}>
+          <span className={`score-legend-swatch ${className}`} aria-hidden="true" />
+          <span>{label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Row({ label, values, scoredHours }) {
   return (
     <div className="timeline-row">
     <div className="timeline-label">{label}</div>
       {values.map((v, i) => (
         <div
           key={i}
-          className="timeline-cell"
+          className={`timeline-cell score-${scoredHours[i].band.name.toLowerCase().replace(" ", "-")}`}
+          title={`${scoredHours[i].band.name}: ${Math.round(scoredHours[i].score)}/100`}
         >
           {v ?? "-"}
         </div>
       ))}
     </div>
   );
+}
+
+function buildTideEvents(days) {
+  return days
+    .flatMap(day => [
+      ...(day.anchored.lowTides ?? []).map(tide => ({
+        ...tide,
+        type: "Low",
+        at: toTimestamp(day.date, tide.time)
+      })),
+      ...(day.anchored.highTides ?? []).map(tide => ({
+        ...tide,
+        type: "High",
+        at: toTimestamp(day.date, tide.time)
+      }))
+    ])
+    .sort((a, b) => a.at - b.at);
+}
+
+function toTimestamp(date, time) {
+  return new Date(`${date}T${time}:00`).getTime();
+}
+
+function getSolunarRating(condition) {
+  if (!condition) return 0;
+
+  return [
+    ["Major 1", 100],
+    ["Major 2", 80],
+    ["Minor 1", 60],
+    ["Minor 2", 40]
+  ].find(([name]) => condition.includes(name))?.[1] ?? 0;
 }

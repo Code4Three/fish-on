@@ -1,0 +1,18 @@
+{
+  "weights": {
+    "tide": 0.6,
+    "solunar": 0.4
+  },
+  "tide": {
+    "peakWindowHours": 2,
+    "decayPerHour": 25
+  },
+  "bands": [
+    { "name": "Neutral", "min": 0, "max": 19 },
+    { "name": "Very Low", "min": 20, "max": 39 },
+    { "name": "Low", "min": 40, "max": 49 },
+    { "name": "Favorable", "min": 50, "max": 64 },
+    { "name": "Strong", "min": 65, "max": 79 },
+    { "name": "Peak", "min": 80, "max": 100 }
+  ]
+}

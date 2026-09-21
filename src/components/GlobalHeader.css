@@ -1,0 +1,357 @@
+.global-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid #d8e4df;
+  background: rgba(250, 253, 251, 0.94);
+  box-shadow: 0 4px 18px rgba(35, 72, 62, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.global-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100% - 32px, 1120px);
+  min-height: 68px;
+  margin: 0 auto;
+}
+
+.brand-lockup,
+.header-actions,
+.menu-trigger,
+.active-location-badge,
+.menu-action,
+.saved-spot {
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand-lockup {
+  gap: 10px;
+  color: #163d36;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.brand-mark {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 9px;
+  color: #f8fffb;
+  background: #1d6a5b;
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.header-actions {
+  position: relative;
+  gap: 10px;
+}
+
+.active-location-badge {
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #c8dcd4;
+  border-radius: 999px;
+  color: #315d51;
+  background: #edf7f2;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.location-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #dc7d42;
+  box-shadow: 0 0 0 4px rgba(220, 125, 66, 0.14);
+}
+
+.menu-trigger {
+  gap: 9px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid #1d6a5b;
+  border-radius: 8px;
+  color: #f8fffb;
+  background: #1d6a5b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.menu-trigger:hover,
+.menu-trigger:focus-visible {
+  background: #155447;
+}
+
+.menu-trigger:focus-visible,
+.menu-link:focus-visible,
+.saved-spot:focus-visible,
+.menu-action:focus-visible,
+.placeholder-panel button:focus-visible {
+  outline: 3px solid rgba(220, 125, 66, 0.45);
+  outline-offset: 2px;
+}
+
+.menu-trigger-icon {
+  display: grid;
+  gap: 3px;
+  width: 16px;
+}
+
+.menu-trigger-icon i {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.unified-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 370px;
+  overflow: hidden;
+  border: 1px solid #cadbd4;
+  border-radius: 12px;
+  color: #25453d;
+  background: #fbfefc;
+  box-shadow: 0 20px 42px rgba(22, 61, 54, 0.18);
+  text-align: left;
+}
+
+.menu-section {
+  padding: 18px;
+  border-bottom: 1px solid #e1ece7;
+}
+
+.menu-section-last {
+  border-bottom: 0;
+}
+
+.menu-section-title {
+  margin-bottom: 10px;
+  color: #6a847b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.menu-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-count {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+  color: #1d6a5b;
+  background: #e4f1eb;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.menu-link,
+.saved-spot,
+.menu-action {
+  width: 100%;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-link {
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 8px;
+  border-radius: 7px;
+  color: #31564d;
+  background: transparent;
+}
+
+.menu-link:hover,
+.menu-link.is-active,
+.saved-spot:hover,
+.saved-spot.is-active {
+  background: #edf7f2;
+}
+
+.menu-link-copy {
+  display: grid;
+  gap: 2px;
+  flex: 1;
+}
+
+.menu-link-copy strong,
+.active-spot-card strong {
+  color: #173f37;
+  font-size: 14px;
+}
+
+.menu-link-copy small,
+.active-spot-card small {
+  color: #708980;
+  font-size: 12px;
+}
+
+.menu-link-arrow,
+.menu-action span:last-child {
+  color: #dc7d42;
+  font-size: 18px;
+}
+
+.active-spot-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #cbe0d7;
+  border-radius: 8px;
+  background: #f1f9f5;
+}
+
+.active-spot-card > div:first-child {
+  display: grid;
+  gap: 2px;
+}
+
+.spot-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.spot-badges span {
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #387264;
+  background: #dceee6;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.saved-spots {
+  display: grid;
+  gap: 2px;
+  margin: 8px 0;
+}
+
+.saved-spot {
+  justify-content: space-between;
+  padding: 7px 8px;
+  border-radius: 6px;
+  color: #4e6d64;
+  background: transparent;
+  font-size: 13px;
+}
+
+.spot-check {
+  color: #1d6a5b;
+  font-weight: 800;
+}
+
+.menu-action {
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 8px;
+  color: #4a6b61;
+  background: transparent;
+  font-size: 13px;
+}
+
+.menu-action-primary {
+  justify-content: flex-start;
+  margin-top: 6px;
+  border-radius: 6px;
+  color: #1d6a5b;
+  background: #e6f3ed;
+  font-weight: 800;
+}
+
+.menu-action-primary span:first-child {
+  color: #dc7d42;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.menu-action:hover {
+  background: #edf7f2;
+}
+
+.menu-link-settings {
+  justify-content: flex-start;
+}
+
+.settings-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 7px;
+  color: #1d6a5b;
+  background: #e6f3ed;
+  font-size: 17px;
+}
+
+@media (max-width: 767px) {
+  .global-header-inner {
+    width: min(100% - 24px, 1120px);
+    min-height: 60px;
+  }
+
+  .brand-lockup {
+    font-size: 15px;
+  }
+
+  .active-location-badge {
+    max-width: 142px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .menu-trigger {
+    width: 42px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .menu-trigger-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .unified-menu {
+    position: fixed;
+    inset: 60px 0 0;
+    width: auto;
+    overflow-y: auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 20px 40px rgba(22, 61, 54, 0.18);
+  }
+
+  .menu-section {
+    padding: 20px 18px;
+  }
+}

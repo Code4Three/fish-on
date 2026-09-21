@@ -262,9 +262,7 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = []) {
       windDirection: weather.windDirection ?? null,
       temperature: weather.temperature ?? null,
       cloudCover: weather.cloudCover ?? null,
-      rainChance: weather.rainChance ?? null,
-
-      hourScore: null
+      rainChance: weather.rainChance ?? null
     };
   });
 }

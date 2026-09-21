@@ -1,0 +1,35 @@
+{
+  "locations": [
+    {
+      "id": "mooloolaba",
+      "name": "Mooloolaba", 
+      "region": "Sunshine Coast, QLD",
+      "lat": -26.7075,
+      "lon": 153.132,
+      "water": "Salt",
+      "tide": "Tidal"
+    },
+    {
+      "id": "noosa-river",
+      "name": "Noosa River",
+      "region": "Noosa, QLD",
+      "lat": -26.391,
+      "lon": 153.064,
+      "water": "Salt",
+      "tide": "Tidal"
+    },
+    {
+      "id": "lake-kurwongbah",
+      "name": "Lake Kurwongbah",
+      "region": "Moreton Bay, QLD",
+      "lat": -27.229,
+      "lon": 152.984,
+      "water": "Fresh",
+      "tide": "Non-tidal"
+    }
+  ],
+  "preferences": {
+    "temperatureUnit": "celsius",
+    "windSpeedUnit": "kmh"
+  }
+}

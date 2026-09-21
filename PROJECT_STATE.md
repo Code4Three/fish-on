@@ -4,7 +4,37 @@
 
 Fish On is an initial working fishing-conditions MVP for recreational anglers. It brings tide, astronomical, weather, wind, cloud, rain, and atmospheric-pressure information together into a seven-day conditions outlook for a configured location.
 
-The current product helps an angler inspect how these conditions are expected to develop across each day. It presents the information for planning and comparison; it does not currently provide confirmed fishing scores or recommendations.
+The current product helps an angler inspect how these conditions are expected to develop across each day. It presents the information for planning and comparison, including runtime fishing scores based on tide and solunar conditions. The latest scoring user story is implemented in the weekly view.
+
+## Epics
+
+### FO-1: Conditions Intelligence
+
+**Outcome:** Acquire, calculate, and unify accurate environmental, weather, tide, and astronomical data into a reliable single source of truth.
+
+### FO-2: Conditions Planning & Visualisation
+
+**Outcome:** Help anglers quickly understand *when* conditions look best for fishing.
+
+### FO-3: Fishing Prediction & Scoring
+
+**Outcome:** Turn multiple conditions into an understandable prediction of fishing opportunity.
+
+### FO-4: Fishing Locations
+
+**Outcome:** Anglers can plan fishing conditions for the specific place they intend to fish, with forecasts and environmental data calculated for that location.
+
+### FO-5: Catch & Session Log
+
+**Outcome:** Allow anglers to record fishing sessions and catches so they can identify patterns over time.
+
+### FO-6: Species & Fishing Profiles
+
+**Outcome:** Tailor fishing information and recommendations to the species being targeted.
+
+### FO-7: Personalisation
+
+**Outcome:** Anglers can tailor Fish On to their fishing preferences so that the conditions, recommendations and insights shown are relevant to how and where they fish.
 
 ## Current MVP
 
@@ -16,6 +46,8 @@ Each day is split into:
 - An hourly conditions timeline extending across the right, with 24 hourly entries for tide stage, solunar condition, weather, pressure, wind, temperature, cloud cover, and rain chance.
 
 The view includes loading and no-data states. The current repository provides evidence of this display working from the populated generated conditions file. Runtime freshness of that file depends on the data-building process described below.
+
+Hourly fishing scores are calculated in the browser from tide and solunar conditions, displayed as numeric scores with semantic bands, and explained by a colour legend. The scoring rules and unit tests are included in the repository.
 
 ## Implemented Capabilities
 
@@ -57,10 +89,6 @@ The current primary screen provides a seven-day outlook with one section per day
 
 ## Partially Implemented Capabilities
 
-### Fishing scores
-
-Daily and hourly score fields exist in the generated conditions structure, but they are currently null. No score calculation or score display is confirmed by the current application.
-
 ### Separate tide conditions display
 
 A tide-only conditions component exists and reads cached tide records, but it is not mounted by the current application entry point. It is therefore not part of the confirmed primary user experience.
@@ -71,11 +99,13 @@ The application view reads the generated `/conditions.json` file. The repository
 
 ## Current User Interface
 
-The confirmed user-facing interface is the weekly conditions page. It contains a page heading, a list of daily sections, anchored daily condition rows, and an hourly timeline for each day.
+The confirmed user-facing interface now has a persistent application header and unified global menu around the weekly conditions page. The weekly view contains a page heading, a list of daily sections, anchored daily condition rows, and an hourly timeline for each day.
 
 The hourly timeline contains rows for hour, tide stage, solunar condition, weather, pressure, wind, temperature, cloud, and rain. On narrower screens, the daily content stacks vertically and the hourly timeline can scroll horizontally.
 
-No additional navigation, location selector, trip planner, species view, or confirmed recommendation view is connected to the current application entry point.
+The global menu provides navigation targets for Weekly Forecast, Dedicated Tide, Dedicated Solunar, Options & Configuration, Map Picker, and Manage Locations. Tide, Solunar, Options, Map Picker, and Manage Locations currently render placeholder destinations for follow-on feature work.
+
+The menu includes seeded saved locations from `src/config/appConfig.json`. The active location is held in application state and its identifier is persisted in browser `localStorage` so it is restored between sessions. Location selection currently updates the active badge and shared state only; it does not rebuild the generated forecast payload.
 
 ## Data and Conditions Model
 
@@ -117,8 +147,10 @@ These derived values are included in the unified conditions data and are display
 
 ## Important Current Architecture
 
-- The browser application has one confirmed mounted view: `WeeklyView`.
+- The browser application mounts a shared `AppProvider` and persistent `GlobalHeader`, then selects the active destination view from client-side application state.
 - The browser reads a generated static conditions file rather than calling the external providers directly.
+- The global menu uses a desktop dropdown at widths of 768px and above and a full-width mobile drawer below 768px.
+- Saved locations are seeded by an expandable configuration document, while the active location key is persisted in browser storage.
 - Separate build scripts prepare tides, Sun/Moon values, solunar values, weather, and the final unified conditions dataset.
 - Tide records use a local cache and are refreshed at build time when the required display dates are not covered.
 - Daily anchored information and hourly information are separate parts of the unified conditions structure and are rendered in separate areas of each day section.
@@ -126,18 +158,19 @@ These derived values are included in the unified conditions data and are display
 
 ## Known Limitations / Incomplete Areas
 
-- Fishing scores are not implemented as usable product behavior: the score fields are null and no scoring UI is shown.
-- The current application does not confirm a user-facing way to change location, date range, or time zone.
+- Fishing scores use a V1 heuristic and are not species-calibrated. The generated conditions payload remains raw; calculated scores and display bands are derived in the browser. Dynamic species selection and user-facing weight controls remain outside the current product boundary.
+- The current application does not provide editable location management, map picking, or a user-facing way to change date range or time zone. The menu exposes placeholder destinations for these future capabilities.
+- Selecting a seeded location changes client-side application state but does not yet refresh provider data or recalculate environmental conditions for that location.
 - The current application does not confirm live provider refresh from the browser. Data availability and freshness depend on generated files and the build process.
 - The separate tide-only component is not connected to the current app entry point.
 - Some individual daily or hourly values can be unavailable and are displayed as `-` by the weekly view.
-- No tests are defined in the repository; the package test command currently reports that no test is specified.
+- The scoring engine has focused unit tests. Broader UI and data-pipeline test coverage is not confirmed.
 
 ## Current Product Boundary
 
 Fish On currently is a functioning conditions-comparison MVP: a fixed-location, seven-day weekly display that combines tide, solunar, sun/moon, weather, wind, cloud, rain, temperature, and pressure information into daily and hourly views.
 
-Fish On is not currently confirmed to be a fishing-success predictor, scoring engine, automated recommendation system, trip planner, species-specific guide, multi-location product, or user-configurable planning tool. Those capabilities are outside the confirmed current product boundary because the repository does not show them connected to the current user experience.
+Fish On is not currently confirmed to be a fishing-success predictor, automated recommendation system, trip planner, species-specific guide, multi-location product, or user-configurable planning tool. The current product does include a V1 fishing scoring engine connected to the weekly user experience, but it is not species-calibrated and does not make automated recommendations.
 
 ## Repository Evidence Notes
 
@@ -152,3 +185,4 @@ This snapshot was established by inspecting:
 - Sun/Moon and solunar calculations in `src/scripts/buildSunMoon.js` and `src/builders/solunar.js`.
 - Shared location, time zone, and display-day configuration in `src/config/constants.js`.
 - The unmounted tide-only component in `src/components/ConditionsDisplay.jsx`.
+- The scoring rules, runtime scoring engine, weekly score display, colour legend, and focused tests in `src/config/scoringRules.json`, `src/utils/scoringEngine.js`, `src/views/WeeklyView.jsx`, and `src/utils/scoringEngine.test.js`.

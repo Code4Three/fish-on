@@ -15,7 +15,7 @@
     "build:data": "node --env-file=.env src/scripts/buildAll.js",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "repository": {
     "type": "git",
@@ -39,6 +39,7 @@
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
     "oxlint": "^1.79.0",
+    "vitest": "^3.2.4",
     "vite": "^8.2.2"
   }
 }

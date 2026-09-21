@@ -1,0 +1,113 @@
+.placeholder-view {
+  width: min(100% - 32px, 920px);
+  margin: 0 auto;
+  padding: 76px 0 90px;
+  text-align: left;
+}
+
+.placeholder-kicker {
+  color: #dc7d42;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.placeholder-view h1 {
+  max-width: 650px;
+  margin: 12px 0 14px;
+  color: #173f37;
+}
+
+.placeholder-description {
+  max-width: 560px;
+  color: #5e766e;
+  font-size: 18px;
+}
+
+.placeholder-panel {
+  position: relative;
+  max-width: 620px;
+  min-height: 230px;
+  margin-top: 44px;
+  overflow: hidden;
+  padding: 32px;
+  border: 1px solid #cbded6;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #eef8f2 0%, #fbfdfc 62%);
+  box-shadow: 0 16px 30px rgba(35, 72, 62, 0.09);
+}
+
+.placeholder-orbit {
+  position: absolute;
+  top: -70px;
+  right: -42px;
+  width: 210px;
+  height: 210px;
+  border: 1px solid rgba(220, 125, 66, 0.35);
+  border-radius: 50%;
+  box-shadow: 0 0 0 24px rgba(220, 125, 66, 0.06), 0 0 0 50px rgba(220, 125, 66, 0.035);
+}
+
+.placeholder-panel-label {
+  position: relative;
+  color: #dc7d42;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.placeholder-panel h2 {
+  position: relative;
+  max-width: 420px;
+  margin-top: 12px;
+  color: #173f37;
+}
+
+.placeholder-panel p:not(.placeholder-panel-label) {
+  position: relative;
+  max-width: 500px;
+  color: #617970;
+  font-size: 15px;
+}
+
+.placeholder-panel button {
+  position: relative;
+  margin-top: 24px;
+  padding: 10px 14px;
+  border: 1px solid #1d6a5b;
+  border-radius: 7px;
+  color: #f8fffb;
+  background: #1d6a5b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.placeholder-panel button span {
+  margin-left: 8px;
+  color: #ffd0a9;
+  font-size: 17px;
+}
+
+@media (max-width: 767px) {
+  .placeholder-view {
+    width: min(100% - 24px, 920px);
+    padding: 48px 0 64px;
+  }
+
+  .placeholder-view h1 {
+    font-size: 38px;
+  }
+
+  .placeholder-description {
+    font-size: 16px;
+  }
+
+  .placeholder-panel {
+    margin-top: 32px;
+    padding: 24px;
+  }
+}
