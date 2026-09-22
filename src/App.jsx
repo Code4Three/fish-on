@@ -32,7 +32,7 @@ function ActiveView() {
 function App() {
 	return (
 		<AppProvider>
-			<GlobalHeader />
+			{/* <GlobalHeader /> */}
 			<ActiveView />
 		</AppProvider>
 	);
