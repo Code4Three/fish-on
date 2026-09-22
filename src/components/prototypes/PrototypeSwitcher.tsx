@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { generateClaudeDayData } from "../../data/mockMarineData";
 import { useLayoutPrototype } from "../../hooks/useLayoutPrototype";
+import MainDashboard from "../MainDashboard";
 import { DEFAULT_HOUR } from "./shared";
 import Option0Current from "./Option0Current";
 import Option1BottomDock from "./Option1BottomDock";
@@ -24,8 +25,9 @@ export default function PrototypeSwitcher() {
     onSelectPrototype: selectPrototype
   };
 
+  if (prototype === 0) return <Option0Current {...dashboardProps} />;
   if (prototype === 1) return <Option1BottomDock {...dashboardProps} />;
   if (prototype === 2) return <Option2StickyHUD {...dashboardProps} />;
   if (prototype === 3) return <Option3ZeroScrollHUD {...dashboardProps} />;
-  return <Option0Current {...dashboardProps} />;
+  return <MainDashboard {...dashboardProps} />;
 }

@@ -15,6 +15,17 @@ import {
 } from "lucide-react";
 import type { ClaudeDayData } from "../../data/mockMarineData";
 import type { AnchoredSettingsState } from "../../hooks/useAnchoredSettings";
+import type { PrototypeId } from "../../hooks/useLayoutPrototype";
+
+export interface DashboardStateProps {
+  day: ClaudeDayData;
+  hour: number;
+  offset: number;
+  onHourChange: (hour: number) => void;
+  onOffsetChange: (offset: number) => void;
+  prototype: PrototypeId;
+  onSelectPrototype: (id: PrototypeId) => void;
+}
 
 // Fixture "today" used by the mock data generator - not the real device date.
 export const BASE_DATE = new Date(2026, 8, 21);

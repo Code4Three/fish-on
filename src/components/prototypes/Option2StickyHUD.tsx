@@ -3,6 +3,7 @@ import { Fish, Pin, Settings, Waves, Wind } from "lucide-react";
 import { useAnchoredSettings } from "../../hooks/useAnchoredSettings";
 import CustomizationBottomSheet from "../settings/CustomizationBottomSheet";
 import {
+  DashboardStateProps,
   DayDrawer,
   HourPills,
   MetricCard,
@@ -14,7 +15,6 @@ import {
   getMetricDisplay,
   metrics
 } from "./shared";
-import type { DashboardStateProps } from "./Option0Current";
 
 type Tab = "tide" | "wind";
 

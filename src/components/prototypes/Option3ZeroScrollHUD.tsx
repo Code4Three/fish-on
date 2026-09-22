@@ -4,6 +4,7 @@ import type { ClaudeDayData } from "../../data/mockMarineData";
 import { useAnchoredSettings } from "../../hooks/useAnchoredSettings";
 import CustomizationBottomSheet from "../settings/CustomizationBottomSheet";
 import {
+  DashboardStateProps,
   DayDrawer,
   Sparkline,
   formatDate,
@@ -14,7 +15,6 @@ import {
   scoreBandTone,
   type MetricKey
 } from "./shared";
-import type { DashboardStateProps } from "./Option0Current";
 
 function CompactStepButton({
   label,

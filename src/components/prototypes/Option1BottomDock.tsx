@@ -4,6 +4,7 @@ import type { ClaudeDayData } from "../../data/mockMarineData";
 import { useAnchoredSettings } from "../../hooks/useAnchoredSettings";
 import CustomizationBottomSheet from "../settings/CustomizationBottomSheet";
 import {
+    DashboardStateProps,
     DayDrawer,
     HourPills,
     MetricCard,
@@ -15,7 +16,6 @@ import {
     metrics,
     ratingTier
 } from "./shared";
-import type { DashboardStateProps } from "./Option0Current";
 
 // Prototype 1: thumb-first layout - minimal header, scrollable feed, fixed bottom dock for all controls.
 export default function Option1BottomDock({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {

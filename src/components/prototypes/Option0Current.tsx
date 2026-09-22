@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Calendar, Clock, Fish, Settings } from "lucide-react";
 import type { ClaudeDayData } from "../../data/mockMarineData";
 import { useAnchoredSettings } from "../../hooks/useAnchoredSettings";
-import type { PrototypeId } from "../../hooks/useLayoutPrototype";
 import CustomizationBottomSheet from "../settings/CustomizationBottomSheet";
 import {
+  DashboardStateProps,
   DayDrawer,
   MetricCard,
   ScoreCard,
@@ -16,16 +16,6 @@ import {
   metrics,
   solunarLabel
 } from "./shared";
-
-export interface DashboardStateProps {
-  day: ClaudeDayData;
-  hour: number;
-  offset: number;
-  onHourChange: (hour: number) => void;
-  onOffsetChange: (offset: number) => void;
-  prototype: PrototypeId;
-  onSelectPrototype: (id: PrototypeId) => void;
-}
 
 function TimeBar({
   hour,
