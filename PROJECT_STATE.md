@@ -176,13 +176,11 @@ Fish On is not currently confirmed to be a fishing-success predictor, automated 
 
 This snapshot was established by inspecting:
 
-- The mounted application entry point and weekly view in `src/App.jsx` and `src/views/WeeklyView.jsx`.
-- The weekly layout rules in `src/views/WeeklyView.css`.
+- The mounted application entry point in `src/App.jsx` and the active prototype dashboard in `src/components/prototypes/`.
 - The unified data builder in `src/builders/unifiedConditions.js` and the generated payload in `public/conditions.json`.
 - The build sequence in `src/scripts/buildAll.js` and the individual data-build scripts.
 - Tide API, cache, and normalization code in `src/api/tides.js`, `src/cache/tideCache.js`, `src/builders/tides.js`, and `src/utils/tides.js`.
 - Weather acquisition and normalization in `src/builders/weather.js`.
 - Sun/Moon and solunar calculations in `src/scripts/buildSunMoon.js` and `src/builders/solunar.js`.
 - Shared location, time zone, and display-day configuration in `src/config/constants.js`.
-- The unmounted tide-only component in `src/components/ConditionsDisplay.jsx`.
-- The scoring rules, runtime scoring engine, weekly score display, colour legend, and focused tests in `src/config/scoringRules.json`, `src/utils/scoringEngine.js`, `src/views/WeeklyView.jsx`, and `src/utils/scoringEngine.test.js`.
+- The scoring rules, runtime scoring engine, dashboard score display, and focused tests in `src/config/scoringRules.json`, `src/utils/scoringEngine.js`, `src/components/prototypes/shared.tsx`, and `src/utils/scoringEngine.test.js`.

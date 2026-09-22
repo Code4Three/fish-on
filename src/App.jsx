@@ -1,4 +1,4 @@
-import GlobalHeader from "./components/GlobalHeader";
+// import GlobalHeader from "./components/GlobalHeader";
 import PrototypeSwitcher from "./components/prototypes/PrototypeSwitcher";
 import { AppProvider } from "./state/AppContext";
 import { useApp } from "./state/useApp";

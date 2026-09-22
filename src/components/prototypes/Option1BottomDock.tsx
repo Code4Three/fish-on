@@ -19,7 +19,7 @@ import {
 
 // Prototype 1: thumb-first layout - minimal header, scrollable feed, fixed bottom dock for all controls.
 export default function Option1BottomDock({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
-    const { settings, cardSettings, toggleMetric, toggleCard, resetSettings } = useAnchoredSettings();
+    const { settings, cardSettings, toggleCard, resetSettings } = useAnchoredSettings();
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [dayViewOpen, setDayViewOpen] = useState(false);
 

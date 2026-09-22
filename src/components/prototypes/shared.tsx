@@ -36,7 +36,6 @@ export type MetricKey = keyof AnchoredSettingsState;
 
 export const metrics: Array<{ id: MetricKey; label: string; icon: typeof Wind; tint: string; ring: string }> = [
   { id: "wind", label: "Wind", icon: Wind, tint: "text-sky-300", ring: "bg-sky-400/10" },
-  { id: "pressure", label: "Barometric pressure", icon: Gauge, tint: "text-amber-300", ring: "bg-amber-400/10" },
   { id: "waterTemp", label: "Water temp", icon: Thermometer, tint: "text-orange-300", ring: "bg-orange-400/10" },
   { id: "swell", label: "Swell", icon: Waves, tint: "text-cyan-300", ring: "bg-cyan-400/10" },
   { id: "moonPhase", label: "Moon phase", icon: Moon, tint: "text-indigo-300", ring: "bg-indigo-400/10" },
@@ -122,7 +121,6 @@ export function getMetricDisplay(id: MetricKey, day: ClaudeDayData, hour: number
   const uv = day.secondary.uv;
   const data: Record<MetricKey, [string, string, string]> = {
     wind: [`${wind.speed}`, "kts", `${wind.dir} · Gusts ${wind.gust} kts`],
-    pressure: [`${safe(day.secondary.pressure.value)}`, "hPa", `${safe(day.secondary.pressure.trend)}`],
     waterTemp: [`${safe(day.secondary.waterTemp)}`, "°C", "Surface reading"],
     swell: swell ? [swell.height, "m", `@ ${swell.period}s ${swell.dir}`] : ["--", "m", "--"],
     moonPhase: [`${safe(day.secondary.moon.illum)}`, "%", `${safe(day.secondary.moon.phaseName)}`],
@@ -438,8 +436,7 @@ export function SolunarDetailsCard({ day, hour }: { day: ClaudeDayData; hour: nu
 }
 
 // Weather: air temp range + feels, wind + gust, rain, cloud, UV.
-export function WeatherDetailsCard({ day, hour }: { day: ClaudeDayData; hour: number }) {
-  const current = day.hours[hour];
+export function WeatherDetailsCard({ day, hour: _hour }: { day: ClaudeDayData; hour: number }) {
   const airTempRange = day.ranges?.airTemp;
   const windRange = day.ranges?.wind;
 

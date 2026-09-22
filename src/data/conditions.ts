@@ -167,7 +167,7 @@ function toScoreBand(bandName: string | undefined): ClaudeHourlyData["scoreBand"
   return "Slow";
 }
 
-// Mirrors the scoring approach used by WeeklyView: Major/Minor peaks rate higher than a normal hour.
+// Major and minor peaks rate higher than a normal hour.
 function getSolunarRating(condition: string | undefined): number {
   if (!condition) return 0;
   return [

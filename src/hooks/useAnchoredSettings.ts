@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 
 export interface AnchoredSettingsState {
   wind: boolean;
-  pressure: boolean;
   waterTemp: boolean;
   swell: boolean;
   moonPhase: boolean;
@@ -13,7 +12,6 @@ export interface AnchoredSettingsState {
 
 export interface DashboardCardSettings {
   temperature: boolean;
-  pressure: boolean;
   weather: boolean;
   moon: boolean;
   sun: boolean;
@@ -26,7 +24,6 @@ const STORAGE_KEY = "fo_anchored_settings";
 
 const DEFAULT_SETTINGS: AnchoredSettingsState = {
   wind: true,
-  pressure: true,
   waterTemp: true,
   swell: true,
   moonPhase: true,
@@ -37,7 +34,6 @@ const DEFAULT_SETTINGS: AnchoredSettingsState = {
 
 const DEFAULT_CARD_SETTINGS: DashboardCardSettings = {
   temperature: true,
-  pressure: true,
   weather: true,
   moon: true,
   sun: true,
@@ -81,7 +77,6 @@ function getStoredCardSettings(): DashboardCardSettings {
     const parsed = stored ? JSON.parse(stored) as Partial<AnchoredSettingsState & DashboardCardSettings> : {};
     return {
       temperature: typeof parsed.temperature === "boolean" ? parsed.temperature : Boolean(parsed.waterTemp || parsed.airTemp || stored === null),
-      pressure: typeof parsed.pressure === "boolean" ? parsed.pressure : DEFAULT_CARD_SETTINGS.pressure,
       weather: typeof parsed.weather === "boolean" ? parsed.weather : Boolean(parsed.wind || parsed.rain || parsed.uv || stored === null),
       moon: typeof parsed.moon === "boolean" ? parsed.moon : Boolean(parsed.moonPhase || stored === null),
       sun: typeof parsed.sun === "boolean" ? parsed.sun : DEFAULT_CARD_SETTINGS.sun,

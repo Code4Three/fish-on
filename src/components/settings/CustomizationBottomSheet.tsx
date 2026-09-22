@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Check, RotateCcw, X } from "lucide-react";
 import type { DashboardCardSettings } from "../../hooks/useAnchoredSettings";
+import type { DockPosition } from "../../hooks/useDashboardSettings";
 import { PROTOTYPE_OPTIONS } from "../../hooks/useLayoutPrototype";
 import type { PrototypeId } from "../../hooks/useLayoutPrototype";
 
@@ -12,6 +13,8 @@ export interface CustomizationBottomSheetProps {
   onReset: () => void;
   prototype: PrototypeId;
   onSelectPrototype: (id: PrototypeId) => void;
+  dockPosition?: DockPosition;
+  onSelectDockPosition?: (position: DockPosition) => void;
 }
 
 const METRIC_OPTIONS: Array<{
@@ -20,7 +23,6 @@ const METRIC_OPTIONS: Array<{
   description: string;
 }> = [
   { key: "temperature", label: "Temperature", description: "Water and air temperature" },
-  { key: "pressure", label: "Barometric pressure", description: "Current pressure, range, and trend" },
   { key: "weather", label: "Weather", description: "Wind, rain, cloud, and UV" },
   { key: "moon", label: "Moon", description: "Phase, illumination, moonrise, and moonset" },
   { key: "sun", label: "Sun", description: "Sunrise, sunset, and light windows" },
@@ -34,7 +36,9 @@ export default function CustomizationBottomSheet({
   onToggle,
   onReset,
   prototype,
-  onSelectPrototype
+  onSelectPrototype,
+  dockPosition,
+  onSelectDockPosition
 }: CustomizationBottomSheetProps) {
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -143,6 +147,30 @@ export default function CustomizationBottomSheet({
             ))}
           </div>
         </div>
+
+        {dockPosition && onSelectDockPosition && (
+          <div className="border-t border-slate-800 px-4 py-3">
+            <p className="mb-2 text-sm font-semibold text-white">Control dock</p>
+            <div className="grid grid-cols-2 gap-2">
+              {(["bottom", "top"] as const).map(position => (
+                <button
+                  key={position}
+                  type="button"
+                  aria-pressed={dockPosition === position}
+                  onClick={() => onSelectDockPosition(position)}
+                  tabIndex={isOpen ? 0 : -1}
+                  className={`min-h-12 rounded-lg border text-sm font-semibold capitalize transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${
+                    dockPosition === position
+                      ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
+                      : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
+                  }`}
+                >
+                  {position}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="border-t border-slate-800 p-4">
           <button

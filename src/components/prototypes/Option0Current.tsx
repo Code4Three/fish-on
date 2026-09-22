@@ -74,7 +74,7 @@ function TimeBar({
 
 // Prototype 0: the original stacked layout, unchanged apart from sharing state/cards with the other prototypes.
 export default function Option0Current({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
-  const { settings, cardSettings, toggleMetric, toggleCard, resetSettings } = useAnchoredSettings();
+  const { settings, cardSettings, toggleCard, resetSettings } = useAnchoredSettings();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
 

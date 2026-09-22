@@ -84,7 +84,7 @@ function DashboardDock({
 
 // Production dashboard: bottom-dock thumb-first layout (formerly Prototype 1). Settings live in the header only.
 export default function MainDashboard({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
-  const { settings, cardSettings, toggleMetric, toggleCard, resetSettings } = useAnchoredSettings();
+  const { settings, cardSettings, toggleCard, resetSettings } = useAnchoredSettings();
   const { dockPosition, selectDockPosition } = useDashboardSettings();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
