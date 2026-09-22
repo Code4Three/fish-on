@@ -1,6 +1,3 @@
-import scoringRules from "../config/scoringRules.json";
-import { calculateConditionScore } from "../utils/scoringEngine.js";
-
 export interface LocationInfo {
   name: string;
   latitude: number;
@@ -640,8 +637,6 @@ export interface ClaudeHourlyData {
     dir: string;
   };
   solunar: "none" | "major" | "minor";
-  score: number;
-  scoreBand: string;
 }
 
 export interface ClaudeDayData {
@@ -695,34 +690,6 @@ function claudeOverlap(startA: number, endA: number, startB: number, endB: numbe
   return Math.max(startA, startB) < Math.min(endA, endB);
 }
 
-function claudeSolunarRating(solunar: ClaudeHourlyData["solunar"]) {
-  if (solunar === "major") return 90;
-  if (solunar === "minor") return 60;
-  return 0;
-}
-
-function claudeTideRating(hour: number, tideEvents: ClaudeDayData["tideEvents"]) {
-  const peakWindowHours = scoringRules.tide?.peakWindowHours ?? 2;
-  const decayPerHour = scoringRules.tide?.decayPerHour ?? 25;
-  const runInWindows: Array<{ start: number; end: number }> = [];
-
-  for (let index = 1; index < tideEvents.length; index += 1) {
-    const previous = tideEvents[index - 1];
-    const current = tideEvents[index];
-    if (previous.type !== "Low" || current.type !== "High") continue;
-    runInWindows.push({ start: current.hour - peakWindowHours, end: current.hour });
-  }
-
-  if (!runInWindows.length) return 0;
-
-  const distanceHours = Math.min(...runInWindows.map(window => {
-    if (hour >= window.start && hour <= window.end) return 0;
-    return hour < window.start ? window.start - hour : hour - window.end;
-  }));
-
-  return Math.max(0, 100 - distanceHours * decayPerHour);
-}
-
 export function generateClaudeDayData(offset: number): ClaudeDayData {
   const random = claudeRandom(1000 + offset * 7919);
   const phase = ((offset * 0.85) % (2 * Math.PI)) + random() * 0.6;
@@ -740,9 +707,7 @@ export function generateClaudeDayData(offset: number): ClaudeDayData {
         gust: Math.round(speed + 3 + random() * 4),
         dir: CLAUDE_COMPASS[(windDirectionBase + Math.floor(hour / 4)) % 16]
       },
-      solunar: "none",
-      score: 0,
-      scoreBand: "Neutral"
+      solunar: "none"
     });
   }
 
@@ -775,14 +740,6 @@ export function generateClaudeDayData(offset: number): ClaudeDayData {
     const end = hour.hour + 1;
     if (claudeOverlap(start, end, majorWindow.start, majorWindow.end)) hour.solunar = "major";
     else if (minorWindows.some(window => claudeOverlap(start, end, window.start, window.end))) hour.solunar = "minor";
-  });
-
-  hours.forEach(hour => {
-    const tideRating = claudeTideRating(hour.hour, tideEvents);
-    const solunarRating = claudeSolunarRating(hour.solunar);
-    const { score, band } = calculateConditionScore(tideRating, solunarRating, scoringRules);
-    hour.score = Math.round(score);
-    hour.scoreBand = band?.name ?? "Neutral";
   });
 
   const moonPhaseIndex = ((offset % 8) + 8) % 8;

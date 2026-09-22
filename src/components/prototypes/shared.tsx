@@ -318,32 +318,51 @@ export function DayDrawer({
   day,
   selectedHour,
   onClose,
-  onPickHour
+  onPickHour,
+  dockPosition,
+  isDragging = false,
+  expansionProgress = 0,
+  onDragStart,
+  onDragMove,
+  onDragEnd
 }: {
   open: boolean;
   day: ClaudeDayData;
   selectedHour: number;
   onClose: () => void;
   onPickHour: (hour: number) => void;
+  dockPosition?: "bottom" | "top";
+  isDragging?: boolean;
+  expansionProgress?: number;
+  onDragStart?: (startY: number) => void;
+  onDragMove?: (currentY: number) => void;
+  onDragEnd?: () => void;
 }) {
+  const isTopDock = dockPosition === "top";
+  const drawerVisible = open || isDragging || expansionProgress > 0;
+  const viewportHeight = typeof window === "undefined" ? 812 : window.innerHeight;
+  const drawerTravel = Math.max(0, viewportHeight - 72 - 132);
+
   return (
     <>
       <button
         type="button"
         aria-label="Close full day view"
         onClick={onClose}
-        className={`fixed inset-0 z-30 bg-black/60 ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`fixed inset-0 z-30 bg-black/60 ${drawerVisible ? "opacity-100" : "pointer-events-none opacity-0"}`}
       />
       <section
         role="dialog"
         aria-modal="true"
         aria-label="Full day forecast"
-        className={`fixed bottom-0 left-0 right-0 z-40 mx-auto flex h-[82vh] max-w-md flex-col rounded-t-3xl border-t border-hull-700 bg-hull-900 transition-transform ${open ? "translate-y-0" : "translate-y-full"}`}
+        className={`fixed left-0 right-0 z-50 mx-auto flex max-w-md flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"} ${
+          isTopDock
+            ? "top-[204px] rounded-b-3xl border-b"
+            : "bottom-0 rounded-t-3xl border-t"
+        }`}
+        style={{ height: `${expansionProgress * drawerTravel}px` }}
       >
-        <div className="flex justify-center pt-3">
-          <div className="h-1.5 w-10 rounded-full bg-hull-600" />
-        </div>
-        <div className="flex items-center justify-between px-5 pb-2 pt-3">
+        <div className={`flex shrink-0 items-center justify-between px-5 pb-2 pt-3 ${isTopDock ? "order-first" : ""}`}>
           <div>
             <h2 className="font-display text-lg font-semibold text-white">Full day forecast</h2>
             <p className="font-body text-[12.5px] text-slate-500">Tap a row to jump there</p>
@@ -363,7 +382,7 @@ export function DayDrawer({
           <span>Solunar</span>
           <span>Wind</span>
         </div>
-        <div className="flex-1 overflow-y-auto px-5 pb-4">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-4">
           {day.hours.map(item => (
             <button
               key={item.hour}
@@ -381,6 +400,21 @@ export function DayDrawer({
             </button>
           ))}
         </div>
+        {isTopDock && onDragStart && onDragMove && onDragEnd && (
+          <div
+            className="flex h-12 shrink-0 cursor-grab touch-none items-center justify-center border-t border-hull-700/60 active:cursor-grabbing"
+            onPointerDown={event => {
+              event.currentTarget.setPointerCapture(event.pointerId);
+              onDragStart(event.clientY);
+            }}
+            onPointerMove={event => onDragMove(event.clientY)}
+            onPointerUp={onDragEnd}
+            onPointerCancel={onDragEnd}
+            aria-label="Slide the full day forecast back up"
+          >
+            <div className="h-1 w-10 rounded-full bg-hull-600/90" />
+          </div>
+        )}
       </section>
     </>
   );

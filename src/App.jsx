@@ -1,4 +1,5 @@
-import PrototypeSwitcher from "./components/prototypes/PrototypeSwitcher";
+import GlobalHeader from "./components/GlobalHeader";
+import FishOnDashboard from "./components/FishOnDashboard";
 import { AppProvider } from "./state/AppContext";
 import { useApp } from "./state/useApp";
 import { VIEWS } from "./state/viewConstants";
@@ -24,13 +25,14 @@ function ActiveView() {
 			return <ManageLocationsView />;
 		case VIEWS.WEEKLY:
 		default:
-			return <PrototypeSwitcher />;
+			return <FishOnDashboard />;
 	}
 }
 
 function App() {
 	return (
 		<AppProvider>
+			<GlobalHeader />
 			<ActiveView />
 		</AppProvider>
 	);

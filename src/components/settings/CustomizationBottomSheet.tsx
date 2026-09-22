@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Check, RotateCcw, X } from "lucide-react";
 import type { AnchoredSettingsState } from "../../hooks/useAnchoredSettings";
-import { PROTOTYPE_OPTIONS, type PrototypeId } from "../../hooks/useLayoutPrototype";
 
 export interface CustomizationBottomSheetProps {
   isOpen: boolean;
@@ -9,9 +8,6 @@ export interface CustomizationBottomSheetProps {
   settings: AnchoredSettingsState;
   onToggle: (metric: keyof AnchoredSettingsState) => void;
   onReset: () => void;
-  prototype: PrototypeId;
-  onSelectPrototype: (id: PrototypeId) => void;
-  showMetricsSection?: boolean;
 }
 
 const METRIC_OPTIONS: Array<{
@@ -34,10 +30,7 @@ export default function CustomizationBottomSheet({
   onClose,
   settings,
   onToggle,
-  onReset,
-  prototype,
-  onSelectPrototype,
-  showMetricsSection = true
+  onReset
 }: CustomizationBottomSheetProps) {
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -75,7 +68,7 @@ export default function CustomizationBottomSheet({
       >
         <div className="flex min-h-16 items-center justify-between border-b border-slate-800 px-4">
           <h2 id="display-metrics-title" className="text-lg font-bold text-white">
-            Dashboard Settings
+            Display Metrics
           </h2>
           <button
             type="button"
@@ -89,35 +82,7 @@ export default function CustomizationBottomSheet({
         </div>
 
         <div className="max-h-[65vh] overflow-y-auto px-4 py-2">
-          <div className="border-b border-slate-800/80 pb-3">
-            <p className="px-0 pb-2 pt-2 text-xs font-bold uppercase tracking-wide text-slate-500">Dashboard Layout</p>
-            <div className="space-y-2">
-              {PROTOTYPE_OPTIONS.map(option => {
-                const active = option.id === prototype;
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={active}
-                    tabIndex={isOpen ? 0 : -1}
-                    onClick={() => onSelectPrototype(option.id)}
-                    className={`flex min-h-12 w-full items-center justify-between gap-3 rounded-xl border px-4 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${
-                      active ? "border-emerald-300 bg-emerald-400/10" : "border-slate-700 bg-slate-900/60 hover:border-slate-600"
-                    }`}
-                  >
-                    <span className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-slate-100">{option.label}</p>
-                      <p className="truncate text-xs text-slate-400">{option.description}</p>
-                    </span>
-                    {active && <Check size={20} className="shrink-0 text-emerald-300" aria-hidden="true" />}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {showMetricsSection && METRIC_OPTIONS.map(({ key, label, description }) => {
+          {METRIC_OPTIONS.map(({ key, label, description }) => {
             const enabled = settings[key];
 
             return (
