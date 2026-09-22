@@ -637,6 +637,16 @@ export interface ClaudeHourlyData {
     dir: string;
   };
   solunar: "none" | "major" | "minor";
+  score: number;
+  scoreBand: "Peak" | "Strong" | "Favorable" | "Slow";
+  tideDirection: "Flood" | "Ebb" | "Slack";
+  pressure: number;
+  airTemp: number;
+  cloudCover: number;
+  rainChance: number;
+  rainVolume: number;
+  uvIndex: number | null;
+  swell: { height: number; period: number; dir: string };
 }
 
 export interface ClaudeDayData {
@@ -647,11 +657,24 @@ export interface ClaudeDayData {
   majorWindow: { start: number; end: number };
   minorWindows: Array<{ start: number; end: number }>;
   solunarRating: number;
+  dayScore: number;
+  slackWindows: Array<{ hour: number; type: "High" | "Low" }>;
+  sun: { sunrise: number; sunset: number; firstLight: number; lastLight: number };
+  ranges: {
+    waterTemp: { min: number; max: number };
+    airTemp: { min: number; max: number };
+    pressure: { min: number; max: number };
+    wind: { min: number; max: number; maxGust: number };
+    swell: { min: number; max: number; period: number; dir: string };
+    rainVolume: { min: number; max: number };
+    cloudBaseline: number;
+    uvPeak: number | null;
+  };
   secondary: {
     pressure: { value: number; trend: "Rising" | "Falling" | "Steady" };
     waterTemp: string;
     swell: { height: string; period: number; dir: string };
-    moon: { phaseName: string; illum: number };
+    moon: { phaseName: string; illum: number; moonrise: number; moonset: number };
     rain: { chance: number; mm: number };
     uv: number;
     airTemp: { temp: number; feels: number };
@@ -695,10 +718,25 @@ export function generateClaudeDayData(offset: number): ClaudeDayData {
   const phase = ((offset * 0.85) % (2 * Math.PI)) + random() * 0.6;
   const windBase = 8 + random() * 9;
   const windDirectionBase = Math.floor(random() * 16);
+  const pressureBase = 1000 + random() * 25;
+  const cloudBaseline = Math.round(15 + random() * 60);
+  const swellBase = 0.5 + random() * 1.5;
+  const swellPeriodBase = 6 + random() * 6;
+  const swellDirBase = CLAUDE_COMPASS[Math.floor(random() * 16)];
+  const sunrise = 5.3 + Math.sin((offset / 365) * 2 * Math.PI) * 0.6 + random() * 0.2;
+  const sunset = 17.7 - Math.sin((offset / 365) * 2 * Math.PI) * 0.6 + random() * 0.2;
+
   const hours: ClaudeHourlyData[] = [];
 
   for (let hour = 0; hour < 24; hour += 1) {
     const speed = Math.max(3, windBase + 4.5 * Math.sin(hour / 24 * Math.PI * 2 + 1) + (random() - 0.5) * 3);
+    const slope = claudeTideSlope(hour, phase);
+    const tideDirection: ClaudeHourlyData["tideDirection"] = Math.abs(slope) < 0.05 ? "Slack" : slope > 0 ? "Flood" : "Ebb";
+    const cloudCover = Math.max(0, Math.min(100, Math.round(cloudBaseline + (random() - 0.5) * 40)));
+    const rainChance = Math.max(0, Math.min(100, Math.round(cloudCover * 0.6 + (random() - 0.5) * 20)));
+    const isDaylight = hour >= sunrise && hour <= sunset;
+    const uvCurve = isDaylight ? Math.sin(((hour - sunrise) / (sunset - sunrise)) * Math.PI) : 0;
+
     hours.push({
       hour,
       tideHeight: claudeTideHeight(hour, phase),
@@ -707,7 +745,21 @@ export function generateClaudeDayData(offset: number): ClaudeDayData {
         gust: Math.round(speed + 3 + random() * 4),
         dir: CLAUDE_COMPASS[(windDirectionBase + Math.floor(hour / 4)) % 16]
       },
-      solunar: "none"
+      solunar: "none",
+      score: 0,
+      scoreBand: "Slow",
+      tideDirection,
+      pressure: Math.round(pressureBase + 3 * Math.sin(hour / 24 * Math.PI * 2) + (random() - 0.5) * 2),
+      airTemp: Math.round(18 + 6 * Math.sin(((hour - 6) / 24) * Math.PI * 2) + random() * 2),
+      cloudCover,
+      rainChance,
+      rainVolume: rainChance > 45 ? Number((random() * 3.5).toFixed(1)) : 0,
+      uvIndex: isDaylight ? Math.max(0, Math.round(uvCurve * 11)) : null,
+      swell: {
+        height: Number((swellBase + (random() - 0.5) * 0.3).toFixed(1)),
+        period: Math.round(swellPeriodBase + (random() - 0.5) * 2),
+        dir: swellDirBase
+      }
     });
   }
 
@@ -726,6 +778,8 @@ export function generateClaudeDayData(offset: number): ClaudeDayData {
     previousSlope = slope;
   }
 
+  const slackWindows = tideEvents.map(event => ({ hour: event.hour, type: event.type }));
+
   const transit = claudeNormalizeHour(offset * 3.7 + random() * 5);
   const moonrise = claudeNormalizeHour(transit - 6.2);
   const moonset = claudeNormalizeHour(transit + 6.2);
@@ -740,12 +794,27 @@ export function generateClaudeDayData(offset: number): ClaudeDayData {
     const end = hour.hour + 1;
     if (claudeOverlap(start, end, majorWindow.start, majorWindow.end)) hour.solunar = "major";
     else if (minorWindows.some(window => claudeOverlap(start, end, window.start, window.end))) hour.solunar = "minor";
+
+    const tideSlackBonus = Math.abs(claudeTideSlope(hour.hour, phase)) < 0.08 ? 12 : 0;
+    const solunarBonus = hour.solunar === "major" ? 35 : hour.solunar === "minor" ? 20 : 0;
+    const score = Math.max(0, Math.min(100, Math.round(38 + solunarBonus + tideSlackBonus + (random() - 0.5) * 12)));
+    hour.score = score;
+    hour.scoreBand = score >= 80 ? "Peak" : score >= 65 ? "Strong" : score >= 50 ? "Favorable" : "Slow";
   });
 
   const moonPhaseIndex = ((offset % 8) + 8) % 8;
   const moonIllumination = Math.round((1 - Math.cos(moonPhaseIndex / 8 * 2 * Math.PI)) / 2 * 100);
   const pressureTrend = ["Rising", "Falling", "Steady"][Math.floor(random() * 3)] as ClaudeDayData["secondary"]["pressure"]["trend"];
   const rainChance = Math.round(random() * 55);
+
+  const waterTempValues = hours.map(() => 20 + random() * 6);
+  const airTempValues = hours.map(item => item.airTemp);
+  const pressureValues = hours.map(item => item.pressure);
+  const windValues = hours.map(item => item.wind.speed);
+  const gustValues = hours.map(item => item.wind.gust);
+  const swellValues = hours.map(item => item.swell.height);
+  const rainVolumeValues = hours.map(item => item.rainVolume);
+  const uvValues = hours.map(item => item.uvIndex).filter((value): value is number => value !== null);
 
   return {
     offset,
@@ -755,11 +824,29 @@ export function generateClaudeDayData(offset: number): ClaudeDayData {
     majorWindow,
     minorWindows,
     solunarRating: Math.max(35, Math.min(99, Math.round(52 + moonIllumination / 100 * 28 + random() * 18))),
+    dayScore: Math.max(...hours.map(item => item.score)),
+    slackWindows,
+    sun: {
+      sunrise,
+      sunset,
+      firstLight: sunrise - 0.5,
+      lastLight: sunset + 0.5
+    },
+    ranges: {
+      waterTemp: { min: Number(Math.min(...waterTempValues).toFixed(1)), max: Number(Math.max(...waterTempValues).toFixed(1)) },
+      airTemp: { min: Math.min(...airTempValues), max: Math.max(...airTempValues) },
+      pressure: { min: Math.min(...pressureValues), max: Math.max(...pressureValues) },
+      wind: { min: Math.min(...windValues), max: Math.max(...windValues), maxGust: Math.max(...gustValues) },
+      swell: { min: Number(Math.min(...swellValues).toFixed(1)), max: Number(Math.max(...swellValues).toFixed(1)), period: Math.round(swellPeriodBase), dir: swellDirBase },
+      rainVolume: { min: Number(Math.min(...rainVolumeValues).toFixed(1)), max: Number(Math.max(...rainVolumeValues).toFixed(1)) },
+      cloudBaseline,
+      uvPeak: uvValues.length ? Math.max(...uvValues) : null
+    },
     secondary: {
       pressure: { value: Math.round(1000 + random() * 25), trend: pressureTrend },
       waterTemp: (20 + random() * 6).toFixed(1),
       swell: { height: (0.5 + random() * 1.5).toFixed(1), period: Math.round(6 + random() * 6), dir: CLAUDE_COMPASS[Math.floor(random() * 16)] },
-      moon: { phaseName: CLAUDE_MOON_PHASES[moonPhaseIndex], illum: moonIllumination },
+      moon: { phaseName: CLAUDE_MOON_PHASES[moonPhaseIndex], illum: moonIllumination, moonrise, moonset },
       rain: { chance: rainChance, mm: rainChance > 40 ? Number((random() * 4).toFixed(1)) : 0 },
       uv: Math.max(1, Math.min(11, Math.round(1 + random() * 10))),
       airTemp: { temp: Math.round(18 + random() * 9), feels: Math.round(18 + random() * 9) + Math.round(random() * 2) }

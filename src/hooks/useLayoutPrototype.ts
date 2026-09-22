@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-export type PrototypeId = 0 | 1 | 2 | 3 | 4;
+export type PrototypeId = 0 | 1 | 4;
 
 export interface PrototypeOption {
   id: PrototypeId;
@@ -11,9 +11,7 @@ export interface PrototypeOption {
 export const PROTOTYPE_OPTIONS: PrototypeOption[] = [
   { id: 4, label: "Main Dashboard", description: "Production default (bottom dock layout)" },
   { id: 0, label: "Prototype 0 - Original", description: "Original stacked layout" },
-  { id: 1, label: "Prototype 1 - Bottom Dock", description: "Thumb-first fixed controls" },
-  { id: 2, label: "Prototype 2 - Sticky HUD", description: "Pinned header + tabs" },
-  { id: 3, label: "Prototype 3 - Zero-Scroll HUD", description: "Single-view dense grid" }
+  { id: 1, label: "Prototype 1 - Bottom Dock", description: "Thumb-first fixed controls" }
 ];
 
 const STORAGE_KEY = "fo_layout_prototype";

@@ -9,7 +9,7 @@ import {
   Thermometer,
   Wind
 } from "lucide-react";
-import type { SecondaryMetrics } from "../../data/mockMarineData";
+import type { SecondaryMetrics } from "../../data/conditions";
 import type { AnchoredSettingsState } from "../../hooks/useAnchoredSettings";
 
 export interface SecondaryMetricGridProps {

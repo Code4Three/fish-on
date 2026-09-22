@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Calendar, Clock, Fish, Settings } from "lucide-react";
-import type { ClaudeDayData } from "../../data/mockMarineData";
+import type { ClaudeDayData } from "../../data/conditions";
 import { useAnchoredSettings } from "../../hooks/useAnchoredSettings";
 import CustomizationBottomSheet from "../settings/CustomizationBottomSheet";
 import {
   DashboardStateProps,
   DayDrawer,
   MetricCard,
+  PressureCard,
   ScoreCard,
   SolunarCard,
   StepButton,
@@ -73,7 +74,7 @@ function TimeBar({
 
 // Prototype 0: the original stacked layout, unchanged apart from sharing state/cards with the other prototypes.
 export default function Option0Current({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
-  const { settings, toggleMetric, resetSettings } = useAnchoredSettings();
+  const { settings, cardSettings, toggleMetric, toggleCard, resetSettings } = useAnchoredSettings();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
 
@@ -114,6 +115,7 @@ export default function Option0Current({ day, hour, offset, onHourChange, onOffs
       <ScoreCard day={day} hour={hour} />
       <TideCard day={day} hour={hour} />
       <SolunarCard day={day} hour={hour} />
+      <PressureCard day={day} hour={hour} />
       <section className="mt-3 px-4">
         <div className="grid grid-cols-2 gap-3">
           {metrics.filter(metric => settings[metric.id]).map(metric => (
@@ -125,8 +127,8 @@ export default function Option0Current({ day, hour, offset, onHourChange, onOffs
       <CustomizationBottomSheet
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}
-        settings={settings}
-        onToggle={toggleMetric}
+        settings={cardSettings}
+        onToggle={toggleCard}
         onReset={resetSettings}
         prototype={prototype}
         onSelectPrototype={onSelectPrototype}

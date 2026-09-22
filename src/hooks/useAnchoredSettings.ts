@@ -11,6 +11,15 @@ export interface AnchoredSettingsState {
   airTemp: boolean;
 }
 
+export interface DashboardCardSettings {
+  temperature: boolean;
+  pressure: boolean;
+  weather: boolean;
+  moon: boolean;
+  sun: boolean;
+  swell: boolean;
+}
+
 type AnchoredMetric = keyof AnchoredSettingsState;
 
 const STORAGE_KEY = "fo_anchored_settings";
@@ -24,6 +33,15 @@ const DEFAULT_SETTINGS: AnchoredSettingsState = {
   rain: true,
   uv: true,
   airTemp: true
+};
+
+const DEFAULT_CARD_SETTINGS: DashboardCardSettings = {
+  temperature: true,
+  pressure: true,
+  weather: true,
+  moon: true,
+  sun: true,
+  swell: true
 };
 
 function getStoredSettings(): AnchoredSettingsState {
@@ -55,8 +73,28 @@ function getStoredSettings(): AnchoredSettingsState {
   }
 }
 
+function getStoredCardSettings(): DashboardCardSettings {
+  if (typeof window === "undefined") return DEFAULT_CARD_SETTINGS;
+
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const parsed = stored ? JSON.parse(stored) as Partial<AnchoredSettingsState & DashboardCardSettings> : {};
+    return {
+      temperature: typeof parsed.temperature === "boolean" ? parsed.temperature : Boolean(parsed.waterTemp || parsed.airTemp || stored === null),
+      pressure: typeof parsed.pressure === "boolean" ? parsed.pressure : DEFAULT_CARD_SETTINGS.pressure,
+      weather: typeof parsed.weather === "boolean" ? parsed.weather : Boolean(parsed.wind || parsed.rain || parsed.uv || stored === null),
+      moon: typeof parsed.moon === "boolean" ? parsed.moon : Boolean(parsed.moonPhase || stored === null),
+      sun: typeof parsed.sun === "boolean" ? parsed.sun : DEFAULT_CARD_SETTINGS.sun,
+      swell: typeof parsed.swell === "boolean" ? parsed.swell : Boolean(parsed.swell || stored === null)
+    };
+  } catch {
+    return DEFAULT_CARD_SETTINGS;
+  }
+}
+
 export function useAnchoredSettings() {
   const [settings, setSettings] = useState<AnchoredSettingsState>(getStoredSettings);
+  const [cardSettings, setCardSettings] = useState<DashboardCardSettings>(getStoredCardSettings);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -64,11 +102,11 @@ export function useAnchoredSettings() {
     }
 
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...settings, ...cardSettings }));
     } catch {
       // Settings remain usable when browser storage is unavailable.
     }
-  }, [settings]);
+  }, [settings, cardSettings]);
 
   const toggleMetric = useCallback((metric: AnchoredMetric) => {
     setSettings(current => ({
@@ -79,7 +117,12 @@ export function useAnchoredSettings() {
 
   const resetSettings = useCallback(() => {
     setSettings({ ...DEFAULT_SETTINGS });
+    setCardSettings({ ...DEFAULT_CARD_SETTINGS });
   }, []);
 
-  return { settings, toggleMetric, resetSettings };
+  const toggleCard = useCallback((card: keyof DashboardCardSettings) => {
+    setCardSettings(current => ({ ...current, [card]: !current[card] }));
+  }, []);
+
+  return { settings, cardSettings, toggleMetric, toggleCard, resetSettings };
 }

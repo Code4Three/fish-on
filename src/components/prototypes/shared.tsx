@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,7 +14,7 @@ import {
   Wind,
   X
 } from "lucide-react";
-import type { ClaudeDayData } from "../../data/mockMarineData";
+import type { ClaudeDayData } from "../../data/conditions";
 import type { AnchoredSettingsState } from "../../hooks/useAnchoredSettings";
 import type { PrototypeId } from "../../hooks/useLayoutPrototype";
 
@@ -48,6 +49,10 @@ export function formatHour(hour: number, minutes = false) {
   const wholeHour = Math.floor(hour);
   const display = wholeHour % 12 || 12;
   return `${display}${minutes ? `:${String(Math.round((hour % 1) * 60)).padStart(2, "0")}` : ""} ${wholeHour >= 12 ? "PM" : "AM"}`;
+}
+
+export function formatOptionalHour(hour: number | null | undefined, minutes = false) {
+  return hour == null ? "--" : formatHour(hour, minutes);
 }
 
 export function formatDate(offset: number) {
@@ -89,16 +94,40 @@ export function scoreBandTone(band: string) {
   return { text: "text-slate-300", chip: "bg-hull-700 text-slate-300", stroke: "#94A3B8" };
 }
 
+// Renders a placeholder when mock data for a metric is missing/unavailable (AC3).
+export function safe<T>(value: T | null | undefined, fallback = "--"): T | string {
+  if (value === null || value === undefined) return fallback;
+  if (typeof value === "number" && Number.isNaN(value)) return fallback;
+  return value;
+}
+
+export function solunarStatusTrend(day: ClaudeDayData, hour: number): string {
+  const windows = [
+    ...(day.majorWindows ?? []).map(window => ({ type: "Major", start: window.start, end: window.end })),
+    ...(day.minorWindows ?? []).map(window => ({ type: "Minor", start: window.start, end: window.end }))
+  ];
+
+  for (const window of windows) {
+    if (window.start === undefined || window.end === undefined) continue;
+    if (hour >= window.start && hour <= window.end) return `Peak (${window.type})`;
+    if (hour >= window.start - 0.75 && hour < window.start) return `Building (${window.type})`;
+    if (hour > window.end && hour <= window.end + 0.75) return `Fading (${window.type})`;
+  }
+  return "Neutral";
+}
+
 export function getMetricDisplay(id: MetricKey, day: ClaudeDayData, hour: number): [string, string, string] {
   const wind = day.hours[hour].wind;
+  const swell = day.secondary.swell;
+  const uv = day.secondary.uv;
   const data: Record<MetricKey, [string, string, string]> = {
     wind: [`${wind.speed}`, "kts", `${wind.dir} · Gusts ${wind.gust} kts`],
-    pressure: [`${day.secondary.pressure.value}`, "hPa", day.secondary.pressure.trend],
-    waterTemp: [day.secondary.waterTemp, "°C", "Surface reading"],
-    swell: [day.secondary.swell.height, "m", `@ ${day.secondary.swell.period}s ${day.secondary.swell.dir}`],
-    moonPhase: [`${day.secondary.moon.illum}`, "%", day.secondary.moon.phaseName],
-    rain: [`${day.secondary.rain.chance}`, "%", `${day.secondary.rain.mm.toFixed(1)}mm chance`],
-    uv: [`${day.secondary.uv}`, "", uvLabel(day.secondary.uv)],
+    pressure: [`${safe(day.secondary.pressure.value)}`, "hPa", `${safe(day.secondary.pressure.trend)}`],
+    waterTemp: [`${safe(day.secondary.waterTemp)}`, "°C", "Surface reading"],
+    swell: swell ? [swell.height, "m", `@ ${swell.period}s ${swell.dir}`] : ["--", "m", "--"],
+    moonPhase: [`${safe(day.secondary.moon.illum)}`, "%", `${safe(day.secondary.moon.phaseName)}`],
+    rain: [`${safe(day.secondary.rain.chance)}`, "%", day.secondary.rain.mm == null ? "--" : `${day.secondary.rain.mm.toFixed(1)}mm chance`],
+    uv: [`${safe(uv)}`, "", uv == null ? "--" : uvLabel(uv)],
     airTemp: [`${day.secondary.airTemp.temp}`, "°C", `Feels ${day.secondary.airTemp.feels}°C`]
   };
   return data[id];
@@ -253,7 +282,7 @@ export function TideCard({ day, hour }: { day: ClaudeDayData; hour: number }) {
 
 export function SolunarCard({ day, hour }: { day: ClaudeDayData; hour: number }) {
   const windows = [
-    { type: "Major", start: day.majorWindow.start, end: day.majorWindow.end },
+    ...(day.majorWindows ?? []).map(window => ({ type: "Major", start: window.start, end: window.end })),
     ...day.minorWindows.map(window => ({ type: "Minor", start: window.start, end: window.end }))
   ];
   const activeWindow = windows.find(window => hour >= window.start && hour < window.end)
@@ -289,6 +318,39 @@ export function SolunarCard({ day, hour }: { day: ClaudeDayData; hour: number })
   );
 }
 
+export function PressureCard({ day, hour }: { day: ClaudeDayData; hour: number }) {
+  const current = day.hours[hour];
+  const pressureRange = day.ranges?.pressure;
+  const trend = day.secondary.pressure.trend;
+  const trendTone = trend === "Falling" ? "text-amber-300" : trend === "Rising" ? "text-tide-400" : "text-slate-300";
+
+  return (
+    <article className="mx-4 mt-2 overflow-hidden rounded-3xl border border-hull-700/70 bg-gradient-to-b from-hull-800 to-hull-900">
+      <div className="px-4 pb-3 pt-3">
+        <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+          <Gauge size={13} className="text-amber-300" />
+          Atmospheric pressure
+        </div>
+        <div className="mt-1 flex flex-wrap items-baseline gap-2">
+          <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
+            {safe(current?.pressure)}
+            <span className="ml-1 text-lg font-medium text-slate-400">hPa</span>
+          </span>
+          <span className={`rounded-full bg-hull-700 px-2.5 py-1 font-body text-xs font-semibold ${trendTone}`}>
+            {safe(trend, "Steady")}
+          </span>
+        </div>
+        <div className="mt-2 flex items-center justify-between border-t border-hull-700/70 pt-2">
+          <span className="font-body text-[13px] font-medium text-slate-300">Today's range</span>
+          <span className="font-body text-[13px] font-semibold tabular-nums text-white">
+            {pressureRange ? `${pressureRange.min} - ${pressureRange.max} hPa` : safe(null)}
+          </span>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export function MetricCard({ id, day, hour }: { id: MetricKey; day: ClaudeDayData; hour: number }) {
   const metric = metrics.find(item => item.id === id)!;
   const Icon = metric.icon;
@@ -308,6 +370,92 @@ export function MetricCard({ id, day, hour }: { id: MetricKey; day: ClaudeDayDat
           <span className="ml-1 font-body text-[13px] font-medium text-slate-400">{unit}</span>
         </p>
         <p className="mt-1 truncate font-body text-[11px] text-slate-500">{detail}</p>
+      </div>
+    </article>
+  );
+}
+
+function DetailRow({ label, value }: { label: string; value: ReactNode }) {
+  return (
+    <div className="flex items-center justify-between border-t border-hull-700/70 py-1.5 first:border-t-0 first:pt-0">
+      <span className="font-body text-[12.5px] text-slate-400">{label}</span>
+      <span className="font-body text-[12.5px] font-semibold tabular-nums text-white">{value}</span>
+    </div>
+  );
+}
+
+// Water & Marine: next tide peaks, slack water, water temp range, swell range/period/dir.
+export function WaterDetailsCard({ day, hour }: { day: ClaudeDayData; hour: number }) {
+  const upcomingHigh = day.tideEvents.find(event => event.type === "High" && event.hour >= hour) ?? day.tideEvents.find(event => event.type === "High");
+  const upcomingLow = day.tideEvents.find(event => event.type === "Low" && event.hour >= hour) ?? day.tideEvents.find(event => event.type === "Low");
+  const waterTempRange = day.ranges?.waterTemp;
+  const swellRange = day.ranges?.swell;
+
+  return (
+    <article className="mx-4 mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
+      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+        <Waves size={13} className="text-tide-400" />
+        Water &amp; marine details
+      </div>
+      <div className="mt-2">
+        <DetailRow label="Next high tide" value={upcomingHigh ? `${formatHour(upcomingHigh.hour, true)} (${upcomingHigh.height.toFixed(1)}m)` : safe(null)} />
+        <DetailRow label="Next low tide" value={upcomingLow ? `${formatHour(upcomingLow.hour, true)} (${upcomingLow.height.toFixed(1)}m)` : safe(null)} />
+        <DetailRow label="Slack water window" value={safe(null)} />
+        <DetailRow label="Water temp range" value={waterTempRange ? `${safe(waterTempRange.min)}°C - ${safe(waterTempRange.max)}°C` : safe(null)} />
+        <DetailRow label="Swell range" value={swellRange ? `${safe(swellRange.min)}m - ${safe(swellRange.max)}m` : safe(null)} />
+        <DetailRow label="Swell period / direction" value={swellRange ? `${safe(swellRange.period)}s ${safe(swellRange.dir)}` : safe(null)} />
+      </div>
+    </article>
+  );
+}
+
+// Astronomical & Solunar: major/minor windows, current status/trend, moon + sun times.
+export function SolunarDetailsCard({ day, hour }: { day: ClaudeDayData; hour: number }) {
+  const status = solunarStatusTrend(day, hour);
+  const moon = day.secondary?.moon;
+  const majorWindow = day.majorWindows[0];
+
+  return (
+    <article className="mx-4 mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
+      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+        <Moon size={13} className="text-indigo-300" />
+        Astronomical &amp; solunar details
+      </div>
+      <div className="mt-2">
+        <DetailRow label="Current solunar status" value={status} />
+        <DetailRow label="Major feeding window" value={majorWindow ? `${formatHour(majorWindow.start, true)} - ${formatHour(majorWindow.end, true)}` : safe(null)} />
+        {day.minorWindows.map((window, index) => (
+          <DetailRow key={index} label={`Minor feeding window ${index + 1}`} value={`${formatHour(window.start, true)} - ${formatHour(window.end, true)}`} />
+        ))}
+        <DetailRow label="Moon phase" value={safe(moon?.phaseName, "N/A")} />
+        <DetailRow label="Moon illumination" value={moon?.illum !== undefined ? `${moon.illum}%` : safe(null)} />
+        <DetailRow label="Moonrise / moonset" value={moon ? `${formatOptionalHour(moon.moonrise, true)} / ${formatOptionalHour(moon.moonset, true)}` : safe(null)} />
+        <DetailRow label="Sunrise / sunset" value={day.sun ? `${formatHour(day.sun.sunrise, true)} / ${formatHour(day.sun.sunset, true)}` : safe(null)} />
+        <DetailRow label="First light / last light" value={day.sun ? `${formatOptionalHour(day.sun.firstLight, true)} / ${formatOptionalHour(day.sun.lastLight, true)}` : safe(null)} />
+      </div>
+    </article>
+  );
+}
+
+// Weather: air temp range + feels, wind + gust, rain, cloud, UV.
+export function WeatherDetailsCard({ day, hour }: { day: ClaudeDayData; hour: number }) {
+  const current = day.hours[hour];
+  const airTempRange = day.ranges?.airTemp;
+  const windRange = day.ranges?.wind;
+
+  return (
+    <article className="mx-4 mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
+      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+        <Cloud size={13} className="text-sky-300" />
+        Weather
+      </div>
+      <div className="mt-2">
+        <DetailRow label="Air temp high / low" value={airTempRange ? `${safe(airTempRange.max)}° / ${safe(airTempRange.min)}°C` : safe(null)} />
+        <DetailRow label="Feels like" value={day.secondary?.airTemp ? `${safe(day.secondary.airTemp.feels)}°C` : safe(null)} />
+        <DetailRow label="Sustained wind / max gust" value={windRange ? `${safe(windRange.min)}-${safe(windRange.max)} km/h · gust ${safe(windRange.maxGust)} km/h` : safe(null)} />
+        <DetailRow label="Rain chance / volume" value={`${safe(day.secondary?.rain?.chance)}% · ${safe(null)}`} />
+        <DetailRow label="Cloud cover baseline" value={day.ranges?.cloudBaseline !== undefined ? `${day.ranges.cloudBaseline}%` : safe(null)} />
+        <DetailRow label="Peak UV index" value={safe(day.ranges?.uvPeak)} />
       </div>
     </article>
   );
@@ -376,29 +524,45 @@ export function DayDrawer({
             <X size={22} />
           </button>
         </div>
-        <div className="grid grid-cols-[64px_1fr_1.3fr_1.3fr] gap-2 border-b border-hull-700/70 px-5 py-2 font-body text-[11px] uppercase tracking-wide text-slate-500">
-          <span>Time</span>
-          <span>Tide</span>
-          <span>Solunar</span>
-          <span>Wind</span>
-        </div>
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-4">
-          {day.hours.map(item => (
-            <button
-              key={item.hour}
-              type="button"
-              onClick={() => {
-                onPickHour(item.hour);
-                onClose();
-              }}
-              className={`grid min-h-[48px] w-full grid-cols-[64px_1fr_1.3fr_1.3fr] items-center gap-2 border-b border-hull-700/50 py-3 text-left ${item.hour === selectedHour ? "bg-tide-500/10" : ""}`}
-            >
-              <span className={`font-body text-[13px] font-semibold tabular-nums ${item.hour === selectedHour ? "text-tide-400" : "text-white"}`}>{formatHour(item.hour)}</span>
-              <span className="font-body text-[13px] tabular-nums text-slate-300">{item.tideHeight.toFixed(1)}m</span>
-              <span className="font-body text-[12.5px] text-slate-400">{item.solunar === "none" ? "-" : item.solunar}</span>
-              <span className="font-body text-[12.5px] tabular-nums text-slate-300">{item.wind.speed}kt {item.wind.dir}</span>
-            </button>
-          ))}
+        <div className="min-h-0 flex-1 overflow-x-auto overflow-y-auto overscroll-contain px-5 pb-4">
+          <div className="min-w-[880px]">
+            <div className="grid grid-cols-[56px_56px_64px_72px_1fr_88px_56px_56px_56px_56px_44px] gap-2 border-b border-hull-700/70 pb-2 font-body text-[11px] uppercase tracking-wide text-slate-500">
+              <span>Time</span>
+              <span>Score</span>
+              <span>Tide</span>
+              <span>Direction</span>
+              <span>Solunar</span>
+              <span>Wind / Gust</span>
+              <span>Press.</span>
+              <span>Temp</span>
+              <span>Cloud</span>
+              <span>Rain</span>
+              <span>UV</span>
+            </div>
+            {day.hours.map(item => (
+              <button
+                key={item.hour}
+                type="button"
+                onClick={() => {
+                  onPickHour(item.hour);
+                  onClose();
+                }}
+                className={`grid min-h-[48px] w-full grid-cols-[56px_56px_64px_72px_1fr_88px_56px_56px_56px_56px_44px] items-center gap-2 border-b border-hull-700/50 py-3 text-left ${item.hour === selectedHour ? "bg-tide-500/10" : ""}`}
+              >
+                <span className={`font-body text-[13px] font-semibold tabular-nums ${item.hour === selectedHour ? "text-tide-400" : "text-white"}`}>{formatHour(item.hour)}</span>
+                <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.score)}</span>
+                <span className="font-body text-[13px] tabular-nums text-slate-300">{item.tideHeight.toFixed(1)}m</span>
+                <span className="font-body text-[12.5px] text-slate-400">{safe(item.tideDirection, "N/A")}</span>
+                <span className="font-body text-[12.5px] text-slate-400">{item.solunar === "none" ? "Neutral" : item.solunar === "major" ? "Major" : "Minor"}</span>
+                <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.wind?.speed)}/{safe(item.wind?.gust)}kt {safe(item.wind?.dir, "")}</span>
+                <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.pressure)}</span>
+                <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.airTemp)}°</span>
+                <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.cloudCover)}%</span>
+                <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.rainChance)}%</span>
+                <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.uvIndex, "N/A")}</span>
+              </button>
+            ))}
+          </div>
         </div>
         {isTopDock && onDragStart && onDragMove && onDragEnd && (
           <div

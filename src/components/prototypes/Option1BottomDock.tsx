@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Fish, Settings, Waves } from "lucide-react";
-import type { ClaudeDayData } from "../../data/mockMarineData";
 import { useAnchoredSettings } from "../../hooks/useAnchoredSettings";
 import CustomizationBottomSheet from "../settings/CustomizationBottomSheet";
 import {
@@ -8,6 +7,7 @@ import {
     DayDrawer,
     HourPills,
     MetricCard,
+    PressureCard,
     ScoreCard,
     SolunarCard,
     StepButton,
@@ -19,7 +19,7 @@ import {
 
 // Prototype 1: thumb-first layout - minimal header, scrollable feed, fixed bottom dock for all controls.
 export default function Option1BottomDock({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
-    const { settings, toggleMetric, resetSettings } = useAnchoredSettings();
+    const { settings, cardSettings, toggleMetric, toggleCard, resetSettings } = useAnchoredSettings();
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [dayViewOpen, setDayViewOpen] = useState(false);
 
@@ -56,6 +56,7 @@ export default function Option1BottomDock({ day, hour, offset, onHourChange, onO
                 <ScoreCard day={day} hour={hour} />
                 <TideCard day={day} hour={hour} />
                 <SolunarCard day={day} hour={hour} />
+                <PressureCard day={day} hour={hour} />
                 <section className="mt-3 px-4">
                     <div className="grid grid-cols-2 gap-3">
                         {metrics.filter(metric => settings[metric.id]).map(metric => (
@@ -98,8 +99,8 @@ export default function Option1BottomDock({ day, hour, offset, onHourChange, onO
             <CustomizationBottomSheet
                 isOpen={settingsOpen}
                 onClose={() => setSettingsOpen(false)}
-                settings={settings}
-                onToggle={toggleMetric}
+                settings={cardSettings}
+                onToggle={toggleCard}
                 onReset={resetSettings}
                 prototype={prototype}
                 onSelectPrototype={onSelectPrototype}

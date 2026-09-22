@@ -1,28 +1,30 @@
 import { useEffect } from "react";
 import { Check, RotateCcw, X } from "lucide-react";
-import type { AnchoredSettingsState } from "../../hooks/useAnchoredSettings";
+import type { DashboardCardSettings } from "../../hooks/useAnchoredSettings";
+import { PROTOTYPE_OPTIONS } from "../../hooks/useLayoutPrototype";
+import type { PrototypeId } from "../../hooks/useLayoutPrototype";
 
 export interface CustomizationBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  settings: AnchoredSettingsState;
-  onToggle: (metric: keyof AnchoredSettingsState) => void;
+  settings: DashboardCardSettings;
+  onToggle: (card: keyof DashboardCardSettings) => void;
   onReset: () => void;
+  prototype: PrototypeId;
+  onSelectPrototype: (id: PrototypeId) => void;
 }
 
 const METRIC_OPTIONS: Array<{
-  key: keyof AnchoredSettingsState;
+  key: keyof DashboardCardSettings;
   label: string;
   description: string;
 }> = [
-  { key: "wind", label: "Wind", description: "Speed, direction, and gusts" },
-  { key: "pressure", label: "Barometric pressure", description: "Pressure and trend" },
-  { key: "waterTemp", label: "Water temperature", description: "Surface water temperature" },
-  { key: "swell", label: "Swell / waves", description: "Height, direction, and period" },
-  { key: "moonPhase", label: "Moon phase", description: "Phase and illumination" },
-  { key: "rain", label: "Rain", description: "Chance and expected volume" },
-  { key: "uv", label: "UV index", description: "UV exposure level" },
-  { key: "airTemp", label: "Air temperature", description: "Temperature and feels like" }
+  { key: "temperature", label: "Temperature", description: "Water and air temperature" },
+  { key: "pressure", label: "Barometric pressure", description: "Current pressure, range, and trend" },
+  { key: "weather", label: "Weather", description: "Wind, rain, cloud, and UV" },
+  { key: "moon", label: "Moon", description: "Phase, illumination, moonrise, and moonset" },
+  { key: "sun", label: "Sun", description: "Sunrise, sunset, and light windows" },
+  { key: "swell", label: "Swell", description: "Height, direction, and period" }
 ];
 
 export default function CustomizationBottomSheet({
@@ -30,7 +32,9 @@ export default function CustomizationBottomSheet({
   onClose,
   settings,
   onToggle,
-  onReset
+  onReset,
+  prototype,
+  onSelectPrototype
 }: CustomizationBottomSheetProps) {
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -112,6 +116,32 @@ export default function CustomizationBottomSheet({
               </div>
             );
           })}
+        </div>
+
+        <div className="border-t border-slate-800 px-4 py-3">
+          <p className="mb-2 text-sm font-semibold text-white">Dashboard layout</p>
+          <div className="grid gap-2">
+            {PROTOTYPE_OPTIONS.map(option => (
+              <button
+                key={option.id}
+                type="button"
+                aria-pressed={prototype === option.id}
+                onClick={() => onSelectPrototype(option.id)}
+                tabIndex={isOpen ? 0 : -1}
+                className={`flex min-h-12 items-center justify-between rounded-lg border px-3 text-left transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${
+                  prototype === option.id
+                    ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
+                    : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
+                }`}
+              >
+                <span>
+                  <span className="block text-sm font-semibold">{option.label}</span>
+                  <span className="block text-xs text-slate-400">{option.description}</span>
+                </span>
+                {prototype === option.id && <Check size={18} aria-hidden="true" />}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="border-t border-slate-800 p-4">

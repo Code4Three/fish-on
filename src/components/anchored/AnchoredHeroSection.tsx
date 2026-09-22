@@ -4,7 +4,7 @@ import {
   Sun,
   Waves
 } from "lucide-react";
-import type { AnchoredMetrics } from "../../data/mockMarineData";
+import type { AnchoredMetrics } from "../../data/conditions";
 
 export interface TideEventSummary {
   time: string;
