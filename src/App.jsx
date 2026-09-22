@@ -1,4 +1,4 @@
-import FishOnDashboard from "./components/FishOnDashboard";
+import PrototypeSwitcher from "./components/prototypes/PrototypeSwitcher";
 import { AppProvider } from "./state/AppContext";
 import { useApp } from "./state/useApp";
 import { VIEWS } from "./state/viewConstants";
@@ -24,7 +24,7 @@ function ActiveView() {
 			return <ManageLocationsView />;
 		case VIEWS.WEEKLY:
 		default:
-			return <FishOnDashboard />;
+			return <PrototypeSwitcher />;
 	}
 }
 
