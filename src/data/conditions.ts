@@ -60,15 +60,21 @@ export interface ConditionsResponse {
 }
 
 export interface ClaudeHourlyData {
+  time: string;
   hour: number;
   tideHeight: number;
+  tideStage: string;
   wind: { speed: number; gust: number | null; dir: string };
+  windLabel: string;
   solunar: "none" | "major" | "minor";
+  solunarCondition: string;
+  pressureTrend: string;
   score: number;
   scoreBand: "Peak" | "Strong" | "Favorable" | "Slow";
   tideDirection: "Flood" | "Ebb" | "Slack";
   pressure: number;
   airTemp: number;
+  weatherCondition: string;
   cloudCover: number;
   rainChance: number;
   rainVolume: number | null;
@@ -228,15 +234,21 @@ export function buildDayData(days: ConditionsDay[], index: number): ClaudeDayDat
     const { score, band } = calculateConditionScore(tideRating, solunarRating, scoringRules);
 
     return {
+      time: item.time,
       hour: parseTimeToHour(item.time),
       tideHeight: item.height,
+      tideStage: item.tideStage,
       wind: { speed: item.windSpeed, gust: null, dir: item.windDirection },
+      windLabel: item.wind,
       solunar: toSolunarTag(item.solunarCondition),
+      solunarCondition: item.solunarCondition,
+      pressureTrend: item.pressureTrend,
       score: Math.round(score),
       scoreBand: toScoreBand(band?.name),
       tideDirection: toTideDirection(item.tideStage),
       pressure: item.pressure,
       airTemp: item.temperature,
+      weatherCondition: item.weatherCondition,
       cloudCover: item.cloudCover,
       rainChance: item.rainChance,
       rainVolume: null,

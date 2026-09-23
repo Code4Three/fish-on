@@ -79,7 +79,7 @@ export default function Option0Current({ day, hour, offset, onHourChange, onOffs
   const [dayViewOpen, setDayViewOpen] = useState(false);
 
   return (
-    <main className="min-h-screen max-w-md mx-auto bg-hull-950 pb-10 font-body">
+    <main className="no-scrollbar min-h-screen max-w-md mx-auto overflow-y-auto bg-hull-950 pb-10 font-body">
       <div className="sticky top-0 z-20 border-b border-hull-700/60 bg-hull-950/95 backdrop-blur">
         <header className="flex h-14 items-center justify-between px-4">
           <div className="flex min-w-0 items-center gap-2">

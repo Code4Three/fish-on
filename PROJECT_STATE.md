@@ -1,5 +1,9 @@
 # Fish On - Current Product State
 
+## Branch Snapshot
+
+This document describes the `feature/ui-prototype-1` branch, not the main branch. The branch is focused on the `MainDashboard` prototype and its mobile interaction model.
+
 ## Product Summary
 
 Fish On is an initial working fishing-conditions MVP for recreational anglers. It brings tide, astronomical, weather, wind, cloud, rain, and atmospheric-pressure information together into a seven-day conditions outlook for a configured location.
@@ -38,12 +42,12 @@ The current product helps an angler inspect how these conditions are expected to
 
 ## Current MVP
 
-The current end-to-end experience is a weekly conditions view. The application loads a generated conditions dataset and displays the available seven-day period as a sequence of daily sections.
+The current end-to-end experience is a selected-day conditions dashboard backed by the generated seven-day conditions dataset. The branch presents the active day's summary and hourly conditions rather than the previous full weekly sequence.
 
-Each day is split into:
+The selected-day dashboard exposes:
 
-- Anchored daily information on the left, including tide extremes, sunrise and sunset, moon timing and phase, solunar peaks, weather summary, temperature, wind, cloud, and pressure ranges.
-- An hourly conditions timeline extending across the right, with 24 hourly entries for tide stage, solunar condition, weather, pressure, wind, temperature, cloud cover, and rain chance.
+- Summary cards for tide, solunar, pressure, fishing score, and configurable weather metrics.
+- A full conditions view with hourly tide stage, solunar condition, weather, pressure, wind, temperature, cloud cover, and rain chance.
 
 The view includes loading and no-data states. The current repository provides evidence of this display working from the populated generated conditions file. Runtime freshness of that file depends on the data-building process described below.
 
@@ -99,13 +103,9 @@ The application view reads the generated `/conditions.json` file. The repository
 
 ## Current User Interface
 
-The confirmed user-facing interface now has a persistent application header and unified global menu around the weekly conditions page. The weekly view contains a page heading, a list of daily sections, anchored daily condition rows, and an hourly timeline for each day.
+`MainDashboard` is a mobile-first, single-day dashboard with a fixed location header, score, tide, solunar, pressure, and configurable metric cards. A draggable day/hour dock controls the forecast selection, and horizontal swiping opens a full conditions view. The settings bottom sheet controls visible cards and dock position.
 
-The hourly timeline contains rows for hour, tide stage, solunar condition, weather, pressure, wind, temperature, cloud, and rain. On narrower screens, the daily content stacks vertically and the hourly timeline can scroll horizontally.
-
-The global menu provides navigation targets for Weekly Forecast, Dedicated Tide, Dedicated Solunar, Options & Configuration, Map Picker, and Manage Locations. Tide, Solunar, Options, Map Picker, and Manage Locations currently render placeholder destinations for follow-on feature work.
-
-The menu includes seeded saved locations from `src/config/appConfig.json`. The active location is held in application state and its identifier is persisted in browser `localStorage` so it is restored between sessions. Location selection currently updates the active badge and shared state only; it does not rebuild the generated forecast payload.
+The branch still exposes the tide, solunar, options, map picker, and manage locations routes through application state, but the global header and menu are currently disabled in `src/App.jsx`.
 
 ## Data and Conditions Model
 
@@ -147,9 +147,11 @@ These derived values are included in the unified conditions data and are display
 
 ## Important Current Architecture
 
-- The browser application mounts a shared `AppProvider` and persistent `GlobalHeader`, then selects the active destination view from client-side application state.
+- The browser application mounts a shared `AppProvider` and selects the active destination view from client-side application state; the global header is currently disabled on this branch.
+- The default weekly route renders `PrototypeSwitcher`, which selects `MainDashboard` by default.
+- `MainDashboard` owns the selected day/hour presentation, draggable dock, swipeable full-conditions panel, and customization sheet.
 - The browser reads a generated static conditions file rather than calling the external providers directly.
-- The global menu uses a desktop dropdown at widths of 768px and above and a full-width mobile drawer below 768px.
+- The existing global menu component uses a desktop dropdown at widths of 768px and above and a full-width mobile drawer below 768px, but it is not mounted on this branch.
 - Saved locations are seeded by an expandable configuration document, while the active location key is persisted in browser storage.
 - Separate build scripts prepare tides, Sun/Moon values, solunar values, weather, and the final unified conditions dataset.
 - Tide records use a local cache and are refreshed at build time when the required display dates are not covered.

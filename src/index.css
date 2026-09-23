@@ -92,6 +92,7 @@ body {
   margin: 0;
   min-width: 320px;
   background: #070b13;
+  overscroll-behavior-x: none;
 }
 
 #root {
@@ -100,6 +101,22 @@ body {
   margin: 0 auto;
   min-height: 100svh;
   box-sizing: border-box;
+}
+
+.dashboard-shell {
+  min-height: 100svh;
+  height: 100dvh;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  height: 0;
+  width: 0;
 }
 
 h1,

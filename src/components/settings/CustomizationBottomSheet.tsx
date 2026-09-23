@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Check, RotateCcw, X } from "lucide-react";
-import type { DashboardCardSettings } from "../../hooks/useAnchoredSettings";
+import { DAILY_GROUPS, HOURLY_METRICS } from "../../config/metricMatrix";
+import type { DashboardCardSettings, MatrixSettings } from "../../hooks/useAnchoredSettings";
 import type { DockPosition } from "../../hooks/useDashboardSettings";
 import { PROTOTYPE_OPTIONS } from "../../hooks/useLayoutPrototype";
 import type { PrototypeId } from "../../hooks/useLayoutPrototype";
@@ -10,6 +11,9 @@ export interface CustomizationBottomSheetProps {
   onClose: () => void;
   settings: DashboardCardSettings;
   onToggle: (card: keyof DashboardCardSettings) => void;
+  matrixSettings?: MatrixSettings;
+  onToggleGroup?: (group: string) => void;
+  onToggleMatrixMetric?: (metric: string, hourly?: boolean) => void;
   onReset: () => void;
   prototype: PrototypeId;
   onSelectPrototype: (id: PrototypeId) => void;
@@ -17,23 +21,14 @@ export interface CustomizationBottomSheetProps {
   onSelectDockPosition?: (position: DockPosition) => void;
 }
 
-const METRIC_OPTIONS: Array<{
-  key: keyof DashboardCardSettings;
-  label: string;
-  description: string;
-}> = [
-  { key: "temperature", label: "Temperature", description: "Water and air temperature" },
-  { key: "weather", label: "Weather", description: "Wind, rain, cloud, and UV" },
-  { key: "moon", label: "Moon", description: "Phase, illumination, moonrise, and moonset" },
-  { key: "sun", label: "Sun", description: "Sunrise, sunset, and light windows" },
-  { key: "swell", label: "Swell", description: "Height, direction, and period" }
-];
-
 export default function CustomizationBottomSheet({
   isOpen,
   onClose,
   settings,
   onToggle,
+  matrixSettings,
+  onToggleGroup,
+  onToggleMatrixMetric,
   onReset,
   prototype,
   onSelectPrototype,
@@ -70,7 +65,7 @@ export default function CustomizationBottomSheet({
         role="dialog"
         aria-modal="true"
         aria-labelledby="display-metrics-title"
-        className={`relative w-full max-w-md rounded-t-3xl border border-b-0 border-hull-700 bg-hull-900 font-body text-slate-100 shadow-2xl transition-transform duration-300 ease-out ${
+        className={`relative max-h-[90dvh] w-full max-w-md overflow-y-auto rounded-t-3xl border border-b-0 border-hull-700 bg-hull-900 font-body text-slate-100 shadow-2xl transition-transform duration-300 ease-out ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
@@ -89,37 +84,40 @@ export default function CustomizationBottomSheet({
           </button>
         </div>
 
-        <div className="max-h-[65vh] overflow-y-auto px-4 py-2">
-          {METRIC_OPTIONS.map(({ key, label, description }) => {
-            const enabled = settings[key];
-
-            return (
-              <div
-                key={key}
-                className="flex min-h-[52px] items-center justify-between gap-4 border-b border-slate-800/80 py-2"
-              >
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-slate-100">{label}</p>
-                  <p className="truncate text-xs text-slate-400">{description}</p>
-                </div>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={enabled}
-                  aria-label={`${enabled ? "Hide" : "Show"} ${label}`}
-                  onClick={() => onToggle(key)}
-                  tabIndex={isOpen ? 0 : -1}
-                  className={`inline-flex min-h-12 min-w-12 shrink-0 items-center justify-center rounded-full border transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${
-                    enabled
-                      ? "border-emerald-300 bg-emerald-400 text-slate-950"
-                      : "border-slate-600 bg-slate-800 text-slate-500"
-                  }`}
-                >
-                  <Check size={19} strokeWidth={3} aria-hidden="true" />
-                </button>
-              </div>
-            );
-          })}
+        <div className="px-4 py-2">
+          {matrixSettings && onToggleGroup && onToggleMatrixMetric ? (
+            <>
+              <details open className="border-b border-slate-800/80">
+                <summary className="cursor-pointer py-3 text-sm font-semibold text-white">Dashboard display</summary>
+                {matrixSettings.heroOrder.map(groupId => {
+                  const group = DAILY_GROUPS.find(item => item.id === groupId);
+                  if (!group) return null;
+                  return (
+                    <div key={group.id} className="border-t border-slate-800/80 py-2">
+                      <div className="flex items-center gap-2">
+                        <p className="min-w-0 flex-1 text-sm font-semibold text-slate-100">{group.label}</p>
+                        <button type="button" role="switch" aria-checked={matrixSettings.groups[group.id]} aria-label={`${matrixSettings.groups[group.id] ? "Hide" : "Show"} ${group.label}`} onClick={() => onToggleGroup(group.id)} tabIndex={isOpen ? 0 : -1} className={`inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border ${matrixSettings.groups[group.id] ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"}`}><Check size={17} strokeWidth={3} /></button>
+                      </div>
+                      <div className="ml-6 mt-1">
+                        {group.metrics.map(metric => (
+                          <div key={`${group.id}-${metric.id}`} className="flex min-h-10 items-center gap-2">
+                            <span className="min-w-0 flex-1 text-xs text-slate-400">{metric.label}</span>
+                            <button type="button" role="switch" aria-checked={matrixSettings.metrics[metric.id]} aria-label={`${matrixSettings.metrics[metric.id] ? "Hide" : "Show"} ${metric.label}`} onClick={() => onToggleMatrixMetric(metric.id)} tabIndex={isOpen ? 0 : -1} className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${matrixSettings.metrics[metric.id] ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"}`}><Check size={15} strokeWidth={3} /></button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </details>
+              <details className="border-b border-slate-800/80">
+                <summary className="cursor-pointer py-3 text-sm font-semibold text-white">Hourly display</summary>
+                {HOURLY_METRICS.map(metric => <div key={metric.id} className="flex min-h-10 items-center justify-between gap-3 border-t border-slate-800/80"><span className="text-xs text-slate-400">{metric.label}</span><button type="button" role="switch" aria-checked={matrixSettings.hourly[metric.id]} aria-label={`${matrixSettings.hourly[metric.id] ? "Hide" : "Show"} ${metric.label}`} onClick={() => onToggleMatrixMetric(metric.id, true)} tabIndex={isOpen ? 0 : -1} className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${matrixSettings.hourly[metric.id] ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"}`}><Check size={15} strokeWidth={3} /></button></div>)}
+              </details>
+            </>
+          ) : Object.entries(settings).map(([key, enabled]) => (
+            <div key={key} className="flex min-h-[52px] items-center justify-between border-b border-slate-800/80 py-2"><p className="text-sm font-semibold capitalize text-slate-100">{key}</p><button type="button" role="switch" aria-checked={enabled} onClick={() => onToggle(key as keyof DashboardCardSettings)} tabIndex={isOpen ? 0 : -1} className={`inline-flex min-h-12 min-w-12 items-center justify-center rounded-full border ${enabled ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"}`}><Check size={19} strokeWidth={3} /></button></div>
+          ))}
         </div>
 
         <div className="border-t border-slate-800 px-4 py-3">

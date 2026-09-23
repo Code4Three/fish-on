@@ -7,6 +7,14 @@ describe("buildDayData", () => {
 
   it("maps every hour and derives a score band from real tide/solunar data", () => {
     expect(day.hours).toHaveLength(24);
+    expect(day.hours[0]).toMatchObject({
+      time: conditionsFixture.days[0].hours[0].time,
+      tideStage: conditionsFixture.days[0].hours[0].tideStage,
+      windLabel: conditionsFixture.days[0].hours[0].wind,
+      solunarCondition: conditionsFixture.days[0].hours[0].solunarCondition,
+      pressureTrend: conditionsFixture.days[0].hours[0].pressureTrend,
+      weatherCondition: conditionsFixture.days[0].hours[0].weatherCondition
+    });
     day.hours.forEach(hour => {
       expect(hour.score).toBeGreaterThanOrEqual(0);
       expect(hour.score).toBeLessThanOrEqual(100);

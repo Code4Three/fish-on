@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import conditionsFixture from "../../../public/conditions.json";
 import { buildDayData } from "../../data/conditions";
-import { PressureCard, WaterDetailsCard, SolunarDetailsCard, WeatherDetailsCard } from "./shared";
+import { FullConditionsView, PressureCard, WaterDetailsCard, SolunarDetailsCard, WeatherDetailsCard } from "./shared";
 
 describe("Dashboard detail cards", () => {
   const fullDay = buildDayData(conditionsFixture.days, 0);
@@ -39,6 +39,15 @@ describe("Dashboard detail cards", () => {
   it("renders the atmospheric pressure hero card", () => {
     render(<PressureCard day={fullDay} hour={7} />);
     expect(screen.getByText(/Atmospheric pressure/i)).toBeInTheDocument();
+  });
+
+  it("renders Full Conditions as the detail-card page without an hourly duplicate", () => {
+    render(<FullConditionsView day={fullDay} hour={7} onClose={() => undefined} />);
+    expect(screen.getByText("Full Conditions")).toBeInTheDocument();
+    expect(screen.getAllByText(/Water & marine details/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Astronomical & solunar details/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/^Weather$/i).length).toBeGreaterThan(0);
+    expect(screen.queryByText("Current conditions")).not.toBeInTheDocument();
   });
 
   it("renders WeatherDetailsCard placeholders when ranges missing", () => {

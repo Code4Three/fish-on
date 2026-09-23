@@ -27,7 +27,7 @@ export default function Option1BottomDock({ day, hour, offset, onHourChange, onO
     const rising = day.hours[Math.min(23, hour + 1)].tideHeight > current.tideHeight;
 
     return (
-        <main className="relative min-h-screen max-w-md mx-auto bg-hull-950 font-body">
+        <main className="no-scrollbar relative min-h-screen max-w-md mx-auto overflow-y-auto bg-hull-950 font-body">
             <header className="sticky top-0 z-20 bg-hull-950/95 px-4 py-3 backdrop-blur">
                 <div className="flex items-center gap-2">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-tide-500/15 text-tide-400">

@@ -1,23 +1,18 @@
 import { useRef, useState } from "react";
 import { Fish, Settings, Waves } from "lucide-react";
+import { DAILY_GROUPS } from "../config/metricMatrix";
 import { useAnchoredSettings } from "../hooks/useAnchoredSettings";
 import { useDashboardSettings } from "../hooks/useDashboardSettings";
 import CustomizationBottomSheet from "./settings/CustomizationBottomSheet";
 import {
   DashboardStateProps,
   DayDrawer,
+  FullConditionsView,
   HourPills,
-  MetricCard,
-  PressureCard,
-  ScoreCard,
-  SolunarCard,
-  SolunarDetailsCard,
+  MatrixGroupCard,
+  MatrixMetricCard,
   StepButton,
-  TideCard,
-  WaterDetailsCard,
-  WeatherDetailsCard,
   formatDate,
-  metrics,
   ratingTier
 } from "./prototypes/shared";
 
@@ -84,14 +79,19 @@ function DashboardDock({
 
 // Production dashboard: bottom-dock thumb-first layout (formerly Prototype 1). Settings live in the header only.
 export default function MainDashboard({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
-  const { settings, cardSettings, toggleCard, resetSettings } = useAnchoredSettings();
+  const { cardSettings, matrixSettings, toggleCard, toggleGroup, toggleMatrixMetric, moveDashboardItem, resetSettings } = useAnchoredSettings();
   const { dockPosition, selectDockPosition } = useDashboardSettings();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
   const [drawerProgress, setDrawerProgress] = useState(0);
   const [drawerDragging, setDrawerDragging] = useState(false);
+  const [conditionsProgress, setConditionsProgress] = useState(0);
+  const [conditionsDragging, setConditionsDragging] = useState(false);
   const dragStartY = useRef<number | null>(null);
   const dragStartProgress = useRef(0);
+  const conditionsStartX = useRef<number | null>(null);
+  const conditionsStartY = useRef<number | null>(null);
+  const conditionsStartProgress = useRef(0);
 
   const current = day.hours[hour];
   const rising = day.hours[Math.min(23, hour + 1)].tideHeight > current.tideHeight;
@@ -118,9 +118,55 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
     dragStartY.current = null;
   };
 
+  const handleConditionsPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    if (event.pointerType === "touch") {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
+    conditionsStartX.current = event.clientX;
+    conditionsStartY.current = event.clientY;
+    conditionsStartProgress.current = conditionsProgress;
+  };
+
+  const handleConditionsPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (conditionsStartX.current === null || conditionsStartY.current === null) return;
+    const deltaX = event.clientX - conditionsStartX.current;
+    const deltaY = event.clientY - conditionsStartY.current;
+
+    if (!conditionsDragging) {
+      if (Math.abs(deltaY) > Math.abs(deltaX) || Math.abs(deltaX) < 8) return;
+      if (deltaX > 0 && conditionsStartProgress.current === 0) return;
+      if (deltaX < 0 && conditionsStartProgress.current === 1) return;
+      if (event.pointerType !== "touch") {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      }
+      setConditionsDragging(true);
+    }
+
+    event.preventDefault();
+    const travel = Math.max(1, event.currentTarget.clientWidth);
+    const progressDelta = -deltaX / travel;
+    setConditionsProgress(Math.max(0, Math.min(1, conditionsStartProgress.current + progressDelta)));
+  };
+
+  const handleConditionsPointerEnd = () => {
+    if (conditionsStartX.current === null) return;
+    setConditionsProgress(current => current >= 0.5 ? 1 : 0);
+    setConditionsDragging(false);
+    conditionsStartX.current = null;
+    conditionsStartY.current = null;
+  };
+
+  const handleDashboardDrop = (event: React.DragEvent<HTMLElement>, target: string, area: "heroOrder" | "cardOrder") => {
+    event.preventDefault();
+    const sourceArea = event.dataTransfer.getData("text/area");
+    const source = event.dataTransfer.getData("text/id");
+    if (sourceArea === area) moveDashboardItem(source, target, area);
+  };
+
   return (
-    <main className="relative min-h-screen max-w-md mx-auto bg-hull-950 font-body">
-      <header className="sticky top-0 z-50 bg-hull-950/95 px-4 py-3 backdrop-blur">
+    <main className="dashboard-shell overscroll-x-none relative mx-auto flex h-[100dvh] min-h-[100svh] max-w-md flex-col overflow-hidden bg-hull-950 font-body touch-pan-y">
+      <header className="sticky top-0 z-20 shrink-0 bg-hull-950/95 px-4 py-3 backdrop-blur">
         <div className="flex items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-2">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-tide-500/15 text-tide-400">
@@ -162,21 +208,42 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
         />
       )}
 
-      <div className={dockPosition === "bottom" ? "pb-44" : undefined}>
-        <ScoreCard day={day} hour={hour} />
-        <TideCard day={day} hour={hour} />
-        <SolunarCard day={day} hour={hour} />
-        <PressureCard day={day} hour={hour} />
-        <section className="mt-3 px-4">
-          <div className="grid grid-cols-2 gap-3">
-            {metrics.filter(metric => settings[metric.id]).map(metric => (
-              <MetricCard key={metric.id} id={metric.id} day={day} hour={hour} />
-            ))}
+      <div
+        className={`overscroll-x-none min-h-0 flex-1 overflow-hidden ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
+        onPointerDown={handleConditionsPointerDown}
+        onPointerMove={handleConditionsPointerMove}
+        onPointerUp={handleConditionsPointerEnd}
+        onPointerCancel={handleConditionsPointerEnd}
+        onLostPointerCapture={handleConditionsPointerEnd}
+      >
+        <div
+          className="overscroll-x-none flex h-full w-[200%] touch-pan-y"
+          style={{
+            transform: `translateX(-${conditionsProgress * 50}%)`,
+            transition: conditionsDragging ? "none" : "transform 300ms ease-out"
+          }}
+        >
+          <div className={`no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y ${dockPosition === "bottom" ? "pb-44" : ""}`}>
+            {matrixSettings.heroOrder.map(groupId => {
+              const group = DAILY_GROUPS.find(item => item.id === groupId);
+              if (!group || !matrixSettings.groups[group.id]) return null;
+              return <MatrixGroupCard key={group.id} group={group} visibleMetrics={matrixSettings.metrics} day={day} hour={hour} draggable onDragStart={event => { event.dataTransfer.setData("text/area", "heroOrder"); event.dataTransfer.setData("text/id", group.id); }} onDragOver={event => event.preventDefault()} onDrop={event => handleDashboardDrop(event, group.id, "heroOrder")} />;
+            })}
+            <section className="mt-3 px-4" onDragOver={event => event.preventDefault()}>
+              <div className="grid grid-cols-2 gap-3">
+                {matrixSettings.cardOrder.map(metricId => {
+                  const definition = DAILY_GROUPS.flatMap(group => group.metrics).find(metric => metric.id === metricId);
+                  const group = DAILY_GROUPS.find(item => item.metrics.some(metric => metric.id === metricId));
+                  if (!definition || !group || matrixSettings.groups[group.id] || matrixSettings.metrics[metricId] === false) return null;
+                  return <MatrixMetricCard key={metricId} id={metricId} label={definition.label} day={day} hour={hour} draggable onDragStart={event => { event.dataTransfer.setData("text/area", "cardOrder"); event.dataTransfer.setData("text/id", metricId); }} onDragOver={event => event.preventDefault()} onDrop={event => handleDashboardDrop(event, metricId, "cardOrder")} />;
+                })}
+              </div>
+            </section>
           </div>
-        </section>
-        <WaterDetailsCard day={day} hour={hour} />
-        <SolunarDetailsCard day={day} hour={hour} />
-        <WeatherDetailsCard day={day} hour={hour} />
+          <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y">
+            <FullConditionsView day={day} hour={hour} visibleMetrics={matrixSettings.metrics} onClose={() => setConditionsProgress(0)} />
+          </div>
+        </div>
       </div>
 
       {dockPosition === "bottom" && (
@@ -201,6 +268,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
         expansionProgress={drawerProgress}
         day={day}
         selectedHour={hour}
+        hourlySettings={matrixSettings.hourly}
         dockPosition={dockPosition}
         onDragStart={handleDockDragStart}
         onDragMove={handleDockDragMove}
@@ -216,6 +284,9 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
         onClose={() => setSettingsOpen(false)}
         settings={cardSettings}
         onToggle={toggleCard}
+        matrixSettings={matrixSettings}
+        onToggleGroup={toggleGroup}
+        onToggleMatrixMetric={toggleMatrixMetric}
         onReset={resetSettings}
         prototype={prototype}
         onSelectPrototype={onSelectPrototype}
