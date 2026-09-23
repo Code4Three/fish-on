@@ -1,6 +1,10 @@
 // Adapts the generated /conditions.json payload into the shape the dashboard cards expect.
 import scoringRules from "../config/scoringRules.json";
 import { calculateConditionScore, calculateTideRating } from "../utils/scoringEngine.js";
+import {
+  calculateSolunarHourRating,
+  calculateSolunarPeakRating
+} from "../utils/solunarRating.js";
 
 export interface ConditionsTideEntry {
   time: string;
@@ -23,6 +27,7 @@ export interface ConditionsAnchored {
   moonset: string;
   moonPhase: string;
   illumination: number;
+  moonDistance: number | null;
   solunarPeaks: ConditionsSolunarPeak[];
   weatherSummary: string;
   tempRange: [number, number];
@@ -173,17 +178,6 @@ function toScoreBand(bandName: string | undefined): ClaudeHourlyData["scoreBand"
   return "Slow";
 }
 
-// Major and minor peaks rate higher than a normal hour.
-function getSolunarRating(condition: string | undefined): number {
-  if (!condition) return 0;
-  return [
-    ["Major 1", 100],
-    ["Major 2", 80],
-    ["Minor 1", 60],
-    ["Minor 2", 40]
-  ].find(([name]) => condition.includes(name as string))?.[1] as number ?? 0;
-}
-
 function buildTideEventTimeline(days: ConditionsDay[]): Array<{ type: "High" | "Low"; at: number }> {
   return days
     .flatMap(day => [
@@ -230,7 +224,7 @@ export function buildDayData(days: ConditionsDay[], index: number): ClaudeDayDat
   const hours: ClaudeHourlyData[] = day.hours.map(item => {
     const at = toTimestamp(day.date, item.time);
     const tideRating = calculateTideRating(at, tideTimeline, scoringRules);
-    const solunarRating = getSolunarRating(item.solunarCondition);
+    const solunarRating = calculateSolunarHourRating(day, item.time, scoringRules);
     const { score, band } = calculateConditionScore(tideRating, solunarRating, scoringRules);
 
     return {
@@ -270,7 +264,10 @@ export function buildDayData(days: ConditionsDay[], index: number): ClaudeDayDat
     .filter(peak => peak.type.includes("Minor"))
     .map(peak => ({ start: windowHour(peak.start, day.date), end: windowHour(peak.end, day.date) }));
 
-  const solunarRating = Math.max(0, ...peaks.map(peak => getSolunarRating(peak.type)));
+  const solunarRating = Math.max(
+    0,
+    ...peaks.map(peak => calculateSolunarPeakRating(peak, day.anchored, scoringRules))
+  );
 
   return {
     date: day.date,

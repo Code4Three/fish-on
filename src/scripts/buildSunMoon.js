@@ -39,6 +39,11 @@ for (const date of getBuildDates()) {
 
   const moonIllumination =
     SunCalc.getMoonIllumination(date);
+  const moonPosition = SunCalc.getMoonPosition(
+    new Date(date.getTime() + 12 * 60 * 60 * 1000),
+    LOCATION.lat,
+    LOCATION.lon
+  );
 
   days.push({
     date: formatLocalDate(date),
@@ -54,7 +59,8 @@ for (const date of getBuildDates()) {
 
     illumination: Math.round(
       moonIllumination.fraction * 100
-    )
+    ),
+    moonDistance: Math.round(moonPosition.distance)
   });
 }
 

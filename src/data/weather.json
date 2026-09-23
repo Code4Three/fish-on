@@ -1,268 +1,7 @@
 {
   "days": [
     {
-      "date": "2026-09-22",
-      "summary": "Mainly clear",
-      "tempRange": [
-        13,
-        24
-      ],
-      "windRange": [
-        14,
-        20
-      ],
-      "windBaseline": "20 km/h SSE",
-      "cloudCover": 10,
-      "cloudBaseline": 10,
-      "pressureRange": [
-        1020,
-        1027
-      ],
-      "hours": [
-        {
-          "time": "00:00",
-          "temperature": 18,
-          "pressure": 1020,
-          "cloudCover": 0,
-          "rainChance": 0,
-          "windSpeed": 15,
-          "windDirection": "NNW",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "01:00",
-          "temperature": 18,
-          "pressure": 1020,
-          "cloudCover": 0,
-          "rainChance": 0,
-          "windSpeed": 12,
-          "windDirection": "NNW",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "02:00",
-          "temperature": 17,
-          "pressure": 1020,
-          "cloudCover": 0,
-          "rainChance": 0,
-          "windSpeed": 7,
-          "windDirection": "NNW",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "03:00",
-          "temperature": 15,
-          "pressure": 1020,
-          "cloudCover": 0,
-          "rainChance": 0,
-          "windSpeed": 3,
-          "windDirection": "W",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "04:00",
-          "temperature": 14,
-          "pressure": 1020,
-          "cloudCover": 0,
-          "rainChance": 0,
-          "windSpeed": 4,
-          "windDirection": "WNW",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "05:00",
-          "temperature": 14,
-          "pressure": 1021,
-          "cloudCover": 0,
-          "rainChance": 0,
-          "windSpeed": 3,
-          "windDirection": "W",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "06:00",
-          "temperature": 13,
-          "pressure": 1023,
-          "cloudCover": 14,
-          "rainChance": 0,
-          "windSpeed": 18,
-          "windDirection": "S",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "07:00",
-          "temperature": 17,
-          "pressure": 1024,
-          "cloudCover": 21,
-          "rainChance": 0,
-          "windSpeed": 13,
-          "windDirection": "SW",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "08:00",
-          "temperature": 21,
-          "pressure": 1025,
-          "cloudCover": 22,
-          "rainChance": 0,
-          "windSpeed": 13,
-          "windDirection": "S",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "09:00",
-          "temperature": 23,
-          "pressure": 1025,
-          "cloudCover": 0,
-          "rainChance": 0,
-          "windSpeed": 18,
-          "windDirection": "SSE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "10:00",
-          "temperature": 23,
-          "pressure": 1026,
-          "cloudCover": 0,
-          "rainChance": 0,
-          "windSpeed": 16,
-          "windDirection": "SSE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "11:00",
-          "temperature": 24,
-          "pressure": 1025,
-          "cloudCover": 0,
-          "rainChance": 0,
-          "windSpeed": 17,
-          "windDirection": "SSE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "12:00",
-          "temperature": 24,
-          "pressure": 1025,
-          "cloudCover": 0,
-          "rainChance": 1,
-          "windSpeed": 17,
-          "windDirection": "SE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "13:00",
-          "temperature": 24,
-          "pressure": 1024,
-          "cloudCover": 0,
-          "rainChance": 2,
-          "windSpeed": 18,
-          "windDirection": "SE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "14:00",
-          "temperature": 23,
-          "pressure": 1024,
-          "cloudCover": 0,
-          "rainChance": 4,
-          "windSpeed": 19,
-          "windDirection": "SE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "15:00",
-          "temperature": 23,
-          "pressure": 1024,
-          "cloudCover": 0,
-          "rainChance": 5,
-          "windSpeed": 20,
-          "windDirection": "SE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "16:00",
-          "temperature": 22,
-          "pressure": 1024,
-          "cloudCover": 0,
-          "rainChance": 6,
-          "windSpeed": 19,
-          "windDirection": "SE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "17:00",
-          "temperature": 21,
-          "pressure": 1024,
-          "cloudCover": 5,
-          "rainChance": 5,
-          "windSpeed": 17,
-          "windDirection": "SE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "18:00",
-          "temperature": 21,
-          "pressure": 1025,
-          "cloudCover": 13,
-          "rainChance": 2,
-          "windSpeed": 16,
-          "windDirection": "SSE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "19:00",
-          "temperature": 20,
-          "pressure": 1026,
-          "cloudCover": 25,
-          "rainChance": 0,
-          "windSpeed": 17,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "20:00",
-          "temperature": 20,
-          "pressure": 1027,
-          "cloudCover": 38,
-          "rainChance": 0,
-          "windSpeed": 18,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "21:00",
-          "temperature": 20,
-          "pressure": 1027,
-          "cloudCover": 42,
-          "rainChance": 0,
-          "windSpeed": 18,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "22:00",
-          "temperature": 20,
-          "pressure": 1027,
-          "cloudCover": 32,
-          "rainChance": 0,
-          "windSpeed": 19,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "23:00",
-          "temperature": 20,
-          "pressure": 1027,
-          "cloudCover": 27,
-          "rainChance": 3,
-          "windSpeed": 19,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
-        }
-      ]
-    },
-    {
-      "date": "2026-09-23",
+      "date": "2026-09-24",
       "summary": "Drizzle",
       "tempRange": [
         19,
@@ -272,268 +11,7 @@
         16,
         22
       ],
-      "windBaseline": "22 km/h SE",
-      "cloudCover": 42,
-      "cloudBaseline": 42,
-      "pressureRange": [
-        1025,
-        1029
-      ],
-      "hours": [
-        {
-          "time": "00:00",
-          "temperature": 20,
-          "pressure": 1027,
-          "cloudCover": 35,
-          "rainChance": 8,
-          "windSpeed": 18,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "01:00",
-          "temperature": 19,
-          "pressure": 1026,
-          "cloudCover": 38,
-          "rainChance": 16,
-          "windSpeed": 17,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "02:00",
-          "temperature": 19,
-          "pressure": 1025,
-          "cloudCover": 75,
-          "rainChance": 31,
-          "windSpeed": 16,
-          "windDirection": "SSE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "03:00",
-          "temperature": 19,
-          "pressure": 1025,
-          "cloudCover": 65,
-          "rainChance": 48,
-          "windSpeed": 17,
-          "windDirection": "SSE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "04:00",
-          "temperature": 19,
-          "pressure": 1025,
-          "cloudCover": 57,
-          "rainChance": 61,
-          "windSpeed": 16,
-          "windDirection": "SSE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "05:00",
-          "temperature": 19,
-          "pressure": 1026,
-          "cloudCover": 41,
-          "rainChance": 64,
-          "windSpeed": 15,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "06:00",
-          "temperature": 19,
-          "pressure": 1027,
-          "cloudCover": 30,
-          "rainChance": 62,
-          "windSpeed": 15,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "07:00",
-          "temperature": 20,
-          "pressure": 1028,
-          "cloudCover": 38,
-          "rainChance": 61,
-          "windSpeed": 18,
-          "windDirection": "SE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "08:00",
-          "temperature": 21,
-          "pressure": 1028,
-          "cloudCover": 37,
-          "rainChance": 66,
-          "windSpeed": 19,
-          "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "09:00",
-          "temperature": 22,
-          "pressure": 1028,
-          "cloudCover": 46,
-          "rainChance": 72,
-          "windSpeed": 22,
-          "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "10:00",
-          "temperature": 22,
-          "pressure": 1028,
-          "cloudCover": 54,
-          "rainChance": 76,
-          "windSpeed": 21,
-          "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "11:00",
-          "temperature": 22,
-          "pressure": 1028,
-          "cloudCover": 41,
-          "rainChance": 75,
-          "windSpeed": 22,
-          "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "12:00",
-          "temperature": 22,
-          "pressure": 1027,
-          "cloudCover": 42,
-          "rainChance": 72,
-          "windSpeed": 21,
-          "windDirection": "ESE",
-          "weatherCondition": "Drizzle"
-        },
-        {
-          "time": "13:00",
-          "temperature": 22,
-          "pressure": 1027,
-          "cloudCover": 47,
-          "rainChance": 67,
-          "windSpeed": 22,
-          "windDirection": "ESE",
-          "weatherCondition": "Drizzle"
-        },
-        {
-          "time": "14:00",
-          "temperature": 22,
-          "pressure": 1026,
-          "cloudCover": 45,
-          "rainChance": 61,
-          "windSpeed": 22,
-          "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "15:00",
-          "temperature": 20,
-          "pressure": 1026,
-          "cloudCover": 40,
-          "rainChance": 54,
-          "windSpeed": 22,
-          "windDirection": "ESE",
-          "weatherCondition": "Drizzle"
-        },
-        {
-          "time": "16:00",
-          "temperature": 20,
-          "pressure": 1026,
-          "cloudCover": 39,
-          "rainChance": 47,
-          "windSpeed": 21,
-          "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "17:00",
-          "temperature": 20,
-          "pressure": 1027,
-          "cloudCover": 41,
-          "rainChance": 39,
-          "windSpeed": 19,
-          "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "18:00",
-          "temperature": 20,
-          "pressure": 1027,
-          "cloudCover": 41,
-          "rainChance": 30,
-          "windSpeed": 19,
-          "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
-        },
-        {
-          "time": "19:00",
-          "temperature": 20,
-          "pressure": 1028,
-          "cloudCover": 45,
-          "rainChance": 24,
-          "windSpeed": 19,
-          "windDirection": "ESE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "20:00",
-          "temperature": 20,
-          "pressure": 1029,
-          "cloudCover": 38,
-          "rainChance": 22,
-          "windSpeed": 19,
-          "windDirection": "ESE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "21:00",
-          "temperature": 20,
-          "pressure": 1029,
-          "cloudCover": 27,
-          "rainChance": 22,
-          "windSpeed": 18,
-          "windDirection": "ESE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "22:00",
-          "temperature": 20,
-          "pressure": 1029,
-          "cloudCover": 20,
-          "rainChance": 24,
-          "windSpeed": 18,
-          "windDirection": "SE",
-          "weatherCondition": "Mainly clear"
-        },
-        {
-          "time": "23:00",
-          "temperature": 20,
-          "pressure": 1029,
-          "cloudCover": 30,
-          "rainChance": 29,
-          "windSpeed": 17,
-          "windDirection": "SE",
-          "weatherCondition": "Mainly clear"
-        }
-      ]
-    },
-    {
-      "date": "2026-09-24",
-      "summary": "Light drizzle",
-      "tempRange": [
-        18,
-        22
-      ],
-      "windRange": [
-        17,
-        23
-      ],
-      "windBaseline": "23 km/h SE",
+      "windBaseline": "22 km/h ESE",
       "cloudCover": 27,
       "cloudBaseline": 27,
       "pressureRange": [
@@ -543,151 +21,151 @@
       "hours": [
         {
           "time": "00:00",
-          "temperature": 19,
-          "pressure": 1029,
-          "cloudCover": 33,
-          "rainChance": 37,
+          "temperature": 20,
+          "pressure": 1028,
+          "cloudCover": 23,
+          "rainChance": 9,
           "windSpeed": 16,
           "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "01:00",
-          "temperature": 19,
+          "temperature": 20,
           "pressure": 1028,
-          "cloudCover": 26,
-          "rainChance": 43,
-          "windSpeed": 16,
+          "cloudCover": 71,
+          "rainChance": 12,
+          "windSpeed": 15,
           "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "weatherCondition": "Partly cloudy"
         },
         {
           "time": "02:00",
-          "temperature": 18,
+          "temperature": 19,
           "pressure": 1028,
-          "cloudCover": 50,
-          "rainChance": 46,
-          "windSpeed": 18,
+          "cloudCover": 65,
+          "rainChance": 16,
+          "windSpeed": 15,
           "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "weatherCondition": "Partly cloudy"
         },
         {
           "time": "03:00",
-          "temperature": 18,
+          "temperature": 19,
           "pressure": 1027,
-          "cloudCover": 47,
-          "rainChance": 48,
-          "windSpeed": 19,
-          "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "cloudCover": 56,
+          "rainChance": 20,
+          "windSpeed": 16,
+          "windDirection": "ESE",
+          "weatherCondition": "Partly cloudy"
         },
         {
           "time": "04:00",
-          "temperature": 18,
+          "temperature": 20,
           "pressure": 1027,
-          "cloudCover": 30,
-          "rainChance": 47,
-          "windSpeed": 19,
-          "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "cloudCover": 10,
+          "rainChance": 24,
+          "windSpeed": 16,
+          "windDirection": "ESE",
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "05:00",
           "temperature": 19,
           "pressure": 1028,
-          "cloudCover": 20,
-          "rainChance": 40,
-          "windSpeed": 20,
-          "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "cloudCover": 1,
+          "rainChance": 26,
+          "windSpeed": 16,
+          "windDirection": "ESE",
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "06:00",
-          "temperature": 19,
+          "temperature": 20,
           "pressure": 1029,
-          "cloudCover": 17,
-          "rainChance": 30,
-          "windSpeed": 20,
-          "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "cloudCover": 40,
+          "rainChance": 27,
+          "windSpeed": 16,
+          "windDirection": "ESE",
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "07:00",
           "temperature": 20,
           "pressure": 1029,
-          "cloudCover": 11,
-          "rainChance": 27,
-          "windSpeed": 20,
+          "cloudCover": 42,
+          "rainChance": 31,
+          "windSpeed": 18,
           "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "08:00",
-          "temperature": 21,
+          "temperature": 20,
           "pressure": 1030,
-          "cloudCover": 13,
-          "rainChance": 38,
+          "cloudCover": 16,
+          "rainChance": 41,
           "windSpeed": 21,
           "windDirection": "ESE",
-          "weatherCondition": "Clear sky"
+          "weatherCondition": "Drizzle"
         },
         {
           "time": "09:00",
           "temperature": 21,
           "pressure": 1030,
-          "cloudCover": 10,
-          "rainChance": 56,
-          "windSpeed": 21,
+          "cloudCover": 5,
+          "rainChance": 54,
+          "windSpeed": 20,
           "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "10:00",
-          "temperature": 21,
+          "temperature": 22,
           "pressure": 1030,
-          "cloudCover": 22,
-          "rainChance": 69,
-          "windSpeed": 21,
+          "cloudCover": 7,
+          "rainChance": 63,
+          "windSpeed": 19,
           "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "11:00",
-          "temperature": 21,
+          "temperature": 22,
           "pressure": 1030,
-          "cloudCover": 20,
-          "rainChance": 74,
-          "windSpeed": 23,
+          "cloudCover": 15,
+          "rainChance": 66,
+          "windSpeed": 18,
           "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "12:00",
           "temperature": 22,
           "pressure": 1029,
-          "cloudCover": 9,
-          "rainChance": 76,
-          "windSpeed": 23,
+          "cloudCover": 15,
+          "rainChance": 66,
+          "windSpeed": 18,
           "windDirection": "ESE",
-          "weatherCondition": "Clear sky"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "13:00",
           "temperature": 22,
           "pressure": 1028,
-          "cloudCover": 2,
-          "rainChance": 73,
-          "windSpeed": 23,
+          "cloudCover": 13,
+          "rainChance": 63,
+          "windSpeed": 19,
           "windDirection": "ESE",
-          "weatherCondition": "Clear sky"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "14:00",
           "temperature": 21,
           "pressure": 1028,
-          "cloudCover": 3,
-          "rainChance": 65,
-          "windSpeed": 23,
+          "cloudCover": 6,
+          "rainChance": 55,
+          "windSpeed": 19,
           "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
@@ -695,108 +173,108 @@
           "time": "15:00",
           "temperature": 21,
           "pressure": 1027,
-          "cloudCover": 5,
-          "rainChance": 54,
-          "windSpeed": 22,
+          "cloudCover": 21,
+          "rainChance": 44,
+          "windSpeed": 21,
           "windDirection": "ESE",
-          "weatherCondition": "Clear sky"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "16:00",
           "temperature": 21,
           "pressure": 1027,
-          "cloudCover": 23,
-          "rainChance": 43,
-          "windSpeed": 21,
-          "windDirection": "SE",
-          "weatherCondition": "Mainly clear"
+          "cloudCover": 13,
+          "rainChance": 33,
+          "windSpeed": 22,
+          "windDirection": "ESE",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "17:00",
-          "temperature": 21,
+          "temperature": 20,
           "pressure": 1028,
-          "cloudCover": 61,
-          "rainChance": 32,
+          "cloudCover": 12,
+          "rainChance": 22,
           "windSpeed": 20,
           "windDirection": "SE",
-          "weatherCondition": "Partly cloudy"
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "18:00",
           "temperature": 20,
-          "pressure": 1029,
-          "cloudCover": 70,
-          "rainChance": 21,
-          "windSpeed": 20,
+          "pressure": 1028,
+          "cloudCover": 34,
+          "rainChance": 10,
+          "windSpeed": 18,
           "windDirection": "SE",
-          "weatherCondition": "Partly cloudy"
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "19:00",
           "temperature": 20,
           "pressure": 1029,
-          "cloudCover": 54,
-          "rainChance": 14,
-          "windSpeed": 19,
-          "windDirection": "SE",
-          "weatherCondition": "Partly cloudy"
+          "cloudCover": 30,
+          "rainChance": 4,
+          "windSpeed": 18,
+          "windDirection": "ESE",
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "20:00",
-          "temperature": 19,
-          "pressure": 1030,
-          "cloudCover": 30,
-          "rainChance": 14,
-          "windSpeed": 19,
-          "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "temperature": 20,
+          "pressure": 1029,
+          "cloudCover": 58,
+          "rainChance": 5,
+          "windSpeed": 18,
+          "windDirection": "ESE",
+          "weatherCondition": "Partly cloudy"
         },
         {
           "time": "21:00",
           "temperature": 19,
           "pressure": 1030,
-          "cloudCover": 13,
-          "rainChance": 18,
-          "windSpeed": 18,
-          "windDirection": "SE",
-          "weatherCondition": "Clear sky"
+          "cloudCover": 22,
+          "rainChance": 11,
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "22:00",
           "temperature": 19,
           "pressure": 1030,
-          "cloudCover": 25,
-          "rainChance": 22,
-          "windSpeed": 16,
-          "windDirection": "SE",
-          "weatherCondition": "Mainly clear"
+          "cloudCover": 34,
+          "rainChance": 18,
+          "windSpeed": 19,
+          "windDirection": "ESE",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "23:00",
-          "temperature": 18,
+          "temperature": 19,
           "pressure": 1030,
-          "cloudCover": 53,
+          "cloudCover": 39,
           "rainChance": 25,
-          "windSpeed": 16,
-          "windDirection": "SE",
+          "windSpeed": 18,
+          "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         }
       ]
     },
     {
       "date": "2026-09-25",
-      "summary": "Light drizzle",
+      "summary": "Drizzle",
       "tempRange": [
         17,
         22
       ],
       "windRange": [
-        15,
-        21
+        16,
+        22
       ],
-      "windBaseline": "21 km/h SE",
-      "cloudCover": 46,
-      "cloudBaseline": 46,
+      "windBaseline": "22 km/h SE",
+      "cloudCover": 33,
+      "cloudBaseline": 33,
       "pressureRange": [
         1028,
         1030
@@ -804,190 +282,190 @@
       "hours": [
         {
           "time": "00:00",
-          "temperature": 18,
+          "temperature": 19,
           "pressure": 1029,
-          "cloudCover": 41,
-          "rainChance": 29,
-          "windSpeed": 16,
+          "cloudCover": 12,
+          "rainChance": 33,
+          "windSpeed": 18,
           "windDirection": "SE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "01:00",
-          "temperature": 18,
+          "temperature": 19,
           "pressure": 1029,
-          "cloudCover": 34,
-          "rainChance": 33,
-          "windSpeed": 15,
+          "cloudCover": 16,
+          "rainChance": 39,
+          "windSpeed": 18,
           "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "02:00",
-          "temperature": 18,
+          "temperature": 19,
           "pressure": 1028,
-          "cloudCover": 32,
-          "rainChance": 37,
-          "windSpeed": 15,
+          "cloudCover": 16,
+          "rainChance": 43,
+          "windSpeed": 18,
           "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "03:00",
-          "temperature": 17,
+          "temperature": 18,
           "pressure": 1028,
-          "cloudCover": 22,
-          "rainChance": 42,
-          "windSpeed": 14,
+          "cloudCover": 9,
+          "rainChance": 46,
+          "windSpeed": 16,
           "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "04:00",
-          "temperature": 17,
+          "temperature": 18,
           "pressure": 1028,
-          "cloudCover": 32,
+          "cloudCover": 13,
           "rainChance": 45,
           "windSpeed": 14,
           "windDirection": "SSE",
-          "weatherCondition": "Light drizzle"
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "05:00",
-          "temperature": 17,
+          "temperature": 18,
           "pressure": 1028,
-          "cloudCover": 22,
-          "rainChance": 45,
-          "windSpeed": 15,
-          "windDirection": "SE",
-          "weatherCondition": "Light drizzle"
+          "cloudCover": 20,
+          "rainChance": 37,
+          "windSpeed": 14,
+          "windDirection": "SSE",
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "06:00",
           "temperature": 17,
           "pressure": 1029,
-          "cloudCover": 23,
-          "rainChance": 44,
-          "windSpeed": 16,
+          "cloudCover": 48,
+          "rainChance": 25,
+          "windSpeed": 13,
           "windDirection": "SE",
-          "weatherCondition": "Mainly clear"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "07:00",
           "temperature": 19,
-          "pressure": 1029,
-          "cloudCover": 14,
-          "rainChance": 45,
-          "windSpeed": 17,
+          "pressure": 1030,
+          "cloudCover": 41,
+          "rainChance": 20,
+          "windSpeed": 16,
           "windDirection": "SE",
-          "weatherCondition": "Clear sky"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "08:00",
           "temperature": 20,
           "pressure": 1030,
-          "cloudCover": 8,
-          "rainChance": 51,
+          "cloudCover": 41,
+          "rainChance": 28,
           "windSpeed": 21,
           "windDirection": "SE",
-          "weatherCondition": "Clear sky"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "09:00",
           "temperature": 21,
           "pressure": 1030,
-          "cloudCover": 11,
-          "rainChance": 59,
-          "windSpeed": 20,
-          "windDirection": "SE",
-          "weatherCondition": "Clear sky"
+          "cloudCover": 34,
+          "rainChance": 42,
+          "windSpeed": 22,
+          "windDirection": "ESE",
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "10:00",
           "temperature": 22,
           "pressure": 1030,
-          "cloudCover": 42,
-          "rainChance": 65,
-          "windSpeed": 18,
+          "cloudCover": 25,
+          "rainChance": 53,
+          "windSpeed": 20,
           "windDirection": "ESE",
           "weatherCondition": "Mainly clear"
         },
         {
           "time": "11:00",
           "temperature": 22,
-          "pressure": 1029,
-          "cloudCover": 98,
-          "rainChance": 66,
-          "windSpeed": 17,
+          "pressure": 1030,
+          "cloudCover": 65,
+          "rainChance": 57,
+          "windSpeed": 21,
           "windDirection": "ESE",
-          "weatherCondition": "Overcast"
+          "weatherCondition": "Partly cloudy"
         },
         {
           "time": "12:00",
-          "temperature": 22,
+          "temperature": 21,
           "pressure": 1029,
-          "cloudCover": 91,
-          "rainChance": 65,
-          "windSpeed": 18,
+          "cloudCover": 32,
+          "rainChance": 58,
+          "windSpeed": 20,
           "windDirection": "ESE",
-          "weatherCondition": "Overcast"
+          "weatherCondition": "Drizzle"
         },
         {
           "time": "13:00",
-          "temperature": 22,
+          "temperature": 21,
           "pressure": 1028,
-          "cloudCover": 52,
-          "rainChance": 63,
-          "windSpeed": 18,
+          "cloudCover": 24,
+          "rainChance": 59,
+          "windSpeed": 21,
           "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "14:00",
-          "temperature": 22,
+          "temperature": 21,
           "pressure": 1028,
-          "cloudCover": 78,
-          "rainChance": 61,
-          "windSpeed": 17,
+          "cloudCover": 20,
+          "rainChance": 63,
+          "windSpeed": 20,
           "windDirection": "ESE",
-          "weatherCondition": "Partly cloudy"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "15:00",
           "temperature": 21,
           "pressure": 1028,
-          "cloudCover": 45,
-          "rainChance": 57,
-          "windSpeed": 18,
+          "cloudCover": 19,
+          "rainChance": 68,
+          "windSpeed": 20,
           "windDirection": "ESE",
-          "weatherCondition": "Mainly clear"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "16:00",
           "temperature": 20,
           "pressure": 1028,
-          "cloudCover": 27,
-          "rainChance": 53,
-          "windSpeed": 17,
-          "windDirection": "SE",
+          "cloudCover": 34,
+          "rainChance": 67,
+          "windSpeed": 19,
+          "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "17:00",
           "temperature": 19,
           "pressure": 1028,
-          "cloudCover": 47,
-          "rainChance": 46,
-          "windSpeed": 15,
-          "windDirection": "SE",
+          "cloudCover": 36,
+          "rainChance": 56,
+          "windSpeed": 16,
+          "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "18:00",
-          "temperature": 19,
+          "temperature": 18,
           "pressure": 1029,
-          "cloudCover": 58,
-          "rainChance": 38,
+          "cloudCover": 23,
+          "rainChance": 39,
           "windSpeed": 13,
           "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
@@ -996,9 +474,9 @@
           "time": "19:00",
           "temperature": 18,
           "pressure": 1029,
-          "cloudCover": 52,
-          "rainChance": 33,
-          "windSpeed": 11,
+          "cloudCover": 33,
+          "rainChance": 27,
+          "windSpeed": 13,
           "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         },
@@ -1006,9 +484,9 @@
           "time": "20:00",
           "temperature": 18,
           "pressure": 1030,
-          "cloudCover": 44,
-          "rainChance": 32,
-          "windSpeed": 11,
+          "cloudCover": 63,
+          "rainChance": 24,
+          "windSpeed": 13,
           "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         },
@@ -1016,9 +494,9 @@
           "time": "21:00",
           "temperature": 18,
           "pressure": 1030,
-          "cloudCover": 66,
-          "rainChance": 33,
-          "windSpeed": 11,
+          "cloudCover": 55,
+          "rainChance": 26,
+          "windSpeed": 12,
           "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         },
@@ -1026,19 +504,19 @@
           "time": "22:00",
           "temperature": 18,
           "pressure": 1030,
-          "cloudCover": 81,
-          "rainChance": 35,
-          "windSpeed": 11,
+          "cloudCover": 57,
+          "rainChance": 31,
+          "windSpeed": 12,
           "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "23:00",
           "temperature": 18,
-          "pressure": 1029,
-          "cloudCover": 87,
-          "rainChance": 37,
-          "windSpeed": 10,
+          "pressure": 1030,
+          "cloudCover": 52,
+          "rainChance": 40,
+          "windSpeed": 11,
           "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         }
@@ -1046,262 +524,262 @@
     },
     {
       "date": "2026-09-26",
-      "summary": "Light drizzle",
+      "summary": "Dense drizzle",
       "tempRange": [
-        17,
+        16,
         22
       ],
       "windRange": [
-        8,
-        14
+        11,
+        17
       ],
-      "windBaseline": "14 km/h E",
-      "cloudCover": 38,
-      "cloudBaseline": 38,
+      "windBaseline": "17 km/h E",
+      "cloudCover": 45,
+      "cloudBaseline": 45,
       "pressureRange": [
-        1026,
-        1029
+        1027,
+        1030
       ],
       "hours": [
         {
           "time": "00:00",
           "temperature": 17,
-          "pressure": 1029,
-          "cloudCover": 91,
-          "rainChance": 39,
-          "windSpeed": 10,
-          "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
+          "pressure": 1030,
+          "cloudCover": 80,
+          "rainChance": 51,
+          "windSpeed": 11,
+          "windDirection": "E",
+          "weatherCondition": "Drizzle"
         },
         {
           "time": "01:00",
           "temperature": 17,
-          "pressure": 1028,
-          "cloudCover": 90,
-          "rainChance": 41,
-          "windSpeed": 9,
-          "windDirection": "ESE",
-          "weatherCondition": "Light drizzle"
+          "pressure": 1029,
+          "cloudCover": 63,
+          "rainChance": 61,
+          "windSpeed": 7,
+          "windDirection": "E",
+          "weatherCondition": "Dense drizzle"
         },
         {
           "time": "02:00",
-          "temperature": 17,
+          "temperature": 16,
           "pressure": 1028,
-          "cloudCover": 81,
-          "rainChance": 42,
-          "windSpeed": 9,
+          "cloudCover": 44,
+          "rainChance": 67,
+          "windSpeed": 5,
           "windDirection": "ESE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "03:00",
-          "temperature": 17,
-          "pressure": 1027,
-          "cloudCover": 67,
-          "rainChance": 43,
-          "windSpeed": 9,
-          "windDirection": "E",
+          "temperature": 16,
+          "pressure": 1028,
+          "cloudCover": 48,
+          "rainChance": 72,
+          "windSpeed": 4,
+          "windDirection": "SE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "04:00",
-          "temperature": 17,
-          "pressure": 1027,
-          "cloudCover": 58,
-          "rainChance": 43,
-          "windSpeed": 9,
-          "windDirection": "E",
+          "temperature": 16,
+          "pressure": 1028,
+          "cloudCover": 73,
+          "rainChance": 75,
+          "windSpeed": 4,
+          "windDirection": "SE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "05:00",
-          "temperature": 17,
+          "temperature": 16,
           "pressure": 1028,
-          "cloudCover": 59,
-          "rainChance": 42,
-          "windSpeed": 9,
-          "windDirection": "E",
+          "cloudCover": 70,
+          "rainChance": 78,
+          "windSpeed": 3,
+          "windDirection": "SE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "06:00",
-          "temperature": 18,
+          "temperature": 16,
           "pressure": 1028,
-          "cloudCover": 65,
-          "rainChance": 41,
-          "windSpeed": 9,
-          "windDirection": "E",
+          "cloudCover": 95,
+          "rainChance": 79,
+          "windSpeed": 3,
+          "windDirection": "SSE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "07:00",
           "temperature": 18,
           "pressure": 1029,
-          "cloudCover": 67,
-          "rainChance": 41,
-          "windSpeed": 9,
-          "windDirection": "E",
+          "cloudCover": 66,
+          "rainChance": 80,
+          "windSpeed": 5,
+          "windDirection": "SE",
           "weatherCondition": "Light drizzle"
         },
         {
           "time": "08:00",
           "temperature": 19,
           "pressure": 1029,
-          "cloudCover": 60,
-          "rainChance": 45,
-          "windSpeed": 11,
-          "windDirection": "E",
-          "weatherCondition": "Partly cloudy"
+          "cloudCover": 52,
+          "rainChance": 80,
+          "windSpeed": 8,
+          "windDirection": "ESE",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "09:00",
           "temperature": 21,
-          "pressure": 1029,
-          "cloudCover": 48,
-          "rainChance": 51,
-          "windSpeed": 13,
+          "pressure": 1030,
+          "cloudCover": 31,
+          "rainChance": 78,
+          "windSpeed": 15,
           "windDirection": "E",
-          "weatherCondition": "Mainly clear"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "10:00",
-          "temperature": 22,
+          "temperature": 21,
           "pressure": 1029,
-          "cloudCover": 37,
-          "rainChance": 53,
-          "windSpeed": 14,
-          "windDirection": "ESE",
-          "weatherCondition": "Mainly clear"
+          "cloudCover": 27,
+          "rainChance": 75,
+          "windSpeed": 17,
+          "windDirection": "E",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "11:00",
           "temperature": 22,
           "pressure": 1029,
-          "cloudCover": 27,
-          "rainChance": 49,
-          "windSpeed": 14,
-          "windDirection": "ESE",
+          "cloudCover": 45,
+          "rainChance": 71,
+          "windSpeed": 17,
+          "windDirection": "E",
           "weatherCondition": "Mainly clear"
         },
         {
           "time": "12:00",
           "temperature": 22,
           "pressure": 1028,
-          "cloudCover": 17,
-          "rainChance": 42,
-          "windSpeed": 14,
-          "windDirection": "ESE",
-          "weatherCondition": "Clear sky"
+          "cloudCover": 66,
+          "rainChance": 65,
+          "windSpeed": 16,
+          "windDirection": "E",
+          "weatherCondition": "Partly cloudy"
         },
         {
           "time": "13:00",
           "temperature": 22,
-          "pressure": 1027,
-          "cloudCover": 11,
-          "rainChance": 35,
-          "windSpeed": 13,
-          "windDirection": "ESE",
-          "weatherCondition": "Clear sky"
+          "pressure": 1028,
+          "cloudCover": 58,
+          "rainChance": 57,
+          "windSpeed": 14,
+          "windDirection": "E",
+          "weatherCondition": "Partly cloudy"
         },
         {
           "time": "14:00",
-          "temperature": 21,
+          "temperature": 22,
           "pressure": 1027,
-          "cloudCover": 10,
-          "rainChance": 28,
+          "cloudCover": 91,
+          "rainChance": 46,
           "windSpeed": 13,
-          "windDirection": "ESE",
-          "weatherCondition": "Clear sky"
+          "windDirection": "E",
+          "weatherCondition": "Overcast"
         },
         {
           "time": "15:00",
-          "temperature": 21,
+          "temperature": 22,
           "pressure": 1027,
-          "cloudCover": 12,
-          "rainChance": 20,
-          "windSpeed": 12,
-          "windDirection": "ESE",
-          "weatherCondition": "Clear sky"
+          "cloudCover": 59,
+          "rainChance": 33,
+          "windSpeed": 13,
+          "windDirection": "E",
+          "weatherCondition": "Partly cloudy"
         },
         {
           "time": "16:00",
           "temperature": 21,
-          "pressure": 1026,
-          "cloudCover": 13,
-          "rainChance": 14,
-          "windSpeed": 11,
-          "windDirection": "ESE",
-          "weatherCondition": "Clear sky"
+          "pressure": 1027,
+          "cloudCover": 44,
+          "rainChance": 22,
+          "windSpeed": 13,
+          "windDirection": "E",
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "17:00",
           "temperature": 20,
           "pressure": 1027,
-          "cloudCover": 12,
-          "rainChance": 9,
-          "windSpeed": 9,
-          "windDirection": "ESE",
+          "cloudCover": 10,
+          "rainChance": 13,
+          "windSpeed": 10,
+          "windDirection": "E",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "18:00",
           "temperature": 19,
           "pressure": 1027,
-          "cloudCover": 11,
-          "rainChance": 5,
-          "windSpeed": 5,
+          "cloudCover": 6,
+          "rainChance": 7,
+          "windSpeed": 9,
           "windDirection": "E",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "19:00",
-          "temperature": 18,
-          "pressure": 1027,
-          "cloudCover": 11,
+          "temperature": 19,
+          "pressure": 1028,
+          "cloudCover": 10,
           "rainChance": 2,
-          "windSpeed": 3,
-          "windDirection": "ENE",
+          "windSpeed": 9,
+          "windDirection": "E",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "20:00",
-          "temperature": 17,
+          "temperature": 19,
           "pressure": 1028,
-          "cloudCover": 14,
+          "cloudCover": 3,
           "rainChance": 0,
-          "windSpeed": 4,
-          "windDirection": "E",
+          "windSpeed": 10,
+          "windDirection": "ENE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "21:00",
-          "temperature": 17,
+          "temperature": 18,
           "pressure": 1028,
-          "cloudCover": 18,
-          "rainChance": 0,
-          "windSpeed": 6,
-          "windDirection": "E",
+          "cloudCover": 1,
+          "rainChance": 1,
+          "windSpeed": 10,
+          "windDirection": "ENE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "22:00",
-          "temperature": 17,
+          "temperature": 18,
           "pressure": 1028,
-          "cloudCover": 20,
-          "rainChance": 0,
-          "windSpeed": 7,
-          "windDirection": "E",
-          "weatherCondition": "Mainly clear"
+          "cloudCover": 5,
+          "rainChance": 2,
+          "windSpeed": 10,
+          "windDirection": "ENE",
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "23:00",
-          "temperature": 17,
+          "temperature": 18,
           "pressure": 1027,
-          "cloudCover": 18,
-          "rainChance": 2,
-          "windSpeed": 5,
-          "windDirection": "E",
-          "weatherCondition": "Clear sky"
+          "cloudCover": 24,
+          "rainChance": 3,
+          "windSpeed": 9,
+          "windDirection": "ENE",
+          "weatherCondition": "Mainly clear"
         }
       ]
     },
@@ -1313,43 +791,43 @@
         23
       ],
       "windRange": [
-        7,
-        13
+        8,
+        14
       ],
-      "windBaseline": "13 km/h ESE",
-      "cloudCover": 15,
-      "cloudBaseline": 15,
+      "windBaseline": "14 km/h NNE",
+      "cloudCover": 7,
+      "cloudBaseline": 7,
       "pressureRange": [
-        1025,
+        1023,
         1028
       ],
       "hours": [
         {
           "time": "00:00",
-          "temperature": 16,
+          "temperature": 18,
           "pressure": 1027,
-          "cloudCover": 15,
-          "rainChance": 4,
-          "windSpeed": 3,
-          "windDirection": "E",
-          "weatherCondition": "Clear sky"
+          "cloudCover": 20,
+          "rainChance": 3,
+          "windSpeed": 6,
+          "windDirection": "NE",
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "01:00",
-          "temperature": 16,
+          "temperature": 17,
           "pressure": 1026,
-          "cloudCover": 13,
-          "rainChance": 6,
-          "windSpeed": 1,
-          "windDirection": "ENE",
+          "cloudCover": 5,
+          "rainChance": 4,
+          "windSpeed": 2,
+          "windDirection": "NNE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "02:00",
           "temperature": 15,
           "pressure": 1026,
-          "cloudCover": 16,
-          "rainChance": 6,
+          "cloudCover": 0,
+          "rainChance": 4,
           "windSpeed": 2,
           "windDirection": "WSW",
           "weatherCondition": "Clear sky"
@@ -1358,471 +836,993 @@
           "time": "03:00",
           "temperature": 14,
           "pressure": 1026,
-          "cloudCover": 20,
-          "rainChance": 5,
-          "windSpeed": 6,
+          "cloudCover": 5,
+          "rainChance": 4,
+          "windSpeed": 11,
           "windDirection": "SW",
-          "weatherCondition": "Mainly clear"
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "04:00",
           "temperature": 13,
           "pressure": 1026,
-          "cloudCover": 21,
+          "cloudCover": 14,
           "rainChance": 4,
-          "windSpeed": 9,
+          "windSpeed": 13,
+          "windDirection": "SW",
+          "weatherCondition": "Clear sky"
+        },
+        {
+          "time": "05:00",
+          "temperature": 13,
+          "pressure": 1026,
+          "cloudCover": 35,
+          "rainChance": 3,
+          "windSpeed": 10,
           "windDirection": "SW",
           "weatherCondition": "Mainly clear"
         },
         {
-          "time": "05:00",
-          "temperature": 14,
-          "pressure": 1026,
-          "cloudCover": 15,
-          "rainChance": 2,
-          "windSpeed": 10,
-          "windDirection": "SW",
-          "weatherCondition": "Clear sky"
-        },
-        {
           "time": "06:00",
-          "temperature": 14,
+          "temperature": 13,
           "pressure": 1027,
-          "cloudCover": 5,
-          "rainChance": 1,
+          "cloudCover": 29,
+          "rainChance": 2,
           "windSpeed": 9,
           "windDirection": "SW",
-          "weatherCondition": "Clear sky"
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "07:00",
           "temperature": 16,
           "pressure": 1027,
-          "cloudCover": 3,
-          "rainChance": 0,
-          "windSpeed": 8,
+          "cloudCover": 26,
+          "rainChance": 2,
+          "windSpeed": 7,
           "windDirection": "SSW",
-          "weatherCondition": "Clear sky"
+          "weatherCondition": "Mainly clear"
         },
         {
           "time": "08:00",
-          "temperature": 18,
-          "pressure": 1027,
-          "cloudCover": 17,
-          "rainChance": 2,
+          "temperature": 19,
+          "pressure": 1028,
+          "cloudCover": 9,
+          "rainChance": 3,
           "windSpeed": 5,
-          "windDirection": "SSW",
+          "windDirection": "S",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "09:00",
-          "temperature": 20,
+          "temperature": 21,
           "pressure": 1027,
-          "cloudCover": 37,
-          "rainChance": 5,
-          "windSpeed": 3,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
+          "cloudCover": 5,
+          "rainChance": 4,
+          "windSpeed": 4,
+          "windDirection": "E",
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "10:00",
           "temperature": 22,
           "pressure": 1027,
-          "cloudCover": 48,
-          "rainChance": 8,
-          "windSpeed": 4,
-          "windDirection": "ESE",
-          "weatherCondition": "Mainly clear"
+          "cloudCover": 7,
+          "rainChance": 6,
+          "windSpeed": 7,
+          "windDirection": "ENE",
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "11:00",
-          "temperature": 23,
-          "pressure": 1026,
-          "cloudCover": 37,
-          "rainChance": 10,
-          "windSpeed": 7,
-          "windDirection": "E",
-          "weatherCondition": "Mainly clear"
+          "temperature": 22,
+          "pressure": 1027,
+          "cloudCover": 5,
+          "rainChance": 8,
+          "windSpeed": 8,
+          "windDirection": "ENE",
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "12:00",
           "temperature": 23,
           "pressure": 1026,
-          "cloudCover": 17,
+          "cloudCover": 2,
           "rainChance": 11,
           "windSpeed": 10,
-          "windDirection": "E",
+          "windDirection": "NE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "13:00",
-          "temperature": 23,
-          "pressure": 1025,
-          "cloudCover": 1,
-          "rainChance": 12,
-          "windSpeed": 12,
-          "windDirection": "ENE",
-          "weatherCondition": "Clear sky"
-        },
-        {
-          "time": "14:00",
           "temperature": 22,
           "pressure": 1025,
           "cloudCover": 0,
           "rainChance": 12,
           "windSpeed": 13,
-          "windDirection": "E",
+          "windDirection": "NE",
+          "weatherCondition": "Clear sky"
+        },
+        {
+          "time": "14:00",
+          "temperature": 22,
+          "pressure": 1024,
+          "cloudCover": 0,
+          "rainChance": 11,
+          "windSpeed": 14,
+          "windDirection": "NE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "15:00",
           "temperature": 22,
-          "pressure": 1025,
+          "pressure": 1024,
           "cloudCover": 0,
-          "rainChance": 12,
-          "windSpeed": 12,
-          "windDirection": "E",
+          "rainChance": 8,
+          "windSpeed": 14,
+          "windDirection": "NE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "16:00",
-          "temperature": 22,
-          "pressure": 1025,
+          "temperature": 21,
+          "pressure": 1023,
           "cloudCover": 0,
-          "rainChance": 12,
-          "windSpeed": 12,
-          "windDirection": "E",
+          "rainChance": 6,
+          "windSpeed": 14,
+          "windDirection": "NE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "17:00",
           "temperature": 21,
-          "pressure": 1025,
+          "pressure": 1024,
           "cloudCover": 0,
-          "rainChance": 11,
-          "windSpeed": 11,
-          "windDirection": "E",
+          "rainChance": 4,
+          "windSpeed": 13,
+          "windDirection": "NE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "18:00",
           "temperature": 20,
-          "pressure": 1026,
+          "pressure": 1024,
           "cloudCover": 0,
-          "rainChance": 9,
-          "windSpeed": 9,
-          "windDirection": "E",
+          "rainChance": 1,
+          "windSpeed": 11,
+          "windDirection": "NNE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "19:00",
           "temperature": 19,
-          "pressure": 1026,
+          "pressure": 1025,
           "cloudCover": 0,
-          "rainChance": 8,
-          "windSpeed": 8,
-          "windDirection": "E",
+          "rainChance": 0,
+          "windSpeed": 10,
+          "windDirection": "NNE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "20:00",
-          "temperature": 18,
-          "pressure": 1027,
-          "cloudCover": 7,
-          "rainChance": 7,
-          "windSpeed": 6,
-          "windDirection": "ESE",
+          "temperature": 19,
+          "pressure": 1025,
+          "cloudCover": 0,
+          "rainChance": 0,
+          "windSpeed": 9,
+          "windDirection": "N",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "21:00",
-          "temperature": 18,
-          "pressure": 1027,
-          "cloudCover": 17,
-          "rainChance": 7,
-          "windSpeed": 5,
-          "windDirection": "SE",
+          "temperature": 19,
+          "pressure": 1026,
+          "cloudCover": 0,
+          "rainChance": 1,
+          "windSpeed": 9,
+          "windDirection": "N",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "22:00",
-          "temperature": 17,
-          "pressure": 1028,
-          "cloudCover": 27,
-          "rainChance": 8,
-          "windSpeed": 5,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
+          "temperature": 18,
+          "pressure": 1026,
+          "cloudCover": 2,
+          "rainChance": 2,
+          "windSpeed": 8,
+          "windDirection": "NNW",
+          "weatherCondition": "Clear sky"
         },
         {
           "time": "23:00",
           "temperature": 17,
-          "pressure": 1028,
-          "cloudCover": 38,
-          "rainChance": 10,
+          "pressure": 1026,
+          "cloudCover": 9,
+          "rainChance": 4,
           "windSpeed": 6,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
+          "windDirection": "NW",
+          "weatherCondition": "Clear sky"
         }
       ]
     },
     {
       "date": "2026-09-28",
-      "summary": "Overcast",
+      "summary": "Light drizzle",
       "tempRange": [
-        16,
-        22
+        15,
+        23
       ],
       "windRange": [
-        5,
-        11
+        14,
+        20
       ],
-      "windBaseline": "11 km/h ESE",
-      "cloudCover": 27,
-      "cloudBaseline": 27,
+      "windBaseline": "20 km/h SSE",
+      "cloudCover": 49,
+      "cloudBaseline": 49,
       "pressureRange": [
-        1027,
-        1030
+        1023,
+        1027
+      ],
+      "hours": [
+        {
+          "time": "00:00",
+          "temperature": 16,
+          "pressure": 1026,
+          "cloudCover": 20,
+          "rainChance": 6,
+          "windSpeed": 5,
+          "windDirection": "W",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "01:00",
+          "temperature": 16,
+          "pressure": 1025,
+          "cloudCover": 33,
+          "rainChance": 8,
+          "windSpeed": 7,
+          "windDirection": "WSW",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "02:00",
+          "temperature": 15,
+          "pressure": 1025,
+          "cloudCover": 52,
+          "rainChance": 8,
+          "windSpeed": 8,
+          "windDirection": "SW",
+          "weatherCondition": "Partly cloudy"
+        },
+        {
+          "time": "03:00",
+          "temperature": 15,
+          "pressure": 1025,
+          "cloudCover": 73,
+          "rainChance": 8,
+          "windSpeed": 8,
+          "windDirection": "SW",
+          "weatherCondition": "Partly cloudy"
+        },
+        {
+          "time": "04:00",
+          "temperature": 15,
+          "pressure": 1025,
+          "cloudCover": 83,
+          "rainChance": 8,
+          "windSpeed": 9,
+          "windDirection": "SSW",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "05:00",
+          "temperature": 15,
+          "pressure": 1025,
+          "cloudCover": 70,
+          "rainChance": 8,
+          "windSpeed": 9,
+          "windDirection": "SSW",
+          "weatherCondition": "Partly cloudy"
+        },
+        {
+          "time": "06:00",
+          "temperature": 15,
+          "pressure": 1026,
+          "cloudCover": 46,
+          "rainChance": 7,
+          "windSpeed": 9,
+          "windDirection": "SW",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "07:00",
+          "temperature": 17,
+          "pressure": 1027,
+          "cloudCover": 27,
+          "rainChance": 8,
+          "windSpeed": 8,
+          "windDirection": "SW",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "08:00",
+          "temperature": 19,
+          "pressure": 1027,
+          "cloudCover": 20,
+          "rainChance": 11,
+          "windSpeed": 6,
+          "windDirection": "SSW",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "09:00",
+          "temperature": 21,
+          "pressure": 1027,
+          "cloudCover": 17,
+          "rainChance": 15,
+          "windSpeed": 6,
+          "windDirection": "SSE",
+          "weatherCondition": "Clear sky"
+        },
+        {
+          "time": "10:00",
+          "temperature": 23,
+          "pressure": 1027,
+          "cloudCover": 18,
+          "rainChance": 20,
+          "windSpeed": 8,
+          "windDirection": "ESE",
+          "weatherCondition": "Clear sky"
+        },
+        {
+          "time": "11:00",
+          "temperature": 23,
+          "pressure": 1026,
+          "cloudCover": 22,
+          "rainChance": 25,
+          "windSpeed": 9,
+          "windDirection": "ESE",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "12:00",
+          "temperature": 23,
+          "pressure": 1025,
+          "cloudCover": 29,
+          "rainChance": 30,
+          "windSpeed": 10,
+          "windDirection": "E",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "13:00",
+          "temperature": 23,
+          "pressure": 1024,
+          "cloudCover": 33,
+          "rainChance": 33,
+          "windSpeed": 11,
+          "windDirection": "E",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "14:00",
+          "temperature": 23,
+          "pressure": 1024,
+          "cloudCover": 27,
+          "rainChance": 32,
+          "windSpeed": 11,
+          "windDirection": "ENE",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "15:00",
+          "temperature": 22,
+          "pressure": 1023,
+          "cloudCover": 19,
+          "rainChance": 28,
+          "windSpeed": 10,
+          "windDirection": "ENE",
+          "weatherCondition": "Clear sky"
+        },
+        {
+          "time": "16:00",
+          "temperature": 22,
+          "pressure": 1023,
+          "cloudCover": 20,
+          "rainChance": 25,
+          "windSpeed": 9,
+          "windDirection": "ENE",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "17:00",
+          "temperature": 21,
+          "pressure": 1023,
+          "cloudCover": 43,
+          "rainChance": 25,
+          "windSpeed": 7,
+          "windDirection": "E",
+          "weatherCondition": "Mainly clear"
+        },
+        {
+          "time": "18:00",
+          "temperature": 21,
+          "pressure": 1024,
+          "cloudCover": 76,
+          "rainChance": 25,
+          "windSpeed": 9,
+          "windDirection": "SE",
+          "weatherCondition": "Partly cloudy"
+        },
+        {
+          "time": "19:00",
+          "temperature": 20,
+          "pressure": 1025,
+          "cloudCover": 98,
+          "rainChance": 25,
+          "windSpeed": 13,
+          "windDirection": "SSE",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "20:00",
+          "temperature": 19,
+          "pressure": 1026,
+          "cloudCover": 97,
+          "rainChance": 23,
+          "windSpeed": 16,
+          "windDirection": "S",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "21:00",
+          "temperature": 19,
+          "pressure": 1026,
+          "cloudCover": 86,
+          "rainChance": 21,
+          "windSpeed": 19,
+          "windDirection": "S",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "22:00",
+          "temperature": 19,
+          "pressure": 1026,
+          "cloudCover": 79,
+          "rainChance": 20,
+          "windSpeed": 20,
+          "windDirection": "S",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "23:00",
+          "temperature": 18,
+          "pressure": 1026,
+          "cloudCover": 84,
+          "rainChance": 21,
+          "windSpeed": 20,
+          "windDirection": "S",
+          "weatherCondition": "Overcast"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-29",
+      "summary": "Rain showers",
+      "tempRange": [
+        17,
+        21
+      ],
+      "windRange": [
+        20,
+        26
+      ],
+      "windBaseline": "26 km/h SSE",
+      "cloudCover": 80,
+      "cloudBaseline": 80,
+      "pressureRange": [
+        1024,
+        1027
+      ],
+      "hours": [
+        {
+          "time": "00:00",
+          "temperature": 18,
+          "pressure": 1025,
+          "cloudCover": 93,
+          "rainChance": 23,
+          "windSpeed": 19,
+          "windDirection": "SSW",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "01:00",
+          "temperature": 18,
+          "pressure": 1025,
+          "cloudCover": 100,
+          "rainChance": 25,
+          "windSpeed": 18,
+          "windDirection": "SSW",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "02:00",
+          "temperature": 18,
+          "pressure": 1025,
+          "cloudCover": 100,
+          "rainChance": 25,
+          "windSpeed": 19,
+          "windDirection": "SSW",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "03:00",
+          "temperature": 17,
+          "pressure": 1024,
+          "cloudCover": 100,
+          "rainChance": 25,
+          "windSpeed": 19,
+          "windDirection": "SSW",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "04:00",
+          "temperature": 17,
+          "pressure": 1024,
+          "cloudCover": 100,
+          "rainChance": 25,
+          "windSpeed": 20,
+          "windDirection": "SSW",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "05:00",
+          "temperature": 17,
+          "pressure": 1024,
+          "cloudCover": 94,
+          "rainChance": 27,
+          "windSpeed": 20,
+          "windDirection": "SSW",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "06:00",
+          "temperature": 18,
+          "pressure": 1025,
+          "cloudCover": 85,
+          "rainChance": 29,
+          "windSpeed": 20,
+          "windDirection": "SSW",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "07:00",
+          "temperature": 18,
+          "pressure": 1025,
+          "cloudCover": 80,
+          "rainChance": 33,
+          "windSpeed": 20,
+          "windDirection": "S",
+          "weatherCondition": "Overcast"
+        },
+        {
+          "time": "08:00",
+          "temperature": 19,
+          "pressure": 1026,
+          "cloudCover": 82,
+          "rainChance": 39,
+          "windSpeed": 20,
+          "windDirection": "S",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "09:00",
+          "temperature": 20,
+          "pressure": 1026,
+          "cloudCover": 88,
+          "rainChance": 46,
+          "windSpeed": 22,
+          "windDirection": "SSE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "10:00",
+          "temperature": 21,
+          "pressure": 1026,
+          "cloudCover": 93,
+          "rainChance": 51,
+          "windSpeed": 24,
+          "windDirection": "SSE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "11:00",
+          "temperature": 20,
+          "pressure": 1025,
+          "cloudCover": 94,
+          "rainChance": 55,
+          "windSpeed": 25,
+          "windDirection": "SSE",
+          "weatherCondition": "Rain showers"
+        },
+        {
+          "time": "12:00",
+          "temperature": 20,
+          "pressure": 1025,
+          "cloudCover": 95,
+          "rainChance": 57,
+          "windSpeed": 26,
+          "windDirection": "SSE",
+          "weatherCondition": "Rain showers"
+        },
+        {
+          "time": "13:00",
+          "temperature": 19,
+          "pressure": 1025,
+          "cloudCover": 95,
+          "rainChance": 57,
+          "windSpeed": 26,
+          "windDirection": "SSE",
+          "weatherCondition": "Rain showers"
+        },
+        {
+          "time": "14:00",
+          "temperature": 19,
+          "pressure": 1025,
+          "cloudCover": 98,
+          "rainChance": 54,
+          "windSpeed": 25,
+          "windDirection": "SSE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "15:00",
+          "temperature": 19,
+          "pressure": 1025,
+          "cloudCover": 100,
+          "rainChance": 49,
+          "windSpeed": 25,
+          "windDirection": "SSE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "16:00",
+          "temperature": 19,
+          "pressure": 1025,
+          "cloudCover": 98,
+          "rainChance": 45,
+          "windSpeed": 24,
+          "windDirection": "SSE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "17:00",
+          "temperature": 18,
+          "pressure": 1025,
+          "cloudCover": 79,
+          "rainChance": 43,
+          "windSpeed": 24,
+          "windDirection": "SSE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "18:00",
+          "temperature": 18,
+          "pressure": 1026,
+          "cloudCover": 52,
+          "rainChance": 41,
+          "windSpeed": 25,
+          "windDirection": "SSE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "19:00",
+          "temperature": 18,
+          "pressure": 1026,
+          "cloudCover": 32,
+          "rainChance": 39,
+          "windSpeed": 24,
+          "windDirection": "SSE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "20:00",
+          "temperature": 18,
+          "pressure": 1027,
+          "cloudCover": 49,
+          "rainChance": 35,
+          "windSpeed": 21,
+          "windDirection": "SE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "21:00",
+          "temperature": 18,
+          "pressure": 1027,
+          "cloudCover": 38,
+          "rainChance": 29,
+          "windSpeed": 20,
+          "windDirection": "SE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "22:00",
+          "temperature": 17,
+          "pressure": 1027,
+          "cloudCover": 32,
+          "rainChance": 25,
+          "windSpeed": 19,
+          "windDirection": "SE",
+          "weatherCondition": "Light drizzle"
+        },
+        {
+          "time": "23:00",
+          "temperature": 17,
+          "pressure": 1027,
+          "cloudCover": 34,
+          "rainChance": 23,
+          "windSpeed": 18,
+          "windDirection": "SE",
+          "weatherCondition": "Light drizzle"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-30",
+      "summary": "Light drizzle",
+      "tempRange": [
+        16,
+        21
+      ],
+      "windRange": [
+        14,
+        20
+      ],
+      "windBaseline": "20 km/h SE",
+      "cloudCover": 28,
+      "cloudBaseline": 28,
+      "pressureRange": [
+        1025,
+        1028
       ],
       "hours": [
         {
           "time": "00:00",
           "temperature": 17,
           "pressure": 1027,
-          "cloudCover": 49,
-          "rainChance": 13,
-          "windSpeed": 8,
+          "cloudCover": 42,
+          "rainChance": 22,
+          "windSpeed": 16,
           "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "01:00",
-          "temperature": 17,
-          "pressure": 1027,
-          "cloudCover": 55,
-          "rainChance": 16,
-          "windSpeed": 9,
+          "temperature": 16,
+          "pressure": 1026,
+          "cloudCover": 53,
+          "rainChance": 22,
+          "windSpeed": 15,
           "windDirection": "SSE",
-          "weatherCondition": "Partly cloudy"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "02:00",
-          "temperature": 17,
-          "pressure": 1027,
-          "cloudCover": 53,
-          "rainChance": 17,
-          "windSpeed": 10,
-          "windDirection": "SSE",
-          "weatherCondition": "Partly cloudy"
+          "temperature": 16,
+          "pressure": 1026,
+          "cloudCover": 64,
+          "rainChance": 22,
+          "windSpeed": 14,
+          "windDirection": "S",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "03:00",
-          "temperature": 17,
-          "pressure": 1027,
-          "cloudCover": 46,
-          "rainChance": 17,
-          "windSpeed": 11,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
+          "temperature": 16,
+          "pressure": 1025,
+          "cloudCover": 72,
+          "rainChance": 23,
+          "windSpeed": 14,
+          "windDirection": "S",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "04:00",
-          "temperature": 17,
-          "pressure": 1027,
-          "cloudCover": 41,
-          "rainChance": 20,
-          "windSpeed": 11,
-          "windDirection": "SSE",
-          "weatherCondition": "Mainly clear"
+          "temperature": 16,
+          "pressure": 1025,
+          "cloudCover": 74,
+          "rainChance": 25,
+          "windSpeed": 14,
+          "windDirection": "S",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "05:00",
           "temperature": 16,
-          "pressure": 1028,
-          "cloudCover": 94,
-          "rainChance": 27,
-          "windSpeed": 4,
-          "windDirection": "SE",
-          "weatherCondition": "Overcast"
+          "pressure": 1025,
+          "cloudCover": 68,
+          "rainChance": 28,
+          "windSpeed": 14,
+          "windDirection": "S",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "06:00",
           "temperature": 17,
-          "pressure": 1028,
-          "cloudCover": 82,
-          "rainChance": 36,
-          "windSpeed": 5,
-          "windDirection": "SE",
-          "weatherCondition": "Overcast"
+          "pressure": 1026,
+          "cloudCover": 57,
+          "rainChance": 31,
+          "windSpeed": 13,
+          "windDirection": "SSE",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "07:00",
-          "temperature": 19,
-          "pressure": 1029,
-          "cloudCover": 66,
-          "rainChance": 42,
-          "windSpeed": 6,
-          "windDirection": "ESE",
-          "weatherCondition": "Partly cloudy"
+          "temperature": 18,
+          "pressure": 1026,
+          "cloudCover": 43,
+          "rainChance": 35,
+          "windSpeed": 14,
+          "windDirection": "SE",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "08:00",
           "temperature": 20,
-          "pressure": 1029,
-          "cloudCover": 48,
-          "rainChance": 44,
-          "windSpeed": 7,
-          "windDirection": "ESE",
-          "weatherCondition": "Mainly clear"
+          "pressure": 1027,
+          "cloudCover": 28,
+          "rainChance": 39,
+          "windSpeed": 16,
+          "windDirection": "SE",
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "09:00",
-          "temperature": 21,
-          "pressure": 1030,
-          "cloudCover": 32,
-          "rainChance": 43,
-          "windSpeed": 9,
+          "temperature": 20,
+          "pressure": 1027,
+          "cloudCover": 15,
+          "rainChance": 42,
+          "windSpeed": 18,
           "windDirection": "ESE",
-          "weatherCondition": "Mainly clear"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "10:00",
-          "temperature": 22,
-          "pressure": 1030,
-          "cloudCover": 21,
-          "rainChance": 41,
-          "windSpeed": 10,
+          "temperature": 21,
+          "pressure": 1028,
+          "cloudCover": 7,
+          "rainChance": 45,
+          "windSpeed": 19,
           "windDirection": "ESE",
-          "weatherCondition": "Mainly clear"
+          "weatherCondition": "Light drizzle"
         },
         {
           "time": "11:00",
-          "temperature": 22,
-          "pressure": 1029,
-          "cloudCover": 14,
-          "rainChance": 39,
-          "windSpeed": 10,
+          "temperature": 21,
+          "pressure": 1027,
+          "cloudCover": 4,
+          "rainChance": 47,
+          "windSpeed": 20,
           "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "12:00",
-          "temperature": 22,
-          "pressure": 1029,
-          "cloudCover": 9,
-          "rainChance": 37,
-          "windSpeed": 10,
+          "temperature": 21,
+          "pressure": 1027,
+          "cloudCover": 3,
+          "rainChance": 47,
+          "windSpeed": 19,
           "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "13:00",
-          "temperature": 22,
-          "pressure": 1028,
-          "cloudCover": 5,
-          "rainChance": 34,
-          "windSpeed": 11,
+          "temperature": 21,
+          "pressure": 1027,
+          "cloudCover": 4,
+          "rainChance": 47,
+          "windSpeed": 19,
           "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "14:00",
-          "temperature": 22,
-          "pressure": 1028,
-          "cloudCover": 3,
-          "rainChance": 31,
-          "windSpeed": 11,
-          "windDirection": "E",
+          "temperature": 21,
+          "pressure": 1026,
+          "cloudCover": 7,
+          "rainChance": 46,
+          "windSpeed": 18,
+          "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "15:00",
           "temperature": 21,
-          "pressure": 1027,
-          "cloudCover": 1,
-          "rainChance": 27,
-          "windSpeed": 11,
-          "windDirection": "E",
+          "pressure": 1026,
+          "cloudCover": 9,
+          "rainChance": 44,
+          "windSpeed": 17,
+          "windDirection": "SE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "16:00",
-          "temperature": 21,
-          "pressure": 1027,
-          "cloudCover": 0,
-          "rainChance": 24,
-          "windSpeed": 11,
-          "windDirection": "E",
+          "temperature": 20,
+          "pressure": 1026,
+          "cloudCover": 11,
+          "rainChance": 41,
+          "windSpeed": 16,
+          "windDirection": "SE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "17:00",
-          "temperature": 21,
-          "pressure": 1027,
-          "cloudCover": 0,
-          "rainChance": 21,
-          "windSpeed": 10,
-          "windDirection": "E",
+          "temperature": 20,
+          "pressure": 1026,
+          "cloudCover": 12,
+          "rainChance": 35,
+          "windSpeed": 16,
+          "windDirection": "SE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "18:00",
           "temperature": 20,
-          "pressure": 1027,
-          "cloudCover": 0,
-          "rainChance": 17,
-          "windSpeed": 10,
-          "windDirection": "E",
+          "pressure": 1026,
+          "cloudCover": 14,
+          "rainChance": 28,
+          "windSpeed": 15,
+          "windDirection": "SE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "19:00",
-          "temperature": 20,
-          "pressure": 1028,
-          "cloudCover": 0,
-          "rainChance": 14,
-          "windSpeed": 9,
-          "windDirection": "E",
+          "temperature": 19,
+          "pressure": 1027,
+          "cloudCover": 16,
+          "rainChance": 21,
+          "windSpeed": 14,
+          "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "20:00",
           "temperature": 19,
-          "pressure": 1029,
-          "cloudCover": 0,
-          "rainChance": 11,
-          "windSpeed": 8,
-          "windDirection": "E",
+          "pressure": 1027,
+          "cloudCover": 17,
+          "rainChance": 14,
+          "windSpeed": 14,
+          "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "21:00",
           "temperature": 19,
-          "pressure": 1029,
-          "cloudCover": 0,
-          "rainChance": 9,
-          "windSpeed": 7,
-          "windDirection": "E",
+          "pressure": 1028,
+          "cloudCover": 18,
+          "rainChance": 7,
+          "windSpeed": 13,
+          "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "22:00",
           "temperature": 18,
-          "pressure": 1029,
-          "cloudCover": 5,
-          "rainChance": 8,
-          "windSpeed": 6,
-          "windDirection": "E",
+          "pressure": 1028,
+          "cloudCover": 19,
+          "rainChance": 2,
+          "windSpeed": 12,
+          "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         },
         {
           "time": "23:00",
-          "temperature": 17,
-          "pressure": 1029,
-          "cloudCover": 13,
-          "rainChance": 8,
-          "windSpeed": 4,
-          "windDirection": "E",
+          "temperature": 18,
+          "pressure": 1028,
+          "cloudCover": 18,
+          "rainChance": 0,
+          "windSpeed": 11,
+          "windDirection": "ESE",
           "weatherCondition": "Clear sky"
         }
       ]

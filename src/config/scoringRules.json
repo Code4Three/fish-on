@@ -7,6 +7,37 @@
     "peakWindowHours": 2,
     "decayPerHour": 25
   },
+  "solunar": {
+    "baseWeights": {
+      "major": 60,
+      "minor": 30,
+      "neutral": 5
+    },
+    "maxScore": 99,
+    "phaseMultipliers": {
+      "New Moon": 1.0,
+      "Waxing Crescent": 0.8,
+      "First Quarter": 0.6,
+      "Waxing Gibbous": 0.85,
+      "Full Moon": 1.0,
+      "Waning Gibbous": 0.85,
+      "Last Quarter": 0.6,
+      "Waning Crescent": 0.75
+    },
+    "solar": {
+      "dawnDuskMinutes": 45,
+      "exactDawnDuskBoost": 1.5,
+      "dawnDuskBoost": 1.45,
+      "solarNoonMinutes": 60,
+      "solarNoonBoost": 1.1
+    },
+    "distance": {
+      "perigeeKm": 356500,
+      "apogeeKm": 406700,
+      "perigeeMultiplier": 1.1,
+      "apogeeMultiplier": 0.9
+    }
+  },
   "bands": [
     { "name": "Neutral", "min": 0, "max": 19 },
     { "name": "Very Low", "min": 20, "max": 39 },

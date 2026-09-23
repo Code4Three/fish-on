@@ -111,6 +111,7 @@ function buildAnchored(day, sunMoonDay, solunarDay, weatherDay) {
 
     moonPhase: sunMoonDay?.moonPhase ?? null,
     illumination: sunMoonDay?.illumination ?? null,
+    moonDistance: sunMoonDay?.moonDistance ?? null,
     solunarPeaks: solunarDay?.peaks ?? [],
 
     weatherSummary: weatherDay?.summary ?? null,

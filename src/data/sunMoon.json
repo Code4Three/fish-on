@@ -1,31 +1,14 @@
 {
   "days": [
     {
-      "date": "2026-09-22",
-      "sunrise": "05:37",
-      "sunset": "17:43",
-      "moonrise": "13:31",
-      "moonset": "03:20",
-      "moonPhase": "Waxing Gibbous",
-      "illumination": 82
-    },
-    {
-      "date": "2026-09-23",
-      "sunrise": "05:36",
-      "sunset": "17:43",
-      "moonrise": "14:28",
-      "moonset": "03:54",
-      "moonPhase": "Waxing Gibbous",
-      "illumination": 89
-    },
-    {
       "date": "2026-09-24",
       "sunrise": "05:35",
       "sunset": "17:44",
       "moonrise": "15:25",
       "moonset": "04:26",
       "moonPhase": "Waxing Gibbous",
-      "illumination": 95
+      "illumination": 95,
+      "moonDistance": 386716
     },
     {
       "date": "2026-09-25",
@@ -34,7 +17,8 @@
       "moonrise": "16:22",
       "moonset": "04:57",
       "moonPhase": "Waxing Gibbous",
-      "illumination": 98
+      "illumination": 98,
+      "moonDistance": 382304
     },
     {
       "date": "2026-09-26",
@@ -43,7 +27,8 @@
       "moonrise": "17:20",
       "moonset": "05:28",
       "moonPhase": "Full Moon",
-      "illumination": 100
+      "illumination": 100,
+      "moonDistance": 378288
     },
     {
       "date": "2026-09-27",
@@ -52,7 +37,8 @@
       "moonrise": "18:20",
       "moonset": "06:02",
       "moonPhase": "Full Moon",
-      "illumination": 99
+      "illumination": 99,
+      "moonDistance": 374907
     },
     {
       "date": "2026-09-28",
@@ -61,7 +47,28 @@
       "moonrise": "19:22",
       "moonset": "06:39",
       "moonPhase": "Waning Gibbous",
-      "illumination": 96
+      "illumination": 96,
+      "moonDistance": 372310
+    },
+    {
+      "date": "2026-09-29",
+      "sunrise": "05:29",
+      "sunset": "17:46",
+      "moonrise": "20:27",
+      "moonset": "07:21",
+      "moonPhase": "Waning Gibbous",
+      "illumination": 90,
+      "moonDistance": 370547
+    },
+    {
+      "date": "2026-09-30",
+      "sunrise": "05:28",
+      "sunset": "17:46",
+      "moonrise": "21:35",
+      "moonset": "08:10",
+      "moonPhase": "Waning Gibbous",
+      "illumination": 82,
+      "moonDistance": 369586
     }
   ]
 }
