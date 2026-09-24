@@ -16,6 +16,8 @@ import {
   ratingTier
 } from "./prototypes/shared";
 
+// Floating date/hour control bar that docks to the top or bottom of the screen.
+// Dragging its handle reveals the full 24h drawer (expansionProgress 0-1 drives that reveal).
 function DashboardDock({
   position,
   offset,
@@ -46,10 +48,11 @@ function DashboardDock({
   const isExpanded = expansionProgress > 0;
 
   return (
+    // fixed/sticky already establish a containing block, so no extra `relative` is needed (and it would override them in Tailwind's cascade)
     <div
-      // fixed/sticky already establish a containing block, so no extra `relative` is needed (and it would override them in Tailwind's cascade)
       className={`${isBottom ? "w-full bottom-0 left-0 right-0 z-40 pb-8" : isExpanded ? "fixed left-0 right-0 z-40" : "sticky top-[72px] z-40"} mx-auto max-w-md select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${isDragging ? "" : "transition-[bottom,top,transform] duration-300 ease-out"}`}
     >
+      {/* Drag handle: swipe toward the screen edge to open the full day drawer */}
       <div
         className={`absolute inset-x-1 z-10 flex h-12 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${isBottom ? "top-0 -translate-y-1/2" : "bottom-0 translate-y-1/2"}`}
         onPointerDown={event => {
@@ -63,6 +66,7 @@ function DashboardDock({
       >
         <div className="h-1 w-10 rounded-full bg-hull-600/90" />
       </div>
+      {/* Prev/next day navigation with the current date label */}
       <div className="flex items-center justify-between gap-1">
         <StepButton label="Prev Day" direction="left" onClick={() => onOffsetChange(offset - 1)} />
         <span className="min-h-12 flex-1 truncate bg-transparent px-2 text-center font-body text-[13px] font-semibold leading-[48px] text-white">
@@ -70,6 +74,7 @@ function DashboardDock({
         </span>
         <StepButton label="Next Day" direction="right" onClick={() => onOffsetChange(offset + 1)} />
       </div>
+      {/* Scrollable hour-of-day picker */}
       <div className="mt-2">
         <HourPills hour={hour} day={day} onHourChange={onHourChange} />
       </div>
@@ -79,14 +84,20 @@ function DashboardDock({
 
 // Production dashboard: bottom-dock thumb-first layout (formerly Prototype 1). Settings live in the header only.
 export default function MainDashboard({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
+  // Which cards/groups/metrics are visible and in what order, persisted per user
   const { cardSettings, matrixSettings, toggleCard, toggleGroup, toggleMatrixMetric, moveDashboardItem, resetSettings } = useAnchoredSettings();
+  // Whether the control dock sits at the top or bottom of the screen
   const { dockPosition, selectDockPosition } = useDashboardSettings();
+  // Dialog visibility: display-options sheet and the full-day drawer
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
+  // 0-1 reveal progress for the day drawer, driven by dragging the dock handle
   const [drawerProgress, setDrawerProgress] = useState(0);
   const [drawerDragging, setDrawerDragging] = useState(false);
+  // 0-1 horizontal position of the cards/full-conditions swipe panel (0 = cards, 1 = full conditions)
   const [conditionsProgress, setConditionsProgress] = useState(0);
   const [conditionsDragging, setConditionsDragging] = useState(false);
+  // Drag bookkeeping (not reactive state, just refs to compare against on move/end)
   const dragStartY = useRef<number | null>(null);
   const dragStartProgress = useRef(0);
   const conditionsStartX = useRef<number | null>(null);
@@ -95,12 +106,15 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
 
   const current = day.hours[hour];
   const rising = day.hours[Math.min(23, hour + 1)].tideHeight > current.tideHeight;
+
+  // Begin dragging the dock handle to open/close the day drawer
   const handleDockDragStart = (startY: number) => {
     dragStartY.current = startY;
     dragStartProgress.current = drawerProgress;
     setDrawerDragging(true);
   };
 
+  // Convert vertical drag distance into drawer reveal progress (0-1)
   const handleDockDragMove = (currentY: number) => {
     if (dragStartY.current === null) return;
     const deltaY = currentY - dragStartY.current;
@@ -109,6 +123,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
     setDrawerProgress(Math.max(0, Math.min(1, dragStartProgress.current + progressDelta)));
   };
 
+  // Snap the drawer fully open or closed based on how far it was dragged
   const handleDockDragEnd = () => {
     if (dragStartY.current === null) return;
     const shouldOpen = drawerProgress >= 0.5;
@@ -118,6 +133,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
     dragStartY.current = null;
   };
 
+  // Begin tracking a horizontal swipe on the cards/full-conditions panel
   const handleConditionsPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
     if (event.pointerType === "touch") {
@@ -128,12 +144,14 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
     conditionsStartProgress.current = conditionsProgress;
   };
 
+  // Track the swipe once it's confirmed horizontal, updating panel position live
   const handleConditionsPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (conditionsStartX.current === null || conditionsStartY.current === null) return;
     const deltaX = event.clientX - conditionsStartX.current;
     const deltaY = event.clientY - conditionsStartY.current;
 
     if (!conditionsDragging) {
+      // Ignore mostly-vertical gestures so vertical scrolling still works
       if (Math.abs(deltaY) > Math.abs(deltaX) || Math.abs(deltaX) < 8) return;
       if (deltaX > 0 && conditionsStartProgress.current === 0) return;
       if (deltaX < 0 && conditionsStartProgress.current === 1) return;
@@ -149,6 +167,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
     setConditionsProgress(Math.max(0, Math.min(1, conditionsStartProgress.current + progressDelta)));
   };
 
+  // Snap the swipe panel to whichever side (cards or full conditions) it's closer to
   const handleConditionsPointerEnd = () => {
     if (conditionsStartX.current === null) return;
     setConditionsProgress(current => current >= 0.5 ? 1 : 0);
@@ -157,6 +176,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
     conditionsStartY.current = null;
   };
 
+  // Handle drag-and-drop reordering of hero groups / metric cards
   const handleDashboardDrop = (event: React.DragEvent<HTMLElement>, target: string, area: "heroOrder" | "cardOrder") => {
     event.preventDefault();
     const sourceArea = event.dataTransfer.getData("text/area");
@@ -165,8 +185,10 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
   };
 
   return (
+    // Centers the fixed-width mobile column within any wider viewport
     <div className="flex min-h-screen w-full justify-center bg-hull-950">
       <main className="dashboard-shell overscroll-x-none relative w-full mx-auto flex h-[100dvh] min-h-[100svh] max-w-md flex-col overflow-hidden bg-hull-950 font-body touch-pan-y">
+        {/* Header: location name, current tide/solunar summary, and the settings button */}
         <header className="sticky top-0 z-20 shrink-0 bg-hull-950/95 px-4 py-3 backdrop-blur">
           <div className="flex items-center justify-between gap-2">
             <div className="flex min-w-0 items-center gap-2">
@@ -193,6 +215,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
           <div className="absolute inset-x-2 bottom-0 h-px bg-hull-600/80" />
         </header>
 
+        {/* Top dock: only rendered when the user has chosen the top-docked control layout */}
         {dockPosition === "top" && (
           <DashboardDock
             position="top"
@@ -209,6 +232,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
           />
         )}
 
+        {/* Swipeable panel: metric cards on the left, full conditions detail on the right */}
         <div
           className={`mx-auto w-full max-w-md overscroll-x-none min-h-0 flex-1 overflow-hidden ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
           onPointerDown={handleConditionsPointerDown}
@@ -217,6 +241,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
           onPointerCancel={handleConditionsPointerEnd}
           onLostPointerCapture={handleConditionsPointerEnd}
         >
+          {/* Double-width track; translateX by -50% slides from the cards panel to the full conditions panel */}
           <div
             className="overscroll-x-none flex h-full w-[200%] touch-pan-y"
             style={{
@@ -224,6 +249,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
               transition: conditionsDragging ? "none" : "transform 300ms ease-out"
             }}
           >
+            {/* Left panel: draggable hero group cards, then the grid of individual metric cards */}
             <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y">
               {matrixSettings.heroOrder.map(groupId => {
                 const group = DAILY_GROUPS.find(item => item.id === groupId);
@@ -241,12 +267,14 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
                 </div>
               </section>
             </div>
+            {/* Right panel: detailed daily conditions view */}
             <div className={`no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y ${dockPosition === "bottom" ? "pb-44" : ""}`}>
               <FullConditionsView day={day} hour={hour} visibleMetrics={matrixSettings.metrics} onClose={() => setConditionsProgress(0)} />
             </div>
           </div>
         </div>
 
+        {/* Bottom dock: default control layout, docked to the bottom of the screen */}
         {dockPosition === "bottom" && (
           <DashboardDock
             position="bottom"
@@ -263,6 +291,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
           />
         )}
 
+        {/* Full 24h drawer, revealed by dragging the dock handle or tapping into it */}
         <DayDrawer
           open={dayViewOpen}
           isDragging={drawerDragging}
@@ -280,6 +309,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
           }}
           onPickHour={onHourChange}
         />
+        {/* Display-options bottom sheet: toggle card/metric visibility, layout, and dock position */}
         <CustomizationBottomSheet
           isOpen={settingsOpen}
           onClose={() => setSettingsOpen(false)}
