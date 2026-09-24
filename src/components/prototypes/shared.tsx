@@ -725,7 +725,7 @@ export function WeatherDetailsCard({ day, hour, visibleMetrics }: { day: ClaudeD
 
 export function FullConditionsView({ day, hour, onClose, visibleMetrics }: { day: ClaudeDayData; hour: number; onClose: () => void; visibleMetrics?: VisibleMetrics }) {
   return (
-    <div className="bg-hull-950 px-4 pb-32 pt-4">
+    <div className="mx-auto w-full max-w-md bg-hull-950 px-4 pb-32 pt-4">
       <div className="mx-auto flex max-w-md items-center justify-between">
         <div>
           <p className="font-body text-[11px] uppercase tracking-wide text-slate-500">Daily details</p>
@@ -789,7 +789,7 @@ export function DayDrawer({
         role="dialog"
         aria-modal="true"
         aria-label="Full day forecast"
-        className={`fixed left-0 right-0 z-50 mx-auto flex max-w-md flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"} ${
+        className={`fixed inset-x-0 z-50 mx-auto flex w-full max-w-md flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"} ${
           isTopDock
             ? "top-[204px] rounded-b-3xl border-b"
             : "bottom-0 rounded-t-3xl border-t"

@@ -47,8 +47,8 @@ function DashboardDock({
 
   return (
     <div
-      className={`${isBottom ? "fixed bottom-0 left-0 right-0 z-40" : isExpanded ? "fixed left-0 right-0 z-40" : "sticky top-[72px] z-40"} mx-auto max-w-md select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${isDragging ? "" : "transition-[bottom,top,transform] duration-300 ease-out"}`}
-      style={isBottom ? { bottom: `${expansionProgress * dockTravel}px` } : isExpanded ? { top: "72px" } : undefined}
+      // fixed/sticky already establish a containing block, so no extra `relative` is needed (and it would override them in Tailwind's cascade)
+      className={`${isBottom ? "w-full bottom-0 left-0 right-0 z-40 pb-8" : isExpanded ? "fixed left-0 right-0 z-40" : "sticky top-[72px] z-40"} mx-auto max-w-md select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${isDragging ? "" : "transition-[bottom,top,transform] duration-300 ease-out"}`}
     >
       <div
         className={`absolute inset-x-1 z-10 flex h-12 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${isBottom ? "top-0 -translate-y-1/2" : "bottom-0 translate-y-1/2"}`}
@@ -165,134 +165,137 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
   };
 
   return (
-    <main className="dashboard-shell overscroll-x-none relative mx-auto flex h-[100dvh] min-h-[100svh] max-w-md flex-col overflow-hidden bg-hull-950 font-body touch-pan-y">
-      <header className="sticky top-0 z-20 shrink-0 bg-hull-950/95 px-4 py-3 backdrop-blur">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex min-w-0 items-center gap-2">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-tide-500/15 text-tide-400">
-              <Fish size={16} />
-            </div>
-            <div className="min-w-0">
-              <h1 className="truncate font-display text-[16px] font-semibold text-white">Mooloolaba River Mouth</h1>
-              <p className="flex items-center gap-1.5 truncate font-body text-[12px] text-slate-400">
-                <Waves size={12} className="shrink-0 text-tide-400" />
-                {current.tideHeight.toFixed(1)}m {rising ? "rising" : "falling"} · {ratingTier(day.solunarRating)} solunar
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => setSettingsOpen(true)}
-            aria-label="Open display settings"
-            className="flex h-12 w-12 shrink-0 items-center justify-center text-slate-300"
-          >
-            <Settings size={20} />
-          </button>
-        </div>
-        <div className="absolute inset-x-2 bottom-0 h-px bg-hull-600/80" />
-      </header>
-
-      {dockPosition === "top" && (
-        <DashboardDock
-          position="top"
-          offset={offset}
-          hour={hour}
-          day={day}
-          onOffsetChange={onOffsetChange}
-          onHourChange={onHourChange}
-          onDragStart={handleDockDragStart}
-          onDragMove={handleDockDragMove}
-          onDragEnd={handleDockDragEnd}
-          expansionProgress={drawerProgress}
-          isDragging={drawerDragging}
-        />
-      )}
-
-      <div
-        className={`overscroll-x-none min-h-0 flex-1 overflow-hidden ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
-        onPointerDown={handleConditionsPointerDown}
-        onPointerMove={handleConditionsPointerMove}
-        onPointerUp={handleConditionsPointerEnd}
-        onPointerCancel={handleConditionsPointerEnd}
-        onLostPointerCapture={handleConditionsPointerEnd}
-      >
-        <div
-          className="overscroll-x-none flex h-full w-[200%] touch-pan-y"
-          style={{
-            transform: `translateX(-${conditionsProgress * 50}%)`,
-            transition: conditionsDragging ? "none" : "transform 300ms ease-out"
-          }}
-        >
-          <div className={`no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y ${dockPosition === "bottom" ? "pb-44" : ""}`}>
-            {matrixSettings.heroOrder.map(groupId => {
-              const group = DAILY_GROUPS.find(item => item.id === groupId);
-              if (!group || !matrixSettings.groups[group.id]) return null;
-              return <MatrixGroupCard key={group.id} group={group} visibleMetrics={matrixSettings.metrics} day={day} hour={hour} draggable onDragStart={event => { event.dataTransfer.setData("text/area", "heroOrder"); event.dataTransfer.setData("text/id", group.id); }} onDragOver={event => event.preventDefault()} onDrop={event => handleDashboardDrop(event, group.id, "heroOrder")} />;
-            })}
-            <section className="mt-3 px-4" onDragOver={event => event.preventDefault()}>
-              <div className="grid grid-cols-2 gap-3">
-                {matrixSettings.cardOrder.map(metricId => {
-                  const definition = DAILY_GROUPS.flatMap(group => group.metrics).find(metric => metric.id === metricId);
-                  const group = DAILY_GROUPS.find(item => item.metrics.some(metric => metric.id === metricId));
-                  if (!definition || !group || matrixSettings.groups[group.id] || matrixSettings.metrics[metricId] === false) return null;
-                  return <MatrixMetricCard key={metricId} id={metricId} label={definition.label} day={day} hour={hour} draggable onDragStart={event => { event.dataTransfer.setData("text/area", "cardOrder"); event.dataTransfer.setData("text/id", metricId); }} onDragOver={event => event.preventDefault()} onDrop={event => handleDashboardDrop(event, metricId, "cardOrder")} />;
-                })}
+    <div className="flex min-h-screen w-full justify-center bg-hull-950">
+      <main className="dashboard-shell overscroll-x-none relative w-full mx-auto flex h-[100dvh] min-h-[100svh] max-w-md flex-col overflow-hidden bg-hull-950 font-body touch-pan-y">
+        <header className="sticky top-0 z-20 shrink-0 bg-hull-950/95 px-4 py-3 backdrop-blur">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-tide-500/15 text-tide-400">
+                <Fish size={16} />
               </div>
-            </section>
+              <div className="min-w-0">
+                <h1 className="truncate font-display text-[16px] font-semibold text-white">Mooloolaba River Mouth</h1>
+                <p className="flex items-center gap-1.5 truncate font-body text-[12px] text-slate-400">
+                  <Waves size={12} className="shrink-0 text-tide-400" />
+                  {current.tideHeight.toFixed(1)}m {rising ? "rising" : "falling"} · {ratingTier(day.solunarRating)} solunar
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSettingsOpen(true)}
+              aria-label="Open display settings"
+              className="flex h-12 w-12 shrink-0 items-center justify-center text-slate-300"
+            >
+              <Settings size={20} />
+            </button>
           </div>
-          <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y">
-            <FullConditionsView day={day} hour={hour} visibleMetrics={matrixSettings.metrics} onClose={() => setConditionsProgress(0)} />
+          <div className="absolute inset-x-2 bottom-0 h-px bg-hull-600/80" />
+        </header>
+
+        {dockPosition === "top" && (
+          <DashboardDock
+            position="top"
+            offset={offset}
+            hour={hour}
+            day={day}
+            onOffsetChange={onOffsetChange}
+            onHourChange={onHourChange}
+            onDragStart={handleDockDragStart}
+            onDragMove={handleDockDragMove}
+            onDragEnd={handleDockDragEnd}
+            expansionProgress={drawerProgress}
+            isDragging={drawerDragging}
+          />
+        )}
+
+        <div
+          className={`mx-auto w-full max-w-md overscroll-x-none min-h-0 flex-1 overflow-hidden ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
+          onPointerDown={handleConditionsPointerDown}
+          onPointerMove={handleConditionsPointerMove}
+          onPointerUp={handleConditionsPointerEnd}
+          onPointerCancel={handleConditionsPointerEnd}
+          onLostPointerCapture={handleConditionsPointerEnd}
+        >
+          <div
+            className="overscroll-x-none flex h-full w-[200%] touch-pan-y"
+            style={{
+              transform: `translateX(-${conditionsProgress * 50}%)`,
+              transition: conditionsDragging ? "none" : "transform 300ms ease-out"
+            }}
+          >
+            <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y">
+              {matrixSettings.heroOrder.map(groupId => {
+                const group = DAILY_GROUPS.find(item => item.id === groupId);
+                if (!group || !matrixSettings.groups[group.id]) return null;
+                return <MatrixGroupCard key={group.id} group={group} visibleMetrics={matrixSettings.metrics} day={day} hour={hour} draggable onDragStart={event => { event.dataTransfer.setData("text/area", "heroOrder"); event.dataTransfer.setData("text/id", group.id); }} onDragOver={event => event.preventDefault()} onDrop={event => handleDashboardDrop(event, group.id, "heroOrder")} />;
+              })}
+              <section className="mt-3 px-4" onDragOver={event => event.preventDefault()}>
+                <div className="grid grid-cols-2 gap-3">
+                  {matrixSettings.cardOrder.map(metricId => {
+                    const definition = DAILY_GROUPS.flatMap(group => group.metrics).find(metric => metric.id === metricId);
+                    const group = DAILY_GROUPS.find(item => item.metrics.some(metric => metric.id === metricId));
+                    if (!definition || !group || matrixSettings.groups[group.id] || matrixSettings.metrics[metricId] === false) return null;
+                    return <MatrixMetricCard key={metricId} id={metricId} label={definition.label} day={day} hour={hour} draggable onDragStart={event => { event.dataTransfer.setData("text/area", "cardOrder"); event.dataTransfer.setData("text/id", metricId); }} onDragOver={event => event.preventDefault()} onDrop={event => handleDashboardDrop(event, metricId, "cardOrder")} />;
+                  })}
+                </div>
+              </section>
+            </div>
+            <div className={`no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y ${dockPosition === "bottom" ? "pb-44" : ""}`}>
+              <FullConditionsView day={day} hour={hour} visibleMetrics={matrixSettings.metrics} onClose={() => setConditionsProgress(0)} />
+            </div>
           </div>
         </div>
-      </div>
 
-      {dockPosition === "bottom" && (
-        <DashboardDock
-          position="bottom"
-          offset={offset}
-          hour={hour}
+        {dockPosition === "bottom" && (
+          <DashboardDock
+            position="bottom"
+            offset={offset}
+            hour={hour}
+            day={day}
+            onOffsetChange={onOffsetChange}
+            onHourChange={onHourChange}
+            onDragStart={handleDockDragStart}
+            onDragMove={handleDockDragMove}
+            onDragEnd={handleDockDragEnd}
+            expansionProgress={drawerProgress}
+            isDragging={drawerDragging}
+          />
+        )}
+
+        <DayDrawer
+          open={dayViewOpen}
+          isDragging={drawerDragging}
+          expansionProgress={drawerProgress}
           day={day}
-          onOffsetChange={onOffsetChange}
-          onHourChange={onHourChange}
+          selectedHour={hour}
+          hourlySettings={matrixSettings.hourly}
+          dockPosition={dockPosition}
           onDragStart={handleDockDragStart}
           onDragMove={handleDockDragMove}
           onDragEnd={handleDockDragEnd}
-          expansionProgress={drawerProgress}
-          isDragging={drawerDragging}
+          onClose={() => {
+            setDayViewOpen(false);
+            setDrawerProgress(0);
+          }}
+          onPickHour={onHourChange}
         />
-      )}
+        <CustomizationBottomSheet
+          isOpen={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+          settings={cardSettings}
+          onToggle={toggleCard}
+          matrixSettings={matrixSettings}
+          onToggleGroup={toggleGroup}
+          onToggleMatrixMetric={toggleMatrixMetric}
+          onReset={resetSettings}
+          prototype={prototype}
+          onSelectPrototype={onSelectPrototype}
+          dockPosition={dockPosition}
+          onSelectDockPosition={selectDockPosition}
+        />
+      </main>
+    </div>
 
-      <DayDrawer
-        open={dayViewOpen}
-        isDragging={drawerDragging}
-        expansionProgress={drawerProgress}
-        day={day}
-        selectedHour={hour}
-        hourlySettings={matrixSettings.hourly}
-        dockPosition={dockPosition}
-        onDragStart={handleDockDragStart}
-        onDragMove={handleDockDragMove}
-        onDragEnd={handleDockDragEnd}
-        onClose={() => {
-          setDayViewOpen(false);
-          setDrawerProgress(0);
-        }}
-        onPickHour={onHourChange}
-      />
-      <CustomizationBottomSheet
-        isOpen={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        settings={cardSettings}
-        onToggle={toggleCard}
-        matrixSettings={matrixSettings}
-        onToggleGroup={toggleGroup}
-        onToggleMatrixMetric={toggleMatrixMetric}
-        onReset={resetSettings}
-        prototype={prototype}
-        onSelectPrototype={onSelectPrototype}
-        dockPosition={dockPosition}
-        onSelectDockPosition={selectDockPosition}
-      />
-    </main>
   );
 }

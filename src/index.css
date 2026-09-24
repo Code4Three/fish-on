@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 :root {
+  --dock-bottom-offset: max(1rem, env(safe-area-inset-bottom, 0px));
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
