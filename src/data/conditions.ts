@@ -204,8 +204,12 @@ function computePressureTrend(hours: ClaudeHourlyData[]): "Rising" | "Falling" |
   return "Steady";
 }
 
+
+
+
 export async function fetchConditionsDays(): Promise<ConditionsDay[]> {
-  const response = await fetch("/conditions.json");
+  // Always bypass the HTTP cache so a fresh build:data run is reflected immediately
+  const response = await fetch("/conditions.json", { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`Failed to load conditions (status ${response.status})`);
   }

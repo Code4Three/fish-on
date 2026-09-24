@@ -13,6 +13,8 @@ import {
   MatrixMetricCard,
   StepButton,
   formatDate,
+  formatTideHeight,
+  isTideRising,
   ratingTier
 } from "./prototypes/shared";
 
@@ -23,6 +25,8 @@ function DashboardDock({
   offset,
   hour,
   day,
+  canGoPrevious,
+  canGoNext,
   onOffsetChange,
   onHourChange,
   onDragStart,
@@ -35,6 +39,8 @@ function DashboardDock({
   offset: number;
   hour: number;
   day: DashboardStateProps["day"];
+  canGoPrevious: boolean;
+  canGoNext: boolean;
   onOffsetChange: (offset: number) => void;
   onHourChange: (hour: number) => void;
   onDragStart: (startY: number) => void;
@@ -68,11 +74,11 @@ function DashboardDock({
       </div>
       {/* Prev/next day navigation with the current date label */}
       <div className="flex items-center justify-between gap-1">
-        <StepButton label="Prev Day" direction="left" onClick={() => onOffsetChange(offset - 1)} />
+        <StepButton label="Prev Day" direction="left" disabled={!canGoPrevious} onClick={() => onOffsetChange(offset - 1)} />
         <span className="min-h-12 flex-1 truncate bg-transparent px-2 text-center font-body text-[13px] font-semibold leading-[48px] text-white">
-          {formatDate(offset)}
+          {formatDate(day.date)}
         </span>
-        <StepButton label="Next Day" direction="right" onClick={() => onOffsetChange(offset + 1)} />
+        <StepButton label="Next Day" direction="right" disabled={!canGoNext} onClick={() => onOffsetChange(offset + 1)} />
       </div>
       {/* Scrollable hour-of-day picker */}
       <div className="mt-2">
@@ -83,7 +89,7 @@ function DashboardDock({
 }
 
 // Production dashboard: bottom-dock thumb-first layout (formerly Prototype 1). Settings live in the header only.
-export default function MainDashboard({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
+export default function MainDashboard({ day, hour, offset, canGoPrevious, canGoNext, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
   // Which cards/groups/metrics are visible and in what order, persisted per user
   const { cardSettings, matrixSettings, toggleCard, toggleGroup, toggleMatrixMetric, moveDashboardItem, resetSettings } = useAnchoredSettings();
   // Whether the control dock sits at the top or bottom of the screen
@@ -105,7 +111,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
   const conditionsStartProgress = useRef(0);
 
   const current = day.hours[hour];
-  const rising = day.hours[Math.min(23, hour + 1)].tideHeight > current.tideHeight;
+  const rising = isTideRising(day, hour);
 
   // Begin dragging the dock handle to open/close the day drawer
   const handleDockDragStart = (startY: number) => {
@@ -199,7 +205,7 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
                 <h1 className="truncate font-display text-[16px] font-semibold text-white">Mooloolaba River Mouth</h1>
                 <p className="flex items-center gap-1.5 truncate font-body text-[12px] text-slate-400">
                   <Waves size={12} className="shrink-0 text-tide-400" />
-                  {current.tideHeight.toFixed(1)}m {rising ? "rising" : "falling"} · {ratingTier(day.solunarRating)} solunar
+                  {formatTideHeight(current.tideHeight)}m {rising ? "rising" : "falling"} · {ratingTier(day.solunarRating)} solunar
                 </p>
               </div>
             </div>
@@ -229,6 +235,8 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
             onDragEnd={handleDockDragEnd}
             expansionProgress={drawerProgress}
             isDragging={drawerDragging}
+            canGoPrevious={canGoPrevious}
+            canGoNext={canGoNext}
           />
         )}
 
@@ -288,6 +296,8 @@ export default function MainDashboard({ day, hour, offset, onHourChange, onOffse
             onDragEnd={handleDockDragEnd}
             expansionProgress={drawerProgress}
             isDragging={drawerDragging}
+            canGoPrevious={canGoPrevious}
+            canGoNext={canGoNext}
           />
         )}
 

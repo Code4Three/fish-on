@@ -8,5 +8,7 @@ export const SOLUNAR_MINOR_WINDOW_MINUTES = 30;
 
 export const LOCATION = {
   lat: -26.7075,
-  lon: 153.1320
+  lon: 153.1320,
+  // WorldTides returns heights relative to Mean Sea Level; shift to Chart Datum (LAT)
+  datumOffset: 0.95
 };

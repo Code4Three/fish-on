@@ -24,11 +24,18 @@ export async function buildTides() {
     records.unshift(previousRecord);
   }
 
+  // WorldTides returns MSL heights; shift to Chart Datum (LAT) for the active location
+  const datumOffset = LOCATION.datumOffset ?? 0;
+  const adjustedRecords = records.map(record => ({
+    ...record,
+    height: record.height + datumOffset
+  }));
+
   const outputPath = path.join("src", "data", "tides.json");
 
   fs.writeFileSync(
     outputPath,
-    JSON.stringify({ ...cache, records }, null, 2)
+    JSON.stringify({ ...cache, records: adjustedRecords }, null, 2)
   );
 
   console.log("Tide data written → src/data/tides.json");

@@ -7,7 +7,8 @@
       "lat": -26.7075,
       "lon": 153.132,
       "water": "Salt",
-      "tide": "Tidal"
+      "tide": "Tidal",
+      "datumOffset": 0.95
     },
     {
       "id": "noosa-river",

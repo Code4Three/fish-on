@@ -13,18 +13,20 @@ import {
     StepButton,
     TideCard,
     formatDate,
+    formatTideHeight,
+    isTideRising,
     metrics,
     ratingTier
 } from "./shared";
 
 // Prototype 1: thumb-first layout - minimal header, scrollable feed, fixed bottom dock for all controls.
-export default function Option1BottomDock({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
+export default function Option1BottomDock({ day, hour, offset, canGoPrevious, canGoNext, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
     const { settings, cardSettings, toggleCard, resetSettings } = useAnchoredSettings();
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [dayViewOpen, setDayViewOpen] = useState(false);
 
     const current = day.hours[hour];
-    const rising = day.hours[Math.min(23, hour + 1)].tideHeight > current.tideHeight;
+    const rising = isTideRising(day, hour);
 
     return (
         <main className="no-scrollbar relative min-h-screen max-w-md mx-auto overflow-y-auto bg-hull-950 font-body">
@@ -37,7 +39,7 @@ export default function Option1BottomDock({ day, hour, offset, onHourChange, onO
                         <h1 className="truncate font-display text-[16px] font-semibold text-white">Mooloolaba River Mouth</h1>
                         <p className="flex items-center gap-1.5 truncate font-body text-[12px] text-slate-400">
                             <Waves size={12} className="shrink-0 text-tide-400" />
-                            {current.tideHeight.toFixed(1)}m {rising ? "rising" : "falling"} · {ratingTier(day.solunarRating)} solunar
+                            {formatTideHeight(current?.tideHeight)}m {rising ? "rising" : "falling"} · {ratingTier(day.solunarRating)} solunar
                         </p>
                     </div>
                     <div className="w-full flex justify-end items-center">
@@ -76,11 +78,11 @@ export default function Option1BottomDock({ day, hour, offset, onHourChange, onO
             <div className="fixed bottom-0 left-0 right-0 z-20 mx-auto max-w-md bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur">
                 <div className="absolute inset-x-1 top-0 h-px bg-hull-600/80" />
                 <div className="flex items-center justify-between gap-1">
-                    <StepButton label="Prev Day" direction="left" onClick={() => onOffsetChange(offset - 1)} />
+                        <StepButton label="Prev Day" direction="left" disabled={!canGoPrevious} onClick={() => onOffsetChange(offset - 1)} />
                     <span className="min-h-12 flex-2 truncate bg-transparent px-2 text-center font-body text-[13px] font-semibold leading-[48px] text-white">
-                        {formatDate(offset)}
+                        {formatDate(day.date)}
                     </span>
-                    <StepButton label="Next Day" direction="right" onClick={() => onOffsetChange(offset + 1)} />
+                        <StepButton label="Next Day" direction="right" disabled={!canGoNext} onClick={() => onOffsetChange(offset + 1)} />
                     <button
                         type="button"
                         onClick={() => setSettingsOpen(true)}

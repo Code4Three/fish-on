@@ -49,7 +49,7 @@ export default function CustomizationBottomSheet({
   return (
     <div
       aria-hidden={!isOpen}
-      className={`fixed inset-0 z-50 flex items-end justify-center transition-opacity duration-300 ${
+      className={`fixed inset-0 z-50 flex items-start justify-center transition-opacity duration-300 ${
         isOpen ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
@@ -87,7 +87,7 @@ export default function CustomizationBottomSheet({
         <div className="px-4 py-2">
           {matrixSettings && onToggleGroup && onToggleMatrixMetric ? (
             <>
-              <details open className="border-b border-slate-800/80">
+              <details className="border-b border-slate-800/80">
                 <summary className="cursor-pointer py-3 text-sm font-semibold text-white">Dashboard display</summary>
                 {matrixSettings.heroOrder.map(groupId => {
                   const group = DAILY_GROUPS.find(item => item.id === groupId);

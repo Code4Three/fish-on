@@ -5,7 +5,15 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: true
+    host: true,
+    headers: {
+      'Cache-Control': 'no-store'
+    }
+  },
+  preview: {
+    headers: {
+      'Cache-Control': 'no-store'
+    }
   },
   esbuild: {
     jsx: 'automatic'

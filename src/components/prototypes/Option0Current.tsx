@@ -73,7 +73,7 @@ function TimeBar({
 }
 
 // Prototype 0: the original stacked layout, unchanged apart from sharing state/cards with the other prototypes.
-export default function Option0Current({ day, hour, offset, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
+export default function Option0Current({ day, hour, offset, canGoPrevious, canGoNext, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
   const { settings, cardSettings, toggleCard, resetSettings } = useAnchoredSettings();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
@@ -102,12 +102,12 @@ export default function Option0Current({ day, hour, offset, onHourChange, onOffs
         </header>
         <div className="border-t border-hull-700/60 px-2 py-1">
           <div className="flex items-center justify-between">
-            <StepButton label="Prev Day" direction="left" onClick={() => onOffsetChange(offset - 1)} />
+            <StepButton label="Prev Day" direction="left" disabled={!canGoPrevious} onClick={() => onOffsetChange(offset - 1)} />
             <div className="flex items-center gap-1.5 font-body text-[14px] font-semibold text-white">
               <Calendar size={14} className="text-slate-500" />
-              {formatDate(offset)}
+              {formatDate(day.date)}
             </div>
-            <StepButton label="Next Day" direction="right" onClick={() => onOffsetChange(offset + 1)} />
+            <StepButton label="Next Day" direction="right" disabled={!canGoNext} onClick={() => onOffsetChange(offset + 1)} />
           </div>
         </div>
         <TimeBar hour={hour} day={day} onHourChange={onHourChange} onOpenDayView={() => setDayViewOpen(true)} />

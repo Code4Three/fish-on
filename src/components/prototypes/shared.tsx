@@ -22,14 +22,14 @@ export interface DashboardStateProps {
   day: ClaudeDayData;
   hour: number;
   offset: number;
+  canGoPrevious: boolean;
+  canGoNext: boolean;
   onHourChange: (hour: number) => void;
   onOffsetChange: (offset: number) => void;
   prototype: PrototypeId;
   onSelectPrototype: (id: PrototypeId) => void;
 }
 
-// Fixture "today" used by the mock data generator - not the real device date.
-export const BASE_DATE = new Date(2026, 8, 21);
 export const DEFAULT_HOUR = 7;
 
 export type MetricKey = keyof AnchoredSettingsState;
@@ -54,15 +54,17 @@ export function formatOptionalHour(hour: number | null | undefined, minutes = fa
   return hour == null ? "--" : formatHour(hour, minutes);
 }
 
-export function formatDate(offset: number) {
-  const date = new Date(BASE_DATE);
-  date.setDate(BASE_DATE.getDate() + offset);
+export function formatDate(dateValue: string) {
+  const date = new Date(`${dateValue}T00:00:00`);
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const dayDifference = Math.round((date.getTime() - today.getTime()) / 86400000);
   const day = date.getDate();
   const month = date.toLocaleDateString("en-AU", { month: "short" });
   const weekday = date.toLocaleDateString("en-AU", { weekday: "short" });
-  if (offset === 0) return `Today, ${day} ${month}`;
-  if (offset === 1) return `Tomorrow, ${day} ${month}`;
-  if (offset === -1) return `Yesterday, ${day} ${month}`;
+  if (dayDifference === 0) return `Today, ${day} ${month}`;
+  if (dayDifference === 1) return `Tomorrow, ${day} ${month}`;
+  if (dayDifference === -1) return `Yesterday, ${day} ${month}`;
   return `${weekday}, ${day} ${month}`;
 }
 
@@ -98,6 +100,20 @@ export function safe<T>(value: T | null | undefined, fallback = "--"): T | strin
   if (value === null || value === undefined) return fallback;
   if (typeof value === "number" && Number.isNaN(value)) return fallback;
   return value;
+}
+
+export function formatTideHeight(value: number | null | undefined): string {
+  return value == null ? "--" : value.toFixed(1);
+}
+
+export function isTideRising(day: ClaudeDayData, hour: number): boolean {
+  const current = day.hours[hour];
+  const next = day.hours[Math.min(day.hours.length - 1, hour + 1)] ?? current;
+  const currentValue = typeof current?.tideHeight === "number" ? current.tideHeight : null;
+  const nextValue = typeof next?.tideHeight === "number" ? next.tideHeight : null;
+
+  if (currentValue == null || nextValue == null) return false;
+  return nextValue > currentValue;
 }
 
 export function solunarStatusTrend(day: ClaudeDayData, hour: number): string {
@@ -245,10 +261,10 @@ export function ScoreCard({ day, hour, visibleMetrics }: { day: ClaudeDayData; h
 }
 
 export function TideCard({ day, hour, visibleMetrics }: { day: ClaudeDayData; hour: number; visibleMetrics?: VisibleMetrics }) {
-  const values = day.hours.map(item => item.tideHeight);
+  const values = day.hours.map(item => item.tideHeight).filter((value): value is number => typeof value === "number");
   const current = day.hours[hour];
   const nextEvent = day.tideEvents.find(event => event.hour >= hour) ?? day.tideEvents[0];
-  const rising = day.hours[Math.min(23, hour + 1)].tideHeight > current.tideHeight;
+  const rising = isTideRising(day, hour);
 
   return (
     <article className="mx-4 mt-3 overflow-hidden rounded-3xl border border-hull-700/70 bg-gradient-to-b from-hull-800 to-hull-900">
@@ -260,18 +276,18 @@ export function TideCard({ day, hour, visibleMetrics }: { day: ClaudeDayData; ho
         {isVisible(visibleMetrics, "currentTide") && <div className="mt-1 flex items-center gap-3">
           <div className="flex flex-wrap items-baseline gap-2">
             <span className="font-display text-[40px] font-bold leading-none tabular-nums text-white">
-              {current.tideHeight.toFixed(1)}
+              {formatTideHeight(current?.tideHeight)}
               <span className="ml-0.5 align-top text-xl font-medium text-slate-400">m</span>
             </span>
             <span className={`rounded-full px-2.5 py-1 font-body text-xs font-semibold ${rising ? "bg-tide-500/15 text-tide-400" : "bg-amber-400/15 text-amber-300"}`}>
               {rising ? "Rising" : "Falling"}
             </span>
           </div>
-          <Sparkline values={values} activeIndex={hour} stroke="#22C58A" dotColor="#4ADE9C" label="Tide height trend" />
+          <Sparkline values={values.length ? values : [0]} activeIndex={Math.min(hour, values.length - 1 || 0)} stroke="#22C58A" dotColor="#4ADE9C" label="Tide height trend" />
         </div>}
         {isVisible(visibleMetrics, "nextTide") && <div className="mt-1.5 flex items-center justify-between border-t border-hull-700/70 pt-2">
-          <span className="font-body text-[13px] font-medium text-slate-300">Next {nextEvent.type.toLowerCase()} tide</span>
-          <span className="font-body text-[13px] font-semibold tabular-nums text-white">{nextEvent.type}: {formatHour(nextEvent.hour, true)} ({nextEvent.height.toFixed(1)}m)</span>
+          <span className="font-body text-[13px] font-medium text-slate-300">Next {nextEvent?.type?.toLowerCase() ?? "tide"} tide</span>
+          <span className="font-body text-[13px] font-semibold tabular-nums text-white">{nextEvent ? `${nextEvent.type}: ${formatHour(nextEvent.hour, true)} (${formatTideHeight(nextEvent.height)}m)` : safe(null)}</span>
         </div>}
       </div>
     </article>
@@ -288,7 +304,7 @@ export function SolunarCard({ day, hour, visibleMetrics }: { day: ClaudeDayData;
     ?? windows[0];
 
   return (
-    <article className="mx-4 mt-2 rounded-3xl border border-hull-700/70 bg-hull-800">
+    <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800">
       <div className="px-4 pb-3 pt-3">
         <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
           <Moon size={13} className="text-indigo-300" />
@@ -381,7 +397,7 @@ function matrixMetricValue(id: string, day: ClaudeDayData, hour: number): [strin
     hourlyScore: [`${current.score} ${current.scoreBand}`, "Current score"],
     maxDayScore: [`${Math.max(...day.hours.map(item => item.score))}`, "Best hourly score"],
     feedingWindows: [nextPeak ? formatHour(nextPeak.hour) : "--", "Next strong window"],
-    currentTide: [`${current.tideHeight.toFixed(1)}m`, current.tideStage],
+    currentTide: [`${formatTideHeight(current?.tideHeight)}m`, current?.tideStage ?? "--"],
     nextTide: [day.tideEvents[0] ? `${day.tideEvents[0].type} ${formatHour(day.tideEvents[0].hour, true)}` : "--", "Next tide"],
     waterTemperature: [String(day.secondary.waterTemp ?? "--"), range?.waterTemp ? `${range.waterTemp.min}-${range.waterTemp.max}°C` : "Unavailable"],
     swell: [day.secondary.swell?.height ?? "--", day.secondary.swell ? `${day.secondary.swell.period}s ${day.secondary.swell.dir}` : "Unavailable"],
@@ -505,10 +521,10 @@ function FishabilityGroupContent({ day, hour, visibleMetrics }: { day: ClaudeDay
 }
 
 function TideGroupContent({ day, hour, visibleMetrics }: { day: ClaudeDayData; hour: number; visibleMetrics: VisibleMetrics }) {
-  const values = day.hours.map(item => item.tideHeight);
+  const values = day.hours.map(item => item.tideHeight).filter((value): value is number => typeof value === "number");
   const current = day.hours[hour];
   const nextEvent = day.tideEvents.find(event => event.hour >= hour) ?? day.tideEvents[0];
-  const rising = day.hours[Math.min(23, hour + 1)].tideHeight > current.tideHeight;
+  const rising = isTideRising(day, hour);
 
   return (
     <div className="px-4 pb-3 pt-3">
@@ -517,20 +533,20 @@ function TideGroupContent({ day, hour, visibleMetrics }: { day: ClaudeDayData; h
         <div className="mt-1 flex items-center gap-3">
           <div className="flex flex-wrap items-baseline gap-2">
             <span className="font-display text-[40px] font-bold leading-none tabular-nums text-white">
-              {current.tideHeight.toFixed(1)}
+              {formatTideHeight(current?.tideHeight)}
               <span className="ml-0.5 align-top text-xl font-medium text-slate-400">m</span>
             </span>
             <span className={`rounded-full px-2.5 py-1 font-body text-xs font-semibold ${rising ? "bg-tide-500/15 text-tide-400" : "bg-amber-400/15 text-amber-300"}`}>
               {rising ? "Rising" : "Falling"}
             </span>
           </div>
-          <Sparkline values={values} activeIndex={hour} stroke="#22C58A" dotColor="#4ADE9C" label="Tide height trend" />
+          <Sparkline values={values.length ? values : [0]} activeIndex={Math.min(hour, values.length - 1 || 0)} stroke="#22C58A" dotColor="#4ADE9C" label="Tide height trend" />
         </div>
       )}
       {isVisible(visibleMetrics, "nextTide") && (
         <div className="mt-1.5 flex items-center justify-between border-t border-hull-700/70 pt-2">
-          <span className="font-body text-[13px] font-medium text-slate-300">Next {nextEvent.type.toLowerCase()} tide</span>
-          <span className="font-body text-[13px] font-semibold tabular-nums text-white">{nextEvent.type}: {formatHour(nextEvent.hour, true)} ({nextEvent.height.toFixed(1)}m)</span>
+          <span className="font-body text-[13px] font-medium text-slate-300">Next {nextEvent?.type?.toLowerCase() ?? "tide"} tide</span>
+          <span className="font-body text-[13px] font-semibold tabular-nums text-white">{nextEvent ? `${nextEvent.type}: ${formatHour(nextEvent.hour, true)} (${formatTideHeight(nextEvent.height)}m)` : safe(null)}</span>
         </div>
       )}
     </div>
@@ -643,17 +659,17 @@ export function WaterDetailsCard({ day, hour, visibleMetrics }: { day: ClaudeDay
   const swellRange = day.ranges?.swell;
 
   return (
-    <article className="mx-4 mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
+    <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
       <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
         <Waves size={13} className="text-tide-400" />
         Water &amp; marine details
       </div>
       <div className="mt-2">
-        {isVisible(visibleMetrics, "currentTide") && <DetailRow label="Current tide height" value={`${safe(day.hours[hour]?.tideHeight)}m`} />}
+        {isVisible(visibleMetrics, "currentTide") && <DetailRow label="Current tide height" value={`${formatTideHeight(day.hours[hour]?.tideHeight)}m`} />}
         {isVisible(visibleMetrics, "currentTide") && <DetailRow label="Current tide stage" value={safe(day.hours[hour]?.tideStage)} />}
         {isVisible(visibleMetrics, "currentTide") && <DetailRow label="Current tide direction" value={safe(day.hours[hour]?.tideDirection)} />}
-        {isVisible(visibleMetrics, "nextTide") && <DetailRow label="Next high tide" value={upcomingHigh ? `${formatHour(upcomingHigh.hour, true)} (${upcomingHigh.height.toFixed(1)}m)` : safe(null)} />}
-        {isVisible(visibleMetrics, "nextTide") && <DetailRow label="Next low tide" value={upcomingLow ? `${formatHour(upcomingLow.hour, true)} (${upcomingLow.height.toFixed(1)}m)` : safe(null)} />}
+        {isVisible(visibleMetrics, "nextTide") && <DetailRow label="Next high tide" value={upcomingHigh ? `${formatHour(upcomingHigh.hour, true)} (${formatTideHeight(upcomingHigh.height)}m)` : safe(null)} />}
+        {isVisible(visibleMetrics, "nextTide") && <DetailRow label="Next low tide" value={upcomingLow ? `${formatHour(upcomingLow.hour, true)} (${formatTideHeight(upcomingLow.height)}m)` : safe(null)} />}
         {isVisible(visibleMetrics, "nextTide") && <DetailRow label="Slack water window" value={safe(null)} />}
         {isVisible(visibleMetrics, "waterTemperature") && <DetailRow label="Water temperature" value={day.secondary?.waterTemp ? `${day.secondary.waterTemp}°C` : safe(null)} />}
         {isVisible(visibleMetrics, "waterTemperature") && <DetailRow label="Water temp range" value={waterTempRange ? `${safe(waterTempRange.min)}°C - ${safe(waterTempRange.max)}°C` : safe(null)} />}
@@ -672,7 +688,7 @@ export function SolunarDetailsCard({ day, hour, visibleMetrics }: { day: ClaudeD
   const majorWindow = day.majorWindows[0];
 
   return (
-    <article className="mx-4 mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
+    <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
       <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
         <Moon size={13} className="text-indigo-300" />
         Astronomical &amp; solunar details
@@ -701,7 +717,7 @@ export function WeatherDetailsCard({ day, hour, visibleMetrics }: { day: ClaudeD
   const windRange = day.ranges?.wind;
 
   return (
-    <article className="mx-4 mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
+    <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
       <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
         <Cloud size={13} className="text-sky-300" />
         Weather
@@ -811,44 +827,58 @@ export function DayDrawer({
           </button>
         </div>
         <div className="no-scrollbar min-h-0 flex-1 overflow-x-auto overflow-y-auto overscroll-contain px-5 pb-4">
-          <div className="min-w-[880px]">
-            <div className="flex gap-3 border-b border-hull-700/70 pb-2 font-body text-[11px] uppercase tracking-wide text-slate-500">
-              <span>Time</span>
-              {show("hourlyScore") && <span>Score</span>}
-              {show("tide") && <span>Tide</span>}
-              {show("tide") && <span>Direction</span>}
-              {show("solunarActive") && <span>Solunar</span>}
-              {show("wind") && <span>Wind</span>}
-              {show("pressure") && <span>Press.</span>}
-              {show("airTemperature") && <span>Temp</span>}
-              {show("cloud") && <span>Cloud</span>}
-              {show("rainChance") && <span>Rain</span>}
-              {show("uv") && <span>UV</span>}
-            </div>
-            {day.hours.map(item => (
-              <button
-                key={item.hour}
-                type="button"
-                onClick={() => {
+          <table className="min-w-[880px] w-full border-collapse">
+            <thead className="sticky top-0 z-10 bg-hull-900">
+              <tr className="border-b border-hull-700/70 font-body text-[11px] uppercase tracking-wide text-slate-500">
+                <th scope="col" className="py-2 text-left font-normal">Time</th>
+                {show("hourlyScore") && <th scope="col" className="py-2 text-left font-normal">Score</th>}
+                {show("tide") && <th scope="col" className="py-2 text-left font-normal">Tide</th>}
+                {show("tide") && <th scope="col" className="py-2 text-left font-normal">Direction</th>}
+                {show("solunarActive") && <th scope="col" className="py-2 text-left font-normal">Solunar</th>}
+                {show("wind") && <th scope="col" className="py-2 text-left font-normal">Wind</th>}
+                {show("pressure") && <th scope="col" className="py-2 text-left font-normal">Press.</th>}
+                {show("airTemperature") && <th scope="col" className="py-2 text-left font-normal">Temp</th>}
+                {show("cloud") && <th scope="col" className="py-2 text-left font-normal">Cloud</th>}
+                {show("rainChance") && <th scope="col" className="py-2 text-left font-normal">Rain</th>}
+                {show("uv") && <th scope="col" className="py-2 text-left font-normal">UV</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {day.hours.map(item => {
+                const activate = () => {
                   onPickHour(item.hour);
                   onClose();
-                }}
-                className={`flex min-h-[48px] w-full items-center gap-3 border-b border-hull-700/50 py-3 text-left ${item.hour === selectedHour ? "bg-tide-500/10" : ""}`}
-              >
-                <span className={`font-body text-[13px] font-semibold tabular-nums ${item.hour === selectedHour ? "text-tide-400" : "text-white"}`}>{formatHour(item.hour)}</span>
-                {show("hourlyScore") && <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.score)}</span>}
-                {show("tide") && <span className="font-body text-[13px] tabular-nums text-slate-300">{item.tideHeight.toFixed(1)}m</span>}
-                {show("tide") && <span className="font-body text-[12.5px] text-slate-400">{safe(item.tideDirection, "N/A")}</span>}
-                {show("solunarActive") && <span className="font-body text-[12.5px] text-slate-400">{item.solunar === "none" ? "Neutral" : item.solunar === "major" ? "Major" : "Minor"}</span>}
-                {show("wind") && <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.wind?.speed)}kt {safe(item.wind?.dir, "")}</span>}
-                {show("pressure") && <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.pressure)}</span>}
-                {show("airTemperature") && <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.airTemp)}°</span>}
-                {show("cloud") && <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.cloudCover)}%</span>}
-                {show("rainChance") && <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.rainChance)}%</span>}
-                {show("uv") && <span className="font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.uvIndex, "N/A")}</span>}
-              </button>
-            ))}
-          </div>
+                };
+                return (
+                  <tr
+                    key={item.hour}
+                    role="button"
+                    tabIndex={0}
+                    onClick={activate}
+                    onKeyDown={event => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        activate();
+                      }
+                    }}
+                    className={`min-h-[48px] cursor-pointer border-b border-hull-700/50 text-left ${item.hour === selectedHour ? "bg-tide-500/10" : ""}`}
+                  >
+                    <th scope="row" className={`py-3 pr-3 text-left font-body text-[13px] font-semibold tabular-nums ${item.hour === selectedHour ? "text-tide-400" : "text-white"}`}>{formatHour(item.hour)}</th>
+                    {show("hourlyScore") && <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.score)}</td>}
+                    {show("tide") && <td className="py-3 pr-3 font-body text-[13px] tabular-nums text-slate-300">{formatTideHeight(item.tideHeight)}m</td>}
+                    {show("tide") && <td className="py-3 pr-3 font-body text-[12.5px] text-slate-400">{safe(item.tideDirection, "N/A")}</td>}
+                    {show("solunarActive") && <td className="py-3 pr-3 font-body text-[12.5px] text-slate-400">{item.solunar === "none" ? "Neutral" : item.solunar === "major" ? "Major" : "Minor"}</td>}
+                    {show("wind") && <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.wind?.speed)}kt {safe(item.wind?.dir, "")}</td>}
+                    {show("pressure") && <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.pressure)}</td>}
+                    {show("airTemperature") && <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.airTemp)}°</td>}
+                    {show("cloud") && <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.cloudCover)}%</td>}
+                    {show("rainChance") && <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.rainChance)}%</td>}
+                    {show("uv") && <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">{safe(item.uvIndex, "N/A")}</td>}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
         {isTopDock && onDragStart && onDragMove && onDragEnd && (
           <div
