@@ -13,6 +13,7 @@ export interface DailyGroupDefinition {
   metrics: DailyMetricDefinition[];
 }
 
+// Source of truth for the dashboard's customizable metric groups/cards (order, labels, visibility defaults)
 export const DAILY_GROUPS: DailyGroupDefinition[] = [
   {
     id: "fishability",

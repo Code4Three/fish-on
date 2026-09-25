@@ -18,6 +18,9 @@ import {
   ratingTier
 } from "./prototypes/shared";
 
+// ==========================================
+// SUB-COMPONENT: Floating Navigation Dock
+// ==========================================
 // Floating date/hour control bar that docks to the top or bottom of the screen.
 // Dragging its handle reveals the full 24h drawer (expansionProgress 0-1 drives that reveal).
 function DashboardDock({
@@ -50,17 +53,27 @@ function DashboardDock({
   isDragging: boolean;
 }) {
   const isBottom = position === "bottom";
-  const dockTravel = typeof window === "undefined" ? 0 : Math.max(0, window.innerHeight - 72 - 132);
   const isExpanded = expansionProgress > 0;
+
+  // Placement classes: pinned bottom, expanded-to-fixed-top, or sticky-top
+  const positionClasses = isBottom
+    ? "w-full bottom-0 left-0 right-0 z-40 pb-8"
+    : isExpanded
+    ? "left-0 right-0 z-40"
+    : "sticky top-[72px] z-40";
 
   return (
     // fixed/sticky already establish a containing block, so no extra `relative` is needed (and it would override them in Tailwind's cascade)
     <div
-      className={`${isBottom ? "w-full bottom-0 left-0 right-0 z-40 pb-8" : isExpanded ? "fixed left-0 right-0 z-40" : "sticky top-[72px] z-40"} mx-auto max-w-md select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${isDragging ? "" : "transition-[bottom,top,transform] duration-300 ease-out"}`}
+      className={`${positionClasses} mx-auto select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${
+        isDragging ? "" : "transition-[bottom,top,transform] duration-300 ease-out"
+      }`}
     >
       {/* Drag handle: swipe toward the screen edge to open the full day drawer */}
       <div
-        className={`absolute inset-x-1 z-10 flex h-12 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${isBottom ? "top-0 -translate-y-1/2" : "bottom-0 translate-y-1/2"}`}
+        className={`absolute inset-x-1 z-10 flex h-12 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${
+          isBottom ? "top-0 -translate-y-1/2" : "bottom-0 translate-y-1/2"
+        }`}
         onPointerDown={event => {
           event.currentTarget.setPointerCapture(event.pointerId);
           onDragStart(event.clientY);
@@ -72,6 +85,7 @@ function DashboardDock({
       >
         <div className="h-1 w-10 rounded-full bg-hull-600/90" />
       </div>
+
       {/* Prev/next day navigation with the current date label */}
       <div className="flex items-center justify-between gap-1">
         <StepButton label="Prev Day" direction="left" disabled={!canGoPrevious} onClick={() => onOffsetChange(offset - 1)} />
@@ -80,6 +94,7 @@ function DashboardDock({
         </span>
         <StepButton label="Next Day" direction="right" disabled={!canGoNext} onClick={() => onOffsetChange(offset + 1)} />
       </div>
+
       {/* Scrollable hour-of-day picker */}
       <div className="mt-2">
         <HourPills hour={hour} day={day} onHourChange={onHourChange} />
@@ -88,6 +103,9 @@ function DashboardDock({
   );
 }
 
+// ==========================================
+// MAIN COMPONENT: Dashboard Shell
+// ==========================================
 // Production dashboard: bottom-dock thumb-first layout (formerly Prototype 1). Settings live in the header only.
 export default function MainDashboard({ day, hour, offset, canGoPrevious, canGoNext, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
   // Which cards/groups/metrics are visible and in what order, persisted per user
@@ -190,10 +208,30 @@ export default function MainDashboard({ day, hour, offset, canGoPrevious, canGoN
     if (sourceArea === area) moveDashboardItem(source, target, area);
   };
 
+  // Pre-flatten metric definitions once so the card grid doesn't re-flatten on every lookup
+  const allMetrics = DAILY_GROUPS.flatMap(group => group.metrics);
+
+  // Bundle the props shared by both the top and bottom dock instances
+  const dockProps = {
+    offset,
+    hour,
+    day,
+    canGoPrevious,
+    canGoNext,
+    onOffsetChange,
+    onHourChange,
+    onDragStart: handleDockDragStart,
+    onDragMove: handleDockDragMove,
+    onDragEnd: handleDockDragEnd,
+    expansionProgress: drawerProgress,
+    isDragging: drawerDragging
+  };
+
   return (
     // Centers the fixed-width mobile column within any wider viewport
     <div className="flex min-h-screen w-full justify-center bg-hull-950">
-      <main className="dashboard-shell overscroll-x-none relative w-full mx-auto flex h-[100dvh] min-h-[100svh] max-w-md flex-col overflow-hidden bg-hull-950 font-body touch-pan-y">
+      <main className="dashboard-shell overscroll-x-none relative w-full mx-auto flex h-[100dvh] min-h-[100svh] flex-col overflow-hidden bg-hull-950 font-body touch-pan-y">
+        {/* ================= HEADER ================= */}
         {/* Header: location name, current tide/solunar summary, and the settings button */}
         <header className="sticky top-0 z-20 shrink-0 bg-hull-950/95 px-4 py-3 backdrop-blur">
           <div className="flex items-center justify-between gap-2">
@@ -221,28 +259,14 @@ export default function MainDashboard({ day, hour, offset, canGoPrevious, canGoN
           <div className="absolute inset-x-2 bottom-0 h-px bg-hull-600/80" />
         </header>
 
+        {/* ================= TOP DOCK (CONDITIONAL) ================= */}
         {/* Top dock: only rendered when the user has chosen the top-docked control layout */}
-        {dockPosition === "top" && (
-          <DashboardDock
-            position="top"
-            offset={offset}
-            hour={hour}
-            day={day}
-            onOffsetChange={onOffsetChange}
-            onHourChange={onHourChange}
-            onDragStart={handleDockDragStart}
-            onDragMove={handleDockDragMove}
-            onDragEnd={handleDockDragEnd}
-            expansionProgress={drawerProgress}
-            isDragging={drawerDragging}
-            canGoPrevious={canGoPrevious}
-            canGoNext={canGoNext}
-          />
-        )}
+        {dockPosition === "top" && <DashboardDock position="top" {...dockProps} />}
 
+        {/* ================= SWIPEABLE MAIN PANEL ================= */}
         {/* Swipeable panel: metric cards on the left, full conditions detail on the right */}
         <div
-          className={`mx-auto w-full max-w-md overscroll-x-none min-h-0 flex-1 overflow-hidden ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
+          className={`mx-auto w-full overscroll-x-none min-h-0 flex-1 overflow-hidden ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
           onPointerDown={handleConditionsPointerDown}
           onPointerMove={handleConditionsPointerMove}
           onPointerUp={handleConditionsPointerEnd}
@@ -259,22 +283,62 @@ export default function MainDashboard({ day, hour, offset, canGoPrevious, canGoN
           >
             {/* Left panel: draggable hero group cards, then the grid of individual metric cards */}
             <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y">
+              {/* Hero group cards: whole groups collapsed into one card, in user-defined order */}
               {matrixSettings.heroOrder.map(groupId => {
                 const group = DAILY_GROUPS.find(item => item.id === groupId);
                 if (!group || !matrixSettings.groups[group.id]) return null;
-                return <MatrixGroupCard key={group.id} group={group} visibleMetrics={matrixSettings.metrics} day={day} hour={hour} draggable onDragStart={event => { event.dataTransfer.setData("text/area", "heroOrder"); event.dataTransfer.setData("text/id", group.id); }} onDragOver={event => event.preventDefault()} onDrop={event => handleDashboardDrop(event, group.id, "heroOrder")} />;
+
+                return (
+                  <MatrixGroupCard
+                    key={group.id}
+                    group={group}
+                    visibleMetrics={matrixSettings.metrics}
+                    day={day}
+                    hour={hour}
+                    draggable
+                    onDragStart={event => {
+                      event.dataTransfer.setData("text/area", "heroOrder");
+                      event.dataTransfer.setData("text/id", group.id);
+                    }}
+                    onDragOver={event => event.preventDefault()}
+                    onDrop={event => handleDashboardDrop(event, group.id, "heroOrder")}
+                  />
+                );
               })}
+
+              {/* Individual metric cards: only shown when their parent group isn't collapsed */}
               <section className="mt-3 px-4" onDragOver={event => event.preventDefault()}>
                 <div className="grid grid-cols-2 gap-3">
                   {matrixSettings.cardOrder.map(metricId => {
-                    const definition = DAILY_GROUPS.flatMap(group => group.metrics).find(metric => metric.id === metricId);
+                    const definition = allMetrics.find(metric => metric.id === metricId);
                     const group = DAILY_GROUPS.find(item => item.metrics.some(metric => metric.id === metricId));
-                    if (!definition || !group || matrixSettings.groups[group.id] || matrixSettings.metrics[metricId] === false) return null;
-                    return <MatrixMetricCard key={metricId} id={metricId} label={definition.label} day={day} hour={hour} draggable onDragStart={event => { event.dataTransfer.setData("text/area", "cardOrder"); event.dataTransfer.setData("text/id", metricId); }} onDragOver={event => event.preventDefault()} onDrop={event => handleDashboardDrop(event, metricId, "cardOrder")} />;
+
+                    // Skip if the metric is disabled or its parent group card is already showing it
+                    if (!definition || !group || matrixSettings.groups[group.id] || matrixSettings.metrics[metricId] === false) {
+                      return null;
+                    }
+
+                    return (
+                      <MatrixMetricCard
+                        key={metricId}
+                        id={metricId}
+                        label={definition.label}
+                        day={day}
+                        hour={hour}
+                        draggable
+                        onDragStart={event => {
+                          event.dataTransfer.setData("text/area", "cardOrder");
+                          event.dataTransfer.setData("text/id", metricId);
+                        }}
+                        onDragOver={event => event.preventDefault()}
+                        onDrop={event => handleDashboardDrop(event, metricId, "cardOrder")}
+                      />
+                    );
                   })}
                 </div>
               </section>
             </div>
+
             {/* Right panel: detailed daily conditions view */}
             <div className={`no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y ${dockPosition === "bottom" ? "pb-44" : ""}`}>
               <FullConditionsView day={day} hour={hour} visibleMetrics={matrixSettings.metrics} onClose={() => setConditionsProgress(0)} />
@@ -282,25 +346,11 @@ export default function MainDashboard({ day, hour, offset, canGoPrevious, canGoN
           </div>
         </div>
 
+        {/* ================= BOTTOM DOCK (CONDITIONAL) ================= */}
         {/* Bottom dock: default control layout, docked to the bottom of the screen */}
-        {dockPosition === "bottom" && (
-          <DashboardDock
-            position="bottom"
-            offset={offset}
-            hour={hour}
-            day={day}
-            onOffsetChange={onOffsetChange}
-            onHourChange={onHourChange}
-            onDragStart={handleDockDragStart}
-            onDragMove={handleDockDragMove}
-            onDragEnd={handleDockDragEnd}
-            expansionProgress={drawerProgress}
-            isDragging={drawerDragging}
-            canGoPrevious={canGoPrevious}
-            canGoNext={canGoNext}
-          />
-        )}
+        {dockPosition === "bottom" && <DashboardDock position="bottom" {...dockProps} />}
 
+        {/* ================= MODALS & DRAWERS ================= */}
         {/* Full 24h drawer, revealed by dragging the dock handle or tapping into it */}
         <DayDrawer
           open={dayViewOpen}

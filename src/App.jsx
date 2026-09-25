@@ -25,6 +25,7 @@ function ActiveView() {
 			return <ManageLocationsView />;
 		case VIEWS.WEEKLY:
 		default:
+			// Weekly forecast is both the explicit default view and the fallback for any unknown view key
 			return <PrototypeSwitcher />;
 	}
 }

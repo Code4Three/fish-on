@@ -43,6 +43,7 @@ function circularMinuteDistance(first, second) {
 function distanceMultiplier(distance, rules) {
   if (!Number.isFinite(distance)) return 1;
 
+  // Moon closer to perigee (near) boosts the rating, closer to apogee (far) dampens it
   const { perigeeKm, apogeeKm, perigeeMultiplier, apogeeMultiplier } = rules.distance;
   const range = apogeeKm - perigeeKm;
   if (range <= 0) return 1;

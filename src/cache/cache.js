@@ -36,6 +36,7 @@ export function mergeByDate(existing, incoming) {
   const unique = [];
   const overlapWindowMs = 2 * 60 * 60 * 1000;
 
+  // When two records fall within the overlap window, keep the newer source (incoming beats cached)
   for (const candidate of merged) {
     const previous = unique[unique.length - 1];
     const overlaps = previous &&

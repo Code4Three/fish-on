@@ -35,6 +35,7 @@ export default function CustomizationBottomSheet({
   dockPosition,
   onSelectDockPosition
 }: CustomizationBottomSheetProps) {
+  // Let Escape close the sheet while it's open
   useEffect(() => {
     if (!isOpen) return undefined;
 
@@ -84,25 +85,52 @@ export default function CustomizationBottomSheet({
           </button>
         </div>
 
+        {/* ================= METRIC VISIBILITY TOGGLES ================= */}
         <div className="px-4 py-2">
           {matrixSettings && onToggleGroup && onToggleMatrixMetric ? (
             <>
+              {/* Daily dashboard groups + their individual metrics, collapsible */}
               <details className="border-b border-slate-800/80">
                 <summary className="cursor-pointer py-3 text-sm font-semibold text-white">Dashboard display</summary>
                 {matrixSettings.heroOrder.map(groupId => {
                   const group = DAILY_GROUPS.find(item => item.id === groupId);
                   if (!group) return null;
+
                   return (
                     <div key={group.id} className="border-t border-slate-800/80 py-2">
                       <div className="flex items-center gap-2">
                         <p className="min-w-0 flex-1 text-sm font-semibold text-slate-100">{group.label}</p>
-                        <button type="button" role="switch" aria-checked={matrixSettings.groups[group.id]} aria-label={`${matrixSettings.groups[group.id] ? "Hide" : "Show"} ${group.label}`} onClick={() => onToggleGroup(group.id)} tabIndex={isOpen ? 0 : -1} className={`inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border ${matrixSettings.groups[group.id] ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"}`}><Check size={17} strokeWidth={3} /></button>
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={matrixSettings.groups[group.id]}
+                          aria-label={`${matrixSettings.groups[group.id] ? "Hide" : "Show"} ${group.label}`}
+                          onClick={() => onToggleGroup(group.id)}
+                          tabIndex={isOpen ? 0 : -1}
+                          className={`inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border ${
+                            matrixSettings.groups[group.id] ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"
+                          }`}
+                        >
+                          <Check size={17} strokeWidth={3} />
+                        </button>
                       </div>
                       <div className="ml-6 mt-1">
                         {group.metrics.map(metric => (
                           <div key={`${group.id}-${metric.id}`} className="flex min-h-10 items-center gap-2">
                             <span className="min-w-0 flex-1 text-xs text-slate-400">{metric.label}</span>
-                            <button type="button" role="switch" aria-checked={matrixSettings.metrics[metric.id]} aria-label={`${matrixSettings.metrics[metric.id] ? "Hide" : "Show"} ${metric.label}`} onClick={() => onToggleMatrixMetric(metric.id)} tabIndex={isOpen ? 0 : -1} className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${matrixSettings.metrics[metric.id] ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"}`}><Check size={15} strokeWidth={3} /></button>
+                            <button
+                              type="button"
+                              role="switch"
+                              aria-checked={matrixSettings.metrics[metric.id]}
+                              aria-label={`${matrixSettings.metrics[metric.id] ? "Hide" : "Show"} ${metric.label}`}
+                              onClick={() => onToggleMatrixMetric(metric.id)}
+                              tabIndex={isOpen ? 0 : -1}
+                              className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${
+                                matrixSettings.metrics[metric.id] ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"
+                              }`}
+                            >
+                              <Check size={15} strokeWidth={3} />
+                            </button>
                           </div>
                         ))}
                       </div>
@@ -110,16 +138,53 @@ export default function CustomizationBottomSheet({
                   );
                 })}
               </details>
+
+              {/* Metrics shown in the hourly detail drawer, toggled independently of the daily groups */}
               <details className="border-b border-slate-800/80">
                 <summary className="cursor-pointer py-3 text-sm font-semibold text-white">Hourly display</summary>
-                {HOURLY_METRICS.map(metric => <div key={metric.id} className="flex min-h-10 items-center justify-between gap-3 border-t border-slate-800/80"><span className="text-xs text-slate-400">{metric.label}</span><button type="button" role="switch" aria-checked={matrixSettings.hourly[metric.id]} aria-label={`${matrixSettings.hourly[metric.id] ? "Hide" : "Show"} ${metric.label}`} onClick={() => onToggleMatrixMetric(metric.id, true)} tabIndex={isOpen ? 0 : -1} className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${matrixSettings.hourly[metric.id] ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"}`}><Check size={15} strokeWidth={3} /></button></div>)}
+                {HOURLY_METRICS.map(metric => (
+                  <div key={metric.id} className="flex min-h-10 items-center justify-between gap-3 border-t border-slate-800/80">
+                    <span className="text-xs text-slate-400">{metric.label}</span>
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={matrixSettings.hourly[metric.id]}
+                      aria-label={`${matrixSettings.hourly[metric.id] ? "Hide" : "Show"} ${metric.label}`}
+                      onClick={() => onToggleMatrixMetric(metric.id, true)}
+                      tabIndex={isOpen ? 0 : -1}
+                      className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${
+                        matrixSettings.hourly[metric.id] ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"
+                      }`}
+                    >
+                      <Check size={15} strokeWidth={3} />
+                    </button>
+                  </div>
+                ))}
               </details>
             </>
-          ) : Object.entries(settings).map(([key, enabled]) => (
-            <div key={key} className="flex min-h-[52px] items-center justify-between border-b border-slate-800/80 py-2"><p className="text-sm font-semibold capitalize text-slate-100">{key}</p><button type="button" role="switch" aria-checked={enabled} onClick={() => onToggle(key as keyof DashboardCardSettings)} tabIndex={isOpen ? 0 : -1} className={`inline-flex min-h-12 min-w-12 items-center justify-center rounded-full border ${enabled ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"}`}><Check size={19} strokeWidth={3} /></button></div>
-          ))}
+          ) : (
+            // Fallback for prototypes that only support the simpler flat card toggles
+            Object.entries(settings).map(([key, enabled]) => (
+              <div key={key} className="flex min-h-[52px] items-center justify-between border-b border-slate-800/80 py-2">
+                <p className="text-sm font-semibold capitalize text-slate-100">{key}</p>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={enabled}
+                  onClick={() => onToggle(key as keyof DashboardCardSettings)}
+                  tabIndex={isOpen ? 0 : -1}
+                  className={`inline-flex min-h-12 min-w-12 items-center justify-center rounded-full border ${
+                    enabled ? "border-emerald-300 bg-emerald-400 text-slate-950" : "border-slate-600 bg-slate-800 text-slate-500"
+                  }`}
+                >
+                  <Check size={19} strokeWidth={3} />
+                </button>
+              </div>
+            ))
+          )}
         </div>
 
+        {/* ================= LAYOUT PROTOTYPE PICKER ================= */}
         <div className="border-t border-slate-800 px-4 py-3">
           <p className="mb-2 text-sm font-semibold text-white">Dashboard layout</p>
           <div className="grid gap-2">
@@ -146,6 +211,7 @@ export default function CustomizationBottomSheet({
           </div>
         </div>
 
+        {/* ================= DOCK POSITION PICKER (CONDITIONAL) ================= */}
         {dockPosition && onSelectDockPosition && (
           <div className="border-t border-slate-800 px-4 py-3">
             <p className="mb-2 text-sm font-semibold text-white">Control dock</p>
@@ -170,6 +236,7 @@ export default function CustomizationBottomSheet({
           </div>
         )}
 
+        {/* ================= RESET ================= */}
         <div className="border-t border-slate-800 p-4">
           <button
             type="button"

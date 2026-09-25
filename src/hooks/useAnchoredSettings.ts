@@ -89,12 +89,15 @@ function getStoredSettings(): AnchoredSettingsState {
   }
 }
 
+// Card-level settings predate the metric matrix; this reads a matrix-era blob and derives
+// the old card flags from it so users upgrading don't lose their previous choices.
 function getStoredCardSettings(): DashboardCardSettings {
   if (typeof window === "undefined") return DEFAULT_CARD_SETTINGS;
 
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     const parsed = stored ? JSON.parse(stored) as Partial<AnchoredSettingsState & DashboardCardSettings> : {};
+    // Fall back to the legacy per-metric flags (waterTemp/airTemp/wind/etc.) when the new card flag is absent
     return {
       temperature: typeof parsed.temperature === "boolean" ? parsed.temperature : Boolean(parsed.waterTemp || parsed.airTemp || stored === null),
       weather: typeof parsed.weather === "boolean" ? parsed.weather : Boolean(parsed.wind || parsed.rain || parsed.uv || stored === null),
@@ -112,6 +115,7 @@ function getStoredMatrixSettings(): MatrixSettings {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     const parsed = stored ? JSON.parse(stored) as Partial<MatrixSettings> : {};
+    // Drop any stale ids no longer in the default order, then append newly-added ids at the end
     const heroOrder = Array.isArray(parsed.heroOrder) ? parsed.heroOrder.filter(id => DEFAULT_MATRIX_SETTINGS.heroOrder.includes(id)) : [];
     const cardOrder = Array.isArray(parsed.cardOrder) ? parsed.cardOrder.filter(id => DEFAULT_MATRIX_SETTINGS.cardOrder.includes(id)) : [];
     return {
@@ -176,6 +180,7 @@ export function useAnchoredSettings() {
 
   const moveDashboardItem = useCallback((item: string, target: string, area: "heroOrder" | "cardOrder") => {
     setMatrixSettings(current => {
+      // Reorder by removing the dragged item and reinserting it just before/after the drop target
       const order = [...current[area]];
       const from = order.indexOf(item);
       const to = order.indexOf(target);

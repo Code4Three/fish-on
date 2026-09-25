@@ -7,6 +7,7 @@ export default function GlobalHeader() {
   const { activeLocation, isMenuOpen, closeMenu, toggleMenu } = useApp();
   const menuRef = useRef(null);
 
+  // Close the menu on Escape or on a click/tap outside it
   useEffect(() => {
     if (!isMenuOpen) return undefined;
 

@@ -33,6 +33,7 @@ export default function PrototypeSwitcher() {
   }, [days, hasSyncedToNow]);
 
   const maxOffset = Math.max(0, days.length - 1);
+  // Clamp so an out-of-range offset (e.g. stale localStorage) can't index past the loaded days
   const clampedOffset = Math.min(Math.max(offset, 0), maxOffset);
   const day = useMemo(() => (days.length ? buildDayData(days, clampedOffset) : null), [days, clampedOffset]);
 

@@ -5,6 +5,7 @@ export function calculateConditionScore(tideData, solunarData, config) {
   const tideWeight = getWeight(weights.tide);
   const solunarWeight = getWeight(weights.solunar);
 
+  // Weights are a fixed split (e.g. 60/40) that must add up to a whole score
   if (Math.abs(tideWeight + solunarWeight - 1) > 0.000001) {
     throw new Error("Tide and solunar weights must sum to 1.0");
   }
@@ -24,6 +25,7 @@ export function calculateTideRating(at, tideEvents, config) {
   const decayPerHour = config?.tide?.decayPerHour ?? 25;
   const runInWindows = [];
 
+  // A "run-in" window is the peak fishing window leading up to each Low-to-High tide change
   for (let index = 1; index < tideEvents.length; index++) {
     const previous = tideEvents[index - 1];
     const current = tideEvents[index];
@@ -38,6 +40,7 @@ export function calculateTideRating(at, tideEvents, config) {
 
   if (!runInWindows.length) return 0;
 
+  // Score is 100 inside any run-in window, decaying linearly the further outside one you are
   const distanceHours = Math.min(...runInWindows.map(window => {
     if (at >= window.start && at <= window.end) return 0;
 

@@ -15,6 +15,7 @@ function getStoredLocationId() {
 
 export function AppProvider({ children }) {
   const [activeView, setActiveView] = useState(VIEWS.WEEKLY);
+  // Restore the last-selected location, falling back to the first config entry if it's missing/invalid
   const [activeLocationId, setActiveLocationId] = useState(() => {
     const storedId = getStoredLocationId();
     return appConfig.locations.some(location => location.id === storedId)

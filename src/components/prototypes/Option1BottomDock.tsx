@@ -54,6 +54,7 @@ export default function Option1BottomDock({ day, hour, offset, canGoPrevious, ca
                 <div className="absolute inset-x-2 bottom-0 h-px bg-hull-600/80" />
             </header>
 
+            {/* Stacked summary cards, then the individually-toggleable metric card grid */}
             <div className="pb-44">
                 <ScoreCard day={day} hour={hour} />
                 <TideCard day={day} hour={hour} />
@@ -75,6 +76,7 @@ export default function Option1BottomDock({ day, hour, offset, canGoPrevious, ca
                 </button>
             </div>
 
+            {/* Fixed bottom dock: day navigation, hour pills, and the settings entry point */}
             <div className="fixed bottom-0 left-0 right-0 z-20 mx-auto max-w-md bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur">
                 <div className="absolute inset-x-1 top-0 h-px bg-hull-600/80" />
                 <div className="flex items-center justify-between gap-1">

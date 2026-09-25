@@ -44,6 +44,9 @@ export const metrics: Array<{ id: MetricKey; label: string; icon: typeof Wind; t
   { id: "airTemp", label: "Air temp", icon: Cloud, tint: "text-emerald-200", ring: "bg-emerald-400/10" }
 ];
 
+// ==========================================
+// FORMATTERS & LABEL HELPERS
+// ==========================================
 export function formatHour(hour: number, minutes = false) {
   const wholeHour = Math.floor(hour);
   const display = wholeHour % 12 || 12;
@@ -147,6 +150,9 @@ export function getMetricDisplay(id: MetricKey, day: ClaudeDayData, hour: number
   return data[id];
 }
 
+// ==========================================
+// SMALL PRESENTATIONAL COMPONENTS
+// ==========================================
 export function StepButton({
   label,
   direction,
@@ -231,6 +237,9 @@ export function Sparkline({ values, activeIndex, stroke, dotColor, label, height
   );
 }
 
+// ==========================================
+// SUMMARY CARDS (Prototype 0 / 1 stacked feed)
+// ==========================================
 export function ScoreCard({ day, hour, visibleMetrics }: { day: ClaudeDayData; hour: number; visibleMetrics?: VisibleMetrics }) {
   const values = day.hours.map(item => item.score);
   const current = day.hours[hour];
@@ -389,6 +398,9 @@ export function MetricCard({ id, day, hour, variant = "card" }: { id: MetricKey;
   );
 }
 
+// ==========================================
+// MATRIX GROUP/METRIC COMPONENTS (MainDashboard card grid)
+// ==========================================
 function matrixMetricValue(id: string, day: ClaudeDayData, hour: number): [string, string] {
   const current = day.hours[hour];
   const nextPeak = day.hours.find(item => item.hour > hour && (item.scoreBand === "Peak" || item.scoreBand === "Strong"));
@@ -636,6 +648,9 @@ export function MatrixGroupCard({ group, visibleMetrics, day, hour, draggable = 
   );
 }
 
+// ==========================================
+// DETAIL CARDS (full conditions view)
+// ==========================================
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex items-center justify-between border-t border-hull-700/70 py-1.5 first:border-t-0 first:pt-0">
@@ -739,10 +754,13 @@ export function WeatherDetailsCard({ day, hour, visibleMetrics }: { day: ClaudeD
   );
 }
 
+// ==========================================
+// FULL CONDITIONS VIEW & DAY DRAWER
+// ==========================================
 export function FullConditionsView({ day, hour, onClose, visibleMetrics }: { day: ClaudeDayData; hour: number; onClose: () => void; visibleMetrics?: VisibleMetrics }) {
   return (
-    <div className="mx-auto w-full max-w-md bg-hull-950 px-4 pb-32 pt-4">
-      <div className="mx-auto flex max-w-md items-center justify-between">
+    <div className="mx-auto w-full bg-hull-950 px-4 pb-32 pt-4">
+      <div className="mx-auto flex items-center justify-between">
         <div>
           <p className="font-body text-[11px] uppercase tracking-wide text-slate-500">Daily details</p>
           <h2 className="font-display text-xl font-semibold text-white">Full Conditions</h2>
@@ -751,7 +769,7 @@ export function FullConditionsView({ day, hour, onClose, visibleMetrics }: { day
           Done
         </button>
       </div>
-      <div className="mx-auto mt-3 max-w-md space-y-2">
+      <div className="mx-auto mt-3 space-y-2">
         <WaterDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />
         <SolunarDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />
         <WeatherDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />
@@ -805,10 +823,10 @@ export function DayDrawer({
         role="dialog"
         aria-modal="true"
         aria-label="Full day forecast"
-        className={`fixed inset-x-0 z-50 mx-auto flex w-full max-w-md flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"} ${
+        className={`fixed inset-x-0 z-50 mx-auto flex w-full flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"} ${
           isTopDock
             ? "top-[204px] rounded-b-3xl border-b"
-            : "bottom-0 rounded-t-3xl border-t"
+            : "bottom-[132px] rounded-t-3xl border-t"
         }`}
         style={{ height: `${expansionProgress * drawerTravel}px` }}
       >
@@ -880,9 +898,12 @@ export function DayDrawer({
             </tbody>
           </table>
         </div>
-        {isTopDock && onDragStart && onDragMove && onDragEnd && (
+        {/* Grab handle sits at the drawer's growing edge: top when docked bottom, bottom when docked top */}
+        {onDragStart && onDragMove && onDragEnd && (
           <div
-            className="flex h-12 shrink-0 cursor-grab touch-none items-center justify-center border-t border-hull-700/60 active:cursor-grabbing"
+            className={`flex h-8 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${
+              isTopDock ? "order-last border-t border-hull-700/60" : "order-first border-b border-hull-700/60"
+            }`}
             onPointerDown={event => {
               event.currentTarget.setPointerCapture(event.pointerId);
               onDragStart(event.clientY);
@@ -890,7 +911,7 @@ export function DayDrawer({
             onPointerMove={event => onDragMove(event.clientY)}
             onPointerUp={onDragEnd}
             onPointerCancel={onDragEnd}
-            aria-label="Slide the full day forecast back up"
+            aria-label={isTopDock ? "Slide the full day forecast back up" : "Slide the full day forecast back down"}
           >
             <div className="h-1 w-10 rounded-full bg-hull-600/90" />
           </div>

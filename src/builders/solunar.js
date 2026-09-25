@@ -14,6 +14,7 @@ import {
 const SAMPLE_INTERVAL_MS = 60 * 60 * 1000;
 
 export function buildSolunarDays() {
+  // Two "major" peaks (moon overhead/underfoot) and two "minor" peaks (moonrise/moonset) per day
   return getBuildDates().map(date => {
     const moonTransits = findMoonTransits(date);
     const moonTimes = SunCalc.getMoonTimes(
@@ -81,6 +82,7 @@ function findMoonTransits(date) {
 
   const samples = [];
 
+  // Sample moon altitude hourly across a 48h window to find the true peak/trough for this day
   for (let offset = 0; offset <= 48 * 60 * 60 * 1000; offset += SAMPLE_INTERVAL_MS) {
     const sampleDate = new Date(start.getTime() + offset);
     if (formatLocalDate(sampleDate) !== targetDate) continue;

@@ -18,6 +18,7 @@ import {
   solunarLabel
 } from "./shared";
 
+// Hour stepper + scrollable hour pills + "view full day" entry point, stacked above the card feed.
 function TimeBar({
   hour,
   day,
@@ -112,6 +113,7 @@ export default function Option0Current({ day, hour, offset, canGoPrevious, canGo
         </div>
         <TimeBar hour={hour} day={day} onHourChange={onHourChange} onOpenDayView={() => setDayViewOpen(true)} />
       </div>
+      {/* Stacked summary cards, then the individually-toggleable metric card grid */}
       <ScoreCard day={day} hour={hour} />
       <TideCard day={day} hour={hour} />
       <SolunarCard day={day} hour={hour} />

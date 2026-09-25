@@ -9,26 +9,16 @@ import {
 import { getBuildDateKeys } from "../utils/dateUtils.js";
 
 export function buildUnifiedConditions() {
+  // Load each generated data source; weather is optional (may not exist yet in early builds)
   const tidesPath = path.join("src", "data", "tides.json");
   const tides = JSON.parse(fs.readFileSync(tidesPath, "utf8"));
-  const sunMoonPath = path.join(
-    "src",
-    "data",
-    "sunMoon.json"
-  );
 
-  const sunMoon = JSON.parse(
-    fs.readFileSync(sunMoonPath, "utf8")
-  );
-  const solunarPath = path.join(
-    "src",
-    "data",
-    "solunar.json"
-  );
+  const sunMoonPath = path.join("src", "data", "sunMoon.json");
+  const sunMoon = JSON.parse(fs.readFileSync(sunMoonPath, "utf8"));
 
-  const solunar = JSON.parse(
-    fs.readFileSync(solunarPath, "utf8")
-  );
+  const solunarPath = path.join("src", "data", "solunar.json");
+  const solunar = JSON.parse(fs.readFileSync(solunarPath, "utf8"));
+
   const weatherPath = path.join("src", "data", "weather.json");
   const weather = fs.existsSync(weatherPath)
     ? JSON.parse(fs.readFileSync(weatherPath, "utf8"))
@@ -36,9 +26,8 @@ export function buildUnifiedConditions() {
 
   const groupedTides = groupTidesByDay(tides.records);
   const tideDays = new Map(groupedTides.map(day => [day.date, day]));
-  const sortedTideDays = [...groupedTides].sort((a, b) =>
-    a.date.localeCompare(b.date)
-  );
+  const sortedTideDays = [...groupedTides].sort((a, b) => a.date.localeCompare(b.date));
+  // Ensure every date in the build window has an entry, even if no tide data was recorded for it
   const days = getBuildDateKeys().map(date => tideDays.get(date) ?? {
     date,
     highTides: [],
@@ -48,46 +37,25 @@ export function buildUnifiedConditions() {
 
   const unified = {
     days: days.map(day => {
-      const prevDay = sortedTideDays
-        .filter(candidate => candidate.date < day.date)
-        .at(-1);
-      const nextDay = sortedTideDays
-        .find(candidate => candidate.date > day.date);
+      const prevDay = sortedTideDays.filter(candidate => candidate.date < day.date).at(-1);
+      const nextDay = sortedTideDays.find(candidate => candidate.date > day.date);
 
-      // Build combined tide events for interpolation
+      // Combine the last tide event of the previous day and first of the next day with today's
+      // events, so hourly interpolation near midnight has a tide event to reference on both sides
       const combinedEvents = [
         ...(prevDay?.tideEvents.slice(-1).map(ev => ({ ...ev, isPrevDay: true })) ?? []),
         ...day.tideEvents.map(ev => ({ ...ev, isCurrentDay: true })),
         ...(nextDay?.tideEvents.slice(0, 1).map(ev => ({ ...ev, isNextDay: true })) ?? [])
       ];
 
-      const sunMoonDay =
-        sunMoon.days.find(
-          d => d.date === day.date
-        );
-      const solunarDay =
-        solunar.days.find(
-          d => d.date === day.date
-        );
-      const weatherDay =
-        weather.days.find(
-          d => d.date === day.date
-        );
+      const sunMoonDay = sunMoon.days.find(d => d.date === day.date);
+      const solunarDay = solunar.days.find(d => d.date === day.date);
+      const weatherDay = weather.days.find(d => d.date === day.date);
 
       return {
         date: day.date,
-        anchored: buildAnchored(
-          day,
-          sunMoonDay,
-          solunarDay,
-          weatherDay
-        ),
-        hours: buildHourly(
-          day,
-          combinedEvents,
-          solunarDay?.peaks ?? [],
-          weatherDay?.hours ?? []
-        )
+        anchored: buildAnchored(day, sunMoonDay, solunarDay, weatherDay),
+        hours: buildHourly(day, combinedEvents, solunarDay?.peaks ?? [], weatherDay?.hours ?? [])
       };
     })
   };

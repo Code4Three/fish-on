@@ -19,6 +19,7 @@ export function useConditions(): UseConditionsResult {
     setLoading(true);
     setError(null);
 
+    // Guard against setting state after the component unmounts or effect re-runs
     fetchConditionsDays()
       .then(result => {
         if (!cancelled) setDays(result);

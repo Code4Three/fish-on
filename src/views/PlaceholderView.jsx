@@ -1,6 +1,7 @@
 import { useApp } from "../state/useApp";
 import "./PlaceholderView.css";
 
+// Shared template for views not yet built out; renders eyebrow/title/description copy for each stub view
 export default function PlaceholderView({ eyebrow, title, description, viewKey }) {
   const { activeLocation, navigateTo } = useApp();
 

@@ -18,6 +18,7 @@ export default function UnifiedMenu() {
 
   return (
     <div className="unified-menu" id="global-navigation" role="dialog" aria-label="Fish On navigation">
+      {/* ================= VIEWS & INSIGHTS ================= */}
       <div className="menu-section">
         <p className="menu-section-title">Views &amp; Insights</p>
         <nav aria-label="Views">
@@ -38,6 +39,7 @@ export default function UnifiedMenu() {
         </nav>
       </div>
 
+      {/* ================= ACTIVE LOCATION & SAVED SPOTS ================= */}
       <div className="menu-section">
         <div className="menu-section-heading">
           <p className="menu-section-title">Active Location &amp; Saved Spots</p>
@@ -74,6 +76,7 @@ export default function UnifiedMenu() {
         </button>
       </div>
 
+      {/* ================= SETTINGS & PREFERENCES ================= */}
       <div className="menu-section menu-section-last">
         <p className="menu-section-title">Settings &amp; Preferences</p>
         <button className="menu-link menu-link-settings" type="button" onClick={() => navigateTo(VIEWS.OPTIONS)}>

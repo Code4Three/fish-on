@@ -7,6 +7,7 @@ export function getBuildDates(days = DISPLAY_DAYS) {
     .split("-")
     .map(Number);
 
+  // Anchor each date at UTC noon to avoid DST/timezone rollover shifting the calendar day
   return Array.from(
     { length: days },
     (_, i) => {
