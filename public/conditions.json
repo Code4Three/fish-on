@@ -110,11 +110,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "15 km/h SE",
           "windSpeed": 15,
+          "windGust": 30,
           "windDirection": "SE",
           "temperature": 19,
+          "feelsLike": 18,
           "cloudCover": 20,
           "rainChance": 19,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "01:00",
@@ -126,11 +129,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "15 km/h ESE",
           "windSpeed": 15,
+          "windGust": 29,
           "windDirection": "ESE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 53,
           "rainChance": 27,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 0
         },
         {
           "time": "02:00",
@@ -142,11 +148,14 @@
           "weatherCondition": "Drizzle",
           "wind": "14 km/h SE",
           "windSpeed": 14,
+          "windGust": 27,
           "windDirection": "SE",
           "temperature": 17,
+          "feelsLike": 17,
           "cloudCover": 64,
           "rainChance": 44,
-          "rainVolume": 0.6
+          "rainVolume": 0.6,
+          "uvIndex": 0
         },
         {
           "time": "03:00",
@@ -158,11 +167,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "16 km/h SE",
           "windSpeed": 16,
+          "windGust": 28,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 17,
           "cloudCover": 69,
           "rainChance": 65,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 0
         },
         {
           "time": "04:00",
@@ -174,11 +186,14 @@
           "weatherCondition": "Drizzle",
           "wind": "14 km/h SE",
           "windSpeed": 14,
+          "windGust": 31,
           "windDirection": "SE",
           "temperature": 17,
+          "feelsLike": 17,
           "cloudCover": 84,
           "rainChance": 80,
-          "rainVolume": 0.7
+          "rainVolume": 0.7,
+          "uvIndex": 0
         },
         {
           "time": "05:00",
@@ -190,11 +205,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "14 km/h SE",
           "windSpeed": 14,
+          "windGust": 25,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 32,
           "rainChance": 81,
-          "rainVolume": 0.4
+          "rainVolume": 0.4,
+          "uvIndex": 0
         },
         {
           "time": "06:00",
@@ -206,11 +224,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "14 km/h ESE",
           "windSpeed": 14,
+          "windGust": 24,
           "windDirection": "ESE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 42,
           "rainChance": 75,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "07:00",
@@ -222,11 +243,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "15 km/h ESE",
           "windSpeed": 15,
+          "windGust": 30,
           "windDirection": "ESE",
           "temperature": 19,
+          "feelsLike": 19,
           "cloudCover": 20,
           "rainChance": 71,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 1
         },
         {
           "time": "08:00",
@@ -238,11 +262,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "17 km/h ESE",
           "windSpeed": 17,
+          "windGust": 39,
           "windDirection": "ESE",
           "temperature": 20,
+          "feelsLike": 19,
           "cloudCover": 25,
           "rainChance": 73,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 2
         },
         {
           "time": "09:00",
@@ -254,11 +281,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "19 km/h ESE",
           "windSpeed": 19,
+          "windGust": 44,
           "windDirection": "ESE",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 15,
           "rainChance": 77,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 4
         },
         {
           "time": "10:00",
@@ -270,11 +300,14 @@
           "weatherCondition": "Clear sky",
           "wind": "18 km/h ESE",
           "windSpeed": 18,
+          "windGust": 46,
           "windDirection": "ESE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 16,
           "rainChance": 78,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 6
         },
         {
           "time": "11:00",
@@ -286,11 +319,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "18 km/h ESE",
           "windSpeed": 18,
+          "windGust": 43,
           "windDirection": "ESE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 16,
           "rainChance": 74,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 7
         },
         {
           "time": "12:00",
@@ -302,11 +338,14 @@
           "weatherCondition": "Clear sky",
           "wind": "19 km/h ESE",
           "windSpeed": 19,
+          "windGust": 45,
           "windDirection": "ESE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 7,
           "rainChance": 67,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 8
         },
         {
           "time": "13:00",
@@ -318,11 +357,14 @@
           "weatherCondition": "Clear sky",
           "wind": "19 km/h ESE",
           "windSpeed": 19,
+          "windGust": 45,
           "windDirection": "ESE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 14,
           "rainChance": 61,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 8
         },
         {
           "time": "14:00",
@@ -334,11 +376,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "20 km/h ESE",
           "windSpeed": 20,
+          "windGust": 46,
           "windDirection": "ESE",
           "temperature": 22,
+          "feelsLike": 21,
           "cloudCover": 23,
           "rainChance": 56,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 6
         },
         {
           "time": "15:00",
@@ -350,11 +395,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "20 km/h ESE",
           "windSpeed": 20,
+          "windGust": 46,
           "windDirection": "ESE",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 22,
           "rainChance": 52,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 5
         },
         {
           "time": "16:00",
@@ -366,11 +414,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "20 km/h ESE",
           "windSpeed": 20,
+          "windGust": 46,
           "windDirection": "ESE",
           "temperature": 21,
+          "feelsLike": 19,
           "cloudCover": 18,
           "rainChance": 45,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 3
         },
         {
           "time": "17:00",
@@ -382,11 +433,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "18 km/h ESE",
           "windSpeed": 18,
+          "windGust": 45,
           "windDirection": "ESE",
           "temperature": 20,
+          "feelsLike": 19,
           "cloudCover": 20,
           "rainChance": 33,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 1
         },
         {
           "time": "18:00",
@@ -398,11 +452,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "17 km/h ESE",
           "windSpeed": 17,
+          "windGust": 37,
           "windDirection": "ESE",
           "temperature": 19,
+          "feelsLike": 18,
           "cloudCover": 15,
           "rainChance": 19,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 0
         },
         {
           "time": "19:00",
@@ -414,11 +471,14 @@
           "weatherCondition": "Clear sky",
           "wind": "15 km/h ESE",
           "windSpeed": 15,
+          "windGust": 31,
           "windDirection": "ESE",
           "temperature": 19,
+          "feelsLike": 18,
           "cloudCover": 13,
           "rainChance": 10,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "20:00",
@@ -430,11 +490,14 @@
           "weatherCondition": "Clear sky",
           "wind": "14 km/h ESE",
           "windSpeed": 14,
+          "windGust": 29,
           "windDirection": "ESE",
           "temperature": 19,
+          "feelsLike": 18,
           "cloudCover": 15,
           "rainChance": 10,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "21:00",
@@ -446,11 +509,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "13 km/h ESE",
           "windSpeed": 13,
+          "windGust": 26,
           "windDirection": "ESE",
           "temperature": 19,
+          "feelsLike": 19,
           "cloudCover": 23,
           "rainChance": 17,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "22:00",
@@ -462,11 +528,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "13 km/h ESE",
           "windSpeed": 13,
+          "windGust": 25,
           "windDirection": "ESE",
           "temperature": 19,
+          "feelsLike": 18,
           "cloudCover": 24,
           "rainChance": 27,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "23:00",
@@ -478,11 +547,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "11 km/h ESE",
           "windSpeed": 11,
+          "windGust": 23,
           "windDirection": "ESE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 41,
           "rainChance": 43,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 0
         }
       ]
     },
@@ -596,11 +668,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "10 km/h ESE",
           "windSpeed": 10,
+          "windGust": 21,
           "windDirection": "ESE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 52,
           "rainChance": 64,
-          "rainVolume": 0.3
+          "rainVolume": 0.3,
+          "uvIndex": 0
         },
         {
           "time": "01:00",
@@ -612,11 +687,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "7 km/h ESE",
           "windSpeed": 7,
+          "windGust": 17,
           "windDirection": "ESE",
           "temperature": 17,
+          "feelsLike": 18,
           "cloudCover": 87,
           "rainChance": 80,
-          "rainVolume": 0.4
+          "rainVolume": 0.4,
+          "uvIndex": 0
         },
         {
           "time": "02:00",
@@ -628,11 +706,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "6 km/h ESE",
           "windSpeed": 6,
+          "windGust": 10,
           "windDirection": "ESE",
           "temperature": 17,
+          "feelsLike": 18,
           "cloudCover": 93,
           "rainChance": 89,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 0
         },
         {
           "time": "03:00",
@@ -644,11 +725,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "5 km/h SE",
           "windSpeed": 5,
+          "windGust": 10,
           "windDirection": "SE",
           "temperature": 17,
+          "feelsLike": 18,
           "cloudCover": 94,
           "rainChance": 94,
-          "rainVolume": 0.4
+          "rainVolume": 0.4,
+          "uvIndex": 0
         },
         {
           "time": "04:00",
@@ -660,11 +744,14 @@
           "weatherCondition": "Rain showers",
           "wind": "7 km/h SSE",
           "windSpeed": 7,
+          "windGust": 10,
           "windDirection": "SSE",
           "temperature": 16,
+          "feelsLike": 17,
           "cloudCover": 74,
           "rainChance": 96,
-          "rainVolume": 1.7
+          "rainVolume": 1.7,
+          "uvIndex": 0
         },
         {
           "time": "05:00",
@@ -676,11 +763,14 @@
           "weatherCondition": "Drizzle",
           "wind": "5 km/h SE",
           "windSpeed": 5,
+          "windGust": 12,
           "windDirection": "SE",
           "temperature": 17,
+          "feelsLike": 18,
           "cloudCover": 60,
           "rainChance": 92,
-          "rainVolume": 0.7
+          "rainVolume": 0.7,
+          "uvIndex": 0
         },
         {
           "time": "06:00",
@@ -692,11 +782,14 @@
           "weatherCondition": "Drizzle",
           "wind": "6 km/h E",
           "windSpeed": 6,
+          "windGust": 10,
           "windDirection": "E",
           "temperature": 17,
+          "feelsLike": 18,
           "cloudCover": 38,
           "rainChance": 85,
-          "rainVolume": 0.7
+          "rainVolume": 0.7,
+          "uvIndex": 0
         },
         {
           "time": "07:00",
@@ -708,11 +801,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "11 km/h E",
           "windSpeed": 11,
+          "windGust": 20,
           "windDirection": "E",
           "temperature": 19,
+          "feelsLike": 19,
           "cloudCover": 37,
           "rainChance": 80,
-          "rainVolume": 0.3
+          "rainVolume": 0.3,
+          "uvIndex": 1
         },
         {
           "time": "08:00",
@@ -724,11 +820,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "14 km/h E",
           "windSpeed": 14,
+          "windGust": 32,
           "windDirection": "E",
           "temperature": 20,
+          "feelsLike": 19,
           "cloudCover": 34,
           "rainChance": 83,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 2
         },
         {
           "time": "09:00",
@@ -740,11 +839,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "17 km/h E",
           "windSpeed": 17,
+          "windGust": 40,
           "windDirection": "E",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 27,
           "rainChance": 88,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 4
         },
         {
           "time": "10:00",
@@ -756,11 +858,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "17 km/h E",
           "windSpeed": 17,
+          "windGust": 41,
           "windDirection": "E",
           "temperature": 22,
+          "feelsLike": 21,
           "cloudCover": 45,
           "rainChance": 86,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 6
         },
         {
           "time": "11:00",
@@ -772,11 +877,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "16 km/h E",
           "windSpeed": 16,
+          "windGust": 40,
           "windDirection": "E",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 41,
           "rainChance": 69,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 7
         },
         {
           "time": "12:00",
@@ -788,11 +896,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "15 km/h E",
           "windSpeed": 15,
+          "windGust": 39,
           "windDirection": "E",
           "temperature": 22,
+          "feelsLike": 23,
           "cloudCover": 48,
           "rainChance": 44,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 8
         },
         {
           "time": "13:00",
@@ -804,11 +915,14 @@
           "weatherCondition": "Overcast",
           "wind": "14 km/h E",
           "windSpeed": 14,
+          "windGust": 36,
           "windDirection": "E",
           "temperature": 22,
+          "feelsLike": 23,
           "cloudCover": 80,
           "rainChance": 24,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 8
         },
         {
           "time": "14:00",
@@ -820,11 +934,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "13 km/h E",
           "windSpeed": 13,
+          "windGust": 35,
           "windDirection": "E",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 48,
           "rainChance": 13,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 7
         },
         {
           "time": "15:00",
@@ -836,11 +953,14 @@
           "weatherCondition": "Clear sky",
           "wind": "11 km/h ESE",
           "windSpeed": 11,
+          "windGust": 32,
           "windDirection": "ESE",
           "temperature": 22,
+          "feelsLike": 21,
           "cloudCover": 9,
           "rainChance": 6,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 5
         },
         {
           "time": "16:00",
@@ -852,11 +972,14 @@
           "weatherCondition": "Clear sky",
           "wind": "9 km/h ESE",
           "windSpeed": 9,
+          "windGust": 28,
           "windDirection": "ESE",
           "temperature": 21,
+          "feelsLike": 21,
           "cloudCover": 6,
           "rainChance": 2,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 2
         },
         {
           "time": "17:00",
@@ -868,11 +991,14 @@
           "weatherCondition": "Clear sky",
           "wind": "7 km/h ESE",
           "windSpeed": 7,
+          "windGust": 22,
           "windDirection": "ESE",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 4,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 1
         },
         {
           "time": "18:00",
@@ -884,11 +1010,14 @@
           "weatherCondition": "Clear sky",
           "wind": "8 km/h ESE",
           "windSpeed": 8,
+          "windGust": 15,
           "windDirection": "ESE",
           "temperature": 19,
+          "feelsLike": 19,
           "cloudCover": 3,
           "rainChance": 1,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "19:00",
@@ -900,11 +1029,14 @@
           "weatherCondition": "Clear sky",
           "wind": "9 km/h E",
           "windSpeed": 9,
+          "windGust": 17,
           "windDirection": "E",
           "temperature": 19,
+          "feelsLike": 19,
           "cloudCover": 5,
           "rainChance": 2,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "20:00",
@@ -916,11 +1048,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "9 km/h ENE",
           "windSpeed": 9,
+          "windGust": 17,
           "windDirection": "ENE",
           "temperature": 19,
+          "feelsLike": 18,
           "cloudCover": 21,
           "rainChance": 1,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "21:00",
@@ -932,11 +1067,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "9 km/h ENE",
           "windSpeed": 9,
+          "windGust": 16,
           "windDirection": "ENE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 27,
           "rainChance": 1,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "22:00",
@@ -948,11 +1086,14 @@
           "weatherCondition": "Clear sky",
           "wind": "9 km/h NE",
           "windSpeed": 9,
+          "windGust": 16,
           "windDirection": "NE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 2,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "23:00",
@@ -964,11 +1105,14 @@
           "weatherCondition": "Clear sky",
           "wind": "6 km/h NE",
           "windSpeed": 6,
+          "windGust": 16,
           "windDirection": "NE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 0,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         }
       ]
     },
@@ -1082,11 +1226,14 @@
           "weatherCondition": "Clear sky",
           "wind": "2 km/h NE",
           "windSpeed": 2,
+          "windGust": 10,
           "windDirection": "NE",
           "temperature": 17,
+          "feelsLike": 18,
           "cloudCover": 0,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "01:00",
@@ -1098,11 +1245,14 @@
           "weatherCondition": "Clear sky",
           "wind": "0 km/h W",
           "windSpeed": 0,
+          "windGust": 3,
           "windDirection": "W",
           "temperature": 16,
+          "feelsLike": 17,
           "cloudCover": 0,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "02:00",
@@ -1114,11 +1264,14 @@
           "weatherCondition": "Clear sky",
           "wind": "3 km/h WSW",
           "windSpeed": 3,
+          "windGust": 5,
           "windDirection": "WSW",
           "temperature": 14,
+          "feelsLike": 14,
           "cloudCover": 4,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "03:00",
@@ -1130,11 +1283,14 @@
           "weatherCondition": "Clear sky",
           "wind": "10 km/h SW",
           "windSpeed": 10,
+          "windGust": 17,
           "windDirection": "SW",
           "temperature": 13,
+          "feelsLike": 13,
           "cloudCover": 12,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "04:00",
@@ -1146,11 +1302,14 @@
           "weatherCondition": "Clear sky",
           "wind": "12 km/h SW",
           "windSpeed": 12,
+          "windGust": 22,
           "windDirection": "SW",
           "temperature": 13,
+          "feelsLike": 12,
           "cloudCover": 14,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "05:00",
@@ -1162,11 +1321,14 @@
           "weatherCondition": "Clear sky",
           "wind": "10 km/h SW",
           "windSpeed": 10,
+          "windGust": 21,
           "windDirection": "SW",
           "temperature": 13,
+          "feelsLike": 12,
           "cloudCover": 16,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "06:00",
@@ -1178,11 +1340,14 @@
           "weatherCondition": "Clear sky",
           "wind": "8 km/h SW",
           "windSpeed": 8,
+          "windGust": 18,
           "windDirection": "SW",
           "temperature": 14,
+          "feelsLike": 13,
           "cloudCover": 14,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "07:00",
@@ -1194,11 +1359,14 @@
           "weatherCondition": "Clear sky",
           "wind": "6 km/h SW",
           "windSpeed": 6,
+          "windGust": 15,
           "windDirection": "SW",
           "temperature": 16,
+          "feelsLike": 17,
           "cloudCover": 2,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 1
         },
         {
           "time": "08:00",
@@ -1210,11 +1378,14 @@
           "weatherCondition": "Clear sky",
           "wind": "4 km/h SSW",
           "windSpeed": 4,
+          "windGust": 14,
           "windDirection": "SSW",
           "temperature": 20,
+          "feelsLike": 21,
           "cloudCover": 1,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 2
         },
         {
           "time": "09:00",
@@ -1226,11 +1397,14 @@
           "weatherCondition": "Clear sky",
           "wind": "4 km/h ESE",
           "windSpeed": 4,
+          "windGust": 16,
           "windDirection": "ESE",
           "temperature": 21,
+          "feelsLike": 23,
           "cloudCover": 0,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 4
         },
         {
           "time": "10:00",
@@ -1242,11 +1416,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "6 km/h E",
           "windSpeed": 6,
+          "windGust": 20,
           "windDirection": "E",
           "temperature": 22,
+          "feelsLike": 25,
           "cloudCover": 24,
           "rainChance": 2,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 6
         },
         {
           "time": "11:00",
@@ -1258,11 +1435,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "7 km/h ENE",
           "windSpeed": 7,
+          "windGust": 23,
           "windDirection": "ENE",
           "temperature": 23,
+          "feelsLike": 25,
           "cloudCover": 71,
           "rainChance": 7,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 7
         },
         {
           "time": "12:00",
@@ -1274,11 +1454,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "10 km/h NE",
           "windSpeed": 10,
+          "windGust": 28,
           "windDirection": "NE",
           "temperature": 23,
+          "feelsLike": 25,
           "cloudCover": 23,
           "rainChance": 13,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 8
         },
         {
           "time": "13:00",
@@ -1290,11 +1473,14 @@
           "weatherCondition": "Clear sky",
           "wind": "11 km/h NE",
           "windSpeed": 11,
+          "windGust": 30,
           "windDirection": "NE",
           "temperature": 23,
+          "feelsLike": 25,
           "cloudCover": 9,
           "rainChance": 16,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 8
         },
         {
           "time": "14:00",
@@ -1306,11 +1492,14 @@
           "weatherCondition": "Clear sky",
           "wind": "13 km/h NE",
           "windSpeed": 13,
+          "windGust": 33,
           "windDirection": "NE",
           "temperature": 22,
+          "feelsLike": 24,
           "cloudCover": 1,
           "rainChance": 13,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 7
         },
         {
           "time": "15:00",
@@ -1322,11 +1511,14 @@
           "weatherCondition": "Clear sky",
           "wind": "12 km/h NE",
           "windSpeed": 12,
+          "windGust": 33,
           "windDirection": "NE",
           "temperature": 22,
+          "feelsLike": 23,
           "cloudCover": 0,
           "rainChance": 7,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 5
         },
         {
           "time": "16:00",
@@ -1338,11 +1530,14 @@
           "weatherCondition": "Clear sky",
           "wind": "12 km/h NE",
           "windSpeed": 12,
+          "windGust": 31,
           "windDirection": "NE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 0,
           "rainChance": 2,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 3
         },
         {
           "time": "17:00",
@@ -1354,11 +1549,14 @@
           "weatherCondition": "Clear sky",
           "wind": "10 km/h NE",
           "windSpeed": 10,
+          "windGust": 28,
           "windDirection": "NE",
           "temperature": 21,
+          "feelsLike": 21,
           "cloudCover": 0,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 1
         },
         {
           "time": "18:00",
@@ -1370,11 +1568,14 @@
           "weatherCondition": "Clear sky",
           "wind": "9 km/h NNE",
           "windSpeed": 9,
+          "windGust": 22,
           "windDirection": "NNE",
           "temperature": 20,
+          "feelsLike": 20,
           "cloudCover": 0,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "19:00",
@@ -1386,11 +1587,14 @@
           "weatherCondition": "Clear sky",
           "wind": "7 km/h NNE",
           "windSpeed": 7,
+          "windGust": 16,
           "windDirection": "NNE",
           "temperature": 19,
+          "feelsLike": 20,
           "cloudCover": 0,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "20:00",
@@ -1402,11 +1606,14 @@
           "weatherCondition": "Clear sky",
           "wind": "4 km/h NNE",
           "windSpeed": 4,
+          "windGust": 13,
           "windDirection": "NNE",
           "temperature": 18,
+          "feelsLike": 20,
           "cloudCover": 0,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "21:00",
@@ -1418,11 +1625,14 @@
           "weatherCondition": "Clear sky",
           "wind": "2 km/h N",
           "windSpeed": 2,
+          "windGust": 6,
           "windDirection": "N",
           "temperature": 18,
+          "feelsLike": 19,
           "cloudCover": 1,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "22:00",
@@ -1434,11 +1644,14 @@
           "weatherCondition": "Clear sky",
           "wind": "1 km/h W",
           "windSpeed": 1,
+          "windGust": 4,
           "windDirection": "W",
           "temperature": 17,
+          "feelsLike": 19,
           "cloudCover": 2,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "23:00",
@@ -1450,11 +1663,14 @@
           "weatherCondition": "Clear sky",
           "wind": "1 km/h SW",
           "windSpeed": 1,
+          "windGust": 3,
           "windDirection": "SW",
           "temperature": 16,
+          "feelsLike": 18,
           "cloudCover": 2,
           "rainChance": 1,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         }
       ]
     },
@@ -1568,11 +1784,14 @@
           "weatherCondition": "Clear sky",
           "wind": "2 km/h SW",
           "windSpeed": 2,
+          "windGust": 5,
           "windDirection": "SW",
           "temperature": 15,
+          "feelsLike": 16,
           "cloudCover": 3,
           "rainChance": 3,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "01:00",
@@ -1584,11 +1803,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "7 km/h SW",
           "windSpeed": 7,
+          "windGust": 12,
           "windDirection": "SW",
           "temperature": 15,
+          "feelsLike": 16,
           "cloudCover": 23,
           "rainChance": 4,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "02:00",
@@ -1600,11 +1822,14 @@
           "weatherCondition": "Overcast",
           "wind": "8 km/h SW",
           "windSpeed": 8,
+          "windGust": 15,
           "windDirection": "SW",
           "temperature": 15,
+          "feelsLike": 16,
           "cloudCover": 100,
           "rainChance": 4,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "03:00",
@@ -1616,11 +1841,14 @@
           "weatherCondition": "Overcast",
           "wind": "7 km/h WSW",
           "windSpeed": 7,
+          "windGust": 15,
           "windDirection": "WSW",
           "temperature": 16,
+          "feelsLike": 16,
           "cloudCover": 86,
           "rainChance": 4,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "04:00",
@@ -1632,11 +1860,14 @@
           "weatherCondition": "Overcast",
           "wind": "6 km/h SW",
           "windSpeed": 6,
+          "windGust": 12,
           "windDirection": "SW",
           "temperature": 16,
+          "feelsLike": 16,
           "cloudCover": 100,
           "rainChance": 4,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "05:00",
@@ -1648,11 +1879,14 @@
           "weatherCondition": "Overcast",
           "wind": "9 km/h SW",
           "windSpeed": 9,
+          "windGust": 15,
           "windDirection": "SW",
           "temperature": 16,
+          "feelsLike": 16,
           "cloudCover": 100,
           "rainChance": 4,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "06:00",
@@ -1664,11 +1898,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "8 km/h SW",
           "windSpeed": 8,
+          "windGust": 16,
           "windDirection": "SW",
           "temperature": 17,
+          "feelsLike": 17,
           "cloudCover": 100,
           "rainChance": 4,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "07:00",
@@ -1680,11 +1917,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "8 km/h SW",
           "windSpeed": 8,
+          "windGust": 17,
           "windDirection": "SW",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 100,
           "rainChance": 6,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "08:00",
@@ -1696,11 +1936,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "9 km/h SSW",
           "windSpeed": 9,
+          "windGust": 22,
           "windDirection": "SSW",
           "temperature": 19,
+          "feelsLike": 20,
           "cloudCover": 100,
           "rainChance": 10,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 1
         },
         {
           "time": "09:00",
@@ -1712,11 +1955,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "14 km/h S",
           "windSpeed": 14,
+          "windGust": 31,
           "windDirection": "S",
           "temperature": 20,
+          "feelsLike": 21,
           "cloudCover": 62,
           "rainChance": 16,
-          "rainVolume": 0.3
+          "rainVolume": 0.3,
+          "uvIndex": 1
         },
         {
           "time": "10:00",
@@ -1728,11 +1974,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "17 km/h SSE",
           "windSpeed": 17,
+          "windGust": 40,
           "windDirection": "SSE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 23,
           "rainChance": 25,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 2
         },
         {
           "time": "11:00",
@@ -1744,11 +1993,14 @@
           "weatherCondition": "Clear sky",
           "wind": "19 km/h SSE",
           "windSpeed": 19,
+          "windGust": 45,
           "windDirection": "SSE",
           "temperature": 23,
+          "feelsLike": 24,
           "cloudCover": 14,
           "rainChance": 39,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 6
         },
         {
           "time": "12:00",
@@ -1760,11 +2012,14 @@
           "weatherCondition": "Clear sky",
           "wind": "22 km/h SSE",
           "windSpeed": 22,
+          "windGust": 49,
           "windDirection": "SSE",
           "temperature": 24,
+          "feelsLike": 24,
           "cloudCover": 18,
           "rainChance": 56,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 8
         },
         {
           "time": "13:00",
@@ -1776,11 +2031,14 @@
           "weatherCondition": "Drizzle",
           "wind": "26 km/h SSE",
           "windSpeed": 26,
+          "windGust": 58,
           "windDirection": "SSE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 75,
           "rainChance": 69,
-          "rainVolume": 0.7
+          "rainVolume": 0.7,
+          "uvIndex": 3
         },
         {
           "time": "14:00",
@@ -1792,11 +2050,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "26 km/h SSE",
           "windSpeed": 26,
+          "windGust": 58,
           "windDirection": "SSE",
           "temperature": 22,
+          "feelsLike": 20,
           "cloudCover": 45,
           "rainChance": 77,
-          "rainVolume": 0.3
+          "rainVolume": 0.3,
+          "uvIndex": 4
         },
         {
           "time": "15:00",
@@ -1808,11 +2069,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "27 km/h SSE",
           "windSpeed": 27,
+          "windGust": 59,
           "windDirection": "SSE",
           "temperature": 21,
+          "feelsLike": 19,
           "cloudCover": 48,
           "rainChance": 81,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 2
         },
         {
           "time": "16:00",
@@ -1824,11 +2088,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "28 km/h SSE",
           "windSpeed": 28,
+          "windGust": 60,
           "windDirection": "SSE",
           "temperature": 21,
+          "feelsLike": 19,
           "cloudCover": 43,
           "rainChance": 82,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 1
         },
         {
           "time": "17:00",
@@ -1840,11 +2107,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "28 km/h SSE",
           "windSpeed": 28,
+          "windGust": 61,
           "windDirection": "SSE",
           "temperature": 20,
+          "feelsLike": 18,
           "cloudCover": 70,
           "rainChance": 78,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "18:00",
@@ -1856,11 +2126,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "28 km/h SSE",
           "windSpeed": 28,
+          "windGust": 57,
           "windDirection": "SSE",
           "temperature": 19,
+          "feelsLike": 17,
           "cloudCover": 98,
           "rainChance": 71,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 0
         },
         {
           "time": "19:00",
@@ -1872,11 +2145,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "29 km/h SSE",
           "windSpeed": 29,
+          "windGust": 58,
           "windDirection": "SSE",
           "temperature": 19,
+          "feelsLike": 17,
           "cloudCover": 100,
           "rainChance": 67,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "20:00",
@@ -1888,11 +2164,14 @@
           "weatherCondition": "Overcast",
           "wind": "29 km/h SSE",
           "windSpeed": 29,
+          "windGust": 57,
           "windDirection": "SSE",
           "temperature": 19,
+          "feelsLike": 17,
           "cloudCover": 97,
           "rainChance": 68,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "21:00",
@@ -1904,11 +2183,14 @@
           "weatherCondition": "Overcast",
           "wind": "29 km/h SE",
           "windSpeed": 29,
+          "windGust": 58,
           "windDirection": "SE",
           "temperature": 19,
+          "feelsLike": 16,
           "cloudCover": 84,
           "rainChance": 71,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "22:00",
@@ -1920,11 +2202,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "27 km/h SE",
           "windSpeed": 27,
+          "windGust": 57,
           "windDirection": "SE",
           "temperature": 19,
+          "feelsLike": 16,
           "cloudCover": 77,
           "rainChance": 73,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "23:00",
@@ -1936,11 +2221,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "25 km/h SE",
           "windSpeed": 25,
+          "windGust": 54,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 100,
           "rainChance": 72,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         }
       ]
     },
@@ -2054,11 +2342,14 @@
           "weatherCondition": "Overcast",
           "wind": "24 km/h SE",
           "windSpeed": 24,
+          "windGust": 49,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 100,
           "rainChance": 69,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "01:00",
@@ -2070,11 +2361,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "25 km/h SSE",
           "windSpeed": 25,
+          "windGust": 49,
           "windDirection": "SSE",
           "temperature": 19,
+          "feelsLike": 16,
           "cloudCover": 100,
           "rainChance": 67,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "02:00",
@@ -2086,11 +2380,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "25 km/h SSE",
           "windSpeed": 25,
+          "windGust": 49,
           "windDirection": "SSE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 54,
           "rainChance": 66,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "03:00",
@@ -2102,11 +2399,14 @@
           "weatherCondition": "Overcast",
           "wind": "24 km/h SE",
           "windSpeed": 24,
+          "windGust": 49,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 15,
           "cloudCover": 88,
           "rainChance": 66,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "04:00",
@@ -2118,11 +2418,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "24 km/h SE",
           "windSpeed": 24,
+          "windGust": 48,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 59,
           "rainChance": 65,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "05:00",
@@ -2134,11 +2437,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "24 km/h SE",
           "windSpeed": 24,
+          "windGust": 48,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 15,
           "cloudCover": 45,
           "rainChance": 63,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "06:00",
@@ -2150,11 +2456,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "24 km/h SE",
           "windSpeed": 24,
+          "windGust": 48,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 30,
           "rainChance": 61,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "07:00",
@@ -2166,11 +2475,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "25 km/h SE",
           "windSpeed": 25,
+          "windGust": 50,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 21,
           "rainChance": 61,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 0
         },
         {
           "time": "08:00",
@@ -2182,11 +2494,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "25 km/h SE",
           "windSpeed": 25,
+          "windGust": 53,
           "windDirection": "SE",
           "temperature": 19,
+          "feelsLike": 16,
           "cloudCover": 20,
           "rainChance": 65,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 1
         },
         {
           "time": "09:00",
@@ -2198,11 +2513,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "26 km/h SE",
           "windSpeed": 26,
+          "windGust": 57,
           "windDirection": "SE",
           "temperature": 20,
+          "feelsLike": 16,
           "cloudCover": 23,
           "rainChance": 72,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 2
         },
         {
           "time": "10:00",
@@ -2214,11 +2532,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "26 km/h SE",
           "windSpeed": 26,
+          "windGust": 60,
           "windDirection": "SE",
           "temperature": 20,
+          "feelsLike": 17,
           "cloudCover": 26,
           "rainChance": 75,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 3
         },
         {
           "time": "11:00",
@@ -2230,11 +2551,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "25 km/h SE",
           "windSpeed": 25,
+          "windGust": 60,
           "windDirection": "SE",
           "temperature": 20,
+          "feelsLike": 18,
           "cloudCover": 24,
           "rainChance": 72,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 3
         },
         {
           "time": "12:00",
@@ -2246,11 +2570,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "25 km/h SE",
           "windSpeed": 25,
+          "windGust": 59,
           "windDirection": "SE",
           "temperature": 20,
+          "feelsLike": 18,
           "cloudCover": 20,
           "rainChance": 66,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 6
         },
         {
           "time": "13:00",
@@ -2262,11 +2589,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "24 km/h SE",
           "windSpeed": 24,
+          "windGust": 58,
           "windDirection": "SE",
           "temperature": 21,
+          "feelsLike": 19,
           "cloudCover": 22,
           "rainChance": 59,
-          "rainVolume": 0.2
+          "rainVolume": 0.2,
+          "uvIndex": 3
         },
         {
           "time": "14:00",
@@ -2278,11 +2608,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "23 km/h SE",
           "windSpeed": 23,
+          "windGust": 57,
           "windDirection": "SE",
           "temperature": 21,
+          "feelsLike": 18,
           "cloudCover": 35,
           "rainChance": 51,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 6
         },
         {
           "time": "15:00",
@@ -2294,11 +2627,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "21 km/h SE",
           "windSpeed": 21,
+          "windGust": 56,
           "windDirection": "SE",
           "temperature": 20,
+          "feelsLike": 17,
           "cloudCover": 54,
           "rainChance": 42,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 3
         },
         {
           "time": "16:00",
@@ -2310,11 +2646,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "20 km/h SE",
           "windSpeed": 20,
+          "windGust": 55,
           "windDirection": "SE",
           "temperature": 20,
+          "feelsLike": 17,
           "cloudCover": 63,
           "rainChance": 33,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 2
         },
         {
           "time": "17:00",
@@ -2326,11 +2665,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "20 km/h SE",
           "windSpeed": 20,
+          "windGust": 54,
           "windDirection": "SE",
           "temperature": 20,
+          "feelsLike": 17,
           "cloudCover": 55,
           "rainChance": 25,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 1
         },
         {
           "time": "18:00",
@@ -2342,11 +2684,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "20 km/h SE",
           "windSpeed": 20,
+          "windGust": 52,
           "windDirection": "SE",
           "temperature": 19,
+          "feelsLike": 16,
           "cloudCover": 38,
           "rainChance": 17,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "19:00",
@@ -2358,11 +2703,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "20 km/h SE",
           "windSpeed": 20,
+          "windGust": 49,
           "windDirection": "SE",
           "temperature": 19,
+          "feelsLike": 16,
           "cloudCover": 24,
           "rainChance": 12,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "20:00",
@@ -2374,11 +2722,14 @@
           "weatherCondition": "Clear sky",
           "wind": "19 km/h SE",
           "windSpeed": 19,
+          "windGust": 45,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 15,
           "rainChance": 10,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "21:00",
@@ -2390,11 +2741,14 @@
           "weatherCondition": "Clear sky",
           "wind": "18 km/h SE",
           "windSpeed": 18,
+          "windGust": 41,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 9,
           "rainChance": 10,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "22:00",
@@ -2406,11 +2760,14 @@
           "weatherCondition": "Clear sky",
           "wind": "18 km/h SE",
           "windSpeed": 18,
+          "windGust": 37,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 9,
           "rainChance": 10,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "23:00",
@@ -2422,11 +2779,14 @@
           "weatherCondition": "Clear sky",
           "wind": "17 km/h SE",
           "windSpeed": 17,
+          "windGust": 36,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 18,
           "rainChance": 9,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         }
       ]
     },
@@ -2540,11 +2900,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "16 km/h SE",
           "windSpeed": 16,
+          "windGust": 35,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 33,
           "rainChance": 8,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "01:00",
@@ -2556,11 +2919,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "14 km/h SE",
           "windSpeed": 14,
+          "windGust": 33,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 16,
           "cloudCover": 49,
           "rainChance": 8,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "02:00",
@@ -2572,11 +2938,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "11 km/h SE",
           "windSpeed": 11,
+          "windGust": 31,
           "windDirection": "SE",
           "temperature": 17,
+          "feelsLike": 15,
           "cloudCover": 68,
           "rainChance": 11,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "03:00",
@@ -2588,11 +2957,14 @@
           "weatherCondition": "Overcast",
           "wind": "7 km/h SE",
           "windSpeed": 7,
+          "windGust": 29,
           "windDirection": "SE",
           "temperature": 16,
+          "feelsLike": 15,
           "cloudCover": 89,
           "rainChance": 15,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "04:00",
@@ -2604,11 +2976,14 @@
           "weatherCondition": "Overcast",
           "wind": "4 km/h SE",
           "windSpeed": 4,
+          "windGust": 27,
           "windDirection": "SE",
           "temperature": 16,
+          "feelsLike": 15,
           "cloudCover": 100,
           "rainChance": 18,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "05:00",
@@ -2620,11 +2995,14 @@
           "weatherCondition": "Overcast",
           "wind": "4 km/h S",
           "windSpeed": 4,
+          "windGust": 22,
           "windDirection": "S",
           "temperature": 16,
+          "feelsLike": 15,
           "cloudCover": 95,
           "rainChance": 16,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "06:00",
@@ -2636,11 +3014,14 @@
           "weatherCondition": "Overcast",
           "wind": "5 km/h S",
           "windSpeed": 5,
+          "windGust": 17,
           "windDirection": "S",
           "temperature": 16,
+          "feelsLike": 16,
           "cloudCover": 80,
           "rainChance": 12,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "07:00",
@@ -2652,11 +3033,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "6 km/h S",
           "windSpeed": 6,
+          "windGust": 15,
           "windDirection": "S",
           "temperature": 17,
+          "feelsLike": 17,
           "cloudCover": 66,
           "rainChance": 14,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 1
         },
         {
           "time": "08:00",
@@ -2668,11 +3052,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "6 km/h SE",
           "windSpeed": 6,
+          "windGust": 21,
           "windDirection": "SE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 56,
           "rainChance": 28,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 3
         },
         {
           "time": "09:00",
@@ -2684,11 +3071,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "10 km/h ESE",
           "windSpeed": 10,
+          "windGust": 30,
           "windDirection": "ESE",
           "temperature": 20,
+          "feelsLike": 18,
           "cloudCover": 47,
           "rainChance": 47,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 3
         },
         {
           "time": "10:00",
@@ -2700,11 +3090,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "15 km/h E",
           "windSpeed": 15,
+          "windGust": 37,
           "windDirection": "E",
           "temperature": 21,
+          "feelsLike": 19,
           "cloudCover": 38,
           "rainChance": 59,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 5
         },
         {
           "time": "11:00",
@@ -2716,11 +3109,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "15 km/h E",
           "windSpeed": 15,
+          "windGust": 38,
           "windDirection": "E",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 29,
           "rainChance": 56,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 6
         },
         {
           "time": "12:00",
@@ -2732,11 +3128,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "15 km/h E",
           "windSpeed": 15,
+          "windGust": 37,
           "windDirection": "E",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 22,
           "rainChance": 45,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 7
         },
         {
           "time": "13:00",
@@ -2748,11 +3147,14 @@
           "weatherCondition": "Clear sky",
           "wind": "13 km/h E",
           "windSpeed": 13,
+          "windGust": 35,
           "windDirection": "E",
           "temperature": 21,
+          "feelsLike": 21,
           "cloudCover": 15,
           "rainChance": 35,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 7
         },
         {
           "time": "14:00",
@@ -2764,11 +3166,14 @@
           "weatherCondition": "Clear sky",
           "wind": "12 km/h E",
           "windSpeed": 12,
+          "windGust": 35,
           "windDirection": "E",
           "temperature": 21,
+          "feelsLike": 21,
           "cloudCover": 10,
           "rainChance": 28,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 6
         },
         {
           "time": "15:00",
@@ -2780,11 +3185,14 @@
           "weatherCondition": "Clear sky",
           "wind": "10 km/h ESE",
           "windSpeed": 10,
+          "windGust": 36,
           "windDirection": "ESE",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 6,
           "rainChance": 20,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 5
         },
         {
           "time": "16:00",
@@ -2796,11 +3204,14 @@
           "weatherCondition": "Clear sky",
           "wind": "9 km/h ESE",
           "windSpeed": 9,
+          "windGust": 35,
           "windDirection": "ESE",
           "temperature": 21,
+          "feelsLike": 19,
           "cloudCover": 5,
           "rainChance": 14,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 3
         },
         {
           "time": "17:00",
@@ -2812,11 +3223,14 @@
           "weatherCondition": "Clear sky",
           "wind": "7 km/h E",
           "windSpeed": 7,
+          "windGust": 31,
           "windDirection": "E",
           "temperature": 20,
+          "feelsLike": 19,
           "cloudCover": 9,
           "rainChance": 8,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 1
         },
         {
           "time": "18:00",
@@ -2828,11 +3242,14 @@
           "weatherCondition": "Clear sky",
           "wind": "5 km/h E",
           "windSpeed": 5,
+          "windGust": 26,
           "windDirection": "E",
           "temperature": 19,
+          "feelsLike": 18,
           "cloudCover": 16,
           "rainChance": 3,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "19:00",
@@ -2844,11 +3261,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "5 km/h ENE",
           "windSpeed": 5,
+          "windGust": 22,
           "windDirection": "ENE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 24,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "20:00",
@@ -2860,11 +3280,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "5 km/h E",
           "windSpeed": 5,
+          "windGust": 18,
           "windDirection": "E",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 34,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "21:00",
@@ -2876,11 +3299,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "7 km/h ESE",
           "windSpeed": 7,
+          "windGust": 15,
           "windDirection": "ESE",
           "temperature": 18,
+          "feelsLike": 17,
           "cloudCover": 44,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "22:00",
@@ -2892,11 +3318,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "8 km/h ESE",
           "windSpeed": 8,
+          "windGust": 14,
           "windDirection": "ESE",
           "temperature": 17,
+          "feelsLike": 17,
           "cloudCover": 47,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "23:00",
@@ -2908,11 +3337,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "9 km/h ESE",
           "windSpeed": 9,
+          "windGust": 15,
           "windDirection": "ESE",
           "temperature": 18,
+          "feelsLike": 17,
           "cloudCover": 35,
           "rainChance": 1,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         }
       ]
     },
@@ -3026,11 +3458,14 @@
           "weatherCondition": "Clear sky",
           "wind": "10 km/h E",
           "windSpeed": 10,
+          "windGust": 18,
           "windDirection": "E",
           "temperature": 18,
+          "feelsLike": 17,
           "cloudCover": 17,
           "rainChance": 2,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "01:00",
@@ -3042,11 +3477,14 @@
           "weatherCondition": "Clear sky",
           "wind": "11 km/h ENE",
           "windSpeed": 11,
+          "windGust": 20,
           "windDirection": "ENE",
           "temperature": 18,
+          "feelsLike": 17,
           "cloudCover": 4,
           "rainChance": 2,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "02:00",
@@ -3058,11 +3496,14 @@
           "weatherCondition": "Clear sky",
           "wind": "11 km/h ENE",
           "windSpeed": 11,
+          "windGust": 21,
           "windDirection": "ENE",
           "temperature": 18,
+          "feelsLike": 17,
           "cloudCover": 3,
           "rainChance": 1,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "03:00",
@@ -3074,11 +3515,14 @@
           "weatherCondition": "Clear sky",
           "wind": "10 km/h ENE",
           "windSpeed": 10,
+          "windGust": 20,
           "windDirection": "ENE",
           "temperature": 17,
+          "feelsLike": 17,
           "cloudCover": 8,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "04:00",
@@ -3090,11 +3534,14 @@
           "weatherCondition": "Clear sky",
           "wind": "7 km/h ENE",
           "windSpeed": 7,
+          "windGust": 20,
           "windDirection": "ENE",
           "temperature": 17,
+          "feelsLike": 17,
           "cloudCover": 17,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "05:00",
@@ -3106,11 +3553,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "3 km/h E",
           "windSpeed": 3,
+          "windGust": 18,
           "windDirection": "E",
           "temperature": 17,
+          "feelsLike": 18,
           "cloudCover": 34,
           "rainChance": 1,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "06:00",
@@ -3122,11 +3572,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "4 km/h SSW",
           "windSpeed": 4,
+          "windGust": 16,
           "windDirection": "SSW",
           "temperature": 17,
+          "feelsLike": 18,
           "cloudCover": 55,
           "rainChance": 3,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "07:00",
@@ -3138,11 +3591,14 @@
           "weatherCondition": "Partly cloudy",
           "wind": "7 km/h SW",
           "windSpeed": 7,
+          "windGust": 16,
           "windDirection": "SW",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 67,
           "rainChance": 5,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 1
         },
         {
           "time": "08:00",
@@ -3154,11 +3610,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "10 km/h ENE",
           "windSpeed": 10,
+          "windGust": 26,
           "windDirection": "ENE",
           "temperature": 20,
+          "feelsLike": 19,
           "cloudCover": 33,
           "rainChance": 6,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 3
         },
         {
           "time": "09:00",
@@ -3170,11 +3629,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "11 km/h ENE",
           "windSpeed": 11,
+          "windGust": 28,
           "windDirection": "ENE",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 37,
           "rainChance": 7,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 5
         },
         {
           "time": "10:00",
@@ -3186,11 +3648,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "11 km/h ENE",
           "windSpeed": 11,
+          "windGust": 29,
           "windDirection": "ENE",
           "temperature": 22,
+          "feelsLike": 21,
           "cloudCover": 39,
           "rainChance": 8,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 6
         },
         {
           "time": "11:00",
@@ -3202,11 +3667,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "12 km/h ENE",
           "windSpeed": 12,
+          "windGust": 30,
           "windDirection": "ENE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 37,
           "rainChance": 9,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 8
         },
         {
           "time": "12:00",
@@ -3218,11 +3686,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "12 km/h ENE",
           "windSpeed": 12,
+          "windGust": 30,
           "windDirection": "ENE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 33,
           "rainChance": 10,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 8
         },
         {
           "time": "13:00",
@@ -3234,11 +3705,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "12 km/h ENE",
           "windSpeed": 12,
+          "windGust": 31,
           "windDirection": "ENE",
           "temperature": 22,
+          "feelsLike": 22,
           "cloudCover": 28,
           "rainChance": 10,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 8
         },
         {
           "time": "14:00",
@@ -3250,11 +3724,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "13 km/h ENE",
           "windSpeed": 13,
+          "windGust": 31,
           "windDirection": "ENE",
           "temperature": 21,
+          "feelsLike": 21,
           "cloudCover": 22,
           "rainChance": 10,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 6
         },
         {
           "time": "15:00",
@@ -3266,11 +3743,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "13 km/h ENE",
           "windSpeed": 13,
+          "windGust": 32,
           "windDirection": "ENE",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 17,
           "rainChance": 10,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 5
         },
         {
           "time": "16:00",
@@ -3282,11 +3762,14 @@
           "weatherCondition": "Light drizzle",
           "wind": "13 km/h NE",
           "windSpeed": 13,
+          "windGust": 32,
           "windDirection": "NE",
           "temperature": 21,
+          "feelsLike": 20,
           "cloudCover": 14,
           "rainChance": 10,
-          "rainVolume": 0.1
+          "rainVolume": 0.1,
+          "uvIndex": 3
         },
         {
           "time": "17:00",
@@ -3298,11 +3781,14 @@
           "weatherCondition": "Clear sky",
           "wind": "12 km/h NE",
           "windSpeed": 12,
+          "windGust": 32,
           "windDirection": "NE",
           "temperature": 20,
+          "feelsLike": 19,
           "cloudCover": 12,
           "rainChance": 9,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 1
         },
         {
           "time": "18:00",
@@ -3314,11 +3800,14 @@
           "weatherCondition": "Clear sky",
           "wind": "12 km/h NE",
           "windSpeed": 12,
+          "windGust": 32,
           "windDirection": "NE",
           "temperature": 20,
+          "feelsLike": 19,
           "cloudCover": 11,
           "rainChance": 7,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "19:00",
@@ -3330,11 +3819,14 @@
           "weatherCondition": "Clear sky",
           "wind": "12 km/h NE",
           "windSpeed": 12,
+          "windGust": 32,
           "windDirection": "NE",
           "temperature": 19,
+          "feelsLike": 19,
           "cloudCover": 11,
           "rainChance": 5,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "20:00",
@@ -3346,11 +3838,14 @@
           "weatherCondition": "Clear sky",
           "wind": "11 km/h NE",
           "windSpeed": 11,
+          "windGust": 32,
           "windDirection": "NE",
           "temperature": 19,
+          "feelsLike": 18,
           "cloudCover": 12,
           "rainChance": 3,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "21:00",
@@ -3362,11 +3857,14 @@
           "weatherCondition": "Clear sky",
           "wind": "10 km/h NE",
           "windSpeed": 10,
+          "windGust": 31,
           "windDirection": "NE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 15,
           "rainChance": 1,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "22:00",
@@ -3378,11 +3876,14 @@
           "weatherCondition": "Clear sky",
           "wind": "10 km/h NNE",
           "windSpeed": 10,
+          "windGust": 30,
           "windDirection": "NNE",
           "temperature": 18,
+          "feelsLike": 18,
           "cloudCover": 19,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         },
         {
           "time": "23:00",
@@ -3394,11 +3895,14 @@
           "weatherCondition": "Mainly clear",
           "wind": "8 km/h NNE",
           "windSpeed": 8,
+          "windGust": 28,
           "windDirection": "NNE",
           "temperature": 17,
+          "feelsLike": 17,
           "cloudCover": 27,
           "rainChance": 0,
-          "rainVolume": 0
+          "rainVolume": 0,
+          "uvIndex": 0
         }
       ]
     }

@@ -41,56 +41,56 @@ export const metrics: Array<{
   tint: string;
   ring: string;
 }> = [
-  {
-    id: "wind",
-    label: "Wind",
-    icon: Wind,
-    tint: "text-sky-300",
-    ring: "bg-sky-400/10",
-  },
-  {
-    id: "waterTemp",
-    label: "Water temp",
-    icon: Thermometer,
-    tint: "text-orange-300",
-    ring: "bg-orange-400/10",
-  },
-  {
-    id: "swell",
-    label: "Swell",
-    icon: Waves,
-    tint: "text-cyan-300",
-    ring: "bg-cyan-400/10",
-  },
-  {
-    id: "moonPhase",
-    label: "Moon phase",
-    icon: Moon,
-    tint: "text-indigo-300",
-    ring: "bg-indigo-400/10",
-  },
-  {
-    id: "rain",
-    label: "Rain",
-    icon: CloudRain,
-    tint: "text-blue-300",
-    ring: "bg-blue-400/10",
-  },
-  {
-    id: "uv",
-    label: "UV index",
-    icon: Sun,
-    tint: "text-yellow-300",
-    ring: "bg-yellow-400/10",
-  },
-  {
-    id: "airTemp",
-    label: "Air temp",
-    icon: Cloud,
-    tint: "text-emerald-200",
-    ring: "bg-emerald-400/10",
-  },
-];
+    {
+      id: "wind",
+      label: "Wind",
+      icon: Wind,
+      tint: "text-sky-300",
+      ring: "bg-sky-400/10",
+    },
+    {
+      id: "waterTemp",
+      label: "Water temp",
+      icon: Thermometer,
+      tint: "text-orange-300",
+      ring: "bg-orange-400/10",
+    },
+    {
+      id: "swell",
+      label: "Swell",
+      icon: Waves,
+      tint: "text-cyan-300",
+      ring: "bg-cyan-400/10",
+    },
+    {
+      id: "moonPhase",
+      label: "Moon phase",
+      icon: Moon,
+      tint: "text-indigo-300",
+      ring: "bg-indigo-400/10",
+    },
+    {
+      id: "rain",
+      label: "Rain",
+      icon: CloudRain,
+      tint: "text-blue-300",
+      ring: "bg-blue-400/10",
+    },
+    {
+      id: "uv",
+      label: "UV index",
+      icon: Sun,
+      tint: "text-yellow-300",
+      ring: "bg-yellow-400/10",
+    },
+    {
+      id: "airTemp",
+      label: "Air temp",
+      icon: Cloud,
+      tint: "text-emerald-200",
+      ring: "bg-emerald-400/10",
+    },
+  ];
 
 // ==========================================
 // FORMATTERS & LABEL HELPERS
@@ -222,11 +222,12 @@ export function getMetricDisplay(
   day: ClaudeDayData,
   hour: number,
 ): [string, string, string] {
-  const wind = day.hours[hour].wind;
+  const current = day.hours[hour];
+  const wind = current.wind;
   const swell = day.secondary.swell;
-  const uv = day.secondary.uv;
+  const uv = current.uvIndex ?? day.secondary.uv;
   const data: Record<MetricKey, [string, string, string]> = {
-    wind: [`${wind.speed}`, "kts", `${wind.dir} · Gusts ${wind.gust} kts`],
+    wind: [`${wind.speed}`, "km/h", `${wind.dir} · Gusts ${wind.gust ?? "--"} km/h`],
     waterTemp: [`${safe(day.secondary.waterTemp)}`, "°C", "Surface reading"],
     swell: swell
       ? [swell.height, "m", `@ ${swell.period}s ${swell.dir}`]
@@ -245,9 +246,9 @@ export function getMetricDisplay(
     ],
     uv: [`${safe(uv)}`, "", uv == null ? "--" : uvLabel(uv)],
     airTemp: [
-      `${day.secondary.airTemp.temp}`,
+      `${current.airTemp ?? "--"}`,
       "°C",
-      `Feels ${day.secondary.airTemp.feels}°C`,
+      `Feels ${current.feelsLike ?? day.secondary.airTemp.feels ?? "--"}°C`,
     ],
   };
   return data[id];
@@ -752,18 +753,16 @@ function matrixMetricValue(
         ? `${range.airTemp.min}-${range.airTemp.max}°C`
         : "Range unavailable",
     ],
-    feelsLike: [`${day.secondary.airTemp.feels ?? "--"}°C`, "Feels like"],
-    wind: [`${current.wind.speed} kt`, current.wind.dir],
-    gust: [`${current.wind.gust ?? "--"} kt`, "Gust speed"],
+    feelsLike: [`${current.feelsLike ?? "--"}°C`, "Feels like"],
+    wind: [`${current.wind.speed} km/h`, current.wind.dir],
+    gust: [`${current.wind.gust ?? "--"} km/h`, "Gust speed"],
     cloud: [`${current.cloudCover ?? "--"}%`, "Cloud baseline"],
     rainChance: [`${current.rainChance ?? "--"}%`, "Rain chance"],
     rainVolume: [
-      day.secondary.rain.mm == null
-        ? "--"
-        : `${day.secondary.rain.mm.toFixed(1)}mm`,
+      current.rainVolume == null ? "--" : `${current.rainVolume.toFixed(1)}mm`,
       "Rain volume",
     ],
-    uv: [String(day.secondary.uv ?? "--"), "Peak UV"],
+    uv: [String(current.uvIndex ?? "--"), "UV index"],
   };
   return values[id] ?? ["--", "Unavailable"];
 }
@@ -1044,7 +1043,7 @@ function SolunarGroupContent({
           </span>
           <span className="inline-flex items-center gap-1 rounded-full bg-tide-500/15 px-2.5 py-1 font-body text-xs font-semibold text-tide-400">
             <Fish size={14} />
-              {ratingTier(current?.solunarRating ?? 0)}
+            {ratingTier(current?.solunarRating ?? 0)}
           </span>
         </div>
       )}
@@ -1469,8 +1468,8 @@ export function WeatherDetailsCard({
           <DetailRow
             label="Feels like"
             value={
-              day.secondary?.airTemp
-                ? `${safe(day.secondary.airTemp.feels)}°C`
+              day.hours[hour]
+                ? `${safe(day.hours[hour].feelsLike)}°C`
                 : safe(null)
             }
           />
@@ -1478,15 +1477,29 @@ export function WeatherDetailsCard({
         {isVisible(visibleMetrics, "wind") && (
           <DetailRow
             label="Current wind"
-            value={safe(day.hours[hour]?.windLabel)}
+            value={
+              day.hours[hour]
+                ? `${safe(day.hours[hour].wind.speed)} km/h`
+                : safe(null)
+            }
           />
         )}
         {isVisible(visibleMetrics, "wind") && (
           <DetailRow
-            label="Wind speed / direction"
+            label="Wind direction"
             value={
               day.hours[hour]
-                ? `${safe(day.hours[hour].wind.speed)} kts ${safe(day.hours[hour].wind.dir)}`
+                ? `${safe(day.hours[hour].wind.dir)}`
+                : safe(null)
+            }
+          />
+        )}
+        {isVisible(visibleMetrics, "gust") && (
+          <DetailRow
+            label="Current gust"
+            value={
+              day.hours[hour]
+                ? `${safe(day.hours[hour].wind.gust)} km/h`
                 : safe(null)
             }
           />
@@ -1539,6 +1552,12 @@ export function WeatherDetailsCard({
                 ? `${day.ranges.cloudBaseline}%`
                 : safe(null)
             }
+          />
+        )}
+        {isVisible(visibleMetrics, "uv") && (
+          <DetailRow
+            label="Current UV index"
+            value={safe(day.hours[hour]?.uvIndex)}
           />
         )}
         {isVisible(visibleMetrics, "uv") && (
@@ -1645,25 +1664,22 @@ export function DayDrawer({
         type="button"
         aria-label="Close full day view"
         onClick={onClose}
-        className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 ${
-          drawerVisible ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 ${drawerVisible ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
       />
 
       {/* Fixed positioning & max-width container */}
       <div
-        className={`fixed inset-x-0 z-50 mx-auto w-full max-w-screen-2xl px-0 sm:px-4 lg:px-16 pointer-events-none ${
-          isTopDock ? "top-[204px]" : "bottom-[132px]"
-        }`}
+        className={`fixed inset-x-0 z-50 mx-auto w-full max-w-screen-2xl px-0 sm:px-4 lg:px-16 pointer-events-none ${isTopDock ? "top-[204px]" : "bottom-[132px]"
+          }`}
       >
         {/* Drawer panel (restores pointer events and respects container width) */}
         <section
           role="dialog"
           aria-modal="true"
           aria-label="Full day forecast"
-          className={`pointer-events-auto relative flex w-full flex-col overflow-hidden border-hull-700 bg-hull-900 ${
-            isDragging ? "" : "transition-[height] duration-300 ease-out"
-          } ${isTopDock ? "rounded-b-3xl border-b" : "rounded-t-3xl border-t"}`}
+          className={`pointer-events-auto relative flex w-full flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"
+            } ${isTopDock ? "rounded-b-3xl border-b" : "rounded-t-3xl border-t"}`}
           style={{ height: `${expansionProgress * drawerTravel}px` }}
         >
           <div
@@ -1724,6 +1740,11 @@ export function DayDrawer({
                       Wind
                     </th>
                   )}
+                  {show("gust") && (
+                    <th scope="col" className="py-2 text-left font-normal">
+                      Gust
+                    </th>
+                  )}
                   {show("pressure") && (
                     <th scope="col" className="py-2 text-left font-normal">
                       Press.
@@ -1732,6 +1753,11 @@ export function DayDrawer({
                   {show("airTemperature") && (
                     <th scope="col" className="py-2 text-left font-normal">
                       Temp
+                    </th>
+                  )}
+                  {show("feelsLike") && (
+                    <th scope="col" className="py-2 text-left font-normal">
+                      Feels like
                     </th>
                   )}
                   {show("cloud") && (
@@ -1774,9 +1800,8 @@ export function DayDrawer({
                           activate();
                         }
                       }}
-                      className={`min-h-[48px] cursor-pointer border-b border-hull-700/50 text-left ${
-                        item.hour === selectedHour ? "bg-tide-500/10" : ""
-                      }`}
+                      className={`min-h-[48px] cursor-pointer border-b border-hull-700/50 text-left ${item.hour === selectedHour ? "bg-tide-500/10" : ""
+                        }`}
                     >
                       <th
                         scope="row"
@@ -1815,7 +1840,12 @@ export function DayDrawer({
                       )}
                       {show("wind") && (
                         <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
-                          {safe(item.wind?.speed)}kt {safe(item.wind?.dir, "")}
+                          {safe(item.wind?.speed)} km/h {safe(item.wind?.dir, "")}
+                        </td>
+                      )}
+                      {show("gust") && (
+                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                          {safe(item.wind?.gust)} km/h
                         </td>
                       )}
                       {show("pressure") && (
@@ -1826,6 +1856,11 @@ export function DayDrawer({
                       {show("airTemperature") && (
                         <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
                           {safe(item.airTemp)}°
+                        </td>
+                      )}
+                      {show("feelsLike") && (
+                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                          {safe(item.feelsLike)}°
                         </td>
                       )}
                       {show("cloud") && (
@@ -1857,11 +1892,10 @@ export function DayDrawer({
 
           {onDragStart && onDragMove && onDragEnd && (
             <div
-              className={`flex h-8 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${
-                isTopDock
-                  ? "order-last border-t border-hull-700/60"
-                  : "order-first border-b border-hull-700/60"
-              }`}
+              className={`flex h-8 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${isTopDock
+                ? "order-last border-t border-hull-700/60"
+                : "order-first border-b border-hull-700/60"
+                }`}
               onPointerDown={(event) => {
                 event.currentTarget.setPointerCapture(event.pointerId);
                 onDragStart(event.clientY);

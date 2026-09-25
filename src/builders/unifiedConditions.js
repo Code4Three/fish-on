@@ -238,11 +238,14 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = []) {
           ? `${weather.windSpeed} km/h${weather.windDirection ? ` ${weather.windDirection}` : ""}`
           : null,
       windSpeed: weather.windSpeed ?? null,
+      windGust: weather.windGust ?? null,
       windDirection: weather.windDirection ?? null,
       temperature: weather.temperature ?? null,
+      feelsLike: weather.feelsLike ?? null,
       cloudCover: weather.cloudCover ?? null,
       rainChance: weather.rainChance ?? null,
       rainVolume: weather.rainVolume ?? null,
+      uvIndex: weather.uvIndex ?? null,
     };
   });
 }

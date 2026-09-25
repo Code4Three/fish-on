@@ -65,17 +65,15 @@ function DashboardDock({
   return (
     // fixed/sticky already establish a containing block, so no extra `relative` is needed (and it would override them in Tailwind's cascade)
     <div
-      className={`${positionClasses} select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${
-        isDragging
+      className={`${positionClasses} select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${isDragging
           ? ""
           : "transition-[bottom,top,transform] duration-300 ease-out"
-      }`}
+        }`}
     >
       {/* Drag handle: swipe toward the screen edge to open the full day drawer */}
       <div
-        className={`absolute inset-x-1 z-10 flex h-12 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${
-          isBottom ? "top-0 -translate-y-1/2" : "bottom-0 translate-y-1/2"
-        }`}
+        className={`absolute inset-x-1 z-10 flex h-12 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${isBottom ? "top-0 -translate-y-1/2" : "bottom-0 translate-y-1/2"
+          }`}
         onPointerDown={(event) => {
           event.currentTarget.setPointerCapture(event.pointerId);
           onDragStart(event.clientY);

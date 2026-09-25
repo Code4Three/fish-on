@@ -53,11 +53,14 @@ export interface ConditionsHour {
   weatherCondition: string;
   wind: string;
   windSpeed: number;
+  windGust?: number | null;
   windDirection: string;
   temperature: number;
+  feelsLike?: number | null;
   cloudCover: number;
   rainChance: number | null;
   rainVolume: number | null;
+  uvIndex?: number | null;
 }
 
 export interface ConditionsDay {
@@ -86,6 +89,7 @@ export interface ClaudeHourlyData {
   tideDirection: "Flood" | "Ebb" | "Slack";
   pressure: number;
   airTemp: number;
+  feelsLike: number | null;
   weatherCondition: string;
   cloudCover: number;
   rainChance: number | null;
@@ -289,7 +293,11 @@ export function buildDayData(
       hour: parseTimeToHour(item.time),
       tideHeight: item.height,
       tideStage: item.tideStage,
-      wind: { speed: item.windSpeed, gust: null, dir: item.windDirection },
+      wind: {
+        speed: item.windSpeed,
+        gust: item.windGust ?? null,
+        dir: item.windDirection,
+      },
       windLabel: item.wind,
       solunar: toSolunarTag(item.solunarCondition),
       solunarCondition: item.solunarCondition,
@@ -300,11 +308,12 @@ export function buildDayData(
       tideDirection: toTideDirection(item.tideStage),
       pressure: item.pressure,
       airTemp: item.temperature,
+      feelsLike: item.feelsLike ?? null,
       weatherCondition: item.weatherCondition,
       cloudCover: item.cloudCover,
       rainChance: item.rainChance,
       rainVolume: item.rainVolume,
-      uvIndex: null,
+      uvIndex: item.uvIndex ?? null,
       swell: null,
     };
   });
@@ -352,6 +361,12 @@ export function buildDayData(
   const rainVolumeValues = hours
     .map((item) => item.rainVolume)
     .filter((value): value is number => value != null);
+  const gustValues = hours
+    .map((item) => item.wind.gust)
+    .filter((value): value is number => value != null);
+  const uvValues = hours
+    .map((item) => item.uvIndex)
+    .filter((value): value is number => value != null);
 
   return {
     date: day.date,
@@ -374,20 +389,20 @@ export function buildDayData(
         : null,
       pressure: day.anchored.pressureRange
         ? {
-            min: day.anchored.pressureRange[0],
-            max: day.anchored.pressureRange[1],
-          }
+          min: day.anchored.pressureRange[0],
+          max: day.anchored.pressureRange[1],
+        }
         : null,
       wind: day.anchored.windRange
         ? {
-            min: day.anchored.windRange[0],
-            max: day.anchored.windRange[1],
-            maxGust: null,
-          }
+          min: day.anchored.windRange[0],
+          max: day.anchored.windRange[1],
+          maxGust: gustValues.length ? Math.max(...gustValues) : null,
+        }
         : null,
       swell: null,
       cloudBaseline: day.anchored.cloudBaseline ?? null,
-      uvPeak: null,
+      uvPeak: uvValues.length ? Math.max(...uvValues) : null,
     },
     secondary: {
       pressure: {
@@ -414,11 +429,14 @@ export function buildDayData(
           day.anchored.rainVolume ??
           (rainVolumeValues.length
             ? Math.round(rainVolumeValues.reduce((total, value) => total + value, 0) * 10) /
-              10
+            10
             : null),
       },
-      uv: null,
-      airTemp: { temp: hours[0]?.airTemp ?? null, feels: null },
+      uv: uvValues.length ? Math.max(...uvValues) : null,
+      airTemp: {
+        temp: hours[0]?.airTemp ?? null,
+        feels: hours[0]?.feelsLike ?? null,
+      },
     },
   };
 }

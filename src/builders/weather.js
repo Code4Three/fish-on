@@ -113,22 +113,29 @@ export async function buildWeatherData() {
       forecast_days: String(DISPLAY_DAYS),
       hourly: [
         "temperature_2m",
+        "apparent_temperature",
         "pressure_msl",
         "cloud_cover",
         "precipitation_probability",
         "precipitation",
         "wind_speed_10m",
+        "wind_gusts_10m",
         "wind_direction_10m",
+        "uv_index",
         "weather_code",
       ].join(","),
       daily: [
         "weather_code",
         "temperature_2m_max",
         "temperature_2m_min",
+        "apparent_temperature_max",
+        "apparent_temperature_min",
         "precipitation_sum",
         "precipitation_probability_max",
         "wind_speed_10m_max",
+        "wind_gusts_10m_max",
         "wind_direction_10m_dominant",
+        "uv_index_max",
       ].join(","),
       temperature_unit: "celsius",
       wind_speed_unit: "kmh",
@@ -171,14 +178,17 @@ function processWeatherResponse(weather) {
     const entry = {
       time: `${hour}:00`,
       temperature: round(weather.hourly.temperature_2m?.[i]),
+      feelsLike: round(weather.hourly.apparent_temperature?.[i]),
       pressure: round(weather.hourly.pressure_msl?.[i]),
       cloudCover: round(weather.hourly.cloud_cover?.[i]),
       rainChance: round(weather.hourly.precipitation_probability?.[i]),
       rainVolume: roundMillimeters(weather.hourly.precipitation?.[i]),
       windSpeed: round(weather.hourly.wind_speed_10m?.[i]),
+      windGust: round(weather.hourly.wind_gusts_10m?.[i]),
       windDirection: getWindDirectionLabel(
         weather.hourly.wind_direction_10m?.[i],
       ),
+      uvIndex: round(weather.hourly.uv_index?.[i]),
       weatherCondition: getWeatherLabel(weather.hourly.weather_code?.[i]),
     };
 
@@ -213,6 +223,12 @@ function processWeatherResponse(weather) {
     }).filter(Boolean);
     const tempMin = round(weather.daily.temperature_2m_min?.[index]);
     const tempMax = round(weather.daily.temperature_2m_max?.[index]);
+    const feelsLikeMin = round(
+      weather.daily.apparent_temperature_min?.[index],
+    );
+    const feelsLikeMax = round(
+      weather.daily.apparent_temperature_max?.[index],
+    );
     const rainVolume = roundMillimeters(
       weather.daily.precipitation_sum?.[index],
     );
@@ -220,9 +236,11 @@ function processWeatherResponse(weather) {
       weather.daily.precipitation_probability_max?.[index],
     );
     const windMax = round(weather.daily.wind_speed_10m_max?.[index]);
+    const windGustMax = round(weather.daily.wind_gusts_10m_max?.[index]);
     const windDirection = getWindDirectionLabel(
       weather.daily.wind_direction_10m_dominant?.[index],
     );
+    const uvPeak = round(weather.daily.uv_index_max?.[index]);
     const pressureValues = dailyHours
       .map((hour) => hour.pressure)
       .filter((v) => v != null);
@@ -237,9 +255,9 @@ function processWeatherResponse(weather) {
       .filter((v) => v != null);
     const cloudCover = cloudValues.length
       ? Math.round(
-          cloudValues.reduce((sum, value) => sum + value, 0) /
-            cloudValues.length,
-        )
+        cloudValues.reduce((sum, value) => sum + value, 0) /
+        cloudValues.length,
+      )
       : null;
     const summary = getWeatherLabel(weather.daily.weather_code?.[index]);
 
@@ -248,16 +266,22 @@ function processWeatherResponse(weather) {
       summary,
       tempRange:
         tempMin != null && tempMax != null ? [tempMin, tempMax] : [null, null],
+      feelsLikeRange:
+        feelsLikeMin != null && feelsLikeMax != null
+          ? [feelsLikeMin, feelsLikeMax]
+          : [null, null],
       windRange:
         windMax != null ? [Math.max(0, windMax - 6), windMax] : [null, null],
       windBaseline:
         windMax != null
           ? `${windMax} km/h ${windDirection ?? ""}`.trim()
           : null,
+      windGustMax,
       rainChance,
       rainVolume,
       cloudCover,
       cloudBaseline: cloudCover,
+      uvPeak,
       pressureRange:
         pressureMin != null && pressureMax != null
           ? [pressureMin, pressureMax]

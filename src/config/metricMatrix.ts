@@ -189,6 +189,7 @@ export const HOURLY_METRICS = [
   { id: "solunarRating", label: "Numeric hourly solunar rating" },
   { id: "pressure", label: "Pressure" },
   { id: "airTemperature", label: "Air temperature" },
+  { id: "feelsLike", label: "Feels like temperature" },
   { id: "wind", label: "Wind speed/direction" },
   { id: "gust", label: "Gust speed" },
   { id: "cloud", label: "Cloud cover" },
