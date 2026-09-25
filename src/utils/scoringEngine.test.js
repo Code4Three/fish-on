@@ -3,7 +3,7 @@ import rules from "../config/scoringRules.json";
 import {
   calculateConditionScore,
   calculateTideRating,
-  getScoreBand
+  getScoreBand,
 } from "./scoringEngine.js";
 
 describe("calculateConditionScore", () => {
@@ -24,7 +24,7 @@ describe("calculateConditionScore", () => {
   it("supports custom weights", () => {
     const result = calculateConditionScore(100, 50, {
       ...rules,
-      weights: { tide: 0.8, solunar: 0.2 }
+      weights: { tide: 0.8, solunar: 0.2 },
     });
 
     expect(result.score).toBe(90);
@@ -39,10 +39,12 @@ describe("calculateConditionScore", () => {
   });
 
   it("rejects weights that do not sum to one", () => {
-    expect(() => calculateConditionScore(100, 100, {
-      ...rules,
-      weights: { tide: 0.5, solunar: 0.25 }
-    })).toThrow("must sum to 1.0");
+    expect(() =>
+      calculateConditionScore(100, 100, {
+        ...rules,
+        weights: { tide: 0.5, solunar: 0.25 },
+      }),
+    ).toThrow("must sum to 1.0");
   });
 
   it("assigns all six inclusive band boundaries", () => {
@@ -58,10 +60,14 @@ describe("calculateConditionScore", () => {
   it("scores the final two hours of a run-in as the peak window", () => {
     const events = [
       { type: "Low", at: Date.parse("2026-09-20T06:00:00") },
-      { type: "High", at: Date.parse("2026-09-20T12:00:00") }
+      { type: "High", at: Date.parse("2026-09-20T12:00:00") },
     ];
 
-    expect(calculateTideRating(Date.parse("2026-09-20T10:00:00"), events, rules)).toBe(100);
-    expect(calculateTideRating(Date.parse("2026-09-20T09:00:00"), events, rules)).toBe(75);
+    expect(
+      calculateTideRating(Date.parse("2026-09-20T10:00:00"), events, rules),
+    ).toBe(100);
+    expect(
+      calculateTideRating(Date.parse("2026-09-20T09:00:00"), events, rules),
+    ).toBe(75);
   });
 });

@@ -6,9 +6,8 @@ import { LOCATION } from "../config/constants.js";
 import {
   getBuildDates,
   formatLocalDate,
-  formatLocalTime
+  formatLocalTime,
 } from "../utils/dateUtils.js";
-
 
 function getMoonPhaseName(phase) {
   if (phase < 0.03 || phase > 0.97) return "New Moon";
@@ -25,24 +24,15 @@ function getMoonPhaseName(phase) {
 const days = [];
 
 for (const date of getBuildDates()) {
-  const sunTimes = SunCalc.getTimes(
-    date,
-    LOCATION.lat,
-    LOCATION.lon
-  );
+  const sunTimes = SunCalc.getTimes(date, LOCATION.lat, LOCATION.lon);
 
-  const moonTimes = SunCalc.getMoonTimes(
-    date,
-    LOCATION.lat,
-    LOCATION.lon
-  );
+  const moonTimes = SunCalc.getMoonTimes(date, LOCATION.lat, LOCATION.lon);
 
-  const moonIllumination =
-    SunCalc.getMoonIllumination(date);
+  const moonIllumination = SunCalc.getMoonIllumination(date);
   const moonPosition = SunCalc.getMoonPosition(
     new Date(date.getTime() + 12 * 60 * 60 * 1000),
     LOCATION.lat,
-    LOCATION.lon
+    LOCATION.lon,
   );
 
   days.push({
@@ -53,32 +43,15 @@ for (const date of getBuildDates()) {
     moonrise: formatLocalTime(moonTimes.rise),
     moonset: formatLocalTime(moonTimes.set),
 
-    moonPhase: getMoonPhaseName(
-      moonIllumination.phase
-    ),
+    moonPhase: getMoonPhaseName(moonIllumination.phase),
 
-    illumination: Math.round(
-      moonIllumination.fraction * 100
-    ),
-    moonDistance: Math.round(moonPosition.distance)
+    illumination: Math.round(moonIllumination.fraction * 100),
+    moonDistance: Math.round(moonPosition.distance),
   });
 }
 
-const outputPath = path.join(
-  "src",
-  "data",
-  "sunMoon.json"
-);
+const outputPath = path.join("src", "data", "sunMoon.json");
 
-fs.writeFileSync(
-  outputPath,
-  JSON.stringify(
-    { days },
-    null,
-    2
-  )
-);
+fs.writeFileSync(outputPath, JSON.stringify({ days }, null, 2));
 
-console.log(
-  "Sun/Moon data written → src/data/sunMoon.json"
-);
+console.log("Sun/Moon data written → src/data/sunMoon.json");

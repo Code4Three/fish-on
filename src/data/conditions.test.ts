@@ -13,11 +13,13 @@ describe("buildDayData", () => {
       windLabel: conditionsFixture.days[0].hours[0].wind,
       solunarCondition: conditionsFixture.days[0].hours[0].solunarCondition,
       pressureTrend: conditionsFixture.days[0].hours[0].pressureTrend,
-      weatherCondition: conditionsFixture.days[0].hours[0].weatherCondition
+      weatherCondition: conditionsFixture.days[0].hours[0].weatherCondition,
     });
-    day.hours.forEach(hour => {
+    day.hours.forEach((hour) => {
       expect(hour.score).toBeGreaterThanOrEqual(0);
       expect(hour.score).toBeLessThanOrEqual(100);
+      expect(hour.solunarRating).toBeGreaterThanOrEqual(0);
+      expect(hour.solunarRating).toBeLessThanOrEqual(100);
       expect(["Peak", "Strong", "Favorable", "Slow"]).toContain(hour.scoreBand);
     });
   });
@@ -32,9 +34,19 @@ describe("buildDayData", () => {
   it("derives major/minor solunar windows from anchored solunar peaks", () => {
     expect(day.majorWindows.length).toBeGreaterThan(0);
     expect(day.minorWindows.length).toBeGreaterThan(0);
+    expect(day.majorWindows).toEqual(
+      [...day.majorWindows].sort((firstWindow, secondWindow) => firstWindow.start - secondWindow.start),
+    );
+    expect(day.minorWindows).toEqual(
+      [...day.minorWindows].sort((firstWindow, secondWindow) => firstWindow.start - secondWindow.start),
+    );
+    [...day.majorWindows, ...day.minorWindows].forEach((window) => {
+      expect(window.rating).toBeGreaterThanOrEqual(0);
+      expect(window.rating).toBeLessThanOrEqual(100);
+    });
   });
 
   it("computes a day score as the max hourly score", () => {
-    expect(day.dayScore).toBe(Math.max(...day.hours.map(hour => hour.score)));
+    expect(day.dayScore).toBe(Math.max(...day.hours.map((hour) => hour.score)));
   });
 });

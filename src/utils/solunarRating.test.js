@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   calculateNeutralSolunarRating,
-  calculateSolunarPeakRating
+  calculateSolunarPeakRating,
 } from "./solunarRating.js";
 
 const anchored = {
   sunrise: "06:00",
   sunset: "18:00",
   moonPhase: "New Moon",
-  moonDistance: 381600
+  moonDistance: 381600,
 };
 
 const rules = {
@@ -17,22 +17,22 @@ const rules = {
     maxScore: 99,
     phaseMultipliers: {
       "New Moon": 1,
-      "First Quarter": 0.6
+      "First Quarter": 0.6,
     },
     solar: {
       dawnDuskMinutes: 45,
       exactDawnDuskBoost: 1.5,
       dawnDuskBoost: 1.45,
       solarNoonMinutes: 60,
-      solarNoonBoost: 1.1
+      solarNoonBoost: 1.1,
     },
     distance: {
       perigeeKm: 356500,
       apogeeKm: 406700,
       perigeeMultiplier: 1.1,
-      apogeeMultiplier: 0.9
-    }
-  }
+      apogeeMultiplier: 0.9,
+    },
+  },
 };
 
 describe("solunar rating", () => {
@@ -40,7 +40,7 @@ describe("solunar rating", () => {
     const rating = calculateSolunarPeakRating(
       { type: "Major 1", time: "06:15" },
       anchored,
-      rules
+      rules,
     );
 
     expect(rating).toBe(88);
@@ -50,7 +50,7 @@ describe("solunar rating", () => {
     const rating = calculateSolunarPeakRating(
       { type: "Major 1", time: "13:30" },
       { ...anchored, moonPhase: "First Quarter" },
-      rules
+      rules,
     );
 
     expect(rating).toBe(36);
@@ -60,7 +60,7 @@ describe("solunar rating", () => {
     const rating = calculateSolunarPeakRating(
       { type: "Major 1", time: "06:00" },
       { ...anchored, moonDistance: 356500 },
-      rules
+      rules,
     );
 
     expect(rating).toBe(100);
@@ -71,12 +71,12 @@ describe("solunar rating", () => {
     const perigee = calculateSolunarPeakRating(
       { type: "Minor 1", time: "12:00" },
       { ...anchored, moonDistance: 356500 },
-      rules
+      rules,
     );
     const apogee = calculateSolunarPeakRating(
       { type: "Minor 1", time: "12:00" },
       { ...anchored, moonDistance: 406700 },
-      rules
+      rules,
     );
 
     expect(perigee).toBeGreaterThan(apogee);

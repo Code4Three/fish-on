@@ -1,5 +1,5 @@
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -7,19 +7,19 @@ export default defineConfig({
   server: {
     host: true,
     headers: {
-      'Cache-Control': 'no-store'
-    }
+      "Cache-Control": "no-store",
+    },
   },
   preview: {
     headers: {
-      'Cache-Control': 'no-store'
-    }
+      "Cache-Control": "no-store",
+    },
   },
   esbuild: {
-    jsx: 'automatic'
+    jsx: "automatic",
   },
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.js']
-  }
-})
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.js"],
+  },
+});

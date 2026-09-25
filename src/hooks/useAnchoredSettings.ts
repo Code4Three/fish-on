@@ -41,7 +41,7 @@ const DEFAULT_SETTINGS: AnchoredSettingsState = {
   moonPhase: true,
   rain: true,
   uv: true,
-  airTemp: true
+  airTemp: true,
 };
 
 const DEFAULT_CARD_SETTINGS: DashboardCardSettings = {
@@ -49,15 +49,21 @@ const DEFAULT_CARD_SETTINGS: DashboardCardSettings = {
   weather: true,
   moon: true,
   sun: true,
-  swell: true
+  swell: true,
 };
 
 const DEFAULT_MATRIX_SETTINGS: MatrixSettings = {
-  groups: Object.fromEntries(DAILY_GROUPS.map(group => [group.id, true])),
-  metrics: Object.fromEntries(DAILY_GROUPS.flatMap(group => group.metrics.map(metric => [metric.id, true]))),
-  hourly: Object.fromEntries(HOURLY_METRICS.map(metric => [metric.id, true])),
-  heroOrder: DAILY_GROUPS.map(group => group.id),
-  cardOrder: DAILY_GROUPS.flatMap(group => group.metrics.map(metric => metric.id))
+  groups: Object.fromEntries(DAILY_GROUPS.map((group) => [group.id, true])),
+  metrics: Object.fromEntries(
+    DAILY_GROUPS.flatMap((group) =>
+      group.metrics.map((metric) => [metric.id, true]),
+    ),
+  ),
+  hourly: Object.fromEntries(HOURLY_METRICS.map((metric) => [metric.id, true])),
+  heroOrder: DAILY_GROUPS.map((group) => group.id),
+  cardOrder: DAILY_GROUPS.flatMap((group) =>
+    group.metrics.map((metric) => metric.id),
+  ),
 };
 
 function getStoredSettings(): AnchoredSettingsState {
@@ -79,9 +85,10 @@ function getStoredSettings(): AnchoredSettingsState {
     const candidate = parsed as Partial<Record<AnchoredMetric, unknown>>;
     return Object.keys(DEFAULT_SETTINGS).reduce((settings, metric) => {
       const key = metric as AnchoredMetric;
-      settings[key] = typeof candidate[key] === "boolean"
-        ? candidate[key]
-        : DEFAULT_SETTINGS[key];
+      settings[key] =
+        typeof candidate[key] === "boolean"
+          ? candidate[key]
+          : DEFAULT_SETTINGS[key];
       return settings;
     }, {} as AnchoredSettingsState);
   } catch {
@@ -96,14 +103,33 @@ function getStoredCardSettings(): DashboardCardSettings {
 
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    const parsed = stored ? JSON.parse(stored) as Partial<AnchoredSettingsState & DashboardCardSettings> : {};
+    const parsed = stored
+      ? (JSON.parse(stored) as Partial<
+          AnchoredSettingsState & DashboardCardSettings
+        >)
+      : {};
     // Fall back to the legacy per-metric flags (waterTemp/airTemp/wind/etc.) when the new card flag is absent
     return {
-      temperature: typeof parsed.temperature === "boolean" ? parsed.temperature : Boolean(parsed.waterTemp || parsed.airTemp || stored === null),
-      weather: typeof parsed.weather === "boolean" ? parsed.weather : Boolean(parsed.wind || parsed.rain || parsed.uv || stored === null),
-      moon: typeof parsed.moon === "boolean" ? parsed.moon : Boolean(parsed.moonPhase || stored === null),
-      sun: typeof parsed.sun === "boolean" ? parsed.sun : DEFAULT_CARD_SETTINGS.sun,
-      swell: typeof parsed.swell === "boolean" ? parsed.swell : Boolean(parsed.swell || stored === null)
+      temperature:
+        typeof parsed.temperature === "boolean"
+          ? parsed.temperature
+          : Boolean(parsed.waterTemp || parsed.airTemp || stored === null),
+      weather:
+        typeof parsed.weather === "boolean"
+          ? parsed.weather
+          : Boolean(parsed.wind || parsed.rain || parsed.uv || stored === null),
+      moon:
+        typeof parsed.moon === "boolean"
+          ? parsed.moon
+          : Boolean(parsed.moonPhase || stored === null),
+      sun:
+        typeof parsed.sun === "boolean"
+          ? parsed.sun
+          : DEFAULT_CARD_SETTINGS.sun,
+      swell:
+        typeof parsed.swell === "boolean"
+          ? parsed.swell
+          : Boolean(parsed.swell || stored === null),
     };
   } catch {
     return DEFAULT_CARD_SETTINGS;
@@ -114,16 +140,39 @@ function getStoredMatrixSettings(): MatrixSettings {
   if (typeof window === "undefined") return DEFAULT_MATRIX_SETTINGS;
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    const parsed = stored ? JSON.parse(stored) as Partial<MatrixSettings> : {};
+    const parsed = stored
+      ? (JSON.parse(stored) as Partial<MatrixSettings>)
+      : {};
     // Drop any stale ids no longer in the default order, then append newly-added ids at the end
-    const heroOrder = Array.isArray(parsed.heroOrder) ? parsed.heroOrder.filter(id => DEFAULT_MATRIX_SETTINGS.heroOrder.includes(id)) : [];
-    const cardOrder = Array.isArray(parsed.cardOrder) ? parsed.cardOrder.filter(id => DEFAULT_MATRIX_SETTINGS.cardOrder.includes(id)) : [];
+    const heroOrder = Array.isArray(parsed.heroOrder)
+      ? parsed.heroOrder.filter((id) =>
+          DEFAULT_MATRIX_SETTINGS.heroOrder.includes(id),
+        )
+      : [];
+    const cardOrder = Array.isArray(parsed.cardOrder)
+      ? parsed.cardOrder.filter((id) =>
+          DEFAULT_MATRIX_SETTINGS.cardOrder.includes(id),
+        )
+      : [];
     return {
       groups: { ...DEFAULT_MATRIX_SETTINGS.groups, ...(parsed.groups ?? {}) },
-      metrics: { ...DEFAULT_MATRIX_SETTINGS.metrics, ...(parsed.metrics ?? {}) },
+      metrics: {
+        ...DEFAULT_MATRIX_SETTINGS.metrics,
+        ...(parsed.metrics ?? {}),
+      },
       hourly: { ...DEFAULT_MATRIX_SETTINGS.hourly, ...(parsed.hourly ?? {}) },
-      heroOrder: [...heroOrder, ...DEFAULT_MATRIX_SETTINGS.heroOrder.filter(id => !heroOrder.includes(id))],
-      cardOrder: [...cardOrder, ...DEFAULT_MATRIX_SETTINGS.cardOrder.filter(id => !cardOrder.includes(id))]
+      heroOrder: [
+        ...heroOrder,
+        ...DEFAULT_MATRIX_SETTINGS.heroOrder.filter(
+          (id) => !heroOrder.includes(id),
+        ),
+      ],
+      cardOrder: [
+        ...cardOrder,
+        ...DEFAULT_MATRIX_SETTINGS.cardOrder.filter(
+          (id) => !cardOrder.includes(id),
+        ),
+      ],
     };
   } catch {
     return DEFAULT_MATRIX_SETTINGS;
@@ -131,9 +180,14 @@ function getStoredMatrixSettings(): MatrixSettings {
 }
 
 export function useAnchoredSettings() {
-  const [settings, setSettings] = useState<AnchoredSettingsState>(getStoredSettings);
-  const [cardSettings, setCardSettings] = useState<DashboardCardSettings>(getStoredCardSettings);
-  const [matrixSettings, setMatrixSettings] = useState<MatrixSettings>(getStoredMatrixSettings);
+  const [settings, setSettings] =
+    useState<AnchoredSettingsState>(getStoredSettings);
+  const [cardSettings, setCardSettings] = useState<DashboardCardSettings>(
+    getStoredCardSettings,
+  );
+  const [matrixSettings, setMatrixSettings] = useState<MatrixSettings>(
+    getStoredMatrixSettings,
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -141,16 +195,19 @@ export function useAnchoredSettings() {
     }
 
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...settings, ...cardSettings, ...matrixSettings }));
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ ...settings, ...cardSettings, ...matrixSettings }),
+      );
     } catch {
       // Settings remain usable when browser storage is unavailable.
     }
   }, [settings, cardSettings, matrixSettings]);
 
   const toggleMetric = useCallback((metric: AnchoredMetric) => {
-    setSettings(current => ({
+    setSettings((current) => ({
       ...current,
-      [metric]: !current[metric]
+      [metric]: !current[metric],
     }));
   }, []);
 
@@ -162,34 +219,56 @@ export function useAnchoredSettings() {
       metrics: { ...DEFAULT_MATRIX_SETTINGS.metrics },
       hourly: { ...DEFAULT_MATRIX_SETTINGS.hourly },
       heroOrder: [...DEFAULT_MATRIX_SETTINGS.heroOrder],
-      cardOrder: [...DEFAULT_MATRIX_SETTINGS.cardOrder]
+      cardOrder: [...DEFAULT_MATRIX_SETTINGS.cardOrder],
     });
   }, []);
 
   const toggleCard = useCallback((card: keyof DashboardCardSettings) => {
-    setCardSettings(current => ({ ...current, [card]: !current[card] }));
+    setCardSettings((current) => ({ ...current, [card]: !current[card] }));
   }, []);
 
   const toggleGroup = useCallback((group: string) => {
-    setMatrixSettings(current => ({ ...current, groups: { ...current.groups, [group]: !current.groups[group] } }));
+    setMatrixSettings((current) => ({
+      ...current,
+      groups: { ...current.groups, [group]: !current.groups[group] },
+    }));
   }, []);
 
   const toggleMatrixMetric = useCallback((metric: string, hourly = false) => {
-    setMatrixSettings(current => ({ ...current, [hourly ? "hourly" : "metrics"]: { ...current[hourly ? "hourly" : "metrics"], [metric]: !current[hourly ? "hourly" : "metrics"][metric] } }));
+    setMatrixSettings((current) => ({
+      ...current,
+      [hourly ? "hourly" : "metrics"]: {
+        ...current[hourly ? "hourly" : "metrics"],
+        [metric]: !current[hourly ? "hourly" : "metrics"][metric],
+      },
+    }));
   }, []);
 
-  const moveDashboardItem = useCallback((item: string, target: string, area: "heroOrder" | "cardOrder") => {
-    setMatrixSettings(current => {
-      // Reorder by removing the dragged item and reinserting it just before/after the drop target
-      const order = [...current[area]];
-      const from = order.indexOf(item);
-      const to = order.indexOf(target);
-      if (from < 0 || to < 0 || from === to) return current;
-      order.splice(from, 1);
-      order.splice(from < to ? to - 1 : to, 0, item);
-      return { ...current, [area]: order };
-    });
-  }, []);
+  const moveDashboardItem = useCallback(
+    (item: string, target: string, area: "heroOrder" | "cardOrder") => {
+      setMatrixSettings((current) => {
+        // Reorder by removing the dragged item and reinserting it just before/after the drop target
+        const order = [...current[area]];
+        const from = order.indexOf(item);
+        const to = order.indexOf(target);
+        if (from < 0 || to < 0 || from === to) return current;
+        order.splice(from, 1);
+        order.splice(from < to ? to - 1 : to, 0, item);
+        return { ...current, [area]: order };
+      });
+    },
+    [],
+  );
 
-  return { settings, cardSettings, matrixSettings, toggleMetric, toggleCard, toggleGroup, toggleMatrixMetric, moveDashboardItem, resetSettings };
+  return {
+    settings,
+    cardSettings,
+    matrixSettings,
+    toggleMetric,
+    toggleCard,
+    toggleGroup,
+    toggleMatrixMetric,
+    moveDashboardItem,
+    resetSettings,
+  };
 }

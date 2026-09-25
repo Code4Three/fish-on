@@ -3,8 +3,8 @@ import { Calendar, Clock, Fish, Settings } from "lucide-react";
 import type { ClaudeDayData } from "../../data/conditions";
 import { useAnchoredSettings } from "../../hooks/useAnchoredSettings";
 import CustomizationBottomSheet from "../settings/CustomizationBottomSheet";
+import type { DashboardStateProps } from "./shared";
 import {
-  DashboardStateProps,
   DayDrawer,
   MetricCard,
   PressureCard,
@@ -15,7 +15,7 @@ import {
   formatDate,
   formatHour,
   metrics,
-  solunarLabel
+  solunarLabel,
 } from "./shared";
 
 // Hour stepper + scrollable hour pills + "view full day" entry point, stacked above the card feed.
@@ -23,7 +23,7 @@ function TimeBar({
   hour,
   day,
   onHourChange,
-  onOpenDayView
+  onOpenDayView,
 }: {
   hour: number;
   day: ClaudeDayData;
@@ -32,26 +32,46 @@ function TimeBar({
 }) {
   const pillRefs = useRef<Record<number, HTMLButtonElement | null>>({});
   useEffect(() => {
-    pillRefs.current[hour]?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    pillRefs.current[hour]?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
   }, [hour]);
 
   return (
     <section className="px-4 pb-3 pt-2">
       <div className="flex items-center justify-between">
-        <StepButton label="Prev Hour" direction="left" disabled={hour === 0} onClick={() => onHourChange(Math.max(0, hour - 1))} />
+        <StepButton
+          label="Prev Hour"
+          direction="left"
+          disabled={hour === 0}
+          onClick={() => onHourChange(Math.max(0, hour - 1))}
+        />
         <div className="text-center leading-tight">
-          <p className="font-display text-[17px] font-bold tabular-nums text-white">{formatHour(hour)}</p>
-          <p className={`font-body text-[12px] font-medium ${day.hours[hour].solunar === "major" ? "text-tide-400" : day.hours[hour].solunar === "minor" ? "text-amber-300" : "text-slate-500"}`}>
+          <p className="font-display text-[17px] font-bold tabular-nums text-white">
+            {formatHour(hour)}
+          </p>
+          <p
+            className={`font-body text-[12px] font-medium ${day.hours[hour].solunar === "major" ? "text-tide-400" : day.hours[hour].solunar === "minor" ? "text-amber-300" : "text-slate-500"}`}
+          >
             {solunarLabel(day.hours[hour].solunar)}
           </p>
         </div>
-        <StepButton label="Next Hour" direction="right" disabled={hour === 23} onClick={() => onHourChange(Math.min(23, hour + 1))} />
+        <StepButton
+          label="Next Hour"
+          direction="right"
+          disabled={hour === 23}
+          onClick={() => onHourChange(Math.min(23, hour + 1))}
+        />
       </div>
       <div className="no-scrollbar mt-2 flex gap-2 overflow-x-auto">
         {day.hours.map(({ hour: value }) => (
           <button
             key={value}
-            ref={element => { pillRefs.current[value] = element; }}
+            ref={(element) => {
+              pillRefs.current[value] = element;
+            }}
             type="button"
             onClick={() => onHourChange(value)}
             aria-current={value === hour ? "time" : undefined}
@@ -74,8 +94,19 @@ function TimeBar({
 }
 
 // Prototype 0: the original stacked layout, unchanged apart from sharing state/cards with the other prototypes.
-export default function Option0Current({ day, hour, offset, canGoPrevious, canGoNext, onHourChange, onOffsetChange, prototype, onSelectPrototype }: DashboardStateProps) {
-  const { settings, cardSettings, toggleCard, resetSettings } = useAnchoredSettings();
+export default function Option0Current({
+  day,
+  hour,
+  offset,
+  canGoPrevious,
+  canGoNext,
+  onHourChange,
+  onOffsetChange,
+  prototype,
+  onSelectPrototype,
+}: DashboardStateProps) {
+  const { settings, cardSettings, toggleCard, resetSettings } =
+    useAnchoredSettings();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
 
@@ -88,8 +119,12 @@ export default function Option0Current({ day, hour, offset, canGoPrevious, canGo
               <Fish size={16} />
             </div>
             <div className="min-w-0">
-              <p className="font-body text-[10px] text-slate-500">Fish On · Current spot</p>
-              <h1 className="truncate font-display text-[16px] font-semibold text-white">Mooloolaba River Mouth</h1>
+              <p className="font-body text-[10px] text-slate-500">
+                Fish On · Current spot
+              </p>
+              <h1 className="truncate font-display text-[16px] font-semibold text-white">
+                Mooloolaba River Mouth
+              </h1>
             </div>
           </div>
           <button
@@ -103,15 +138,30 @@ export default function Option0Current({ day, hour, offset, canGoPrevious, canGo
         </header>
         <div className="border-t border-hull-700/60 px-2 py-1">
           <div className="flex items-center justify-between">
-            <StepButton label="Prev Day" direction="left" disabled={!canGoPrevious} onClick={() => onOffsetChange(offset - 1)} />
+            <StepButton
+              label="Prev Day"
+              direction="left"
+              disabled={!canGoPrevious}
+              onClick={() => onOffsetChange(offset - 1)}
+            />
             <div className="flex items-center gap-1.5 font-body text-[14px] font-semibold text-white">
               <Calendar size={14} className="text-slate-500" />
               {formatDate(day.date)}
             </div>
-            <StepButton label="Next Day" direction="right" disabled={!canGoNext} onClick={() => onOffsetChange(offset + 1)} />
+            <StepButton
+              label="Next Day"
+              direction="right"
+              disabled={!canGoNext}
+              onClick={() => onOffsetChange(offset + 1)}
+            />
           </div>
         </div>
-        <TimeBar hour={hour} day={day} onHourChange={onHourChange} onOpenDayView={() => setDayViewOpen(true)} />
+        <TimeBar
+          hour={hour}
+          day={day}
+          onHourChange={onHourChange}
+          onOpenDayView={() => setDayViewOpen(true)}
+        />
       </div>
       {/* Stacked summary cards, then the individually-toggleable metric card grid */}
       <ScoreCard day={day} hour={hour} />
@@ -120,12 +170,25 @@ export default function Option0Current({ day, hour, offset, canGoPrevious, canGo
       <PressureCard day={day} hour={hour} />
       <section className="mt-3 px-4">
         <div className="grid grid-cols-2 gap-3">
-          {metrics.filter(metric => settings[metric.id]).map(metric => (
-            <MetricCard key={metric.id} id={metric.id} day={day} hour={hour} />
-          ))}
+          {metrics
+            .filter((metric) => settings[metric.id])
+            .map((metric) => (
+              <MetricCard
+                key={metric.id}
+                id={metric.id}
+                day={day}
+                hour={hour}
+              />
+            ))}
         </div>
       </section>
-      <DayDrawer open={dayViewOpen} day={day} selectedHour={hour} onClose={() => setDayViewOpen(false)} onPickHour={onHourChange} />
+      <DayDrawer
+        open={dayViewOpen}
+        day={day}
+        selectedHour={hour}
+        onClose={() => setDayViewOpen(false)}
+        onPickHour={onHourChange}
+      />
       <CustomizationBottomSheet
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}

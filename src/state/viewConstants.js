@@ -4,5 +4,5 @@ export const VIEWS = {
   SOLUNAR: "solunar",
   OPTIONS: "options",
   MAP_PICKER: "map-picker",
-  MANAGE_LOCATIONS: "manage-locations"
+  MANAGE_LOCATIONS: "manage-locations",
 };

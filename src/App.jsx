@@ -10,33 +10,33 @@ import SolunarView from "./views/SolunarView";
 import TideView from "./views/TideView";
 
 function ActiveView() {
-	const { activeView } = useApp();
+  const { activeView } = useApp();
 
-	switch (activeView) {
-		case VIEWS.TIDE:
-			return <TideView />;
-		case VIEWS.SOLUNAR:
-			return <SolunarView />;
-		case VIEWS.OPTIONS:
-			return <OptionsView />;
-		case VIEWS.MAP_PICKER:
-			return <MapPickerView />;
-		case VIEWS.MANAGE_LOCATIONS:
-			return <ManageLocationsView />;
-		case VIEWS.WEEKLY:
-		default:
-			// Weekly forecast is both the explicit default view and the fallback for any unknown view key
-			return <PrototypeSwitcher />;
-	}
+  switch (activeView) {
+    case VIEWS.TIDE:
+      return <TideView />;
+    case VIEWS.SOLUNAR:
+      return <SolunarView />;
+    case VIEWS.OPTIONS:
+      return <OptionsView />;
+    case VIEWS.MAP_PICKER:
+      return <MapPickerView />;
+    case VIEWS.MANAGE_LOCATIONS:
+      return <ManageLocationsView />;
+    case VIEWS.WEEKLY:
+    default:
+      // Weekly forecast is both the explicit default view and the fallback for any unknown view key
+      return <PrototypeSwitcher />;
+  }
 }
 
 function App() {
-	return (
-		<AppProvider>
-			{/* <GlobalHeader /> */}
-			<ActiveView />
-		</AppProvider>
-	);
+  return (
+    <AppProvider>
+      {/* <GlobalHeader /> */}
+      <ActiveView />
+    </AppProvider>
+  );
 }
 
 export default App;

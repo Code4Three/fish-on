@@ -14,10 +14,10 @@ export async function buildTides() {
 
   const normalizedRecords = mergeByDate(cache.records, []);
   const previousRecord = normalizedRecords
-    .filter(record => formatLocalDate(new Date(record.date)) < firstBuildDate)
+    .filter((record) => formatLocalDate(new Date(record.date)) < firstBuildDate)
     .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-  const records = normalizedRecords.filter(record =>
-    buildDateSet.has(formatLocalDate(new Date(record.date)))
+  const records = normalizedRecords.filter((record) =>
+    buildDateSet.has(formatLocalDate(new Date(record.date))),
   );
 
   if (previousRecord) {
@@ -26,16 +26,16 @@ export async function buildTides() {
 
   // WorldTides returns MSL heights; shift to Chart Datum (LAT) for the active location
   const datumOffset = LOCATION.datumOffset ?? 0;
-  const adjustedRecords = records.map(record => ({
+  const adjustedRecords = records.map((record) => ({
     ...record,
-    height: record.height + datumOffset
+    height: record.height + datumOffset,
   }));
 
   const outputPath = path.join("src", "data", "tides.json");
 
   fs.writeFileSync(
     outputPath,
-    JSON.stringify({ ...cache, records: adjustedRecords }, null, 2)
+    JSON.stringify({ ...cache, records: adjustedRecords }, null, 2),
   );
 
   console.log("Tide data written → src/data/tides.json");

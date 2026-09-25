@@ -46,7 +46,9 @@
   height: 210px;
   border: 1px solid rgba(220, 125, 66, 0.35);
   border-radius: 50%;
-  box-shadow: 0 0 0 24px rgba(220, 125, 66, 0.06), 0 0 0 50px rgba(220, 125, 66, 0.035);
+  box-shadow:
+    0 0 0 24px rgba(220, 125, 66, 0.06),
+    0 0 0 50px rgba(220, 125, 66, 0.035);
 }
 
 .placeholder-panel-label {

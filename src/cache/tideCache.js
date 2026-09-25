@@ -1,15 +1,9 @@
 // src/cache/tideCache.js
 import path from "path";
-import {
-  loadCache,
-  saveCache,
-  mergeByDate
-} from "./cache.js";
+import { loadCache, saveCache, mergeByDate } from "./cache.js";
 
 import { fetchBulkTideData } from "../api/tides.js";
-import {
-  TIDE_CACHE_DAYS
-} from "../config/constants.js";
+import { TIDE_CACHE_DAYS } from "../config/constants.js";
 import { formatLocalDate, getBuildDateKeys } from "../utils/dateUtils.js";
 
 const CACHE_FILE = path.resolve("tides.json");
@@ -30,16 +24,16 @@ export async function updateTideCache(lat, lon) {
   }
 
   const coveredDates = new Set(
-    records.map(record => formatLocalDate(new Date(record.date)))
+    records.map((record) => formatLocalDate(new Date(record.date))),
   );
   const missingDisplayDates = displayDateKeys.filter(
-    date => !coveredDates.has(date)
+    (date) => !coveredDates.has(date),
   );
 
   if (missingDisplayDates.length > 0) {
     console.log(
       `Display coverage missing ${missingDisplayDates.length} day(s) → ` +
-      `fetching ${TIDE_CACHE_DAYS} days...`
+        `fetching ${TIDE_CACHE_DAYS} days...`,
     );
     const newData = await fetchBulkTideData(lat, lon, TIDE_CACHE_DAYS);
     cache.records = mergeByDate(records, newData.extremes);

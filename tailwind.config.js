@@ -5,7 +5,7 @@ export default {
     extend: {
       fontFamily: {
         display: ["Space Grotesk", "system-ui", "sans-serif"],
-        body: ["Inter", "system-ui", "sans-serif"]
+        body: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
         hull: {
@@ -14,15 +14,15 @@ export default {
           800: "#111A2C",
           700: "#1A2740",
           600: "#26375A",
-          500: "#33456A"
+          500: "#33456A",
         },
         tide: {
           400: "#4ADE9C",
           500: "#22C58A",
-          600: "#189669"
-        }
-      }
-    }
+          600: "#189669",
+        },
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };

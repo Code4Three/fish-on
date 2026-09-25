@@ -26,7 +26,9 @@ export default function PrototypeSwitcher() {
 
   useEffect(() => {
     if (hasSyncedToNow || days.length === 0) return;
-    const todayIndex = days.findIndex(item => item.date === getTodayDateKey());
+    const todayIndex = days.findIndex(
+      (item) => item.date === getTodayDateKey(),
+    );
     if (todayIndex >= 0) setOffset(todayIndex);
     setHour(new Date().getHours());
     setHasSyncedToNow(true);
@@ -35,7 +37,10 @@ export default function PrototypeSwitcher() {
   const maxOffset = Math.max(0, days.length - 1);
   // Clamp so an out-of-range offset (e.g. stale localStorage) can't index past the loaded days
   const clampedOffset = Math.min(Math.max(offset, 0), maxOffset);
-  const day = useMemo(() => (days.length ? buildDayData(days, clampedOffset) : null), [days, clampedOffset]);
+  const day = useMemo(
+    () => (days.length ? buildDayData(days, clampedOffset) : null),
+    [days, clampedOffset],
+  );
 
   if (loading) {
     return (
@@ -60,9 +65,10 @@ export default function PrototypeSwitcher() {
     canGoPrevious: clampedOffset > 0,
     canGoNext: clampedOffset < maxOffset,
     onHourChange: setHour,
-    onOffsetChange: (nextOffset: number) => setOffset(Math.min(Math.max(nextOffset, 0), maxOffset)),
+    onOffsetChange: (nextOffset: number) =>
+      setOffset(Math.min(Math.max(nextOffset, 0), maxOffset)),
     prototype,
-    onSelectPrototype: selectPrototype
+    onSelectPrototype: selectPrototype,
   };
 
   if (prototype === 0) return <Option0Current {...dashboardProps} />;

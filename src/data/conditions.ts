@@ -1,9 +1,12 @@
 // Adapts the generated /conditions.json payload into the shape the dashboard cards expect.
 import scoringRules from "../config/scoringRules.json";
-import { calculateConditionScore, calculateTideRating } from "../utils/scoringEngine.js";
+import {
+  calculateConditionScore,
+  calculateTideRating,
+} from "../utils/scoringEngine.js";
 import {
   calculateSolunarHourRating,
-  calculateSolunarPeakRating
+  calculateSolunarPeakRating,
 } from "../utils/solunarRating.js";
 
 export interface ConditionsTideEntry {
@@ -30,11 +33,13 @@ export interface ConditionsAnchored {
   moonDistance: number | null;
   solunarPeaks: ConditionsSolunarPeak[];
   weatherSummary: string;
-  tempRange: [number, number];
-  windRange: [number, number];
+  tempRange: Array<number | null>;
+  windRange: Array<number | null>;
   windBaseline: string;
   cloudBaseline: number;
-  pressureRange: [number, number];
+  pressureRange: Array<number | null>;
+  rainChance: number | null;
+  rainVolume: number | null;
   dayScore: number | null;
 }
 
@@ -51,7 +56,8 @@ export interface ConditionsHour {
   windDirection: string;
   temperature: number;
   cloudCover: number;
-  rainChance: number;
+  rainChance: number | null;
+  rainVolume: number | null;
 }
 
 export interface ConditionsDay {
@@ -73,6 +79,7 @@ export interface ClaudeHourlyData {
   windLabel: string;
   solunar: "none" | "major" | "minor";
   solunarCondition: string;
+  solunarRating: number;
   pressureTrend: string;
   score: number;
   scoreBand: "Peak" | "Strong" | "Favorable" | "Slow";
@@ -81,7 +88,7 @@ export interface ClaudeHourlyData {
   airTemp: number;
   weatherCondition: string;
   cloudCover: number;
-  rainChance: number;
+  rainChance: number | null;
   rainVolume: number | null;
   uvIndex: number | null;
   swell: { height: number; period: number; dir: string } | null;
@@ -91,11 +98,16 @@ export interface ClaudeDayData {
   date: string;
   hours: ClaudeHourlyData[];
   tideEvents: Array<{ hour: number; type: "High" | "Low"; height: number }>;
-  majorWindows: Array<{ start: number; end: number }>;
-  minorWindows: Array<{ start: number; end: number }>;
+  majorWindows: Array<{ start: number; end: number; rating: number }>;
+  minorWindows: Array<{ start: number; end: number; rating: number }>;
   solunarRating: number;
   dayScore: number;
-  sun: { sunrise: number; sunset: number; firstLight: number | null; lastLight: number | null };
+  sun: {
+    sunrise: number;
+    sunset: number;
+    firstLight: number | null;
+    lastLight: number | null;
+  };
   ranges: {
     waterTemp: { min: number; max: number } | null;
     airTemp: { min: number; max: number } | null;
@@ -106,10 +118,18 @@ export interface ClaudeDayData {
     uvPeak: number | null;
   };
   secondary: {
-    pressure: { value: number | null; trend: "Rising" | "Falling" | "Steady" | null };
+    pressure: {
+      value: number | null;
+      trend: "Rising" | "Falling" | "Steady" | null;
+    };
     waterTemp: string | null;
     swell: { height: string; period: number; dir: string } | null;
-    moon: { phaseName: string | null; illum: number | null; moonrise: number | null; moonset: number | null };
+    moon: {
+      phaseName: string | null;
+      illum: number | null;
+      moonrise: number | null;
+      moonset: number | null;
+    };
     rain: { chance: number | null; mm: number | null };
     uv: number | null;
     airTemp: { temp: number | null; feels: number | null };
@@ -134,7 +154,13 @@ export interface SecondaryMetrics {
   wind: { speed: number; direction: string; gusts: number; unit: "km/h" };
   pressure: { value: number; trend: string; unit: "hPa" };
   waterTemp: { value: number; unit: "°C" };
-  swell: { height: number; direction: string; period: number; heightUnit: "m"; periodUnit: "s" };
+  swell: {
+    height: number;
+    direction: string;
+    period: number;
+    heightUnit: "m";
+    periodUnit: "s";
+  };
   moonPhase: { phase: string; illumination: number };
   rain: { chance: number; volume: number; volumeUnit: "mm" };
   uv: { index: number; level: string };
@@ -157,43 +183,62 @@ function toTimestamp(date: string, time: string): number {
   return new Date(`${date}T${time}:00`).getTime();
 }
 
-function toSolunarTag(condition: string | undefined): ClaudeHourlyData["solunar"] {
+function toSolunarTag(
+  condition: string | undefined,
+): ClaudeHourlyData["solunar"] {
   if (!condition) return "none";
   if (condition.includes("Major")) return "major";
   if (condition.includes("Minor")) return "minor";
   return "none";
 }
 
-function toTideDirection(tideStage: string | undefined): ClaudeHourlyData["tideDirection"] {
+function toTideDirection(
+  tideStage: string | undefined,
+): ClaudeHourlyData["tideDirection"] {
   if (!tideStage) return "Slack";
   if (tideStage.includes("Run In")) return "Flood";
   if (tideStage.includes("Run Out")) return "Ebb";
   return "Slack";
 }
 
-function toScoreBand(bandName: string | undefined): ClaudeHourlyData["scoreBand"] {
+function toScoreBand(
+  bandName: string | undefined,
+): ClaudeHourlyData["scoreBand"] {
   if (bandName === "Peak") return "Peak";
   if (bandName === "Strong") return "Strong";
   if (bandName === "Favorable") return "Favorable";
   return "Slow";
 }
 
-function buildTideEventTimeline(days: ConditionsDay[]): Array<{ type: "High" | "Low"; at: number }> {
+function buildTideEventTimeline(
+  days: ConditionsDay[],
+): Array<{ type: "High" | "Low"; at: number }> {
   return days
-    .flatMap(day => [
-      ...(day.anchored.lowTides ?? []).map(tide => ({ type: "Low" as const, at: toTimestamp(day.date, tide.time) })),
-      ...(day.anchored.highTides ?? []).map(tide => ({ type: "High" as const, at: toTimestamp(day.date, tide.time) }))
+    .flatMap((day) => [
+      ...(day.anchored.lowTides ?? []).map((tide) => ({
+        type: "Low" as const,
+        at: toTimestamp(day.date, tide.time),
+      })),
+      ...(day.anchored.highTides ?? []).map((tide) => ({
+        type: "High" as const,
+        at: toTimestamp(day.date, tide.time),
+      })),
     ])
     .sort((a, b) => a.at - b.at);
 }
 
-function windowHour(part: { date: string; time: string }, dayDate: string): number {
+function windowHour(
+  part: { date: string; time: string },
+  dayDate: string,
+): number {
   const hour = parseTimeToHour(part.time);
   if (part.date === dayDate) return hour;
   return part.date < dayDate ? hour - 24 : hour + 24;
 }
 
-function computePressureTrend(hours: ClaudeHourlyData[]): "Rising" | "Falling" | "Steady" | null {
+function computePressureTrend(
+  hours: ClaudeHourlyData[],
+): "Rising" | "Falling" | "Steady" | null {
   if (!hours.length) return null;
   const first = hours[0].pressure;
   const last = hours[hours.length - 1].pressure;
@@ -203,9 +248,6 @@ function computePressureTrend(hours: ClaudeHourlyData[]): "Rising" | "Falling" |
   if (delta < -1) return "Falling";
   return "Steady";
 }
-
-
-
 
 export async function fetchConditionsDays(): Promise<ConditionsDay[]> {
   // Always bypass the HTTP cache so a fresh build:data run is reflected immediately
@@ -221,15 +263,26 @@ export async function fetchConditionsDays(): Promise<ConditionsDay[]> {
 }
 
 // Pure transform: given the full days list (for tide continuity) and the day index, build the dashboard-ready day.
-export function buildDayData(days: ConditionsDay[], index: number): ClaudeDayData {
+export function buildDayData(
+  days: ConditionsDay[],
+  index: number,
+): ClaudeDayData {
   const day = days[index];
   const tideTimeline = buildTideEventTimeline(days);
 
-  const hours: ClaudeHourlyData[] = day.hours.map(item => {
+  const hours: ClaudeHourlyData[] = day.hours.map((item) => {
     const at = toTimestamp(day.date, item.time);
     const tideRating = calculateTideRating(at, tideTimeline, scoringRules);
-    const solunarRating = calculateSolunarHourRating(day, item.time, scoringRules);
-    const { score, band } = calculateConditionScore(tideRating, solunarRating, scoringRules);
+    const solunarRating = calculateSolunarHourRating(
+      day,
+      item.time,
+      scoringRules,
+    );
+    const { score, band } = calculateConditionScore(
+      tideRating,
+      solunarRating,
+      scoringRules,
+    );
 
     return {
       time: item.time,
@@ -240,6 +293,7 @@ export function buildDayData(days: ConditionsDay[], index: number): ClaudeDayDat
       windLabel: item.wind,
       solunar: toSolunarTag(item.solunarCondition),
       solunarCondition: item.solunarCondition,
+      solunarRating,
       pressureTrend: item.pressureTrend,
       score: Math.round(score),
       scoreBand: toScoreBand(band?.name),
@@ -249,29 +303,55 @@ export function buildDayData(days: ConditionsDay[], index: number): ClaudeDayDat
       weatherCondition: item.weatherCondition,
       cloudCover: item.cloudCover,
       rainChance: item.rainChance,
-      rainVolume: null,
+      rainVolume: item.rainVolume,
       uvIndex: null,
-      swell: null
+      swell: null,
     };
   });
 
   const tideEvents = [
-    ...(day.anchored.highTides ?? []).map(tide => ({ hour: parseTimeToHour(tide.time), type: "High" as const, height: tide.height })),
-    ...(day.anchored.lowTides ?? []).map(tide => ({ hour: parseTimeToHour(tide.time), type: "Low" as const, height: tide.height }))
+    ...(day.anchored.highTides ?? []).map((tide) => ({
+      hour: parseTimeToHour(tide.time),
+      type: "High" as const,
+      height: tide.height,
+    })),
+    ...(day.anchored.lowTides ?? []).map((tide) => ({
+      hour: parseTimeToHour(tide.time),
+      type: "Low" as const,
+      height: tide.height,
+    })),
   ].sort((a, b) => a.hour - b.hour);
 
   const peaks = day.anchored.solunarPeaks ?? [];
   const majorWindows = peaks
-    .filter(peak => peak.type.includes("Major"))
-    .map(peak => ({ start: windowHour(peak.start, day.date), end: windowHour(peak.end, day.date) }));
+    .filter((peak) => peak.type.includes("Major"))
+    .map((peak) => ({
+      start: windowHour(peak.start, day.date),
+      end: windowHour(peak.end, day.date),
+      rating: calculateSolunarPeakRating(peak, day.anchored, scoringRules),
+    }))
+    .sort((firstWindow, secondWindow) => firstWindow.start - secondWindow.start);
   const minorWindows = peaks
-    .filter(peak => peak.type.includes("Minor"))
-    .map(peak => ({ start: windowHour(peak.start, day.date), end: windowHour(peak.end, day.date) }));
+    .filter((peak) => peak.type.includes("Minor"))
+    .map((peak) => ({
+      start: windowHour(peak.start, day.date),
+      end: windowHour(peak.end, day.date),
+      rating: calculateSolunarPeakRating(peak, day.anchored, scoringRules),
+    }))
+    .sort((firstWindow, secondWindow) => firstWindow.start - secondWindow.start);
 
   const solunarRating = Math.max(
     0,
-    ...peaks.map(peak => calculateSolunarPeakRating(peak, day.anchored, scoringRules))
+    ...peaks.map((peak) =>
+      calculateSolunarPeakRating(peak, day.anchored, scoringRules),
+    ),
   );
+  const rainChanceValues = hours
+    .map((item) => item.rainChance)
+    .filter((value): value is number => value != null);
+  const rainVolumeValues = hours
+    .map((item) => item.rainVolume)
+    .filter((value): value is number => value != null);
 
   return {
     date: day.date,
@@ -280,35 +360,65 @@ export function buildDayData(days: ConditionsDay[], index: number): ClaudeDayDat
     majorWindows,
     minorWindows,
     solunarRating,
-    dayScore: hours.length ? Math.max(...hours.map(item => item.score)) : 0,
+    dayScore: hours.length ? Math.max(...hours.map((item) => item.score)) : 0,
     sun: {
       sunrise: parseTimeToHour(day.anchored.sunrise),
       sunset: parseTimeToHour(day.anchored.sunset),
       firstLight: null,
-      lastLight: null
+      lastLight: null,
     },
     ranges: {
       waterTemp: null,
-      airTemp: day.anchored.tempRange ? { min: day.anchored.tempRange[0], max: day.anchored.tempRange[1] } : null,
-      pressure: day.anchored.pressureRange ? { min: day.anchored.pressureRange[0], max: day.anchored.pressureRange[1] } : null,
-      wind: day.anchored.windRange ? { min: day.anchored.windRange[0], max: day.anchored.windRange[1], maxGust: null } : null,
+      airTemp: day.anchored.tempRange
+        ? { min: day.anchored.tempRange[0], max: day.anchored.tempRange[1] }
+        : null,
+      pressure: day.anchored.pressureRange
+        ? {
+            min: day.anchored.pressureRange[0],
+            max: day.anchored.pressureRange[1],
+          }
+        : null,
+      wind: day.anchored.windRange
+        ? {
+            min: day.anchored.windRange[0],
+            max: day.anchored.windRange[1],
+            maxGust: null,
+          }
+        : null,
       swell: null,
       cloudBaseline: day.anchored.cloudBaseline ?? null,
-      uvPeak: null
+      uvPeak: null,
     },
     secondary: {
-      pressure: { value: hours[0]?.pressure ?? null, trend: computePressureTrend(hours) },
+      pressure: {
+        value: hours[0]?.pressure ?? null,
+        trend: computePressureTrend(hours),
+      },
       waterTemp: null,
       swell: null,
       moon: {
         phaseName: day.anchored.moonPhase ?? null,
         illum: day.anchored.illumination ?? null,
-        moonrise: day.anchored.moonrise ? parseTimeToHour(day.anchored.moonrise) : null,
-        moonset: day.anchored.moonset ? parseTimeToHour(day.anchored.moonset) : null
+        moonrise: day.anchored.moonrise
+          ? parseTimeToHour(day.anchored.moonrise)
+          : null,
+        moonset: day.anchored.moonset
+          ? parseTimeToHour(day.anchored.moonset)
+          : null,
       },
-      rain: { chance: hours.length ? Math.max(...hours.map(item => item.rainChance)) : null, mm: null },
+      rain: {
+        chance:
+          day.anchored.rainChance ??
+          (rainChanceValues.length ? Math.max(...rainChanceValues) : null),
+        mm:
+          day.anchored.rainVolume ??
+          (rainVolumeValues.length
+            ? Math.round(rainVolumeValues.reduce((total, value) => total + value, 0) * 10) /
+              10
+            : null),
+      },
       uv: null,
-      airTemp: { temp: hours[0]?.airTemp ?? null, feels: null }
-    }
+      airTemp: { temp: hours[0]?.airTemp ?? null, feels: null },
+    },
   };
 }

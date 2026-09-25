@@ -10,22 +10,22 @@ const DEFAULT_RULES = {
       "Full Moon": 1,
       "Waning Gibbous": 0.85,
       "Last Quarter": 0.6,
-      "Waning Crescent": 0.75
+      "Waning Crescent": 0.75,
     },
     solar: {
       dawnDuskMinutes: 45,
       exactDawnDuskBoost: 1.5,
       dawnDuskBoost: 1.45,
       solarNoonMinutes: 60,
-      solarNoonBoost: 1.1
+      solarNoonBoost: 1.1,
     },
     distance: {
       perigeeKm: 356500,
       apogeeKm: 406700,
       perigeeMultiplier: 1.1,
-      apogeeMultiplier: 0.9
-    }
-  }
+      apogeeMultiplier: 0.9,
+    },
+  },
 };
 
 function toMinutes(time) {
@@ -44,7 +44,8 @@ function distanceMultiplier(distance, rules) {
   if (!Number.isFinite(distance)) return 1;
 
   // Moon closer to perigee (near) boosts the rating, closer to apogee (far) dampens it
-  const { perigeeKm, apogeeKm, perigeeMultiplier, apogeeMultiplier } = rules.distance;
+  const { perigeeKm, apogeeKm, perigeeMultiplier, apogeeMultiplier } =
+    rules.distance;
   const range = apogeeKm - perigeeKm;
   if (range <= 0) return 1;
 
@@ -60,7 +61,7 @@ function solarBoost(eventTime, anchored, rules) {
 
   const dawnDuskDistance = Math.min(
     circularMinuteDistance(eventMinutes, sunrise),
-    circularMinuteDistance(eventMinutes, sunset)
+    circularMinuteDistance(eventMinutes, sunset),
   );
   if (dawnDuskDistance <= rules.solar.dawnDuskMinutes) {
     if (dawnDuskDistance === 0) return rules.solar.exactDawnDuskBoost;
@@ -85,19 +86,26 @@ function phaseMultiplier(phase, rules) {
   return rules.phaseMultipliers[phase] ?? 1;
 }
 
-export function calculateSolunarPeakRating(peak, anchored, configuredRules = DEFAULT_RULES) {
+export function calculateSolunarPeakRating(
+  peak,
+  anchored,
+  configuredRules = DEFAULT_RULES,
+) {
   const rules = configuredRules.solunar ?? DEFAULT_RULES.solunar;
-  const rawScore = baseWeight(peak?.type, rules)
-    * phaseMultiplier(anchored?.moonPhase, rules)
-    * solarBoost(peak?.time, anchored, rules)
-    * distanceMultiplier(anchored?.moonDistance, rules);
+  const rawScore =
+    baseWeight(peak?.type, rules) *
+    phaseMultiplier(anchored?.moonPhase, rules) *
+    solarBoost(peak?.time, anchored, rules) *
+    distanceMultiplier(anchored?.moonDistance, rules);
 
   return Math.round(Math.min(100, (rawScore / rules.maxScore) * 100));
 }
 
 export function calculateNeutralSolunarRating(configuredRules = DEFAULT_RULES) {
   const rules = configuredRules.solunar ?? DEFAULT_RULES.solunar;
-  return Math.round(Math.min(100, (rules.baseWeights.neutral / rules.maxScore) * 100));
+  return Math.round(
+    Math.min(100, (rules.baseWeights.neutral / rules.maxScore) * 100),
+  );
 }
 
 export function isPeakActiveAtHour(peak, date, time) {
@@ -105,19 +113,27 @@ export function isPeakActiveAtHour(peak, date, time) {
   const hour = toMinutes(time);
   if (hour == null) return false;
 
-  const dayOffset = point => point.date < date ? -1440 : point.date > date ? 1440 : 0;
+  const dayOffset = (point) =>
+    point.date < date ? -1440 : point.date > date ? 1440 : 0;
   const start = toMinutes(peak.start.time) + dayOffset(peak.start);
   const end = toMinutes(peak.end.time) + dayOffset(peak.end);
   return hour >= start && hour < end;
 }
 
-export function calculateSolunarHourRating(day, time, configuredRules = DEFAULT_RULES) {
-  const peaks = (day?.anchored?.solunarPeaks ?? [])
-    .filter(peak => isPeakActiveAtHour(peak, day.date, time));
+export function calculateSolunarHourRating(
+  day,
+  time,
+  configuredRules = DEFAULT_RULES,
+) {
+  const peaks = (day?.anchored?.solunarPeaks ?? []).filter((peak) =>
+    isPeakActiveAtHour(peak, day.date, time),
+  );
 
   if (!peaks.length) return calculateNeutralSolunarRating(configuredRules);
 
   return Math.max(
-    ...peaks.map(peak => calculateSolunarPeakRating(peak, day.anchored, configuredRules))
+    ...peaks.map((peak) =>
+      calculateSolunarPeakRating(peak, day.anchored, configuredRules),
+    ),
   );
 }

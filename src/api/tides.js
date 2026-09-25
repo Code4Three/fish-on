@@ -1,11 +1,7 @@
 // src/api/tides.js
 import { TIDE_CACHE_DAYS } from "../config/constants.js";
 
-export async function fetchBulkTideData(
-  lat,
-  lon,
-  days = TIDE_CACHE_DAYS
-) {
+export async function fetchBulkTideData(lat, lon, days = TIDE_CACHE_DAYS) {
   // HARD BLOCK: Prevent ALL browser/Vite/React/HMR calls
   if (typeof window !== "undefined") {
     console.log("BROWSER CALL BLOCKED — preventing credit burn.");
@@ -42,18 +38,17 @@ export async function fetchBulkTideData(
     const now = new Date();
 
     const nextHigh = extremes.find(
-      e => e.type === "High" && new Date(e.date) > now
+      (e) => e.type === "High" && new Date(e.date) > now,
     );
     const nextLow = extremes.find(
-      e => e.type === "Low" && new Date(e.date) > now
+      (e) => e.type === "Low" && new Date(e.date) > now,
     );
 
     return {
       extremes,
       nextHigh: nextHigh || null,
-      nextLow: nextLow || null
+      nextLow: nextLow || null,
     };
-
   } catch (error) {
     console.error("Error fetching bulk tide data:", error);
     return { error: true, message: error.message, extremes: [] };

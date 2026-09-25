@@ -4,20 +4,20 @@ import { VIEWS } from "../state/viewConstants";
 const viewLinks = [
   [VIEWS.WEEKLY, "Weekly Forecast", "Seven-day conditions outlook"],
   [VIEWS.TIDE, "Dedicated Tide View", "Highs, lows, and tide stages"],
-  [VIEWS.SOLUNAR, "Dedicated Solunar View", "Moon timing and activity windows"]
+  [VIEWS.SOLUNAR, "Dedicated Solunar View", "Moon timing and activity windows"],
 ];
 
 export default function UnifiedMenu() {
-  const {
-    activeView,
-    activeLocation,
-    locations,
-    navigateTo,
-    selectLocation
-  } = useApp();
+  const { activeView, activeLocation, locations, navigateTo, selectLocation } =
+    useApp();
 
   return (
-    <div className="unified-menu" id="global-navigation" role="dialog" aria-label="Fish On navigation">
+    <div
+      className="unified-menu"
+      id="global-navigation"
+      role="dialog"
+      aria-label="Fish On navigation"
+    >
       {/* ================= VIEWS & INSIGHTS ================= */}
       <div className="menu-section">
         <p className="menu-section-title">Views &amp; Insights</p>
@@ -33,7 +33,9 @@ export default function UnifiedMenu() {
                 <strong>{label}</strong>
                 <small>{description}</small>
               </span>
-              <span className="menu-link-arrow" aria-hidden="true">&rarr;</span>
+              <span className="menu-link-arrow" aria-hidden="true">
+                &rarr;
+              </span>
             </button>
           ))}
         </nav>
@@ -42,7 +44,9 @@ export default function UnifiedMenu() {
       {/* ================= ACTIVE LOCATION & SAVED SPOTS ================= */}
       <div className="menu-section">
         <div className="menu-section-heading">
-          <p className="menu-section-title">Active Location &amp; Saved Spots</p>
+          <p className="menu-section-title">
+            Active Location &amp; Saved Spots
+          </p>
           <span className="menu-count">{locations.length}</span>
         </div>
         <div className="active-spot-card">
@@ -56,7 +60,7 @@ export default function UnifiedMenu() {
           </div>
         </div>
         <div className="saved-spots" aria-label="Saved locations">
-          {locations.map(location => (
+          {locations.map((location) => (
             <button
               className={`saved-spot ${location.id === activeLocation.id ? "is-active" : ""}`}
               type="button"
@@ -64,14 +68,26 @@ export default function UnifiedMenu() {
               onClick={() => selectLocation(location.id)}
             >
               <span>{location.name}</span>
-              {location.id === activeLocation.id && <span className="spot-check" aria-label="Active">&#10003;</span>}
+              {location.id === activeLocation.id && (
+                <span className="spot-check" aria-label="Active">
+                  &#10003;
+                </span>
+              )}
             </button>
           ))}
         </div>
-        <button className="menu-action menu-action-primary" type="button" onClick={() => navigateTo(VIEWS.MAP_PICKER)}>
+        <button
+          className="menu-action menu-action-primary"
+          type="button"
+          onClick={() => navigateTo(VIEWS.MAP_PICKER)}
+        >
           <span aria-hidden="true">+</span> Add New Spot (Map Picker)
         </button>
-        <button className="menu-action" type="button" onClick={() => navigateTo(VIEWS.MANAGE_LOCATIONS)}>
+        <button
+          className="menu-action"
+          type="button"
+          onClick={() => navigateTo(VIEWS.MANAGE_LOCATIONS)}
+        >
           Manage Locations <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
@@ -79,13 +95,21 @@ export default function UnifiedMenu() {
       {/* ================= SETTINGS & PREFERENCES ================= */}
       <div className="menu-section menu-section-last">
         <p className="menu-section-title">Settings &amp; Preferences</p>
-        <button className="menu-link menu-link-settings" type="button" onClick={() => navigateTo(VIEWS.OPTIONS)}>
-          <span className="settings-icon" aria-hidden="true">&#9881;</span>
+        <button
+          className="menu-link menu-link-settings"
+          type="button"
+          onClick={() => navigateTo(VIEWS.OPTIONS)}
+        >
+          <span className="settings-icon" aria-hidden="true">
+            &#9881;
+          </span>
           <span className="menu-link-copy">
             <strong>Options &amp; Configuration</strong>
             <small>Units and app preferences</small>
           </span>
-          <span className="menu-link-arrow" aria-hidden="true">&rarr;</span>
+          <span className="menu-link-arrow" aria-hidden="true">
+            &rarr;
+          </span>
         </button>
       </div>
     </div>

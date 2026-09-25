@@ -12,14 +12,18 @@ function getStoredDockPosition(): DockPosition {
 
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    return stored === "top" || stored === "bottom" ? stored : DEFAULT_DOCK_POSITION;
+    return stored === "top" || stored === "bottom"
+      ? stored
+      : DEFAULT_DOCK_POSITION;
   } catch {
     return DEFAULT_DOCK_POSITION;
   }
 }
 
 export function useDashboardSettings() {
-  const [dockPosition, setDockPosition] = useState<DockPosition>(getStoredDockPosition);
+  const [dockPosition, setDockPosition] = useState<DockPosition>(
+    getStoredDockPosition,
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -27,7 +31,10 @@ export function useDashboardSettings() {
     }
 
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ dockPosition }));
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ dockPosition }),
+      );
     } catch {
       // Setting remains usable when browser storage is unavailable.
     }

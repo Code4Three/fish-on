@@ -2,10 +2,7 @@
 
 import fs from "fs";
 import path from "path";
-import {
-  classifyTideStage,
-  groupTidesByDay
-} from "../utils/tides.js";
+import { classifyTideStage, groupTidesByDay } from "../utils/tides.js";
 import { getBuildDateKeys } from "../utils/dateUtils.js";
 
 export function buildUnifiedConditions() {
@@ -25,39 +22,57 @@ export function buildUnifiedConditions() {
     : { days: [] };
 
   const groupedTides = groupTidesByDay(tides.records);
-  const tideDays = new Map(groupedTides.map(day => [day.date, day]));
-  const sortedTideDays = [...groupedTides].sort((a, b) => a.date.localeCompare(b.date));
+  const tideDays = new Map(groupedTides.map((day) => [day.date, day]));
+  const sortedTideDays = [...groupedTides].sort((a, b) =>
+    a.date.localeCompare(b.date),
+  );
   // Ensure every date in the build window has an entry, even if no tide data was recorded for it
-  const days = getBuildDateKeys().map(date => tideDays.get(date) ?? {
-    date,
-    highTides: [],
-    lowTides: [],
-    tideEvents: []
-  });
+  const days = getBuildDateKeys().map(
+    (date) =>
+      tideDays.get(date) ?? {
+        date,
+        highTides: [],
+        lowTides: [],
+        tideEvents: [],
+      },
+  );
 
   const unified = {
-    days: days.map(day => {
-      const prevDay = sortedTideDays.filter(candidate => candidate.date < day.date).at(-1);
-      const nextDay = sortedTideDays.find(candidate => candidate.date > day.date);
+    days: days.map((day) => {
+      const prevDay = sortedTideDays
+        .filter((candidate) => candidate.date < day.date)
+        .at(-1);
+      const nextDay = sortedTideDays.find(
+        (candidate) => candidate.date > day.date,
+      );
 
       // Combine the last tide event of the previous day and first of the next day with today's
       // events, so hourly interpolation near midnight has a tide event to reference on both sides
       const combinedEvents = [
-        ...(prevDay?.tideEvents.slice(-1).map(ev => ({ ...ev, isPrevDay: true })) ?? []),
-        ...day.tideEvents.map(ev => ({ ...ev, isCurrentDay: true })),
-        ...(nextDay?.tideEvents.slice(0, 1).map(ev => ({ ...ev, isNextDay: true })) ?? [])
+        ...(prevDay?.tideEvents
+          .slice(-1)
+          .map((ev) => ({ ...ev, isPrevDay: true })) ?? []),
+        ...day.tideEvents.map((ev) => ({ ...ev, isCurrentDay: true })),
+        ...(nextDay?.tideEvents
+          .slice(0, 1)
+          .map((ev) => ({ ...ev, isNextDay: true })) ?? []),
       ];
 
-      const sunMoonDay = sunMoon.days.find(d => d.date === day.date);
-      const solunarDay = solunar.days.find(d => d.date === day.date);
-      const weatherDay = weather.days.find(d => d.date === day.date);
+      const sunMoonDay = sunMoon.days.find((d) => d.date === day.date);
+      const solunarDay = solunar.days.find((d) => d.date === day.date);
+      const weatherDay = weather.days.find((d) => d.date === day.date);
 
       return {
         date: day.date,
         anchored: buildAnchored(day, sunMoonDay, solunarDay, weatherDay),
-        hours: buildHourly(day, combinedEvents, solunarDay?.peaks ?? [], weatherDay?.hours ?? [])
+        hours: buildHourly(
+          day,
+          combinedEvents,
+          solunarDay?.peaks ?? [],
+          weatherDay?.hours ?? [],
+        ),
       };
-    })
+    }),
   };
 
   const outputPath = path.join("public", "conditions.json");
@@ -88,8 +103,10 @@ function buildAnchored(day, sunMoonDay, solunarDay, weatherDay) {
     windBaseline: weatherDay?.windBaseline ?? null,
     cloudBaseline: weatherDay?.cloudBaseline ?? null,
     pressureRange: weatherDay?.pressureRange ?? [null, null],
+    rainChance: weatherDay?.rainChance ?? null,
+    rainVolume: weatherDay?.rainVolume ?? null,
 
-    dayScore: null
+    dayScore: null,
   };
 }
 
@@ -97,16 +114,16 @@ function interpolateHeight(tideEvents, hourStr) {
   const [h, m] = hourStr.split(":").map(Number);
   const targetMinutes = h * 60 + m;
 
-  const events = tideEvents.map(ev => {
+  const events = tideEvents.map((ev) => {
     const [eh, em] = ev.time.split(":").map(Number);
     let minutes = eh * 60 + em;
 
     if (ev.isPrevDay) {
-      minutes -= 24 * 60;   // shift previous day into negative time
+      minutes -= 24 * 60; // shift previous day into negative time
     }
 
     if (ev.isNextDay) {
-      minutes += 24 * 60;   // shift next day into >1440 minutes
+      minutes += 24 * 60; // shift next day into >1440 minutes
     }
 
     return { minutes, height: ev.height };
@@ -122,7 +139,8 @@ function interpolateHeight(tideEvents, hourStr) {
 
   if (!before || !after) return null;
 
-  const ratio = (targetMinutes - before.minutes) / (after.minutes - before.minutes);
+  const ratio =
+    (targetMinutes - before.minutes) / (after.minutes - before.minutes);
   return before.height + ratio * (after.height - before.height);
 }
 
@@ -130,7 +148,7 @@ function findBoundingTides(hourStr, tideEvents) {
   const [h, m] = hourStr.split(":").map(Number);
   const targetMinutes = h * 60 + m;
 
-  const events = tideEvents.map(event => {
+  const events = tideEvents.map((event) => {
     const [eh, em] = event.time.split(":").map(Number);
 
     let minutes = eh * 60 + em;
@@ -145,7 +163,7 @@ function findBoundingTides(hourStr, tideEvents) {
 
     return {
       ...event,
-      minutes
+      minutes,
     };
   });
 
@@ -167,20 +185,16 @@ function findBoundingTides(hourStr, tideEvents) {
   }
 
   const progress =
-    (targetMinutes - previous.minutes) /
-    (next.minutes - previous.minutes);
+    (targetMinutes - previous.minutes) / (next.minutes - previous.minutes);
 
   const direction =
-    previous.type === "Low" &&
-    next.type === "High"
-      ? "incoming"
-      : "outgoing";
+    previous.type === "Low" && next.type === "High" ? "incoming" : "outgoing";
 
   return {
     start: previous,
     end: next,
     direction,
-    progress
+    progress,
   };
 }
 
@@ -192,25 +206,19 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = []) {
 
     hours.push({
       time: hourStr,
-      height: interpolateHeight(tideEvents, hourStr)
+      height: interpolateHeight(tideEvents, hourStr),
     });
   }
 
   const weatherLookup = new Map(
-    (weatherHours ?? []).map(hour => [hour.time, hour])
+    (weatherHours ?? []).map((hour) => [hour.time, hour]),
   );
 
   return hours.map((hour) => {
-    const boundingTides = findBoundingTides(
-      hour.time,
-      tideEvents
-    );
+    const boundingTides = findBoundingTides(hour.time, tideEvents);
 
     const tideStage = boundingTides
-      ? classifyTideStage(
-          boundingTides.progress,
-          boundingTides.direction
-        )
+      ? classifyTideStage(boundingTides.progress, boundingTides.direction)
       : "Unknown";
 
     const weather = weatherLookup.get(hour.time) ?? {};
@@ -221,17 +229,20 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = []) {
       tideStage,
 
       solunarCondition: getSolunarCondition(day.date, hour.time, solunarPeaks),
-      pressureTrend: weather.pressure != null ? `${weather.pressure} hPa` : null,
+      pressureTrend:
+        weather.pressure != null ? `${weather.pressure} hPa` : null,
       pressure: weather.pressure ?? null,
       weatherCondition: weather.weatherCondition ?? null,
-      wind: weather.windSpeed != null
-        ? `${weather.windSpeed} km/h${weather.windDirection ? ` ${weather.windDirection}` : ""}`
-        : null,
+      wind:
+        weather.windSpeed != null
+          ? `${weather.windSpeed} km/h${weather.windDirection ? ` ${weather.windDirection}` : ""}`
+          : null,
       windSpeed: weather.windSpeed ?? null,
       windDirection: weather.windDirection ?? null,
       temperature: weather.temperature ?? null,
       cloudCover: weather.cloudCover ?? null,
-      rainChance: weather.rainChance ?? null
+      rainChance: weather.rainChance ?? null,
+      rainVolume: weather.rainVolume ?? null,
     };
   });
 }
@@ -254,14 +265,12 @@ function getSolunarCondition(date, hourStr, peaks) {
 
     if (isWithinHour(start, hourStart, hourEnd)) {
       conditions.push(
-        formatSolunarBoundary(peak.type, "start", peak.start.time)
+        formatSolunarBoundary(peak.type, "start", peak.start.time),
       );
     }
 
     if (isWithinHour(end, hourStart, hourEnd)) {
-      conditions.push(
-        formatSolunarBoundary(peak.type, "end", peak.end.time)
-      );
+      conditions.push(formatSolunarBoundary(peak.type, "end", peak.end.time));
     }
 
     if (!hasBoundary && start < hourEnd && end > hourStart) {

@@ -1,12 +1,9 @@
-import {
-  formatLocalDate,
-  formatLocalTime
-} from "./dateUtils.js";
+import { formatLocalDate, formatLocalTime } from "./dateUtils.js";
 
 export function groupTidesByDay(records) {
   const days = {};
 
-  records.forEach(rec => {
+  records.forEach((rec) => {
     const date = new Date(rec.date);
     const localDate = formatLocalDate(date);
     const localTime = formatLocalTime(date);
@@ -16,7 +13,7 @@ export function groupTidesByDay(records) {
         date: localDate,
         highTides: [],
         lowTides: [],
-        tideEvents: []
+        tideEvents: [],
       };
     }
 
@@ -31,7 +28,7 @@ export function groupTidesByDay(records) {
     days[localDate].tideEvents.push({
       time: localTime,
       height: rec.height,
-      type: rec.type
+      type: rec.type,
     });
   });
 
@@ -41,7 +38,7 @@ export function groupTidesByDay(records) {
     return ah * 60 + am - (bh * 60 + bm);
   };
 
-  return Object.values(days).map(day => {
+  return Object.values(days).map((day) => {
     day.tideEvents.sort(sortByTime);
     day.highTides.sort(sortByTime);
     day.lowTides.sort(sortByTime);

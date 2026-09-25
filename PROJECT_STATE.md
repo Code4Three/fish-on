@@ -18,7 +18,7 @@ The current product helps an angler inspect how these conditions are expected to
 
 ### FO-2: Conditions Planning & Visualisation
 
-**Outcome:** Help anglers quickly understand *when* conditions look best for fishing.
+**Outcome:** Help anglers quickly understand _when_ conditions look best for fishing.
 
 ### FO-3: Fishing Prediction & Scoring
 

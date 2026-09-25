@@ -9,9 +9,21 @@ export interface PrototypeOption {
 }
 
 export const PROTOTYPE_OPTIONS: PrototypeOption[] = [
-  { id: 4, label: "Main Dashboard", description: "Production default (bottom dock layout)" },
-  { id: 0, label: "Prototype 0 - Original", description: "Original stacked layout" },
-  { id: 1, label: "Prototype 1 - Bottom Dock", description: "Thumb-first fixed controls" }
+  {
+    id: 4,
+    label: "Main Dashboard",
+    description: "Production default (bottom dock layout)",
+  },
+  {
+    id: 0,
+    label: "Prototype 0 - Original",
+    description: "Original stacked layout",
+  },
+  {
+    id: 1,
+    label: "Prototype 1 - Bottom Dock",
+    description: "Thumb-first fixed controls",
+  },
 ];
 
 const STORAGE_KEY = "fo_layout_prototype";
@@ -25,7 +37,7 @@ function getStoredPrototype(): PrototypeId {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     const parsed = stored === null ? NaN : Number(stored);
-    return PROTOTYPE_OPTIONS.some(option => option.id === parsed)
+    return PROTOTYPE_OPTIONS.some((option) => option.id === parsed)
       ? (parsed as PrototypeId)
       : DEFAULT_PROTOTYPE;
   } catch {

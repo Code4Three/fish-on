@@ -3,34 +3,38 @@ import * as SunCalc from "suncalc";
 import {
   LOCATION,
   SOLUNAR_MAJOR_WINDOW_MINUTES,
-  SOLUNAR_MINOR_WINDOW_MINUTES
+  SOLUNAR_MINOR_WINDOW_MINUTES,
 } from "../config/constants.js";
 import {
   formatLocalDate,
   formatLocalTime,
-  getBuildDates
+  getBuildDates,
 } from "../utils/dateUtils.js";
 
 const SAMPLE_INTERVAL_MS = 60 * 60 * 1000;
 
 export function buildSolunarDays() {
   // Two "major" peaks (moon overhead/underfoot) and two "minor" peaks (moonrise/moonset) per day
-  return getBuildDates().map(date => {
+  return getBuildDates().map((date) => {
     const moonTransits = findMoonTransits(date);
-    const moonTimes = SunCalc.getMoonTimes(
-      date,
-      LOCATION.lat,
-      LOCATION.lon
-    );
+    const moonTimes = SunCalc.getMoonTimes(date, LOCATION.lat, LOCATION.lon);
 
     return {
       date: formatLocalDate(date),
       peaks: [
-        buildPeak("Major 1 (Moon overhead)", moonTransits.overhead, formatLocalDate(date)),
-        buildPeak("Major 2 (Moon underfoot)", moonTransits.underfoot, formatLocalDate(date)),
+        buildPeak(
+          "Major 1 (Moon overhead)",
+          moonTransits.overhead,
+          formatLocalDate(date),
+        ),
+        buildPeak(
+          "Major 2 (Moon underfoot)",
+          moonTransits.underfoot,
+          formatLocalDate(date),
+        ),
         buildPeak("Minor 1 (Moon rise)", moonTimes.rise, formatLocalDate(date)),
-        buildPeak("Minor 2 (Moon set)", moonTimes.set, formatLocalDate(date))
-      ]
+        buildPeak("Minor 2 (Moon set)", moonTimes.set, formatLocalDate(date)),
+      ],
     };
   });
 }
@@ -41,7 +45,7 @@ function buildPeak(type, eventDate, targetDate) {
       type,
       time: null,
       start: null,
-      end: null
+      end: null,
     };
   }
 
@@ -55,7 +59,7 @@ function buildPeak(type, eventDate, targetDate) {
     type,
     time: eventTime,
     start: formatLocalPoint(targetDate, hour * 60 + minute - windowMinutes),
-    end: formatLocalPoint(targetDate, hour * 60 + minute + windowMinutes)
+    end: formatLocalPoint(targetDate, hour * 60 + minute + windowMinutes),
   };
 }
 
@@ -67,12 +71,12 @@ function formatLocalPoint(dateKey, minutes) {
     date: [
       date.getUTCFullYear(),
       String(date.getUTCMonth() + 1).padStart(2, "0"),
-      String(date.getUTCDate()).padStart(2, "0")
+      String(date.getUTCDate()).padStart(2, "0"),
     ].join("-"),
     time: [
       String(date.getUTCHours()).padStart(2, "0"),
-      String(date.getUTCMinutes()).padStart(2, "0")
-    ].join(":")
+      String(date.getUTCMinutes()).padStart(2, "0"),
+    ].join(":"),
   };
 }
 
@@ -83,14 +87,18 @@ function findMoonTransits(date) {
   const samples = [];
 
   // Sample moon altitude hourly across a 48h window to find the true peak/trough for this day
-  for (let offset = 0; offset <= 48 * 60 * 60 * 1000; offset += SAMPLE_INTERVAL_MS) {
+  for (
+    let offset = 0;
+    offset <= 48 * 60 * 60 * 1000;
+    offset += SAMPLE_INTERVAL_MS
+  ) {
     const sampleDate = new Date(start.getTime() + offset);
     if (formatLocalDate(sampleDate) !== targetDate) continue;
 
     const position = SunCalc.getMoonPosition(
       sampleDate,
       LOCATION.lat,
-      LOCATION.lon
+      LOCATION.lon,
     );
 
     samples.push({ date: sampleDate, altitude: position.altitude });
@@ -106,7 +114,7 @@ function findMoonTransits(date) {
 
   return {
     overhead: refineMoonTransit(samples, overhead, "max"),
-    underfoot: refineMoonTransit(samples, underfoot, "min")
+    underfoot: refineMoonTransit(samples, underfoot, "min"),
   };
 }
 
@@ -140,9 +148,5 @@ function refineMoonTransit(samples, extreme, direction) {
 }
 
 function getMoonAltitude(date) {
-  return SunCalc.getMoonPosition(
-    date,
-    LOCATION.lat,
-    LOCATION.lon
-  ).altitude;
+  return SunCalc.getMoonPosition(date, LOCATION.lat, LOCATION.lon).altitude;
 }

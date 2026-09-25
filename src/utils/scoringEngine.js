@@ -12,11 +12,11 @@ export function calculateConditionScore(tideData, solunarData, config) {
 
   const tideRating = normalizeRating(tideData);
   const solunarRating = normalizeRating(solunarData);
-  const score = (tideRating * tideWeight) + (solunarRating * solunarWeight);
+  const score = tideRating * tideWeight + solunarRating * solunarWeight;
 
   return {
     score,
-    band: getScoreBand(score, config?.bands ?? [])
+    band: getScoreBand(score, config?.bands ?? []),
   };
 }
 
@@ -34,34 +34,38 @@ export function calculateTideRating(at, tideEvents, config) {
 
     runInWindows.push({
       start: current.at - peakWindowHours * 60 * 60 * 1000,
-      end: current.at
+      end: current.at,
     });
   }
 
   if (!runInWindows.length) return 0;
 
   // Score is 100 inside any run-in window, decaying linearly the further outside one you are
-  const distanceHours = Math.min(...runInWindows.map(window => {
-    if (at >= window.start && at <= window.end) return 0;
+  const distanceHours = Math.min(
+    ...runInWindows.map((window) => {
+      if (at >= window.start && at <= window.end) return 0;
 
-    const distance = at < window.start
-      ? window.start - at
-      : at - window.end;
-    return distance / (60 * 60 * 1000);
-  }));
+      const distance = at < window.start ? window.start - at : at - window.end;
+      return distance / (60 * 60 * 1000);
+    }),
+  );
 
-  return Math.max(0, 100 - (distanceHours * decayPerHour));
+  return Math.max(0, 100 - distanceHours * decayPerHour);
 }
 
 export function getScoreBand(score, bands) {
   const normalizedScore = Math.max(0, Math.min(100, score));
   const orderedBands = [...bands].sort((a, b) => a.min - b.min);
 
-  return orderedBands.find((band, index) => {
-    const nextBand = orderedBands[index + 1];
-    return normalizedScore >= band.min &&
-      (!nextBand || normalizedScore < nextBand.min);
-  }) ?? null;
+  return (
+    orderedBands.find((band, index) => {
+      const nextBand = orderedBands[index + 1];
+      return (
+        normalizedScore >= band.min &&
+        (!nextBand || normalizedScore < nextBand.min)
+      );
+    }) ?? null
+  );
 }
 
 function getWeight(value) {
