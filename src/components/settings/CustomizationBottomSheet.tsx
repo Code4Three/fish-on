@@ -50,7 +50,7 @@ export default function CustomizationBottomSheet({
   return (
     <div
       aria-hidden={!isOpen}
-      className={`fixed inset-0 z-50 flex items-start justify-center transition-opacity duration-300 ${
+      className={`fixed inset-0 z-50 flex items-start transition-opacity duration-300 ${
         isOpen ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
@@ -66,7 +66,7 @@ export default function CustomizationBottomSheet({
         role="dialog"
         aria-modal="true"
         aria-labelledby="display-metrics-title"
-        className={`relative max-h-[90dvh] w-full max-w-md overflow-y-auto rounded-t-3xl border border-b-0 border-hull-700 bg-hull-900 font-body text-slate-100 shadow-2xl transition-transform duration-300 ease-out ${
+        className={`relative max-h-[90dvh] w-full overflow-y-auto rounded-t-3xl border border-b-0 border-hull-700 bg-hull-900 font-body text-slate-100 shadow-2xl transition-transform duration-300 ease-out ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >

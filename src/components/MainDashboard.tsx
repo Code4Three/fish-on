@@ -59,13 +59,13 @@ function DashboardDock({
   const positionClasses = isBottom
     ? "w-full bottom-0 left-0 right-0 z-40 pb-8"
     : isExpanded
-    ? "left-0 right-0 z-40"
+    ? "fixed left-0 right-0 z-40"
     : "sticky top-[72px] z-40";
 
   return (
     // fixed/sticky already establish a containing block, so no extra `relative` is needed (and it would override them in Tailwind's cascade)
     <div
-      className={`${positionClasses} mx-auto select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${
+      className={`${positionClasses} select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${
         isDragging ? "" : "transition-[bottom,top,transform] duration-300 ease-out"
       }`}
     >
@@ -266,7 +266,7 @@ export default function MainDashboard({ day, hour, offset, canGoPrevious, canGoN
         {/* ================= SWIPEABLE MAIN PANEL ================= */}
         {/* Swipeable panel: metric cards on the left, full conditions detail on the right */}
         <div
-          className={`mx-auto w-full overscroll-x-none min-h-0 flex-1 overflow-hidden ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
+          className={`mx-auto w-full overscroll-x-none min-h-0 flex-1 overflow-hidden ${dockPosition === "top" ? "pb-4" : ""} ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
           onPointerDown={handleConditionsPointerDown}
           onPointerMove={handleConditionsPointerMove}
           onPointerUp={handleConditionsPointerEnd}

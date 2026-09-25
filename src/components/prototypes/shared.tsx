@@ -823,7 +823,7 @@ export function DayDrawer({
         role="dialog"
         aria-modal="true"
         aria-label="Full day forecast"
-        className={`fixed inset-x-0 z-50 mx-auto flex w-full flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"} ${
+        className={`fixed inset-x-0 z-50 flex w-full flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"} ${
           isTopDock
             ? "top-[204px] rounded-b-3xl border-b"
             : "bottom-[132px] rounded-t-3xl border-t"
