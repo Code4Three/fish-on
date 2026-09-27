@@ -111,7 +111,7 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
       },
       {
         id: "firstLight",
-        label: "First light/twilight",
+        label: "First light/last light",
         displayNotes: "Placeholder when unavailable",
         canDisplayAlone: false,
       },
@@ -123,7 +123,7 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     metrics: [
       {
         id: "pressure",
-        label: "Pressure current/range/trend",
+        label: "Barometric pressure",
         displayNotes: "Daily trend",
         canDisplayAlone: true,
       },
@@ -171,7 +171,7 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
       },
       {
         id: "uv",
-        label: "Peak UV",
+        label: "UV Index",
         displayNotes: "Placeholder when unavailable",
         canDisplayAlone: true,
       },

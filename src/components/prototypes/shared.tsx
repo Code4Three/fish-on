@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import {
+  CalendarDays,
   ChevronLeft,
   ChevronRight,
   Cloud,
@@ -739,10 +740,13 @@ function matrixMetricValue(
       day.secondary.moon.phaseName ?? "Unavailable",
     ],
     sunrise: [
-      formatOptionalHour(day.sun.sunrise, true),
-      `Sunset ${formatOptionalHour(day.sun.sunset, true)}`,
+      `${formatOptionalHour(day.sun.sunrise, true)} / ${formatOptionalHour(day.sun.sunset, true)}`,
+      "",
     ],
-    firstLight: [formatOptionalHour(day.sun.firstLight, true), "First light"],
+    firstLight: [
+      `${formatOptionalHour(day.sun.firstLight, true)} / ${formatOptionalHour(day.sun.lastLight, true)}`,
+      "",
+    ],
     pressure: [
       `${current.pressure ?? "--"}`,
       day.secondary.pressure.trend ?? "Steady",
@@ -866,9 +870,11 @@ export function MatrixMetricCard({
         >
           {value}
         </p>
-        <p className="mt-1 truncate font-body text-[11px] text-slate-500">
-          {detail}
-        </p>
+        {detail && (
+          <p className="mt-1 truncate font-body text-[11px] text-slate-500">
+            {detail}
+          </p>
+        )}
       </div>
     </article>
   );
@@ -1227,14 +1233,13 @@ export function WaterDetailsCard({
     day.tideEvents.find(
       (event) => event.type === "Low" && event.hour >= hour,
     ) ?? day.tideEvents.find((event) => event.type === "Low");
-  const waterTempRange = day.ranges?.waterTemp;
   const swellRange = day.ranges?.swell;
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
       <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
         <Waves size={13} className="text-tide-400" />
-        Water &amp; marine details
+        Current water &amp; marine details
       </div>
       <div className="mt-2">
         {isVisible(visibleMetrics, "currentTide") && (
@@ -1288,32 +1293,12 @@ export function WaterDetailsCard({
             }
           />
         )}
-        {isVisible(visibleMetrics, "waterTemperature") && (
-          <DetailRow
-            label="Water temp range"
-            value={
-              waterTempRange
-                ? `${safe(waterTempRange.min)}°C - ${safe(waterTempRange.max)}°C`
-                : safe(null)
-            }
-          />
-        )}
         {isVisible(visibleMetrics, "swell") && (
           <DetailRow
             label="Current swell"
             value={
               day.secondary?.swell
                 ? `${day.secondary.swell.height}m @ ${day.secondary.swell.period}s ${day.secondary.swell.dir}`
-                : safe(null)
-            }
-          />
-        )}
-        {isVisible(visibleMetrics, "swell") && (
-          <DetailRow
-            label="Swell range"
-            value={
-              swellRange
-                ? `${safe(swellRange.min)}m - ${safe(swellRange.max)}m`
                 : safe(null)
             }
           />
@@ -1350,7 +1335,7 @@ export function SolunarDetailsCard({
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
       <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
         <Moon size={13} className="text-indigo-300" />
-        Astronomical &amp; solunar details
+        Current astronomical details
       </div>
       <div className="mt-2">
         {isVisible(visibleMetrics, "solunarStatus") && (
@@ -1438,30 +1423,17 @@ export function WeatherDetailsCard({
   hour: number;
   visibleMetrics?: VisibleMetrics;
 }) {
-  const airTempRange = day.ranges?.airTemp;
-  const windRange = day.ranges?.wind;
-
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
       <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
         <Cloud size={13} className="text-sky-300" />
-        Weather
+        Current weather details
       </div>
       <div className="mt-2">
         {isVisible(visibleMetrics, "airTemperature") && (
           <DetailRow
             label="Current air temperature"
             value={`${safe(day.hours[hour]?.airTemp)}°C`}
-          />
-        )}
-        {isVisible(visibleMetrics, "airTemperature") && (
-          <DetailRow
-            label="Air temp high / low"
-            value={
-              airTempRange
-                ? `${safe(airTempRange.max)}° / ${safe(airTempRange.min)}°C`
-                : safe(null)
-            }
           />
         )}
         {isVisible(visibleMetrics, "feelsLike") && (
@@ -1504,16 +1476,6 @@ export function WeatherDetailsCard({
             }
           />
         )}
-        {isVisible(visibleMetrics, "gust") && (
-          <DetailRow
-            label="Sustained wind / max gust"
-            value={
-              windRange
-                ? `${safe(windRange.min)}-${safe(windRange.max)} km/h · gust ${safe(windRange.maxGust)} km/h`
-                : safe(null)
-            }
-          />
-        )}
         {isVisible(visibleMetrics, "cloud") && (
           <DetailRow
             label="Cloud cover"
@@ -1544,9 +1506,101 @@ export function WeatherDetailsCard({
             }
           />
         )}
+        {isVisible(visibleMetrics, "uv") && (
+          <DetailRow
+            label="UV index"
+            value={safe(day.hours[hour]?.uvIndex)}
+          />
+        )}
+      </div>
+    </article>
+  );
+}
+
+export function DailySummaryCard({
+  day,
+  visibleMetrics,
+}: {
+  day: ClaudeDayData;
+  visibleMetrics?: VisibleMetrics;
+}) {
+  const airTempRange = day.ranges?.airTemp;
+  const waterTempRange = day.ranges?.waterTemp;
+  const pressureRange = day.ranges?.pressure;
+  const windRange = day.ranges?.wind;
+  const swellRange = day.ranges?.swell;
+  const rain = day.secondary.rain;
+
+  return (
+    <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
+      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+        <CalendarDays size={13} className="text-emerald-300" />
+        Daily summary
+      </div>
+      <div className="mt-2">
+        {isVisible(visibleMetrics, "airTemperature") && (
+          <DetailRow
+            label="Air temperature"
+            value={
+              airTempRange
+                ? `${safe(airTempRange.max)}° / ${safe(airTempRange.min)}°C`
+                : safe(null)
+            }
+          />
+        )}
+        {isVisible(visibleMetrics, "waterTemperature") && (
+          <DetailRow
+            label="Water temperature"
+            value={
+              waterTempRange
+                ? `${safe(waterTempRange.min)}°C - ${safe(waterTempRange.max)}°C`
+                : safe(null)
+            }
+          />
+        )}
+        {isVisible(visibleMetrics, "swell") && (
+          <DetailRow
+            label="Swell range"
+            value={
+              swellRange
+                ? `${safe(swellRange.min)}m - ${safe(swellRange.max)}m · ${safe(swellRange.period)}s ${safe(swellRange.dir)}`
+                : safe(null)
+            }
+          />
+        )}
+        {isVisible(visibleMetrics, "pressure") && (
+          <DetailRow
+            label="Pressure range"
+            value={
+              pressureRange
+                ? `${safe(pressureRange.min)} - ${safe(pressureRange.max)} hPa`
+                : safe(null)
+            }
+          />
+        )}
+        {isVisible(visibleMetrics, "wind") && (
+          <DetailRow
+            label="Sustained wind / max gust"
+            value={
+              windRange
+                ? `${safe(windRange.min)}-${safe(windRange.max)} km/h · gust ${safe(windRange.maxGust)} km/h`
+                : safe(null)
+            }
+          />
+        )}
+        {isVisible(visibleMetrics, "rainChance") && (
+          <DetailRow
+            label="Rain chance / volume"
+            value={
+              rain.chance != null || rain.mm != null
+                ? `${safe(rain.chance)}% · ${safe(rain.mm)} mm`
+                : safe(null)
+            }
+          />
+        )}
         {isVisible(visibleMetrics, "cloud") && (
           <DetailRow
-            label="Cloud cover baseline"
+            label="Cloud baseline"
             value={
               day.ranges?.cloudBaseline !== undefined
                 ? `${day.ranges.cloudBaseline}%`
@@ -1555,13 +1609,13 @@ export function WeatherDetailsCard({
           />
         )}
         {isVisible(visibleMetrics, "uv") && (
-          <DetailRow
-            label="Current UV index"
-            value={safe(day.hours[hour]?.uvIndex)}
-          />
-        )}
-        {isVisible(visibleMetrics, "uv") && (
           <DetailRow label="Peak UV index" value={safe(day.ranges?.uvPeak)} />
+        )}
+        {isVisible(visibleMetrics, "solunarFeedingWindows") && (
+          <DetailRow label="Daily solunar rating" value={safe(day.solunarRating)} />
+        )}
+        {isVisible(visibleMetrics, "hourlyScore") && (
+          <DetailRow label="Daily fishing score" value={safe(day.dayScore)} />
         )}
       </div>
     </article>
@@ -1586,11 +1640,11 @@ export function FullConditionsView({
     <div className="mx-auto w-full bg-hull-950 px-4 pb-32 pt-4">
       <div className="mx-auto flex items-center justify-between">
         <div>
-          <p className="font-body text-[11px] uppercase tracking-wide text-slate-500">
+          {/* <p className="font-body text-[11px] uppercase tracking-wide text-slate-500">
             Daily details
-          </p>
+          </p> */}
           <h2 className="font-display text-xl font-semibold text-white">
-            Full Conditions
+            All Conditions List
           </h2>
         </div>
         <button
@@ -1603,6 +1657,10 @@ export function FullConditionsView({
         </button>
       </div>
       <div className="mx-auto mt-3 space-y-2">
+        <DailySummaryCard
+          day={day}
+          visibleMetrics={visibleMetrics}
+        />
         <WaterDetailsCard
           day={day}
           hour={hour}

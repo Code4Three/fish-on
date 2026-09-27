@@ -66,8 +66,8 @@ function DashboardDock({
     // fixed/sticky already establish a containing block, so no extra `relative` is needed (and it would override them in Tailwind's cascade)
     <div
       className={`${positionClasses} select-none bg-hull-950/75 px-4 pb-4 pt-3 backdrop-blur ${isDragging
-          ? ""
-          : "transition-[bottom,top,transform] duration-300 ease-out"
+        ? ""
+        : "transition-[bottom,top,transform] duration-300 ease-out"
         }`}
     >
       {/* Drag handle: swipe toward the screen edge to open the full day drawer */}
@@ -335,6 +335,11 @@ export default function MainDashboard({
           >
             {/* Left panel: draggable hero group cards, then the grid of individual metric cards */}
             <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y md:border-r md:border-hull-600/40">
+              <div className="px-[20px] pt-4">
+                <h2 className="font-display text-xl font-semibold text-white">
+                  Conditions Dashboard
+                </h2>
+              </div>
               {/* Hero group cards: whole groups collapsed into one card, in user-defined order */}
               {matrixSettings.heroOrder.map((groupId) => {
                 const group = DAILY_GROUPS.find((item) => item.id === groupId);

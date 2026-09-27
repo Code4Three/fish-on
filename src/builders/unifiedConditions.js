@@ -88,6 +88,8 @@ function buildAnchored(day, sunMoonDay, solunarDay, weatherDay) {
 
     sunrise: sunMoonDay?.sunrise ?? null,
     sunset: sunMoonDay?.sunset ?? null,
+    firstLight: sunMoonDay?.firstLight ?? null,
+    lastLight: sunMoonDay?.lastLight ?? null,
 
     moonrise: sunMoonDay?.moonrise ?? null,
     moonset: sunMoonDay?.moonset ?? null,

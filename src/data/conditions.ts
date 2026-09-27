@@ -26,6 +26,8 @@ export interface ConditionsAnchored {
   lowTides: ConditionsTideEntry[];
   sunrise: string;
   sunset: string;
+  firstLight: string;
+  lastLight: string;
   moonrise: string;
   moonset: string;
   moonPhase: string;
@@ -379,8 +381,8 @@ export function buildDayData(
     sun: {
       sunrise: parseTimeToHour(day.anchored.sunrise),
       sunset: parseTimeToHour(day.anchored.sunset),
-      firstLight: null,
-      lastLight: null,
+      firstLight: parseTimeToHour(day.anchored.firstLight),
+      lastLight: parseTimeToHour(day.anchored.lastLight),
     },
     ranges: {
       waterTemp: null,

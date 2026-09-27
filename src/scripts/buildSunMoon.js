@@ -40,6 +40,8 @@ for (const date of getBuildDates()) {
 
     sunrise: formatLocalTime(sunTimes.sunrise),
     sunset: formatLocalTime(sunTimes.sunset),
+    firstLight: formatLocalTime(sunTimes.dawn),
+    lastLight: formatLocalTime(sunTimes.dusk),
     moonrise: formatLocalTime(moonTimes.rise),
     moonset: formatLocalTime(moonTimes.set),
 
