@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { DAILY_GROUPS, HOURLY_METRICS } from "../config/metricMatrix";
+import { DAILY_GROUPS, HOURLY_GRID_METRICS } from "../config/metricMatrix";
 
 export interface AnchoredSettingsState {
   wind: boolean;
@@ -59,7 +59,9 @@ const DEFAULT_MATRIX_SETTINGS: MatrixSettings = {
       group.metrics.map((metric) => [metric.id, true]),
     ),
   ),
-  hourly: Object.fromEntries(HOURLY_METRICS.map((metric) => [metric.id, true])),
+  hourly: Object.fromEntries(
+    HOURLY_GRID_METRICS.map((metric) => [metric.id, metric.defaultVisible]),
+  ),
   heroOrder: DAILY_GROUPS.map((group) => group.id),
   cardOrder: DAILY_GROUPS.flatMap((group) =>
     group.metrics.map((metric) => metric.id),
@@ -105,8 +107,8 @@ function getStoredCardSettings(): DashboardCardSettings {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     const parsed = stored
       ? (JSON.parse(stored) as Partial<
-          AnchoredSettingsState & DashboardCardSettings
-        >)
+        AnchoredSettingsState & DashboardCardSettings
+      >)
       : {};
     // Fall back to the legacy per-metric flags (waterTemp/airTemp/wind/etc.) when the new card flag is absent
     return {
@@ -146,13 +148,13 @@ function getStoredMatrixSettings(): MatrixSettings {
     // Drop any stale ids no longer in the default order, then append newly-added ids at the end
     const heroOrder = Array.isArray(parsed.heroOrder)
       ? parsed.heroOrder.filter((id) =>
-          DEFAULT_MATRIX_SETTINGS.heroOrder.includes(id),
-        )
+        DEFAULT_MATRIX_SETTINGS.heroOrder.includes(id),
+      )
       : [];
     const cardOrder = Array.isArray(parsed.cardOrder)
       ? parsed.cardOrder.filter((id) =>
-          DEFAULT_MATRIX_SETTINGS.cardOrder.includes(id),
-        )
+        DEFAULT_MATRIX_SETTINGS.cardOrder.includes(id),
+      )
       : [];
     return {
       groups: { ...DEFAULT_MATRIX_SETTINGS.groups, ...(parsed.groups ?? {}) },

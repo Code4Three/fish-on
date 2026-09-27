@@ -6,6 +6,9 @@ import {
   ChevronRight,
   Cloud,
   CloudRain,
+  Compass,
+  Droplets,
+  Eye,
   Fish,
   Gauge,
   Moon,
@@ -15,6 +18,7 @@ import {
   Wind,
   X,
 } from "lucide-react";
+import { ENVIRONMENTAL_METRICS } from "../../config/metricMatrix";
 import type { ClaudeDayData } from "../../data/conditions";
 import type { AnchoredSettingsState } from "../../hooks/useAnchoredSettings";
 import type { PrototypeId } from "../../hooks/useLayoutPrototype";
@@ -794,6 +798,21 @@ const metricIconMap: Record<string, { icon: typeof Wind; tint: string }> = {
   rainChance: { icon: CloudRain, tint: "text-blue-300" },
   rainVolume: { icon: CloudRain, tint: "text-blue-300" },
   uv: { icon: Sun, tint: "text-yellow-300" },
+  humidity: { icon: Droplets, tint: "text-sky-300" },
+  dewPoint: { icon: Thermometer, tint: "text-emerald-200" },
+  cloudCoverLow: { icon: Cloud, tint: "text-slate-300" },
+  cloudCoverMid: { icon: Cloud, tint: "text-slate-300" },
+  cloudCoverHigh: { icon: Cloud, tint: "text-slate-300" },
+  cloudBase: { icon: Cloud, tint: "text-slate-300" },
+  visibility: { icon: Eye, tint: "text-cyan-300" },
+  waveHeight: { icon: Waves, tint: "text-cyan-300" },
+  waveDirection: { icon: Compass, tint: "text-cyan-300" },
+  wavePeriod: { icon: Waves, tint: "text-cyan-300" },
+  windWaveHeight: { icon: Waves, tint: "text-cyan-300" },
+  windWaveDirection: { icon: Compass, tint: "text-cyan-300" },
+  windWavePeriod: { icon: Waves, tint: "text-cyan-300" },
+  swellWaveDirection: { icon: Compass, tint: "text-cyan-300" },
+  swellWavePeriod: { icon: Waves, tint: "text-cyan-300" },
 };
 
 const groupIconMap: Record<string, { icon: typeof Wind; tint: string }> = {
@@ -1087,8 +1106,28 @@ function TileGroupContent({
   day: ClaudeDayData;
   hour: number;
 }) {
-  const metricsToShow = group.metrics.filter((metric) =>
-    isVisible(visibleMetrics, metric.id),
+  const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
+    (metric) => metric.group === group.id,
+  );
+  const metricsToShow = [
+    ...group.metrics.map((metric) => ({
+      ...metric,
+      environmentalMetric:
+        environmentalMetrics.find(
+          (environmentalMetric) => environmentalMetric.id === metric.id,
+        ) ?? null,
+    })),
+    ...environmentalMetrics
+      .filter((metric) => !group.metrics.some((item) => item.id === metric.id))
+      .map((metric) => ({
+        id: metric.id,
+        label: metric.label,
+        environmentalMetric: metric,
+      })),
+  ].filter(
+    (metric) =>
+      isVisible(visibleMetrics, metric.id) &&
+      (metric.environmentalMetric?.defaultVisibility.summaryCards ?? true),
   );
   const header = groupIconMap[group.id] ?? {
     icon: Fish,
@@ -1100,7 +1139,30 @@ function TileGroupContent({
       <GroupHeader icon={header.icon} tint={header.tint} label={group.label} />
       <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-3">
         {metricsToShow.map((metric) => {
-          const [value, detail] = matrixMetricValue(metric.id, day, hour);
+          const environmentalSummary = metric.environmentalMetric
+            ? day.environmentalSummaries?.[metric.id]
+            : null;
+          const [legacyValue, legacyDetail] = matrixMetricValue(
+            metric.id,
+            day,
+            hour,
+          );
+          const environmentalValue = environmentalSummary
+            ? [
+              environmentalSummary.dailyRange,
+              environmentalSummary.dailyBaseline,
+              environmentalSummary.dailyMaximum,
+              environmentalSummary.dailyDirection,
+            ].find((value) => value !== "--") ?? "--"
+            : null;
+          const value = environmentalValue ?? legacyValue;
+          const hourlyValue =
+            day.hours[hour]?.environmentalValues?.[metric.id] ?? "--";
+          const detail = metric.environmentalMetric
+            ? hourlyValue === "--"
+              ? ""
+              : `Now ${hourlyValue}`
+            : legacyDetail;
           const meta = metricIconMap[metric.id];
           const Icon = meta?.icon;
           return (
@@ -1111,16 +1173,18 @@ function TileGroupContent({
                     <Icon size={14} className={meta.tint} />
                   </div>
                 )}
-                <p className="font-body text-[11.5px] leading-tight text-slate-400">
+                <p className="min-w-0 break-words font-body text-[11.5px] leading-tight text-slate-400">
                   {metric.label}
                 </p>
               </div>
-              <p className="mt-1 font-display text-[21px] font-bold leading-none tabular-nums text-white">
+              <p className={`mt-1 min-w-0 break-words font-display font-bold leading-tight tabular-nums text-white ${metric.environmentalMetric ? "text-[16px]" : "text-[21px]"}`}>
                 {value}
               </p>
-              <p className="mt-1 truncate font-body text-[11px] text-slate-500">
-                {detail}
-              </p>
+              {detail && (
+                <p className="mt-1 truncate font-body text-[11px] text-slate-500">
+                  {detail}
+                </p>
+              )}
             </div>
           );
         })}
@@ -1233,7 +1297,10 @@ export function WaterDetailsCard({
     day.tideEvents.find(
       (event) => event.type === "Low" && event.hour >= hour,
     ) ?? day.tideEvents.find((event) => event.type === "Low");
-  const swellRange = day.ranges?.swell;
+  const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
+    (metric) =>
+      metric.group === "water" && metric.defaultVisibility.fullConditions,
+  );
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
@@ -1283,36 +1350,13 @@ export function WaterDetailsCard({
         {isVisible(visibleMetrics, "nextTide") && (
           <DetailRow label="Slack water window" value={safe(null)} />
         )}
-        {isVisible(visibleMetrics, "waterTemperature") && (
+        {environmentalMetrics.map((metric) => (
           <DetailRow
-            label="Water temperature"
-            value={
-              day.secondary?.waterTemp
-                ? `${day.secondary.waterTemp}°C`
-                : safe(null)
-            }
+            key={metric.id}
+            label={metric.label}
+            value={day.hours[hour]?.environmentalValues?.[metric.id] ?? "--"}
           />
-        )}
-        {isVisible(visibleMetrics, "swell") && (
-          <DetailRow
-            label="Current swell"
-            value={
-              day.secondary?.swell
-                ? `${day.secondary.swell.height}m @ ${day.secondary.swell.period}s ${day.secondary.swell.dir}`
-                : safe(null)
-            }
-          />
-        )}
-        {isVisible(visibleMetrics, "swell") && (
-          <DetailRow
-            label="Swell period / direction"
-            value={
-              swellRange
-                ? `${safe(swellRange.period)}s ${safe(swellRange.dir)}`
-                : safe(null)
-            }
-          />
-        )}
+        ))}
       </div>
     </article>
   );
@@ -1423,11 +1467,16 @@ export function WeatherDetailsCard({
   hour: number;
   visibleMetrics?: VisibleMetrics;
 }) {
+  const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
+    (metric) =>
+      metric.group === "weather" && metric.defaultVisibility.fullConditions,
+  );
+
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
       <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
         <Cloud size={13} className="text-sky-300" />
-        Current weather details
+        Weather &amp; atmospheric conditions
       </div>
       <div className="mt-2">
         {isVisible(visibleMetrics, "airTemperature") && (
@@ -1476,16 +1525,6 @@ export function WeatherDetailsCard({
             }
           />
         )}
-        {isVisible(visibleMetrics, "cloud") && (
-          <DetailRow
-            label="Cloud cover"
-            value={
-              day.hours[hour]
-                ? `${safe(day.hours[hour].cloudCover)}%`
-                : safe(null)
-            }
-          />
-        )}
         {isVisible(visibleMetrics, "rainChance") && (
           <DetailRow
             label="Rain chance"
@@ -1512,6 +1551,13 @@ export function WeatherDetailsCard({
             value={safe(day.hours[hour]?.uvIndex)}
           />
         )}
+        {environmentalMetrics.map((metric) => (
+          <DetailRow
+            key={metric.id}
+            label={metric.label}
+            value={day.hours[hour]?.environmentalValues?.[metric.id] ?? "--"}
+          />
+        ))}
       </div>
     </article>
   );
@@ -1525,11 +1571,21 @@ export function DailySummaryCard({
   visibleMetrics?: VisibleMetrics;
 }) {
   const airTempRange = day.ranges?.airTemp;
-  const waterTempRange = day.ranges?.waterTemp;
-  const pressureRange = day.ranges?.pressure;
   const windRange = day.ranges?.wind;
-  const swellRange = day.ranges?.swell;
   const rain = day.secondary.rain;
+  const dailyEnvironmentalMetrics = ENVIRONMENTAL_METRICS.filter(
+    (metric) =>
+      metric.defaultVisibility.fullConditions &&
+      metric.dailyKeys &&
+      (metric.dailyFullConditionsSection ?? "Daily summary") ===
+      "Daily summary",
+  );
+  const weatherEnvironmentalMetrics = dailyEnvironmentalMetrics.filter(
+    (metric) => metric.group === "weather",
+  );
+  const waterEnvironmentalMetrics = dailyEnvironmentalMetrics.filter(
+    (metric) => metric.group === "water",
+  );
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
@@ -1538,42 +1594,17 @@ export function DailySummaryCard({
         Daily summary
       </div>
       <div className="mt-2">
+        {weatherEnvironmentalMetrics.length > 0 && (
+          <p className="mb-1 font-body text-[11px] font-semibold text-slate-500">
+            Weather &amp; atmospheric conditions
+          </p>
+        )}
         {isVisible(visibleMetrics, "airTemperature") && (
           <DetailRow
             label="Air temperature"
             value={
               airTempRange
                 ? `${safe(airTempRange.max)}° / ${safe(airTempRange.min)}°C`
-                : safe(null)
-            }
-          />
-        )}
-        {isVisible(visibleMetrics, "waterTemperature") && (
-          <DetailRow
-            label="Water temperature"
-            value={
-              waterTempRange
-                ? `${safe(waterTempRange.min)}°C - ${safe(waterTempRange.max)}°C`
-                : safe(null)
-            }
-          />
-        )}
-        {isVisible(visibleMetrics, "swell") && (
-          <DetailRow
-            label="Swell range"
-            value={
-              swellRange
-                ? `${safe(swellRange.min)}m - ${safe(swellRange.max)}m · ${safe(swellRange.period)}s ${safe(swellRange.dir)}`
-                : safe(null)
-            }
-          />
-        )}
-        {isVisible(visibleMetrics, "pressure") && (
-          <DetailRow
-            label="Pressure range"
-            value={
-              pressureRange
-                ? `${safe(pressureRange.min)} - ${safe(pressureRange.max)} hPa`
                 : safe(null)
             }
           />
@@ -1598,16 +1629,6 @@ export function DailySummaryCard({
             }
           />
         )}
-        {isVisible(visibleMetrics, "cloud") && (
-          <DetailRow
-            label="Cloud baseline"
-            value={
-              day.ranges?.cloudBaseline !== undefined
-                ? `${day.ranges.cloudBaseline}%`
-                : safe(null)
-            }
-          />
-        )}
         {isVisible(visibleMetrics, "uv") && (
           <DetailRow label="Peak UV index" value={safe(day.ranges?.uvPeak)} />
         )}
@@ -1617,6 +1638,39 @@ export function DailySummaryCard({
         {isVisible(visibleMetrics, "hourlyScore") && (
           <DetailRow label="Daily fishing score" value={safe(day.dayScore)} />
         )}
+        {weatherEnvironmentalMetrics.map((metric) => {
+          const summary = day.environmentalSummaries?.[metric.id];
+          const value = summary
+            ? [
+              summary.dailyRange,
+              summary.dailyBaseline,
+              summary.dailyMaximum,
+              summary.dailyDirection,
+            ].find((candidate) => candidate !== "--") ?? "--"
+            : "--";
+          return (
+            <DetailRow key={metric.id} label={metric.label} value={value} />
+          );
+        })}
+        {waterEnvironmentalMetrics.length > 0 && (
+          <p className="mb-1 mt-3 border-t border-hull-700/70 pt-2 font-body text-[11px] font-semibold text-slate-500">
+            Water &amp; marine conditions
+          </p>
+        )}
+        {waterEnvironmentalMetrics.map((metric) => {
+          const summary = day.environmentalSummaries?.[metric.id];
+          const value = summary
+            ? [
+              summary.dailyRange,
+              summary.dailyBaseline,
+              summary.dailyMaximum,
+              summary.dailyDirection,
+            ].find((candidate) => candidate !== "--") ?? "--"
+            : "--";
+          return (
+            <DetailRow key={metric.id} label={metric.label} value={value} />
+          );
+        })}
       </div>
     </article>
   );
@@ -1714,6 +1768,93 @@ export function DayDrawer({
     typeof window === "undefined" ? 812 : window.innerHeight;
   const drawerTravel = Math.max(0, viewportHeight - 72 - 132);
   const show = (id: string) => hourlySettings?.[id] !== false;
+  const environmentalColumns = ENVIRONMENTAL_METRICS.filter(
+    (metric) =>
+      metric.hourlyColumnAvailable ?? metric.defaultVisibility.hourlyGrid,
+  )
+    .filter((metric) => metric.id !== "pressure" && metric.id !== "cloud")
+    .filter(
+      (metric) =>
+        !metric.hourlyColumnToggleable ||
+        show(metric.hourlySettingId ?? metric.id),
+    );
+  const marineColumns = environmentalColumns.filter(
+    (metric) => metric.group === "water",
+  );
+  const weatherColumns = environmentalColumns.filter(
+    (metric) => metric.group === "weather",
+  );
+  const solunarColumnCount =
+    Number(show("solunarActive")) + Number(show("solunarRating"));
+  const weatherColumnCount =
+    [
+      "wind",
+      "gust",
+      "pressure",
+      "airTemperature",
+      "feelsLike",
+      "cloud",
+      "rainChance",
+      "rainVolume",
+      "uv",
+    ].filter(show).length + weatherColumns.length;
+  const weatherColumnIds = [
+    "wind",
+    "gust",
+    "pressure",
+    "airTemperature",
+    "feelsLike",
+    "cloud",
+    "rainChance",
+    "rainVolume",
+    "uv",
+    ...weatherColumns.map((metric) => metric.id),
+  ].filter(show);
+  const getWeatherColumnBorderClass = (metricId: string) =>
+    `border-r border-hull-700/70 ${weatherColumnIds[0] === metricId ? "border-l-2 border-l-hull-600" : ""} ${weatherColumnIds.at(-1) === metricId ? "border-r-2 border-r-hull-600" : ""}`;
+  const tableScrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const tableRowRefs = useRef<Record<number, HTMLTableRowElement | null>>({});
+  const selectedHourRef = useRef(selectedHour);
+  const wasDrawerOpenRef = useRef(false);
+  const shouldScrollSelectedHourRef = useRef(false);
+
+  const scrollSelectedHourToCenter = () => {
+    const scrollContainer = tableScrollContainerRef.current;
+    const selectedRow = tableRowRefs.current[selectedHourRef.current];
+    if (!scrollContainer || !selectedRow) return;
+
+    const containerBounds = scrollContainer.getBoundingClientRect();
+    const rowBounds = selectedRow.getBoundingClientRect();
+    const targetScrollTop =
+      scrollContainer.scrollTop +
+      rowBounds.top -
+      containerBounds.top -
+      (scrollContainer.clientHeight - selectedRow.clientHeight) / 2;
+
+    scrollContainer.scrollTo({
+      top: Math.max(0, targetScrollTop),
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    selectedHourRef.current = selectedHour;
+    const hasJustOpened = open && !wasDrawerOpenRef.current;
+    wasDrawerOpenRef.current = open;
+
+    if (!open) {
+      shouldScrollSelectedHourRef.current = true;
+      return;
+    }
+
+    if (hasJustOpened || isDragging) {
+      shouldScrollSelectedHourRef.current = true;
+      return;
+    }
+
+    shouldScrollSelectedHourRef.current = false;
+    scrollSelectedHourToCenter();
+  }, [day.date, isDragging, open, selectedHour]);
 
   return (
     <>
@@ -1736,6 +1877,18 @@ export function DayDrawer({
           role="dialog"
           aria-modal="true"
           aria-label="Full day forecast"
+          onTransitionEnd={(event) => {
+            if (
+              event.target !== event.currentTarget ||
+              event.propertyName !== "height" ||
+              !open ||
+              !shouldScrollSelectedHourRef.current
+            ) {
+              return;
+            }
+            shouldScrollSelectedHourRef.current = false;
+            scrollSelectedHourToCenter();
+          }}
           className={`pointer-events-auto relative flex w-full flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"
             } ${isTopDock ? "rounded-b-3xl border-b" : "rounded-t-3xl border-t"}`}
           style={{ height: `${expansionProgress * drawerTravel}px` }}
@@ -1761,86 +1914,150 @@ export function DayDrawer({
             </button>
           </div>
 
-          <div className="no-scrollbar min-h-0 flex-1 overflow-x-auto overflow-y-auto overscroll-contain px-5 pb-4">
-            <table className="min-w-[880px] w-full border-collapse">
+          <div
+            ref={tableScrollContainerRef}
+            className="no-scrollbar min-h-0 flex-1 overflow-x-auto overflow-y-auto overscroll-contain px-5 pb-4"
+          >
+            <table className="min-w-[880px] w-full border-separate border-spacing-0 border-4 border-hull-600">
               <thead className="sticky top-0 z-10 bg-hull-900">
-                <tr className="border-b border-hull-700/70 font-body text-[11px] uppercase tracking-wide text-slate-500">
-                  <th scope="col" className="py-2 text-left font-normal">
+                <tr className="border-x-2 border-t-2 border-b-2 border-hull-600 bg-hull-800 text-center align-top font-body text-[10px] font-semibold uppercase text-slate-300">
+                  <th
+                    scope="col"
+                    rowSpan={2}
+                    className="border-x-2 border-hull-600 px-2 py-2 text-center align-top font-semibold"
+                  >
                     Time
                   </th>
                   {show("hourlyScore") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="colgroup" colSpan={1} className="border-x-2 border-hull-600 px-2 py-2 text-center align-top">
+                      Fishability
+                    </th>
+                  )}
+                  {show("tide") && (
+                    <th scope="colgroup" colSpan={2} className="border-x-2 border-hull-600 px-2 py-2 text-center align-top">
+                      Tide
+                    </th>
+                  )}
+                  {solunarColumnCount > 0 && (
+                    <th
+                      scope="colgroup"
+                      colSpan={solunarColumnCount}
+                      className="border-x-2 border-hull-600 px-2 py-2 text-center align-top"
+                    >
+                      Solunar
+                    </th>
+                  )}
+                  {marineColumns.length > 0 && (
+                    <th
+                      scope="colgroup"
+                      colSpan={marineColumns.length}
+                      className="border-x-2 border-hull-600 px-2 py-2 text-center align-top"
+                    >
+                      {marineColumns[0].groupLabel}
+                    </th>
+                  )}
+                  {weatherColumnCount > 0 && (
+                    <th
+                      scope="colgroup"
+                      colSpan={weatherColumnCount}
+                      className="border-x-2 border-hull-600 px-2 py-2 text-center align-top"
+                    >
+                      {weatherColumns[0].groupLabel}
+                    </th>
+                  )}
+                </tr>
+                <tr className="border-x-2 border-b-4 border-hull-600 bg-hull-700/70 text-center align-top font-body text-[11px] uppercase text-slate-300">
+                  {show("hourlyScore") && (
+                    <th scope="col" className="border-x-2 border-hull-600 px-2 py-2 text-center align-top font-semibold">
                       Score
                     </th>
                   )}
                   {show("tide") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className="border-l-2 border-l-hull-600 border-r border-r-hull-700/70 px-2 py-2 text-center align-top font-semibold">
                       Tide
                     </th>
                   )}
                   {show("tide") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className="border-r-2 border-r-hull-600 px-2 py-2 text-center align-top font-semibold">
                       Direction
                     </th>
                   )}
                   {show("solunarActive") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`border-r border-hull-700/70 px-2 py-2 text-center align-top font-semibold ${show("solunarRating") ? "border-l-2 border-l-hull-600" : "border-x-2 border-x-hull-600"}`}>
                       Solunar
                     </th>
                   )}
                   {show("solunarRating") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`border-r-2 border-r-hull-600 px-2 py-2 text-center align-top font-semibold ${show("solunarActive") ? "" : "border-l-2 border-l-hull-600"}`}>
                       Solunar score
                     </th>
                   )}
+                  {marineColumns.map((metric, columnIndex) => (
+                    <th
+                      key={metric.id}
+                      scope="col"
+                      className={`border-r border-hull-700/70 px-2 py-2 text-center align-top font-semibold ${columnIndex === 0 ? "border-l-2 border-l-hull-600" : ""} ${columnIndex === marineColumns.length - 1 ? "border-r-2 border-r-hull-600" : ""}`}
+                    >
+                      {metric.label}
+                    </th>
+                  ))}
                   {show("wind") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`${getWeatherColumnBorderClass("wind")} px-2 py-2 text-center align-top font-semibold`}>
                       Wind
                     </th>
                   )}
                   {show("gust") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`${getWeatherColumnBorderClass("gust")} px-2 py-2 text-center align-top font-semibold`}>
                       Gust
                     </th>
                   )}
                   {show("pressure") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`${getWeatherColumnBorderClass("pressure")} px-2 py-2 text-center align-top font-semibold`}>
                       Press.
                     </th>
                   )}
                   {show("airTemperature") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`${getWeatherColumnBorderClass("airTemperature")} px-2 py-2 text-center align-top font-semibold`}>
                       Temp
                     </th>
                   )}
                   {show("feelsLike") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`${getWeatherColumnBorderClass("feelsLike")} px-2 py-2 text-center align-top font-semibold`}>
                       Feels like
                     </th>
                   )}
                   {show("cloud") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`${getWeatherColumnBorderClass("cloud")} px-2 py-2 text-center align-top font-semibold`}>
                       Cloud
                     </th>
                   )}
                   {show("rainChance") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`${getWeatherColumnBorderClass("rainChance")} px-2 py-2 text-center align-top font-semibold`}>
                       Rain chance
                     </th>
                   )}
                   {show("rainVolume") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`${getWeatherColumnBorderClass("rainVolume")} px-2 py-2 text-center align-top font-semibold`}>
                       Rain volume
                     </th>
                   )}
                   {show("uv") && (
-                    <th scope="col" className="py-2 text-left font-normal">
+                    <th scope="col" className={`${getWeatherColumnBorderClass("uv")} px-2 py-2 text-center align-top font-semibold`}>
                       UV
                     </th>
                   )}
+                  {weatherColumns.map((metric) => (
+                    <th
+                      key={metric.id}
+                      scope="col"
+                      className={`${getWeatherColumnBorderClass(metric.id)} px-2 py-2 text-center align-top font-semibold`}
+                    >
+                      {metric.label}
+                    </th>
+                  ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="[&_td]:align-top [&_td]:text-left [&_th]:align-top [&_th]:text-left">
                 {day.hours.map((item) => {
                   const activate = () => {
                     onPickHour(item.hour);
@@ -1849,6 +2066,9 @@ export function DayDrawer({
                   return (
                     <tr
                       key={item.hour}
+                      ref={(element) => {
+                        tableRowRefs.current[item.hour] = element;
+                      }}
                       role="button"
                       tabIndex={0}
                       onClick={activate}
@@ -1863,27 +2083,27 @@ export function DayDrawer({
                     >
                       <th
                         scope="row"
-                        className={`py-3 pr-3 text-left font-body text-[13px] font-semibold tabular-nums ${item.hour === selectedHour ? "text-tide-400" : "text-white"}`}
+                        className={`border-x-2 border-hull-600 px-3 py-3 text-left font-body text-[13px] font-semibold tabular-nums ${item.hour === selectedHour ? "text-tide-400" : "text-white"}`}
                       >
                         {formatHour(item.hour)}
                       </th>
                       {show("hourlyScore") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className="border-x-2 border-hull-600 px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300">
                           {safe(item.score)}
                         </td>
                       )}
                       {show("tide") && (
-                        <td className="py-3 pr-3 font-body text-[13px] tabular-nums text-slate-300">
+                        <td className="border-l-2 border-l-hull-600 border-r border-r-hull-700/70 px-3 py-3 font-body text-[13px] tabular-nums text-slate-300">
                           {formatTideHeight(item.tideHeight)}m
                         </td>
                       )}
                       {show("tide") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] text-slate-400">
+                        <td className="border-r-2 border-r-hull-600 px-3 py-3 font-body text-[12.5px] text-slate-400">
                           {safe(item.tideDirection, "N/A")}
                         </td>
                       )}
                       {show("solunarActive") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] text-slate-400">
+                        <td className={`border-r border-hull-700/70 px-3 py-3 font-body text-[12.5px] text-slate-400 ${show("solunarRating") ? "border-l-2 border-l-hull-600" : "border-x-2 border-x-hull-600"}`}>
                           {item.solunar === "none"
                             ? "Neutral"
                             : item.solunar === "major"
@@ -1892,55 +2112,71 @@ export function DayDrawer({
                         </td>
                       )}
                       {show("solunarRating") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`border-r-2 border-r-hull-600 px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300 ${show("solunarActive") ? "" : "border-l-2 border-l-hull-600"}`}>
                           {safe(item.solunarRating)}
                         </td>
                       )}
+                      {marineColumns.map((metric, columnIndex) => (
+                        <td
+                          key={metric.id}
+                          className={`border-r border-hull-700/70 px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300 ${columnIndex === 0 ? "border-l-2 border-l-hull-600" : ""} ${columnIndex === marineColumns.length - 1 ? "border-r-2 border-r-hull-600" : ""}`}
+                        >
+                          {item.environmentalValues?.[metric.id] ?? "--"}
+                        </td>
+                      ))}
                       {show("wind") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`${getWeatherColumnBorderClass("wind")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
                           {safe(item.wind?.speed)} km/h {safe(item.wind?.dir, "")}
                         </td>
                       )}
                       {show("gust") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`${getWeatherColumnBorderClass("gust")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
                           {safe(item.wind?.gust)} km/h
                         </td>
                       )}
                       {show("pressure") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`${getWeatherColumnBorderClass("pressure")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
                           {safe(item.pressure)}
                         </td>
                       )}
                       {show("airTemperature") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`${getWeatherColumnBorderClass("airTemperature")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
                           {safe(item.airTemp)}°
                         </td>
                       )}
                       {show("feelsLike") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`${getWeatherColumnBorderClass("feelsLike")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
                           {safe(item.feelsLike)}°
                         </td>
                       )}
                       {show("cloud") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`${getWeatherColumnBorderClass("cloud")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
                           {safe(item.cloudCover)}%
                         </td>
                       )}
                       {show("rainChance") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`${getWeatherColumnBorderClass("rainChance")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
                           {safe(item.rainChance)}%
                         </td>
                       )}
                       {show("rainVolume") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`${getWeatherColumnBorderClass("rainVolume")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
                           {safe(item.rainVolume)} mm
                         </td>
                       )}
                       {show("uv") && (
-                        <td className="py-3 pr-3 font-body text-[12.5px] tabular-nums text-slate-300">
+                        <td className={`${getWeatherColumnBorderClass("uv")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
                           {safe(item.uvIndex, "N/A")}
                         </td>
                       )}
+                      {weatherColumns.map((metric) => (
+                        <td
+                          key={metric.id}
+                          className={`${getWeatherColumnBorderClass(metric.id)} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}
+                        >
+                          {item.environmentalValues?.[metric.id] ?? "--"}
+                        </td>
+                      ))}
                     </tr>
                   );
                 })}

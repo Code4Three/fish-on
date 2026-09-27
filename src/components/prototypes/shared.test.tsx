@@ -28,9 +28,7 @@ describe("Dashboard detail cards", () => {
 
   it("renders SolunarDetailsCard with complete data", () => {
     render(<SolunarDetailsCard day={fullDay} hour={7} />);
-    expect(
-      screen.getByText(/Astronomical & solunar details/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Current astronomical details/i)).toBeInTheDocument();
   });
 
   it("renders SolunarDetailsCard placeholders when moon/sun data missing", () => {
@@ -46,7 +44,9 @@ describe("Dashboard detail cards", () => {
 
   it("renders WeatherDetailsCard with complete data", () => {
     render(<WeatherDetailsCard day={fullDay} hour={7} />);
-    expect(screen.getByText(/^Weather$/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Weather & atmospheric conditions/i),
+    ).toBeInTheDocument();
   });
 
   it("renders the atmospheric pressure hero card", () => {
@@ -58,14 +58,16 @@ describe("Dashboard detail cards", () => {
     render(
       <FullConditionsView day={fullDay} hour={7} onClose={() => undefined} />,
     );
-    expect(screen.getByText("Full Conditions")).toBeInTheDocument();
+    expect(screen.getByText("All Conditions List")).toBeInTheDocument();
     expect(
       screen.getAllByText(/Water & marine details/i).length,
     ).toBeGreaterThan(0);
     expect(
-      screen.getAllByText(/Astronomical & solunar details/i).length,
+      screen.getAllByText(/Current astronomical details/i).length,
     ).toBeGreaterThan(0);
-    expect(screen.getAllByText(/^Weather$/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/Weather & atmospheric conditions/i).length,
+    ).toBeGreaterThan(0);
     expect(screen.queryByText("Current conditions")).not.toBeInTheDocument();
   });
 

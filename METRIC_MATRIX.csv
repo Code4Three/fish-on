@@ -1,0 +1,84 @@
+Details ,,,,,,Conditions dashboard view notes,,,All conditions view notes,Full day forecast notes,
+Group label ,Source/API ,Source metric name ,Calculation ,Metric name ,Time period ,Display as ,Can display alone? ,Can toggle off group? ,Display card/section ,Available column ,Toggle on/off 
+,,,,,,,,,,, 
+Fishability ,Calculated,fishability_score,current(fishability_score) / max(fishability_score),Fishability score ,Current/Daily max ,"Main (numerator/denominator) 
+*56/72 ",Yes ,Yes ,Current Fishability  ,Yes ,Yes 
+ ,Calculated,fishability_score,max(fishability_score),Fishability score ,Daily max ,None ,N/A ,N/A ,Current Fishability  ,Yes ,Yes 
+ ,Calculated,fishability_score,max(fishability_score) - min(fishability_score),Fishability score ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
+ ,Calculated,fishability_score,N/A,Fishability score ,Daily trend ,Chart ,No ,No ,None ,No ,N/A 
+ ,Calculated,fishability_window,N/A,Fishability window ,Current or next ,"Foot note 
+*Next strong window 5pm (67) ",No ,No ,None ,No ,N/A 
+ ,Calculated,fishability_rating,state_label(fishability_score),Fishability rating ,Current rating ,"Pill 
+*Strong ",No ,No ,Current Fishability ,Yes ,Yes 
+Tide conditions ,World Tides,height / tides,N/A,Tide height ,Current/Next high/low ,"Main (numerator/denominator) 
+*1.0m/1.7m ",Yes ,Yes ,Current tides ,Yes ,Yes 
+ ,World Tides,height / tides,N/A,Tide height ,Next high/low ,None ,N/A ,N/A ,Current tides ,Yes ,No 
+ ,World Tides,height / tides,max(tide_height),Tide height ,Daily peaks ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
+ ,World Tides,height / tides,max(tide_height) - min(tide_height),Tide height ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
+ ,World Tides,height / tides,N/A,Tide height ,Daily trend ,Chart ,No ,No ,None ,No ,N/A 
+ ,World Tides,height / tides,N/A,Next high/low tide ,Next high/low ,"Foot note 
+*Next high/low tide 5pm (1.2m) ","No 
+ ",Yes ,Current tides ,No ,N/A 
+ ,Calculated,tide_state,state_label(tide_height),Tide height ,Current state ,Pill ,No ,No ,Current tides ,Yes ,Yes 
+Water & marine conditions ,Open-Meteo,sea_surface_temperature,current(sea_surface_temperature) / max(sea_surface_temperature),Water temperature ,Current/daily max ,"Main (numerator/denominator) 
+*21C/22.6 ",Yes ,Yes ,Current water & marine ,Yes ,Yes 
+ ,Open-Meteo,sea_surface_temperature,max(sea_surface_temperature),Water temperature ,Daily max ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
+ ,Open-Meteo,sea_surface_temperature,max(sea_surface_temperature) - min(sea_surface_temperature),Water temperature ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
+ ,Open-Meteo,swell_wave_height,current(swell_wave_height) / max(swell_wave_height),Swell height ,Current/daily max ,"Main (numerator/denominator) 
+*1m/2.5m ",Yes ,Yes ,Current water & marine ,Yes ,Yes 
+ ,Open-Meteo,swell_wave_height,max(swell_wave_height),Swell height ,Daily max ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
+ ,Open-Meteo,swell_wave_height,max(swell_wave_height) - min(swell_wave_height),Swell height ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
+ ,Open-Meteo,swell_wave_height,state_label(swell_wave_height),Swell height ,Current state ,Pill ,Yes ,Yes ,Current water & marine ,Yes ,Yes 
+ ,Open-Meteo,swell_wave_period,N/A,Swell period ,Current ,"Foot note (numerator/denominator) 
+*1m/xx ",Yes ,Yes ,Current water & marine ,Yes ,Yes 
+ ,Open-Meteo,swell_wave_period,max(swell_wave_period),Swell period ,Daily max ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
+ ,Open-Meteo,swell_wave_period,max(swell_wave_period) - min(swell_wave_period),Swell period ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
+ ,Open-Meteo,swell_wave_period,state_label(swell_wave_period),Swell period ,Current state ,Pill ,Yes ,Yes ,Current water & marine ,Yes ,Yes 
+ ,Open-Meteo,swell_wave_direction,N/A,Swell direction ,Current ,Pill ,Yes ,Yes ,Current water & marine ,Yes ,Yes 
+Solunar conditions ,SunCalc,solunar_rating / position,current(solunar_rating) / max(solunar_rating),Solunar rating ,Current/daily max ,"Main (numerator/denominator) 
+*12/76 ",Yes ,Yes ,Current solunar ,Yes ,Yes 
+ ,SunCalc,solunar_rating / position,max(solunar_rating),Solunar rating ,Daily max ,None ,N/A ,N/A ,Current solunar ,Yes ,Yes 
+ ,SunCalc,solunar_rating / position,state_label(solunar_rating),Solunar rating ,Current rating ,"Pill 
+*Good ",Yes ,Yes ,Current solunar ,Yes ,Yes 
+ ,SunCalc,solunar_feeding_windows,N/A,Next/active major/minor feeding window ,Next major/minor ,"Foot note 
+*Active feeding window  Major: 9am-11am ",Yes ,Yes ,Current solunar ,Yes ,No 
+ ,SunCalc,solunar_feeding_windows,max(solunar_rating),Solunar windows ,Daily peaks ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+Sun and moon conditions ,SunCalc,sunrise / sunset,N/A,Sunrise/sunset ,Daily sunrise/sunset ,"Main (numerator/denominator) 
+*6am/7pm ",Yes ,Yes ,Daily summary ,Yes ,Yes 
+ ,SunCalc,civil_twilight_begin / civil_twilight_end,N/A,First light/Last light ,Daily first light/last light ,Main (numerator/denominator) *6am/7pm ,Yes ,Yes ,Daily summary ,Yes ,Yes 
+ ,SunCalc,moonrise / moonset,N/A,Moon rise/ Moon set ,Daily moonrise/moonset ,"Main (numerator/denominator) 
+*3am/4pm ",Yes ,Yes ,Daily summary ,Yes ,Yes 
+ ,SunCalc,moon_phase,N/A,Moon phase ,Daily ,Foot note ,Yes ,Yes ,Daily summary ,Yes ,Yes 
+ ,SunCalc,moon_fraction,N/A,Moon illumination ,Daily ,Pill ,Yes ,Yes ,Daily summary ,Yes ,Yes 
+Weather & atmospheric conditions ,Open-Meteo,surface_pressure,current(surface_pressure) / max(surface_pressure),Pressure ,Current/daily max ,"Main (numerator/denominator) 
+*1028/1034 ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
+ ,Open-Meteo,surface_pressure,max(surface_pressure),Pressure ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,surface_pressure,max(surface_pressure) - min(surface_pressure),Pressure ,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,surface_pressure,N/A,Pressure ,Daily trend ,Chart ,Yes ,Yes ,None ,Yes ,Yes 
+ ,Open-Meteo,temperature_2m,current(temperature_2m) / max(temperature_2m),Air temperature,Current/daily max ,"Main (numerator/denominator) 
+*12C/26C ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
+ ,Open-Meteo,temperature_2m,max(temperature_2m),Air temperature,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,temperature_2m,max(temperature_2m) - min(temperature_2m),Air temperature,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,apparent_temperature,current(apparent_temperature) / max(apparent_temperature),Feels-like temperature ,Current/daily max ,"Main (numerator/denominator) 
+*14C/28C ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
+ ,Open-Meteo,apparent_temperature,max(apparent_temperature),Feels-like temperature ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,apparent_temperature,max(apparent_temperature) - min(apparent_temperature),Feels-like temperature ,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,wind_speed_10m,current(wind_speed_10m) / max(wind_speed_10m),Wind speed ,Current/daily max ,"Main (numerator/denominator) 
+*12kmph/23kmph ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
+ ,Open-Meteo,wind_speed_10m,max(wind_speed_10m),Wind speed ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,wind_speed_10m,max(wind_speed_10m) - min(wind_speed_10m),Wind speed ,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,wind_speed_10m,N/A,Wind speed ,Daily trend ,Chart ,Yes ,Yes ,None ,No ,No 
+ ,Open-Meteo,wind_direction_10m,N/A,Wind direction ,Current ,Pill ,Yes ,Yes ,Daily summary & Current weather and atmospheric ,Yes ,Yes 
+ ,Open-Meteo,wind_gusts_10m,current(wind_gusts_10m) / max(wind_gusts_10m),Wind gust speed ,Current/daily max ,"Main (numerator/denominator) 
+*22kmph/29kmph ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
+ ,Open-Meteo,wind_gusts_10m,max(wind_gusts_10m),Wind gust speed ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,cloud_cover / cloud_base,N/A,Cloud baseline ,Current ,Main ,Yes ,Yes ,Daily summary & Current weather and atmospheric ,Yes ,Yes 
+ ,Open-Meteo,cloud_cover / cloud_base,N/A,Cloud baseline ,Daily ,None ,N/A ,N/A , ,Yes ,Yes 
+ ,Open-Meteo,precipitation_probability,N/A,Rain chance ,Current ,Main ,Yes ,Yes ,Current weather and atmospheric ,Yes ,Yes 
+ ,Open-Meteo,precipitation_probability,N/A,Rain chance ,Daily ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,precipitation,N/A,Rain volume ,Current ,Main ,Yes ,Yes ,Current weather and atmospheric ,Yes ,Yes 
+ ,Open-Meteo,precipitation,N/A,Rain volume ,Daily ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,uv_index,current(uv_index) / max(uv_index),Peak UV ,Current/Daily max ,"Main (numerator/denominator) 
+*35/67 ", , ,Current weather & atmospheric ,Yes ,Yes 
+ ,Open-Meteo,uv_index,max(uv_index),Peak UV ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+ ,Open-Meteo,uv_index,max(uv_index) - min(uv_index),Peak UV ,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 

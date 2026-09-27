@@ -198,7 +198,321 @@ export const HOURLY_METRICS = [
   { id: "uv", label: "UV index" },
 ] as const;
 
+export interface EnvironmentalMetricKeys {
+  baseline?: string;
+  range?: string;
+  maximum?: string;
+  direction?: string;
+}
+
+export interface EnvironmentalMetricDefinition {
+  id: string;
+  key: string;
+  label: string;
+  unit: string;
+  icon: string;
+  group: "weather" | "water";
+  groupLabel: string;
+  fullConditionsSection: string;
+  dailyFullConditionsSection?: string;
+  dailyKeys?: EnvironmentalMetricKeys;
+  hourlySettingId?: string;
+  hourlyColumnAvailable?: boolean;
+  hourlyColumnToggleable?: boolean;
+  defaultVisibility: {
+    summaryCards: boolean;
+    fullConditions: boolean;
+    hourlyGrid: boolean;
+  };
+  precision?: number;
+}
+
+const DEFAULT_ENVIRONMENTAL_VISIBILITY = {
+  summaryCards: true,
+  fullConditions: true,
+  hourlyGrid: true,
+};
+
+// Additional conditions payload fields; keys correspond directly to conditions.json.
+export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
+  {
+    id: "pressure",
+    key: "pressure",
+    label: "Surface pressure",
+    unit: "hPa",
+    icon: "Gauge",
+    group: "weather",
+    groupLabel: "Weather & atmospheric conditions",
+    fullConditionsSection: "Current weather & atmospheric",
+    dailyKeys: { baseline: "pressureBaseline", range: "pressureRange" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "humidity",
+    key: "humidity",
+    label: "Relative humidity",
+    unit: "%",
+    icon: "Droplets",
+    group: "weather",
+    groupLabel: "Weather & atmospheric conditions",
+    fullConditionsSection: "Current weather & atmospheric",
+    dailyKeys: { baseline: "humidityBaseline", range: "humidityRange" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "dewPoint",
+    key: "dewPoint",
+    label: "Dew point",
+    unit: "°C",
+    icon: "Thermometer",
+    group: "weather",
+    groupLabel: "Weather & atmospheric conditions",
+    fullConditionsSection: "Current weather & atmospheric",
+    dailyKeys: { baseline: "dewPointBaseline", range: "dewPointRange" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+    precision: 1,
+  },
+  {
+    id: "cloud",
+    key: "cloudCover",
+    label: "Total cloud cover",
+    unit: "%",
+    icon: "Cloud",
+    group: "weather",
+    groupLabel: "Weather & atmospheric conditions",
+    fullConditionsSection: "Current weather & atmospheric",
+    dailyKeys: { baseline: "cloudBaseline" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "cloudCoverLow",
+    key: "cloudCoverLow",
+    label: "Low cloud cover",
+    unit: "%",
+    icon: "Cloud",
+    group: "weather",
+    groupLabel: "Weather & atmospheric conditions",
+    fullConditionsSection: "Current weather & atmospheric",
+    dailyKeys: { baseline: "cloudCoverLowBaseline" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "cloudCoverMid",
+    key: "cloudCoverMid",
+    label: "Mid-level cloud cover",
+    unit: "%",
+    icon: "Cloud",
+    group: "weather",
+    groupLabel: "Weather & atmospheric conditions",
+    fullConditionsSection: "Current weather & atmospheric",
+    dailyKeys: { baseline: "cloudCoverMidBaseline" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "cloudCoverHigh",
+    key: "cloudCoverHigh",
+    label: "High cloud cover",
+    unit: "%",
+    icon: "Cloud",
+    group: "weather",
+    groupLabel: "Weather & atmospheric conditions",
+    fullConditionsSection: "Current weather & atmospheric",
+    dailyKeys: { baseline: "cloudCoverHighBaseline" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "cloudBase",
+    key: "cloudBase",
+    label: "Cloud base",
+    unit: "m",
+    icon: "Cloud",
+    group: "weather",
+    groupLabel: "Weather & atmospheric conditions",
+    fullConditionsSection: "Current weather & atmospheric",
+    dailyKeys: { range: "cloudBaseRange" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "visibility",
+    key: "visibility",
+    label: "Visibility",
+    unit: "m",
+    icon: "Eye",
+    group: "weather",
+    groupLabel: "Weather & atmospheric conditions",
+    fullConditionsSection: "Current weather & atmospheric",
+    dailyKeys: { range: "visibilityRange" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "waterTemperature",
+    key: "seaSurfaceTemperature",
+    label: "Sea surface temperature",
+    unit: "°C",
+    icon: "Thermometer",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: {
+      baseline: "seaSurfaceTemperatureBaseline",
+      range: "seaSurfaceTemperatureRange",
+    },
+    hourlySettingId: "waterTemp",
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+    precision: 1,
+  },
+  {
+    id: "waveHeight",
+    key: "waveHeight",
+    label: "Wave height",
+    unit: "m",
+    icon: "Waves",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: { range: "waveHeightRange", maximum: "waveHeightMax" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+    precision: 1,
+  },
+  {
+    id: "waveDirection",
+    key: "waveDirection",
+    label: "Wave direction",
+    unit: "",
+    icon: "Compass",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: { direction: "waveDirectionDominant" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "wavePeriod",
+    key: "wavePeriod",
+    label: "Wave period",
+    unit: "s",
+    icon: "Waves",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: { range: "wavePeriodRange", maximum: "wavePeriodMax" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+    precision: 1,
+  },
+  {
+    id: "windWaveHeight",
+    key: "windWaveHeight",
+    label: "Wind wave height",
+    unit: "m",
+    icon: "Waves",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: {
+      range: "windWaveHeightRange",
+      maximum: "windWaveHeightMax",
+    },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+    precision: 1,
+  },
+  {
+    id: "windWaveDirection",
+    key: "windWaveDirection",
+    label: "Wind wave direction",
+    unit: "",
+    icon: "Compass",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: { direction: "windWaveDirectionDominant" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "windWavePeriod",
+    key: "windWavePeriod",
+    label: "Wind wave period",
+    unit: "s",
+    icon: "Waves",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: { range: "windWavePeriodRange", maximum: "windWavePeriodMax" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+    precision: 1,
+  },
+  {
+    id: "swell",
+    key: "swellWaveHeight",
+    label: "Swell height",
+    unit: "m",
+    icon: "Waves",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: {
+      range: "swellWaveHeightRange",
+      maximum: "swellWaveHeightMax",
+    },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+    precision: 1,
+  },
+  {
+    id: "swellWaveDirection",
+    key: "swellWaveDirection",
+    label: "Swell direction",
+    unit: "",
+    icon: "Compass",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: { direction: "swellWaveDirectionDominant" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+  },
+  {
+    id: "swellWavePeriod",
+    key: "swellWavePeriod",
+    label: "Swell period",
+    unit: "s",
+    icon: "Waves",
+    group: "water",
+    groupLabel: "Water & marine conditions",
+    fullConditionsSection: "Current water & marine",
+    dailyKeys: { range: "swellWavePeriodRange", maximum: "swellWavePeriodMax" },
+    defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+    precision: 1,
+  },
+];
+
+const EXISTING_HOURLY_METRIC_IDS = new Set<string>(
+  HOURLY_METRICS.map((metric) => metric.id),
+);
+
+export const HOURLY_GRID_METRICS = [
+  ...HOURLY_METRICS.map((metric) => ({
+    ...metric,
+    availableColumn: true,
+    toggleable: true,
+    defaultVisible: true,
+  })),
+  ...ENVIRONMENTAL_METRICS.filter(
+    (metric) =>
+      metric.hourlyColumnAvailable ?? metric.defaultVisibility.hourlyGrid,
+  )
+    .filter(
+      (metric) =>
+        !EXISTING_HOURLY_METRIC_IDS.has(metric.hourlySettingId ?? metric.id),
+    )
+    .map((metric) => ({
+      id: metric.hourlySettingId ?? metric.id,
+      label: metric.label,
+      availableColumn:
+        metric.hourlyColumnAvailable ?? metric.defaultVisibility.hourlyGrid,
+      toggleable: metric.hourlyColumnToggleable ?? true,
+      defaultVisible: metric.defaultVisibility.hourlyGrid,
+    })),
+];
+
 export type DailyGroupId = (typeof DAILY_GROUPS)[number]["id"];
 export type DailyMetricId =
   (typeof DAILY_GROUPS)[number]["metrics"][number]["id"];
-export type HourlyMetricId = (typeof HOURLY_METRICS)[number]["id"];
+export type HourlyMetricId = (typeof HOURLY_GRID_METRICS)[number]["id"];

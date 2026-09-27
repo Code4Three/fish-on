@@ -1,7 +1,11 @@
 import fs from "fs";
 import path from "path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { DISPLAY_DAYS, LOCATION, TIME_ZONE } from "../config/constants.js";
 import { formatLocalDate } from "../utils/dateUtils.js";
+
+const executeFile = promisify(execFile);
 
 const WEATHER_CODE_LABELS = {
   0: "Clear sky",
@@ -63,14 +67,47 @@ function getWindDirectionLabel(degrees) {
   return directions[index];
 }
 
-function round(value) {
-  if (value == null || Number.isNaN(value)) return null;
-  return Math.round(value);
+function round(value, decimalPlaces = 0) {
+  if (typeof value !== "number" || !Number.isFinite(value)) return null;
+  const multiplier = 10 ** decimalPlaces;
+  return Math.round(value * multiplier) / multiplier;
 }
 
-function roundMillimeters(value) {
-  if (value == null || Number.isNaN(value)) return null;
-  return Math.round(value * 10) / 10;
+function roundPercentage(value) {
+  if (typeof value !== "number" || value < 0 || value > 100) return null;
+  return round(value);
+}
+
+function roundNonNegative(value, decimalPlaces = 0) {
+  if (typeof value !== "number" || value < 0) return null;
+  return round(value, decimalPlaces);
+}
+
+function getHourlyMetricValues(hours, key) {
+  return hours
+    .map((hour) => hour[key])
+    .filter((value) => typeof value === "number" && Number.isFinite(value));
+}
+
+function getHourlyMetricRange(hours, key, decimalPlaces = 0) {
+  const values = getHourlyMetricValues(hours, key);
+  if (!values.length) return [null, null];
+  return [round(Math.min(...values), decimalPlaces), round(Math.max(...values), decimalPlaces)];
+}
+
+function getHourlyMetricAverage(hours, key, decimalPlaces = 0) {
+  const values = getHourlyMetricValues(hours, key);
+  if (!values.length) return null;
+  return round(values.reduce((total, value) => total + value, 0) / values.length, decimalPlaces);
+}
+
+function getMostCommonHourlyValue(hours, key) {
+  const counts = new Map();
+  for (const hour of hours) {
+    const value = hour[key];
+    if (value != null) counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+  return [...counts].sort((first, second) => second[1] - first[1])[0]?.[0] ?? null;
 }
 
 async function fetchWeatherWithRetry(url, attempts = 3) {
@@ -102,6 +139,37 @@ async function fetchWeatherWithRetry(url, attempts = 3) {
   throw lastError;
 }
 
+async function fetchMarineData(url) {
+  try {
+    const response = await fetchWeatherWithRetry(url);
+    return await response.json();
+  } catch (fetchError) {
+    try {
+      const { stdout } = await executeFile(
+        "curl",
+        [
+          "--fail",
+          "--silent",
+          "--show-error",
+          "--retry",
+          "2",
+          "--retry-all-errors",
+          "--max-time",
+          "30",
+          url,
+        ],
+        { maxBuffer: 10 * 1024 * 1024 },
+      );
+      return JSON.parse(stdout);
+    } catch (curlError) {
+      throw new AggregateError(
+        [fetchError, curlError],
+        "Open-Meteo marine request failed with both fetch and curl",
+      );
+    }
+  }
+}
+
 export async function buildWeatherData() {
   const fallbackPath = path.join("src", "data", "weather.json");
 
@@ -114,8 +182,15 @@ export async function buildWeatherData() {
       hourly: [
         "temperature_2m",
         "apparent_temperature",
-        "pressure_msl",
+        "relative_humidity_2m",
+        "dew_point_2m",
+        "surface_pressure",
         "cloud_cover",
+        "cloud_cover_low",
+        "cloud_cover_mid",
+        "cloud_cover_high",
+        "cloud_base",
+        "visibility",
         "precipitation_probability",
         "precipitation",
         "wind_speed_10m",
@@ -136,6 +211,7 @@ export async function buildWeatherData() {
         "wind_gusts_10m_max",
         "wind_direction_10m_dominant",
         "uv_index_max",
+        "surface_pressure_mean",
       ].join(","),
       temperature_unit: "celsius",
       wind_speed_unit: "kmh",
@@ -146,7 +222,48 @@ export async function buildWeatherData() {
     const response = await fetchWeatherWithRetry(url);
 
     const weather = await response.json();
-    return processWeatherResponse(weather);
+    let marine = {};
+
+    try {
+      const marineParams = new URLSearchParams({
+        latitude: String(LOCATION.lat),
+        longitude: String(LOCATION.lon),
+        timezone: TIME_ZONE,
+        forecast_days: String(DISPLAY_DAYS),
+        hourly: [
+          "sea_surface_temperature",
+          "wave_height",
+          "wave_direction",
+          "wave_period",
+          "wind_wave_height",
+          "wind_wave_direction",
+          "wind_wave_period",
+          "swell_wave_height",
+          "swell_wave_direction",
+          "swell_wave_period",
+        ].join(","),
+        daily: [
+          "wave_height_max",
+          "wave_direction_dominant",
+          "wave_period_max",
+          "wind_wave_height_max",
+          "wind_wave_direction_dominant",
+          "wind_wave_period_max",
+          "swell_wave_height_max",
+          "swell_wave_direction_dominant",
+          "swell_wave_period_max",
+        ].join(","),
+      });
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?${marineParams.toString()}`;
+      marine = await fetchMarineData(marineUrl);
+    } catch (error) {
+      console.warn("Open-Meteo marine fetch failed; marine metrics will be null.", {
+        message: error.message,
+        cause: error.cause?.code ?? error.cause?.message ?? null,
+      });
+    }
+
+    return processWeatherResponse(weather, marine);
   } catch (error) {
     console.warn(
       "Open-Meteo weather fetch failed after retries; using cached weather data fallback.",
@@ -167,29 +284,69 @@ export async function buildWeatherData() {
   }
 }
 
-function processWeatherResponse(weather) {
+export function processWeatherResponse(weather, marine = {}) {
   const hourlyByDate = new Map();
+  const weatherHourly = weather?.hourly ?? {};
+  const weatherDaily = weather?.daily ?? {};
+  const marineHourly = marine?.hourly ?? {};
+  const marineDaily = marine?.daily ?? {};
+  const hourlyTimes = Array.isArray(weatherHourly.time) ? weatherHourly.time : [];
+  const dailyDates = Array.isArray(weatherDaily.time) ? weatherDaily.time : [];
+  const marineTimes = Array.isArray(marineHourly.time) ? marineHourly.time : [];
+  const marineDailyDates = Array.isArray(marineDaily.time) ? marineDaily.time : [];
+  const marineByTime = new Map();
+  const marineDailyByDate = new Map(
+    marineDailyDates.map((date, index) => [date, index]),
+  );
 
-  for (let i = 0; i < (weather.hourly?.time ?? []).length; i += 1) {
-    const isoTime = weather.hourly.time[i];
+  for (let index = 0; index < marineTimes.length; index += 1) {
+    const isoTime = marineTimes[index];
+    if (typeof isoTime === "string") marineByTime.set(isoTime, index);
+  }
+
+  for (let i = 0; i < hourlyTimes.length; i += 1) {
+    const isoTime = hourlyTimes[i];
+    if (typeof isoTime !== "string" || !isoTime.includes("T")) continue;
     // Open-Meteo returns hourly timestamps in the requested local timezone.
     const [date, localTime] = isoTime.split("T");
     const hour = localTime.slice(0, 2);
+    const marineIndex = marineByTime.get(isoTime);
+    const marineValue = (key, decimalPlaces = 0) =>
+      marineIndex == null
+        ? null
+        : round(marineHourly[key]?.[marineIndex], decimalPlaces);
     const entry = {
       time: `${hour}:00`,
-      temperature: round(weather.hourly.temperature_2m?.[i]),
-      feelsLike: round(weather.hourly.apparent_temperature?.[i]),
-      pressure: round(weather.hourly.pressure_msl?.[i]),
-      cloudCover: round(weather.hourly.cloud_cover?.[i]),
-      rainChance: round(weather.hourly.precipitation_probability?.[i]),
-      rainVolume: roundMillimeters(weather.hourly.precipitation?.[i]),
-      windSpeed: round(weather.hourly.wind_speed_10m?.[i]),
-      windGust: round(weather.hourly.wind_gusts_10m?.[i]),
+      temperature: round(weatherHourly.temperature_2m?.[i]),
+      feelsLike: round(weatherHourly.apparent_temperature?.[i]),
+      humidity: roundPercentage(weatherHourly.relative_humidity_2m?.[i]),
+      dewPoint: round(weatherHourly.dew_point_2m?.[i], 1),
+      pressure: round(weatherHourly.surface_pressure?.[i]),
+      cloudCover: roundPercentage(weatherHourly.cloud_cover?.[i]),
+      cloudCoverLow: roundPercentage(weatherHourly.cloud_cover_low?.[i]),
+      cloudCoverMid: roundPercentage(weatherHourly.cloud_cover_mid?.[i]),
+      cloudCoverHigh: roundPercentage(weatherHourly.cloud_cover_high?.[i]),
+      cloudBase: roundNonNegative(weatherHourly.cloud_base?.[i]),
+      visibility: roundNonNegative(weatherHourly.visibility?.[i]),
+      rainChance: roundPercentage(weatherHourly.precipitation_probability?.[i]),
+      rainVolume: roundNonNegative(weatherHourly.precipitation?.[i], 1),
+      windSpeed: roundNonNegative(weatherHourly.wind_speed_10m?.[i]),
+      windGust: roundNonNegative(weatherHourly.wind_gusts_10m?.[i]),
       windDirection: getWindDirectionLabel(
-        weather.hourly.wind_direction_10m?.[i],
+        weatherHourly.wind_direction_10m?.[i],
       ),
-      uvIndex: round(weather.hourly.uv_index?.[i]),
-      weatherCondition: getWeatherLabel(weather.hourly.weather_code?.[i]),
+      uvIndex: roundNonNegative(weatherHourly.uv_index?.[i]),
+      seaSurfaceTemperature: marineValue("sea_surface_temperature", 1),
+      waveHeight: roundNonNegative(marineValue("wave_height", 1), 1),
+      waveDirection: getWindDirectionLabel(marineValue("wave_direction")),
+      wavePeriod: roundNonNegative(marineValue("wave_period", 1), 1),
+      windWaveHeight: roundNonNegative(marineValue("wind_wave_height", 1), 1),
+      windWaveDirection: getWindDirectionLabel(marineValue("wind_wave_direction")),
+      windWavePeriod: roundNonNegative(marineValue("wind_wave_period", 1), 1),
+      swellWaveHeight: roundNonNegative(marineValue("swell_wave_height", 1), 1),
+      swellWaveDirection: getWindDirectionLabel(marineValue("swell_wave_direction")),
+      swellWavePeriod: roundNonNegative(marineValue("swell_wave_period", 1), 1),
+      weatherCondition: getWeatherLabel(weatherHourly.weather_code?.[i]),
     };
 
     if (!hourlyByDate.has(date)) {
@@ -199,57 +356,69 @@ function processWeatherResponse(weather) {
     hourlyByDate.get(date).set(hour, entry);
   }
 
-  const days = (weather.daily?.time ?? []).map((dateString, index) => {
+  const days = dailyDates.map((dateString, index) => {
     const date = formatLocalDate(new Date(dateString));
     const hourlyMap = hourlyByDate.get(date) ?? new Map();
+    const marineDailyIndex = marineDailyByDate.get(date);
+    const marineDailyValue = (key, decimalPlaces = 0) =>
+      marineDailyIndex == null
+        ? null
+        : round(marineDaily[key]?.[marineDailyIndex], decimalPlaces);
     const dailyHours = Array.from({ length: 24 }, (_, hourIndex) => {
       const hourKey = hourIndex.toString().padStart(2, "0");
-      const exactHour = hourlyMap.get(hourKey);
-      if (exactHour) return exactHour;
-
-      const candidateHours = Array.from(hourlyMap.keys())
-        .map(Number)
-        .sort((a, b) => a - b);
-      const closest = candidateHours.reduce((best, candidate) => {
-        const currentDistance = Math.abs(candidate - hourIndex);
-        const bestDistance =
-          best == null ? Number.POSITIVE_INFINITY : Math.abs(best - hourIndex);
-        return currentDistance < bestDistance ? candidate : best;
-      }, null);
-
-      return closest == null
-        ? null
-        : hourlyMap.get(String(closest).padStart(2, "0"));
-    }).filter(Boolean);
-    const tempMin = round(weather.daily.temperature_2m_min?.[index]);
-    const tempMax = round(weather.daily.temperature_2m_max?.[index]);
+      return hourlyMap.get(hourKey) ?? {
+        time: `${hourKey}:00`,
+        temperature: null,
+        feelsLike: null,
+        humidity: null,
+        dewPoint: null,
+        pressure: null,
+        cloudCover: null,
+        cloudCoverLow: null,
+        cloudCoverMid: null,
+        cloudCoverHigh: null,
+        cloudBase: null,
+        visibility: null,
+        rainChance: null,
+        rainVolume: null,
+        windSpeed: null,
+        windGust: null,
+        windDirection: null,
+        uvIndex: null,
+        seaSurfaceTemperature: null,
+        waveHeight: null,
+        waveDirection: null,
+        wavePeriod: null,
+        windWaveHeight: null,
+        windWaveDirection: null,
+        windWavePeriod: null,
+        swellWaveHeight: null,
+        swellWaveDirection: null,
+        swellWavePeriod: null,
+        weatherCondition: null,
+      };
+    });
+    const tempMin = round(weatherDaily.temperature_2m_min?.[index]);
+    const tempMax = round(weatherDaily.temperature_2m_max?.[index]);
     const feelsLikeMin = round(
-      weather.daily.apparent_temperature_min?.[index],
+      weatherDaily.apparent_temperature_min?.[index],
     );
     const feelsLikeMax = round(
-      weather.daily.apparent_temperature_max?.[index],
+      weatherDaily.apparent_temperature_max?.[index],
     );
-    const rainVolume = roundMillimeters(
-      weather.daily.precipitation_sum?.[index],
+    const rainVolume = roundNonNegative(
+      weatherDaily.precipitation_sum?.[index],
+      1,
     );
     const rainChance = round(
-      weather.daily.precipitation_probability_max?.[index],
+      weatherDaily.precipitation_probability_max?.[index],
     );
-    const windMax = round(weather.daily.wind_speed_10m_max?.[index]);
-    const windGustMax = round(weather.daily.wind_gusts_10m_max?.[index]);
+    const windMax = round(weatherDaily.wind_speed_10m_max?.[index]);
+    const windGustMax = round(weatherDaily.wind_gusts_10m_max?.[index]);
     const windDirection = getWindDirectionLabel(
-      weather.daily.wind_direction_10m_dominant?.[index],
+      weatherDaily.wind_direction_10m_dominant?.[index],
     );
-    const uvPeak = round(weather.daily.uv_index_max?.[index]);
-    const pressureValues = dailyHours
-      .map((hour) => hour.pressure)
-      .filter((v) => v != null);
-    const pressureMin = pressureValues.length
-      ? Math.min(...pressureValues)
-      : null;
-    const pressureMax = pressureValues.length
-      ? Math.max(...pressureValues)
-      : null;
+    const uvPeak = round(weatherDaily.uv_index_max?.[index]);
     const cloudValues = dailyHours
       .map((hour) => hour.cloudCover)
       .filter((v) => v != null);
@@ -259,7 +428,13 @@ function processWeatherResponse(weather) {
         cloudValues.length,
       )
       : null;
-    const summary = getWeatherLabel(weather.daily.weather_code?.[index]);
+    const summary = getWeatherLabel(weatherDaily.weather_code?.[index]);
+    const pressureRange = getHourlyMetricRange(dailyHours, "pressure");
+    const humidityRange = getHourlyMetricRange(dailyHours, "humidity");
+    const dewPointRange = getHourlyMetricRange(dailyHours, "dewPoint", 1);
+    const cloudCoverLowBaseline = getHourlyMetricAverage(dailyHours, "cloudCoverLow");
+    const cloudCoverMidBaseline = getHourlyMetricAverage(dailyHours, "cloudCoverMid");
+    const cloudCoverHighBaseline = getHourlyMetricAverage(dailyHours, "cloudCoverHigh");
 
     return {
       date,
@@ -281,11 +456,44 @@ function processWeatherResponse(weather) {
       rainVolume,
       cloudCover,
       cloudBaseline: cloudCover,
+      cloudCoverLowBaseline,
+      cloudCoverMidBaseline,
+      cloudCoverHighBaseline,
+      cloudBaseRange: getHourlyMetricRange(dailyHours, "cloudBase"),
+      visibilityRange: getHourlyMetricRange(dailyHours, "visibility"),
+      humidityRange,
+      humidityBaseline: getHourlyMetricAverage(dailyHours, "humidity"),
+      dewPointRange,
+      dewPointBaseline: getHourlyMetricAverage(dailyHours, "dewPoint", 1),
       uvPeak,
-      pressureRange:
-        pressureMin != null && pressureMax != null
-          ? [pressureMin, pressureMax]
-          : [null, null],
+      pressureRange,
+      pressureBaseline: round(weatherDaily.surface_pressure_mean?.[index]) ?? getHourlyMetricAverage(dailyHours, "pressure"),
+      seaSurfaceTemperatureRange: getHourlyMetricRange(dailyHours, "seaSurfaceTemperature", 1),
+      seaSurfaceTemperatureBaseline: getHourlyMetricAverage(dailyHours, "seaSurfaceTemperature", 1),
+      waveHeightRange: getHourlyMetricRange(dailyHours, "waveHeight", 1),
+      waveHeightMax: marineDailyValue("wave_height_max", 1),
+      waveDirection: getMostCommonHourlyValue(dailyHours, "waveDirection"),
+      waveDirectionDominant: getWindDirectionLabel(
+        marineDailyValue("wave_direction_dominant"),
+      ),
+      wavePeriodRange: getHourlyMetricRange(dailyHours, "wavePeriod", 1),
+      wavePeriodMax: marineDailyValue("wave_period_max", 1),
+      windWaveHeightRange: getHourlyMetricRange(dailyHours, "windWaveHeight", 1),
+      windWaveHeightMax: marineDailyValue("wind_wave_height_max", 1),
+      windWaveDirection: getMostCommonHourlyValue(dailyHours, "windWaveDirection"),
+      windWaveDirectionDominant: getWindDirectionLabel(
+        marineDailyValue("wind_wave_direction_dominant"),
+      ),
+      windWavePeriodRange: getHourlyMetricRange(dailyHours, "windWavePeriod", 1),
+      windWavePeriodMax: marineDailyValue("wind_wave_period_max", 1),
+      swellWaveHeightRange: getHourlyMetricRange(dailyHours, "swellWaveHeight", 1),
+      swellWaveHeightMax: marineDailyValue("swell_wave_height_max", 1),
+      swellWaveDirection: getMostCommonHourlyValue(dailyHours, "swellWaveDirection"),
+      swellWaveDirectionDominant: getWindDirectionLabel(
+        marineDailyValue("swell_wave_direction_dominant"),
+      ),
+      swellWavePeriodRange: getHourlyMetricRange(dailyHours, "swellWavePeriod", 1),
+      swellWavePeriodMax: marineDailyValue("swell_wave_period_max", 1),
       hours: dailyHours,
     };
   });

@@ -1,6 +1,10 @@
 // Adapts the generated /conditions.json payload into the shape the dashboard cards expect.
 import scoringRules from "../config/scoringRules.json";
 import {
+  ENVIRONMENTAL_METRICS,
+  type EnvironmentalMetricDefinition,
+} from "../config/metricMatrix";
+import {
   calculateConditionScore,
   calculateTideRating,
 } from "../utils/scoringEngine.js";
@@ -39,9 +43,39 @@ export interface ConditionsAnchored {
   windRange: Array<number | null>;
   windBaseline: string;
   cloudBaseline: number;
+  cloudCoverLowBaseline?: number | null;
+  cloudCoverMidBaseline?: number | null;
+  cloudCoverHighBaseline?: number | null;
+  cloudBaseRange?: Array<number | null>;
+  visibilityRange?: Array<number | null>;
+  humidityRange?: Array<number | null>;
+  humidityBaseline?: number | null;
+  dewPointRange?: Array<number | null>;
+  dewPointBaseline?: number | null;
   pressureRange: Array<number | null>;
+  pressureBaseline?: number | null;
   rainChance: number | null;
   rainVolume: number | null;
+  seaSurfaceTemperatureRange?: Array<number | null>;
+  seaSurfaceTemperatureBaseline?: number | null;
+  waveHeightRange?: Array<number | null>;
+  waveHeightMax?: number | null;
+  waveDirection?: string | null;
+  waveDirectionDominant?: string | null;
+  wavePeriodRange?: Array<number | null>;
+  wavePeriodMax?: number | null;
+  windWaveHeightRange?: Array<number | null>;
+  windWaveHeightMax?: number | null;
+  windWaveDirection?: string | null;
+  windWaveDirectionDominant?: string | null;
+  windWavePeriodRange?: Array<number | null>;
+  windWavePeriodMax?: number | null;
+  swellWaveHeightRange?: Array<number | null>;
+  swellWaveHeightMax?: number | null;
+  swellWaveDirection?: string | null;
+  swellWaveDirectionDominant?: string | null;
+  swellWavePeriodRange?: Array<number | null>;
+  swellWavePeriodMax?: number | null;
   dayScore: number | null;
 }
 
@@ -59,10 +93,27 @@ export interface ConditionsHour {
   windDirection: string;
   temperature: number;
   feelsLike?: number | null;
+  humidity?: number | null;
+  dewPoint?: number | null;
   cloudCover: number;
+  cloudCoverLow?: number | null;
+  cloudCoverMid?: number | null;
+  cloudCoverHigh?: number | null;
+  cloudBase?: number | null;
+  visibility?: number | null;
   rainChance: number | null;
   rainVolume: number | null;
   uvIndex?: number | null;
+  seaSurfaceTemperature?: number | null;
+  waveHeight?: number | null;
+  waveDirection?: string | null;
+  wavePeriod?: number | null;
+  windWaveHeight?: number | null;
+  windWaveDirection?: string | null;
+  windWavePeriod?: number | null;
+  swellWaveHeight?: number | null;
+  swellWaveDirection?: string | null;
+  swellWavePeriod?: number | null;
 }
 
 export interface ConditionsDay {
@@ -92,17 +143,42 @@ export interface ClaudeHourlyData {
   pressure: number;
   airTemp: number;
   feelsLike: number | null;
+  humidity?: number | null;
+  dewPoint?: number | null;
   weatherCondition: string;
   cloudCover: number;
+  cloudCoverLow?: number | null;
+  cloudCoverMid?: number | null;
+  cloudCoverHigh?: number | null;
+  cloudBase?: number | null;
+  visibility?: number | null;
   rainChance: number | null;
   rainVolume: number | null;
   uvIndex: number | null;
+  seaSurfaceTemperature?: number | null;
+  waveHeight?: number | null;
+  waveDirection?: string | null;
+  wavePeriod?: number | null;
+  windWaveHeight?: number | null;
+  windWaveDirection?: string | null;
+  windWavePeriod?: number | null;
+  swellWaveHeight?: number | null;
+  swellWaveDirection?: string | null;
+  swellWavePeriod?: number | null;
+  environmentalValues: Record<string, string>;
   swell: { height: number; period: number; dir: string } | null;
 }
 
 export interface ClaudeDayData {
   date: string;
   hours: ClaudeHourlyData[];
+  environmentalSummaries: Record<
+    string,
+    Pick<
+      EnvironmentalMetricDisplayValues,
+      "dailyBaseline" | "dailyRange" | "dailyMaximum" | "dailyDirection"
+    >
+  >;
   tideEvents: Array<{ hour: number; type: "High" | "Low"; height: number }>;
   majorWindows: Array<{ start: number; end: number; rating: number }>;
   minorWindows: Array<{ start: number; end: number; rating: number }>;
@@ -255,6 +331,98 @@ function computePressureTrend(
   return "Steady";
 }
 
+export interface EnvironmentalMetricDisplayValues {
+  metric: EnvironmentalMetricDefinition;
+  hourlyValue: string;
+  dailyBaseline: string;
+  dailyRange: string;
+  dailyMaximum: string;
+  dailyDirection: string;
+}
+
+export function formatConditionMetricValue(
+  value: unknown,
+  unit: string,
+  precision = 0,
+): string {
+  if (value == null) return "--";
+
+  let formattedValue: string;
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) return "--";
+    formattedValue = String(Number(value.toFixed(precision)));
+  } else if (typeof value === "string") {
+    formattedValue = value.trim();
+    if (!formattedValue) return "--";
+  } else {
+    return "--";
+  }
+
+  if (!unit) return formattedValue;
+  if (unit === "%" || unit.startsWith("°")) return `${formattedValue}${unit}`;
+  return `${formattedValue} ${unit}`;
+}
+
+function getMetricProperty(source: unknown, key?: string): unknown {
+  if (!key || !source || typeof source !== "object") return null;
+  return (source as Record<string, unknown>)[key] ?? null;
+}
+
+function formatMetricRange(
+  value: unknown,
+  unit: string,
+  precision = 0,
+): string {
+  if (!Array.isArray(value) || value.length < 2) return "--";
+  const minimum = formatConditionMetricValue(value[0], unit, precision);
+  const maximum = formatConditionMetricValue(value[1], unit, precision);
+  if (minimum === "--" && maximum === "--") return "--";
+  return `${minimum} - ${maximum}`;
+}
+
+export function getEnvironmentalMetricDisplayValues(
+  day: ConditionsDay | null | undefined,
+  hourIndex: number,
+  metricId: string,
+): EnvironmentalMetricDisplayValues | null {
+  const metric = ENVIRONMENTAL_METRICS.find((item) => item.id === metricId);
+  if (!metric) return null;
+
+  const anchored = day?.anchored;
+  const hour = day?.hours?.[hourIndex];
+  const dailyKeys = metric.dailyKeys;
+  const precision = metric.precision ?? 0;
+
+  return {
+    metric,
+    hourlyValue: formatConditionMetricValue(
+      getMetricProperty(hour, metric.key),
+      metric.unit,
+      precision,
+    ),
+    dailyBaseline: formatConditionMetricValue(
+      getMetricProperty(anchored, dailyKeys?.baseline),
+      metric.unit,
+      precision,
+    ),
+    dailyRange: formatMetricRange(
+      getMetricProperty(anchored, dailyKeys?.range),
+      metric.unit,
+      precision,
+    ),
+    dailyMaximum: formatConditionMetricValue(
+      getMetricProperty(anchored, dailyKeys?.maximum),
+      metric.unit,
+      precision,
+    ),
+    dailyDirection: formatConditionMetricValue(
+      getMetricProperty(anchored, dailyKeys?.direction),
+      "",
+      precision,
+    ),
+  };
+}
+
 export async function fetchConditionsDays(): Promise<ConditionsDay[]> {
   // Always bypass the HTTP cache so a fresh build:data run is reflected immediately
   const response = await fetch("/conditions.json", { cache: "no-store" });
@@ -276,7 +444,7 @@ export function buildDayData(
   const day = days[index];
   const tideTimeline = buildTideEventTimeline(days);
 
-  const hours: ClaudeHourlyData[] = day.hours.map((item) => {
+  const hours: ClaudeHourlyData[] = day.hours.map((item, hourIndex) => {
     const at = toTimestamp(day.date, item.time);
     const tideRating = calculateTideRating(at, tideTimeline, scoringRules);
     const solunarRating = calculateSolunarHourRating(
@@ -313,9 +481,33 @@ export function buildDayData(
       feelsLike: item.feelsLike ?? null,
       weatherCondition: item.weatherCondition,
       cloudCover: item.cloudCover,
+      cloudCoverLow: item.cloudCoverLow ?? null,
+      cloudCoverMid: item.cloudCoverMid ?? null,
+      cloudCoverHigh: item.cloudCoverHigh ?? null,
+      cloudBase: item.cloudBase ?? null,
+      visibility: item.visibility ?? null,
+      humidity: item.humidity ?? null,
+      dewPoint: item.dewPoint ?? null,
       rainChance: item.rainChance,
       rainVolume: item.rainVolume,
       uvIndex: item.uvIndex ?? null,
+      seaSurfaceTemperature: item.seaSurfaceTemperature ?? null,
+      waveHeight: item.waveHeight ?? null,
+      waveDirection: item.waveDirection ?? null,
+      wavePeriod: item.wavePeriod ?? null,
+      windWaveHeight: item.windWaveHeight ?? null,
+      windWaveDirection: item.windWaveDirection ?? null,
+      windWavePeriod: item.windWavePeriod ?? null,
+      swellWaveHeight: item.swellWaveHeight ?? null,
+      swellWaveDirection: item.swellWaveDirection ?? null,
+      swellWavePeriod: item.swellWavePeriod ?? null,
+      environmentalValues: Object.fromEntries(
+        ENVIRONMENTAL_METRICS.map((metric) => [
+          metric.id,
+          getEnvironmentalMetricDisplayValues(day, hourIndex, metric.id)
+            ?.hourlyValue ?? "--",
+        ]),
+      ),
       swell: null,
     };
   });
@@ -369,10 +561,22 @@ export function buildDayData(
   const uvValues = hours
     .map((item) => item.uvIndex)
     .filter((value): value is number => value != null);
+  const environmentalSummaries = Object.fromEntries(
+    ENVIRONMENTAL_METRICS.map((metric) => {
+      const values = getEnvironmentalMetricDisplayValues(day, 0, metric.id);
+      return [metric.id, {
+        dailyBaseline: values?.dailyBaseline ?? "--",
+        dailyRange: values?.dailyRange ?? "--",
+        dailyMaximum: values?.dailyMaximum ?? "--",
+        dailyDirection: values?.dailyDirection ?? "--",
+      }];
+    }),
+  );
 
   return {
     date: day.date,
     hours,
+    environmentalSummaries,
     tideEvents,
     majorWindows,
     minorWindows,

@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import conditionsFixture from "../../public/conditions.json";
-import { buildDayData } from "./conditions";
+import {
+  buildDayData,
+  formatConditionMetricValue,
+  getEnvironmentalMetricDisplayValues,
+} from "./conditions";
 
 describe("buildDayData", () => {
   const day = buildDayData(conditionsFixture.days, 0);
@@ -25,10 +29,26 @@ describe("buildDayData", () => {
   });
 
   it("falls back to null for metrics missing from conditions.json", () => {
+    const sourceDay = conditionsFixture.days[0];
+    const dayWithMissingHumidity = buildDayData(
+      [
+        {
+          ...sourceDay,
+          hours: sourceDay.hours.map((hour, hourIndex) =>
+            hourIndex === 0 ? { ...hour, humidity: null } : hour,
+          ),
+        },
+      ],
+      0,
+    );
+
     expect(day.hours[0].swell).toBeNull();
-    expect(day.hours[0].uvIndex).toBeNull();
     expect(day.secondary.waterTemp).toBeNull();
     expect(day.ranges.swell).toBeNull();
+    expect(dayWithMissingHumidity.hours[0].humidity).toBeNull();
+    expect(dayWithMissingHumidity.hours[0].environmentalValues.humidity).toBe(
+      "--",
+    );
   });
 
   it("derives major/minor solunar windows from anchored solunar peaks", () => {
@@ -48,5 +68,52 @@ describe("buildDayData", () => {
 
   it("computes a day score as the max hourly score", () => {
     expect(day.dayScore).toBe(Math.max(...day.hours.map((hour) => hour.score)));
+  });
+
+  it("extracts matrix-configured hourly and daily environmental values", () => {
+    const sourceDay = conditionsFixture.days[0];
+    const humidity = getEnvironmentalMetricDisplayValues(
+      sourceDay,
+      0,
+      "humidity",
+    );
+
+    expect(humidity?.hourlyValue).toBe(
+      formatConditionMetricValue(sourceDay.hours[0].humidity, "%"),
+    );
+    expect(humidity?.dailyBaseline).toBe(
+      formatConditionMetricValue(sourceDay.anchored.humidityBaseline, "%"),
+    );
+    expect(humidity?.dailyRange).toContain(" - ");
+    expect(day.hours[0].environmentalValues.humidity).toBe(
+      humidity?.hourlyValue,
+    );
+    expect(day.environmentalSummaries.humidity.dailyBaseline).toBe(
+      humidity?.dailyBaseline,
+    );
+  });
+
+  it("formats missing and incomplete metric values as placeholders", () => {
+    const sourceDay = conditionsFixture.days[0];
+    const incompleteDay = {
+      ...sourceDay,
+      anchored: {
+        ...sourceDay.anchored,
+        humidityBaseline: null,
+        humidityRange: [null, null],
+      },
+      hours: [{ ...sourceDay.hours[0], humidity: null }],
+    };
+    const humidity = getEnvironmentalMetricDisplayValues(
+      incompleteDay,
+      0,
+      "humidity",
+    );
+
+    expect(formatConditionMetricValue(null, "%")).toBe("--");
+    expect(formatConditionMetricValue(undefined, "°C")).toBe("--");
+    expect(humidity?.hourlyValue).toBe("--");
+    expect(humidity?.dailyBaseline).toBe("--");
+    expect(humidity?.dailyRange).toBe("--");
   });
 });

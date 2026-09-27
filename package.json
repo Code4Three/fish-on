@@ -16,7 +16,7 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "npm run type-check"
+    "test": "vitest run && npm run type-check"
   },
   "repository": {
     "type": "git",

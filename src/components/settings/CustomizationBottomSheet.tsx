@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { Check, RotateCcw, X } from "lucide-react";
-import { DAILY_GROUPS, HOURLY_METRICS } from "../../config/metricMatrix";
+import {
+  DAILY_GROUPS,
+  HOURLY_GRID_METRICS,
+} from "../../config/metricMatrix";
 import type {
   DashboardCardSettings,
   MatrixSettings,
@@ -53,9 +56,8 @@ export default function CustomizationBottomSheet({
   return (
     <div
       aria-hidden={!isOpen}
-      className={`fixed inset-0 z-50 flex items-end justify-center transition-opacity duration-300 ${
-        isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-      }`}
+      className={`fixed inset-0 z-50 flex items-end justify-center transition-opacity duration-300 ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
     >
       {/* Full-screen backdrop */}
       <button
@@ -73,9 +75,8 @@ export default function CustomizationBottomSheet({
           role="dialog"
           aria-modal="true"
           aria-labelledby="display-metrics-title"
-          className={`pointer-events-auto relative max-h-[90dvh] w-full overflow-y-auto rounded-t-3xl border border-b-0 border-hull-700 bg-hull-900 font-body text-slate-100 shadow-2xl transition-transform duration-300 ease-out ${
-            isOpen ? "translate-y-0" : "translate-y-full"
-          }`}
+          className={`pointer-events-auto relative max-h-[90dvh] w-full overflow-y-auto rounded-t-3xl border border-b-0 border-hull-700 bg-hull-900 font-body text-slate-100 shadow-2xl transition-transform duration-300 ease-out ${isOpen ? "translate-y-0" : "translate-y-full"
+            }`}
         >
           <div className="flex min-h-16 items-center justify-between border-b border-slate-800 px-4">
             <h2
@@ -126,11 +127,10 @@ export default function CustomizationBottomSheet({
                             aria-label={`${matrixSettings.groups[group.id] ? "Hide" : "Show"} ${group.label}`}
                             onClick={() => onToggleGroup(group.id)}
                             tabIndex={isOpen ? 0 : -1}
-                            className={`inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border ${
-                              matrixSettings.groups[group.id]
+                            className={`inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border ${matrixSettings.groups[group.id]
                                 ? "border-emerald-300 bg-emerald-400 text-slate-950"
                                 : "border-slate-600 bg-slate-800 text-slate-500"
-                            }`}
+                              }`}
                           >
                             <Check size={17} strokeWidth={3} />
                           </button>
@@ -151,11 +151,10 @@ export default function CustomizationBottomSheet({
                                 aria-label={`${matrixSettings.metrics[metric.id] ? "Hide" : "Show"} ${metric.label}`}
                                 onClick={() => onToggleMatrixMetric(metric.id)}
                                 tabIndex={isOpen ? 0 : -1}
-                                className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${
-                                  matrixSettings.metrics[metric.id]
+                                className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${matrixSettings.metrics[metric.id]
                                     ? "border-emerald-300 bg-emerald-400 text-slate-950"
                                     : "border-slate-600 bg-slate-800 text-slate-500"
-                                }`}
+                                  }`}
                               >
                                 <Check size={15} strokeWidth={3} />
                               </button>
@@ -172,7 +171,9 @@ export default function CustomizationBottomSheet({
                   <summary className="cursor-pointer py-3 text-sm font-semibold text-white">
                     Hourly display
                   </summary>
-                  {HOURLY_METRICS.map((metric) => (
+                  {HOURLY_GRID_METRICS.filter(
+                    (metric) => metric.availableColumn && metric.toggleable,
+                  ).map((metric) => (
                     <div
                       key={metric.id}
                       className="flex min-h-10 items-center justify-between gap-3 border-t border-slate-800/80"
@@ -187,11 +188,10 @@ export default function CustomizationBottomSheet({
                         aria-label={`${matrixSettings.hourly[metric.id] ? "Hide" : "Show"} ${metric.label}`}
                         onClick={() => onToggleMatrixMetric(metric.id, true)}
                         tabIndex={isOpen ? 0 : -1}
-                        className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${
-                          matrixSettings.hourly[metric.id]
+                        className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${matrixSettings.hourly[metric.id]
                             ? "border-emerald-300 bg-emerald-400 text-slate-950"
                             : "border-slate-600 bg-slate-800 text-slate-500"
-                        }`}
+                          }`}
                       >
                         <Check size={15} strokeWidth={3} />
                       </button>
@@ -215,11 +215,10 @@ export default function CustomizationBottomSheet({
                     aria-checked={enabled}
                     onClick={() => onToggle(key as keyof DashboardCardSettings)}
                     tabIndex={isOpen ? 0 : -1}
-                    className={`inline-flex min-h-12 min-w-12 items-center justify-center rounded-full border ${
-                      enabled
+                    className={`inline-flex min-h-12 min-w-12 items-center justify-center rounded-full border ${enabled
                         ? "border-emerald-300 bg-emerald-400 text-slate-950"
                         : "border-slate-600 bg-slate-800 text-slate-500"
-                    }`}
+                      }`}
                   >
                     <Check size={19} strokeWidth={3} />
                   </button>
@@ -241,11 +240,10 @@ export default function CustomizationBottomSheet({
                   aria-pressed={prototype === option.id}
                   onClick={() => onSelectPrototype(option.id)}
                   tabIndex={isOpen ? 0 : -1}
-                  className={`flex min-h-12 items-center justify-between rounded-lg border px-3 text-left transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${
-                    prototype === option.id
+                  className={`flex min-h-12 items-center justify-between rounded-lg border px-3 text-left transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${prototype === option.id
                       ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
                       : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
-                  }`}
+                    }`}
                 >
                   <span>
                     <span className="block text-sm font-semibold">
@@ -277,11 +275,10 @@ export default function CustomizationBottomSheet({
                     aria-pressed={dockPosition === position}
                     onClick={() => onSelectDockPosition(position)}
                     tabIndex={isOpen ? 0 : -1}
-                    className={`min-h-12 rounded-lg border text-sm font-semibold capitalize transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${
-                      dockPosition === position
+                    className={`min-h-12 rounded-lg border text-sm font-semibold capitalize transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${dockPosition === position
                         ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
                         : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
-                    }`}
+                      }`}
                   >
                     {position}
                   </button>
