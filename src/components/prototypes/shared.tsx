@@ -1053,17 +1053,15 @@ export function MatrixMetricCard({
       }}
       className={`${hero ? "min-h-[132px] p-4" : "min-h-[92px] p-3"} flex flex-col justify-between rounded-2xl border border-hull-700/70 bg-hull-800`}
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2">
-          {Icon && (
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-hull-700/60">
-              <Icon size={14} className={meta.tint} />
-            </div>
-          )}
-          <p className="font-body text-[11.5px] leading-tight text-slate-400">
-            {metricLabel === id ? label : metricLabel}
-          </p>
-        </div>
+      <div className="flex items-center justify-between gap-2">
+        {Icon && (
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-hull-700/60">
+            <Icon size={14} className={meta.tint} />
+          </div>
+        )}
+        <p className="min-w-0 flex-1 font-body text-[11.5px] leading-tight text-slate-400">
+          {metricLabel === id ? label : metricLabel}
+        </p>
         <SortableHandle
           attributes={sortable.attributes}
           listeners={sortable.listeners}
@@ -1423,6 +1421,10 @@ export function MatrixGroupCard({
   sortId?: string;
 }) {
   const sortable = useSortable({ id: sortId ?? `group-${group.id}` });
+  const header = groupIconMap[group.id] ?? {
+    icon: Fish,
+    tint: "text-tide-400",
+  };
   return (
     <article
       ref={sortable.setNodeRef}
@@ -1432,7 +1434,8 @@ export function MatrixGroupCard({
       }}
       className="mx-4 mt-3 overflow-hidden rounded-3xl border border-hull-700/70 bg-gradient-to-b from-hull-800 to-hull-900"
     >
-      <div className="flex justify-end px-3 pt-2">
+      <div className="flex items-center justify-between gap-1 px-3 pt-3">
+        <GroupHeader icon={header.icon} tint={header.tint} label={group.label} />
         <SortableHandle
           attributes={sortable.attributes}
           listeners={sortable.listeners}
@@ -1975,13 +1978,26 @@ export function FullConditionsView({
       </div>
       <SortableContext items={conditionsOrder.map((id) => `conditions:${id}`)} strategy={verticalListSortingStrategy}>
         <div className="mx-auto mt-3 space-y-2">
-          {conditionsOrder.map((cardId) => (
-            conditionCards[cardId as keyof typeof conditionCards] ? (
-              <SortableConditionsCard key={cardId} id={cardId}>
+          {conditionsOrder.map((cardId) => {
+            const iconMap = {
+              dailySummary: { icon: Fish, label: "Daily Conditions" },
+              tide: { icon: Waves, label: "Tide details" },
+              solunar: { icon: Moon, label: "Current astronomical details" },
+              water: { icon: Waves, label: "Current water & marine details" },
+              weather: { icon: Cloud, label: "Weather & atmospheric conditions" },
+            };
+            const meta = iconMap[cardId as keyof typeof iconMap];
+            return conditionCards[cardId as keyof typeof conditionCards] ? (
+              <SortableConditionsCard
+                key={cardId}
+                id={cardId}
+                label={meta?.label}
+                icon={meta?.icon}
+              >
                 {conditionCards[cardId as keyof typeof conditionCards]}
               </SortableConditionsCard>
-            ) : null
-          ))}
+            ) : null;
+          })}
         </div>
       </SortableContext>
     </div>
@@ -1991,9 +2007,13 @@ export function FullConditionsView({
 function SortableConditionsCard({
   id,
   children,
+  label,
+  icon: Icon,
 }: {
   id: string;
   children: ReactNode;
+  label?: string;
+  icon?: typeof Wind;
 }) {
   const sortable = useSortable({ id: `conditions:${id}` });
   return (
@@ -2005,13 +2025,19 @@ function SortableConditionsCard({
       }}
       className="relative"
     >
-      <div className="absolute right-3 top-3 z-10">
-        <SortableHandle
-          attributes={sortable.attributes}
-          listeners={sortable.listeners}
-          label={`Reorder ${id} conditions card`}
-        />
-      </div>
+      {label && Icon && (
+        <div className="flex items-center justify-between gap-1 px-4 pb-2 pt-3">
+          <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+            <Icon size={13} className="text-tide-400" />
+            {label}
+          </div>
+          <SortableHandle
+            attributes={sortable.attributes}
+            listeners={sortable.listeners}
+            label={`Reorder ${label}`}
+          />
+        </div>
+      )}
       {children}
     </div>
   );
