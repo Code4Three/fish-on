@@ -1,4 +1,19 @@
 import { useRef, useState } from "react";
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { Fish, Settings, Waves } from "lucide-react";
 import { DAILY_GROUPS } from "../config/metricMatrix";
 import { useAnchoredSettings } from "../hooks/useAnchoredSettings";
@@ -141,11 +156,19 @@ export default function MainDashboard({
     toggleGroup,
     toggleMatrixMetric,
     moveDashboardItem,
+    moveConditionsItem,
+    moveHourlySection,
+    moveHourlyColumn,
     resetSettings,
   } = useAnchoredSettings();
   // Whether the control dock sits at the top or bottom of the screen
   const { dockPosition, selectDockPosition } = useDashboardSettings();
   const { unitSystem, selectUnitSystem } = useApp();
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 180, tolerance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
   // Dialog visibility: display-options sheet and the full-day drawer
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
@@ -244,15 +267,24 @@ export default function MainDashboard({
   };
 
   // Handle drag-and-drop reordering of hero groups / metric cards
-  const handleDashboardDrop = (
-    event: React.DragEvent<HTMLElement>,
-    target: string,
-    area: "heroOrder" | "cardOrder",
-  ) => {
-    event.preventDefault();
-    const sourceArea = event.dataTransfer.getData("text/area");
-    const source = event.dataTransfer.getData("text/id");
-    if (sourceArea === area) moveDashboardItem(source, target, area);
+  const handleDragEnd = (event: DragEndEvent) => {
+    const activeId = String(event.active.id);
+    const overId = event.over ? String(event.over.id) : null;
+    if (!overId || activeId === overId) return;
+    const [activeArea, activeValue] = activeId.split(":");
+    const [overArea, overValue] = overId.split(":");
+    if (activeArea !== overArea) return;
+    if (activeArea === "group") moveDashboardItem(activeValue, overValue, "heroOrder");
+    if (activeArea === "metric") moveDashboardItem(activeValue, overValue, "cardOrder");
+    if (activeArea === "conditions") moveConditionsItem(activeValue, overValue);
+    if (activeArea === "hourly-section") moveHourlySection(activeValue, overValue);
+    if (activeArea === "hourly-column") {
+      const [, sectionId, itemValue] = activeId.split(":");
+      const [, overSectionId, overValuePart] = overId.split(":");
+      if (sectionId && itemValue && overSectionId === sectionId && overValuePart) {
+        moveHourlyColumn(sectionId, itemValue, overValuePart);
+      }
+    }
   };
 
   // Pre-flatten metric definitions once so the card grid doesn't re-flatten on every lookup
@@ -320,118 +352,119 @@ export default function MainDashboard({
 
         {/* ================= SWIPEABLE MAIN PANEL ================= */}
         {/* Swipeable panel: metric cards on the left, full conditions detail on the right. From md+ (tablet) up, both panels sit side by side instead of swiping. */}
-        <div
-          className={`mx-auto w-full overscroll-x-none min-h-0 flex-1 overflow-hidden ${dockPosition === "top" ? "pb-4" : ""} ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
-          onPointerDown={handleConditionsPointerDown}
-          onPointerMove={handleConditionsPointerMove}
-          onPointerUp={handleConditionsPointerEnd}
-          onPointerCancel={handleConditionsPointerEnd}
-          onLostPointerCapture={handleConditionsPointerEnd}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          {/* Double-width track; translateX by -50% slides from the cards panel to the full conditions panel. md:translate-x-0 pins both panels in view side by side. */}
           <div
-            className="overscroll-x-none flex h-full w-[200%] touch-pan-y translate-x-[var(--conditions-x)] md:w-full md:translate-x-0"
-            style={
-              {
-                "--conditions-x": `-${conditionsProgress * 50}%`,
-                transition: conditionsDragging
-                  ? "none"
-                  : "transform 300ms ease-out",
-              } as React.CSSProperties
-            }
+            className={`mx-auto w-full overscroll-x-none min-h-0 flex-1 overflow-hidden ${dockPosition === "top" ? "pb-4" : ""} ${conditionsDragging ? "touch-none" : "touch-pan-y"}`}
+            onPointerDown={handleConditionsPointerDown}
+            onPointerMove={handleConditionsPointerMove}
+            onPointerUp={handleConditionsPointerEnd}
+            onPointerCancel={handleConditionsPointerEnd}
+            onLostPointerCapture={handleConditionsPointerEnd}
           >
-            {/* Left panel: draggable hero group cards, then the grid of individual metric cards */}
-            <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y md:border-r md:border-hull-600/40">
-              <div className="px-[20px] pt-4">
-                <h2 className="font-display text-xl font-semibold text-white">
-                  Conditions Dashboard
-                </h2>
-              </div>
-              {/* Hero group cards: whole groups collapsed into one card, in user-defined order */}
-              {matrixSettings.heroOrder.map((groupId) => {
-                const group = DAILY_GROUPS.find((item) => item.id === groupId);
-                if (!group || !matrixSettings.groups[group.id]) return null;
-
-                return (
-                  <MatrixGroupCard
-                    key={group.id}
-                    group={group}
-                    visibleMetrics={matrixSettings.metrics}
-                    day={day}
-                    hour={hour}
-                    draggable
-                    onDragStart={(event) => {
-                      event.dataTransfer.setData("text/area", "heroOrder");
-                      event.dataTransfer.setData("text/id", group.id);
-                    }}
-                    onDragOver={(event) => event.preventDefault()}
-                    onDrop={(event) =>
-                      handleDashboardDrop(event, group.id, "heroOrder")
-                    }
-                  />
-                );
-              })}
-
-              {/* Individual metric cards: only shown when their parent group isn't collapsed */}
-              <section
-                className="mt-3 px-4"
-                onDragOver={(event) => event.preventDefault()}
-              >
-                <div className="grid grid-cols-2 gap-3">
-                  {matrixSettings.cardOrder.map((metricId) => {
-                    const definition = allMetrics.find(
-                      (metric) => metric.id === metricId,
-                    );
-                    const group = DAILY_GROUPS.find((item) =>
-                      item.metrics.some((metric) => metric.id === metricId),
-                    );
-
-                    // Skip if the metric is disabled or its parent group card is already showing it
-                    if (
-                      !definition ||
-                      !group ||
-                      matrixSettings.groups[group.id] ||
-                      matrixSettings.metrics[metricId] === false
-                    ) {
-                      return null;
-                    }
+            {/* Double-width track; translateX by -50% slides from the cards panel to the full conditions panel. md:translate-x-0 pins both panels in view side by side. */}
+            <div
+              className="overscroll-x-none flex h-full w-[200%] touch-pan-y translate-x-[var(--conditions-x)] md:w-full md:translate-x-0"
+              style={
+                {
+                  "--conditions-x": `-${conditionsProgress * 50}%`,
+                  transition: conditionsDragging
+                    ? "none"
+                    : "transform 300ms ease-out",
+                } as React.CSSProperties
+              }
+            >
+              {/* Left panel: draggable hero group cards, then the grid of individual metric cards */}
+              <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y md:border-r md:border-hull-600/40">
+                <div className="px-[20px] pt-4">
+                  <h2 className="font-display text-xl font-semibold text-white">
+                    Conditions Dashboard
+                  </h2>
+                </div>
+                {/* Hero group cards: whole groups collapsed into one card, in user-defined order */}
+                <SortableContext
+                  items={matrixSettings.heroOrder.map((groupId) => `group:${groupId}`)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {matrixSettings.heroOrder.map((groupId) => {
+                    const group = DAILY_GROUPS.find((item) => item.id === groupId);
+                    if (!group || !matrixSettings.groups[group.id]) return null;
 
                     return (
-                      <MatrixMetricCard
-                        key={metricId}
-                        id={metricId}
-                        label={definition.label}
+                      <MatrixGroupCard
+                        key={group.id}
+                        group={group}
+                        visibleMetrics={matrixSettings.metrics}
                         day={day}
                         hour={hour}
-                        draggable
-                        onDragStart={(event) => {
-                          event.dataTransfer.setData("text/area", "cardOrder");
-                          event.dataTransfer.setData("text/id", metricId);
-                        }}
-                        onDragOver={(event) => event.preventDefault()}
-                        onDrop={(event) =>
-                          handleDashboardDrop(event, metricId, "cardOrder")
-                        }
+                        sortId={`group:${group.id}`}
                       />
                     );
                   })}
-                </div>
-              </section>
-            </div>
+                </SortableContext>
 
-            {/* Right panel: detailed daily conditions view */}
-            <div
-              className={`no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y ${dockPosition === "bottom" ? "pb-44" : ""}`}
-            >
-              <FullConditionsView
-                day={day}
-                hour={hour}
-                visibleMetrics={matrixSettings.metrics}
-                onClose={() => setConditionsProgress(0)}
-              />
+                {/* Individual metric cards: only shown when their parent group isn't collapsed */}
+                <section
+                  className="mt-3 px-4"
+                  onDragOver={(event) => event.preventDefault()}
+                >
+                  <SortableContext
+                    items={matrixSettings.cardOrder.map((metricId) => `metric:${metricId}`)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <div className="grid grid-cols-2 gap-3">
+                      {matrixSettings.cardOrder.map((metricId) => {
+                        const definition = allMetrics.find(
+                          (metric) => metric.id === metricId,
+                        );
+                        const group = DAILY_GROUPS.find((item) =>
+                          item.metrics.some((metric) => metric.id === metricId),
+                        );
+
+                        // Skip if the metric is disabled or its parent group card is already showing it
+                        if (
+                          !definition ||
+                          !group ||
+                          matrixSettings.groups[group.id] ||
+                          matrixSettings.metrics[metricId] === false
+                        ) {
+                          return null;
+                        }
+
+                        return (
+                          <MatrixMetricCard
+                            key={metricId}
+                            id={metricId}
+                            label={definition.label}
+                            day={day}
+                            hour={hour}
+                            sortId={`metric:${metricId}`}
+                          />
+                        );
+                      })}
+                    </div>
+                  </SortableContext>
+                </section>
+              </div>
+
+              {/* Right panel: detailed daily conditions view */}
+              <div
+                className={`no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y ${dockPosition === "bottom" ? "pb-44" : ""}`}
+              >
+                <FullConditionsView
+                  day={day}
+                  hour={hour}
+                  visibleMetrics={matrixSettings.metrics}
+                  conditionsOrder={matrixSettings.conditionsOrder}
+                  onClose={() => setConditionsProgress(0)}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </DndContext>
 
         {/* ================= BOTTOM DOCK (CONDITIONAL) ================= */}
         {/* Bottom dock: default control layout, docked to the bottom of the screen */}
@@ -448,6 +481,10 @@ export default function MainDashboard({
           day={day}
           selectedHour={hour}
           hourlySettings={matrixSettings.hourly}
+          hourlySectionOrder={matrixSettings.hourlySectionOrder}
+          hourlyColumnOrder={matrixSettings.hourlyColumnOrder}
+          onMoveHourlySection={moveHourlySection}
+          onMoveHourlyColumn={moveHourlyColumn}
           dockPosition={dockPosition}
           onDragStart={handleDockDragStart}
           onDragMove={handleDockDragMove}

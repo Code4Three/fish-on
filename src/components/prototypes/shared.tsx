@@ -11,6 +11,7 @@ import {
   Eye,
   Fish,
   Gauge,
+  GripVertical,
   Moon,
   Sun,
   Thermometer,
@@ -18,7 +19,25 @@ import {
   Wind,
   X,
 } from "lucide-react";
-import { ENVIRONMENTAL_METRICS } from "../../config/metricMatrix";
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
+import { useSortable } from "@dnd-kit/sortable";
+import {
+  horizontalListSortingStrategy,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { ENVIRONMENTAL_METRICS, HOURLY_SECTIONS } from "../../config/metricMatrix";
 import type { ClaudeDayData } from "../../data/conditions";
 import type { AnchoredSettingsState } from "../../hooks/useAnchoredSettings";
 import type { PrototypeId } from "../../hooks/useLayoutPrototype";
@@ -909,27 +928,117 @@ function GroupHeader({
   );
 }
 
+function SortableHandle({
+  attributes,
+  listeners,
+  label,
+}: {
+  attributes: React.HTMLAttributes<HTMLButtonElement>;
+  listeners: React.HTMLAttributes<HTMLButtonElement> | undefined;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      className="touch-none rounded-md p-1 text-slate-500 hover:bg-hull-700 hover:text-slate-200"
+      {...attributes}
+      {...listeners}
+    >
+      <GripVertical size={16} aria-hidden="true" />
+    </button>
+  );
+}
+
+function SortableSectionHeader({
+  id,
+  label,
+  colSpan,
+}: {
+  id: string;
+  label: string;
+  colSpan: number;
+}) {
+  const sortable = useSortable({ id });
+
+  return (
+    <th
+      ref={sortable.setNodeRef}
+      scope="colgroup"
+      colSpan={colSpan}
+      style={{
+        transform: CSS.Transform.toString(sortable.transform),
+        transition: sortable.transition,
+      }}
+      className="border-x-2 border-hull-600 bg-hull-800 px-2 py-2 text-center align-top"
+    >
+      <div className="flex items-center justify-center gap-1">
+        <SortableHandle
+          attributes={sortable.attributes}
+          listeners={sortable.listeners}
+          label={`Reorder ${label}`}
+        />
+        <span className="font-body text-[10px] font-semibold uppercase tracking-wide text-slate-300">
+          {label}
+        </span>
+      </div>
+    </th>
+  );
+}
+
+function SortableColumnHeader({
+  id,
+  label,
+  sectionLabel,
+  isFirstColumn,
+  isLastColumn,
+}: {
+  id: string;
+  label: string;
+  sectionLabel: string;
+  isFirstColumn: boolean;
+  isLastColumn: boolean;
+}) {
+  const sortable = useSortable({ id });
+
+  return (
+    <th
+      ref={sortable.setNodeRef}
+      scope="col"
+      style={{
+        transform: CSS.Transform.toString(sortable.transform),
+        transition: sortable.transition,
+      }}
+      className={`border-r border-hull-700/70 bg-hull-700/70 px-2 py-2 text-center align-top font-body text-[11px] uppercase text-slate-300 ${isFirstColumn ? "border-l-2 border-l-hull-600" : ""} ${isLastColumn ? "border-r-2 border-r-hull-600" : ""}`}
+    >
+      <div className="flex items-center justify-center gap-1">
+        <SortableHandle
+          attributes={sortable.attributes}
+          listeners={sortable.listeners}
+          label={`Reorder ${label} within ${sectionLabel}`}
+        />
+        <span>{label}</span>
+      </div>
+    </th>
+  );
+}
+
 export function MatrixMetricCard({
   id,
   label,
   day,
   hour,
   hero = false,
-  draggable = false,
-  onDragStart,
-  onDragOver,
-  onDrop,
+  sortId,
 }: {
   id: string;
   label: string;
   day: ClaudeDayData;
   hour: number;
   hero?: boolean;
-  draggable?: boolean;
-  onDragStart?: (event: React.DragEvent<HTMLElement>) => void;
-  onDragOver?: (event: React.DragEvent<HTMLElement>) => void;
-  onDrop?: (event: React.DragEvent<HTMLElement>) => void;
+  sortId?: string;
 }) {
+  const sortable = useSortable({ id: sortId ?? `metric-${id}` });
   const unitSystem = useUnitSystem();
   const [value, detail] = matrixMetricValue(id, day, hour, unitSystem);
   const metricLabel = formatMetricLabel(id, unitSystem);
@@ -937,21 +1046,29 @@ export function MatrixMetricCard({
   const Icon = meta?.icon;
   return (
     <article
-      draggable={draggable}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
+      ref={sortable.setNodeRef}
+      style={{
+        transform: CSS.Transform.toString(sortable.transform),
+        transition: sortable.transition,
+      }}
       className={`${hero ? "min-h-[132px] p-4" : "min-h-[92px] p-3"} flex flex-col justify-between rounded-2xl border border-hull-700/70 bg-hull-800`}
     >
-      <div className="flex items-center gap-2">
-        {Icon && (
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-hull-700/60">
-            <Icon size={14} className={meta.tint} />
-          </div>
-        )}
-        <p className="font-body text-[11.5px] leading-tight text-slate-400">
-          {metricLabel === id ? label : metricLabel}
-        </p>
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-2">
+          {Icon && (
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-hull-700/60">
+              <Icon size={14} className={meta.tint} />
+            </div>
+          )}
+          <p className="font-body text-[11.5px] leading-tight text-slate-400">
+            {metricLabel === id ? label : metricLabel}
+          </p>
+        </div>
+        <SortableHandle
+          attributes={sortable.attributes}
+          listeners={sortable.listeners}
+          label={`Reorder ${metricLabel}`}
+        />
       </div>
       <div className="mt-1">
         <p
@@ -1293,10 +1410,7 @@ export function MatrixGroupCard({
   visibleMetrics,
   day,
   hour,
-  draggable = false,
-  onDragStart,
-  onDragOver,
-  onDrop,
+  sortId,
 }: {
   group: {
     id: string;
@@ -1306,19 +1420,25 @@ export function MatrixGroupCard({
   visibleMetrics: VisibleMetrics;
   day: ClaudeDayData;
   hour: number;
-  draggable?: boolean;
-  onDragStart?: (event: React.DragEvent<HTMLElement>) => void;
-  onDragOver?: (event: React.DragEvent<HTMLElement>) => void;
-  onDrop?: (event: React.DragEvent<HTMLElement>) => void;
+  sortId?: string;
 }) {
+  const sortable = useSortable({ id: sortId ?? `group-${group.id}` });
   return (
     <article
-      draggable={draggable}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
+      ref={sortable.setNodeRef}
+      style={{
+        transform: CSS.Transform.toString(sortable.transform),
+        transition: sortable.transition,
+      }}
       className="mx-4 mt-3 overflow-hidden rounded-3xl border border-hull-700/70 bg-gradient-to-b from-hull-800 to-hull-900"
     >
+      <div className="flex justify-end px-3 pt-2">
+        <SortableHandle
+          attributes={sortable.attributes}
+          listeners={sortable.listeners}
+          label={`Reorder ${group.label}`}
+        />
+      </div>
       {group.id === "fishability" && (
         <FishabilityGroupContent
           day={day}
@@ -1385,18 +1505,10 @@ export function WaterDetailsCard({
   visibleMetrics?: VisibleMetrics;
 }) {
   const unitSystem = useUnitSystem();
-  const upcomingHigh =
-    day.tideEvents.find(
-      (event) => event.type === "High" && event.hour >= hour,
-    ) ?? day.tideEvents.find((event) => event.type === "High");
-  const upcomingLow =
-    day.tideEvents.find(
-      (event) => event.type === "Low" && event.hour >= hour,
-    ) ?? day.tideEvents.find((event) => event.type === "Low");
   const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
     (metric) =>
       metric.group === "water" && metric.defaultVisibility.fullConditions,
-  );
+  ).filter((metric) => isVisible(visibleMetrics, metric.id));
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
@@ -1405,47 +1517,6 @@ export function WaterDetailsCard({
         Current water &amp; marine details
       </div>
       <div className="mt-2">
-        {isVisible(visibleMetrics, "currentTide") && (
-          <DetailRow
-            label={formatMetricLabel("tide", unitSystem)}
-            value={formatMetricValue("tide", day.hours[hour]?.tideHeight, unitSystem)}
-          />
-        )}
-        {isVisible(visibleMetrics, "currentTide") && (
-          <DetailRow
-            label={formatMetricLabel("tideStage", unitSystem)}
-            value={safe(day.hours[hour]?.tideStage)}
-          />
-        )}
-        {isVisible(visibleMetrics, "currentTide") && (
-          <DetailRow
-            label={formatMetricLabel("tideDirection", unitSystem)}
-            value={safe(day.hours[hour]?.tideDirection)}
-          />
-        )}
-        {isVisible(visibleMetrics, "nextTide") && (
-          <DetailRow
-            label={formatMetricLabel("nextTide", unitSystem)}
-            value={
-              upcomingHigh
-                ? `High: ${formatHour(upcomingHigh.hour, true)} (${formatMetricValue("tide", upcomingHigh.height, unitSystem)})`
-                : safe(null)
-            }
-          />
-        )}
-        {isVisible(visibleMetrics, "nextTide") && (
-          <DetailRow
-            label={formatMetricLabel("nextTide", unitSystem)}
-            value={
-              upcomingLow
-                ? `Low: ${formatHour(upcomingLow.hour, true)} (${formatMetricValue("tide", upcomingLow.height, unitSystem)})`
-                : safe(null)
-            }
-          />
-        )}
-        {isVisible(visibleMetrics, "nextTide") && (
-          <DetailRow label="Slack water window" value={safe(null)} />
-        )}
         {environmentalMetrics.map((metric) => (
           <DetailRow
             key={metric.id}
@@ -1457,6 +1528,59 @@ export function WaterDetailsCard({
             )}
           />
         ))}
+      </div>
+    </article>
+  );
+}
+
+export function TideDetailsCard({
+  day,
+  hour,
+  visibleMetrics,
+}: {
+  day: ClaudeDayData;
+  hour: number;
+  visibleMetrics?: VisibleMetrics;
+}) {
+  const unitSystem = useUnitSystem();
+  const upcomingHigh =
+    day.tideEvents.find(
+      (event) => event.type === "High" && event.hour >= hour,
+    ) ?? day.tideEvents.find((event) => event.type === "High");
+  const upcomingLow =
+    day.tideEvents.find(
+      (event) => event.type === "Low" && event.hour >= hour,
+    ) ?? day.tideEvents.find((event) => event.type === "Low");
+
+  return (
+    <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
+      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+        <Waves size={13} className="text-tide-400" />
+        Tide details
+      </div>
+      <div className="mt-2">
+        {isVisible(visibleMetrics, "currentTide") && (
+          <DetailRow label={formatMetricLabel("tide", unitSystem)} value={formatMetricValue("tide", day.hours[hour]?.tideHeight, unitSystem)} />
+        )}
+        {isVisible(visibleMetrics, "currentTide") && (
+          <DetailRow label={formatMetricLabel("tideStage", unitSystem)} value={safe(day.hours[hour]?.tideStage)} />
+        )}
+        {isVisible(visibleMetrics, "currentTide") && (
+          <DetailRow label={formatMetricLabel("tideDirection", unitSystem)} value={safe(day.hours[hour]?.tideDirection)} />
+        )}
+        {isVisible(visibleMetrics, "nextTide") && (
+          <DetailRow
+            label={formatMetricLabel("nextTide", unitSystem)}
+            value={upcomingHigh ? `High: ${formatHour(upcomingHigh.hour, true)} (${formatMetricValue("tide", upcomingHigh.height, unitSystem)})` : safe(null)}
+          />
+        )}
+        {isVisible(visibleMetrics, "nextTide") && (
+          <DetailRow
+            label={formatMetricLabel("nextTide", unitSystem)}
+            value={upcomingLow ? `Low: ${formatHour(upcomingLow.hour, true)} (${formatMetricValue("tide", upcomingLow.height, unitSystem)})` : safe(null)}
+          />
+        )}
+        {isVisible(visibleMetrics, "nextTide") && <DetailRow label="Slack water window" value={safe(null)} />}
       </div>
     </article>
   );
@@ -1813,12 +1937,22 @@ export function FullConditionsView({
   hour,
   onClose,
   visibleMetrics,
+  conditionsOrder = ["dailySummary", "tide", "solunar", "water", "weather"],
 }: {
   day: ClaudeDayData;
   hour: number;
   onClose: () => void;
   visibleMetrics?: VisibleMetrics;
+  conditionsOrder?: string[];
 }) {
+  const conditionCards = {
+    dailySummary: <DailySummaryCard day={day} visibleMetrics={visibleMetrics} />,
+    tide: <TideDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />,
+    solunar: <SolunarDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />,
+    water: <WaterDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />,
+    weather: <WeatherDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />,
+  } as const;
+
   return (
     <div className="mx-auto w-full bg-hull-950 px-4 pb-32 pt-4">
       <div className="mx-auto flex items-center justify-between">
@@ -1839,27 +1973,46 @@ export function FullConditionsView({
           Done
         </button>
       </div>
-      <div className="mx-auto mt-3 space-y-2">
-        <DailySummaryCard
-          day={day}
-          visibleMetrics={visibleMetrics}
-        />
-        <WaterDetailsCard
-          day={day}
-          hour={hour}
-          visibleMetrics={visibleMetrics}
-        />
-        <SolunarDetailsCard
-          day={day}
-          hour={hour}
-          visibleMetrics={visibleMetrics}
-        />
-        <WeatherDetailsCard
-          day={day}
-          hour={hour}
-          visibleMetrics={visibleMetrics}
+      <SortableContext items={conditionsOrder.map((id) => `conditions:${id}`)} strategy={verticalListSortingStrategy}>
+        <div className="mx-auto mt-3 space-y-2">
+          {conditionsOrder.map((cardId) => (
+            conditionCards[cardId as keyof typeof conditionCards] ? (
+              <SortableConditionsCard key={cardId} id={cardId}>
+                {conditionCards[cardId as keyof typeof conditionCards]}
+              </SortableConditionsCard>
+            ) : null
+          ))}
+        </div>
+      </SortableContext>
+    </div>
+  );
+}
+
+function SortableConditionsCard({
+  id,
+  children,
+}: {
+  id: string;
+  children: ReactNode;
+}) {
+  const sortable = useSortable({ id: `conditions:${id}` });
+  return (
+    <div
+      ref={sortable.setNodeRef}
+      style={{
+        transform: CSS.Transform.toString(sortable.transform),
+        transition: sortable.transition,
+      }}
+      className="relative"
+    >
+      <div className="absolute right-3 top-3 z-10">
+        <SortableHandle
+          attributes={sortable.attributes}
+          listeners={sortable.listeners}
+          label={`Reorder ${id} conditions card`}
         />
       </div>
+      {children}
     </div>
   );
 }
@@ -1869,6 +2022,10 @@ export function DayDrawer({
   day,
   selectedHour,
   hourlySettings,
+  hourlySectionOrder,
+  hourlyColumnOrder,
+  onMoveHourlySection,
+  onMoveHourlyColumn,
   onClose,
   onPickHour,
   dockPosition,
@@ -1882,6 +2039,10 @@ export function DayDrawer({
   day: ClaudeDayData;
   selectedHour: number;
   hourlySettings?: Record<string, boolean>;
+  hourlySectionOrder?: string[];
+  hourlyColumnOrder?: Record<string, string[]>;
+  onMoveHourlySection?: (item: string, target: string) => void;
+  onMoveHourlyColumn?: (sectionId: string, item: string, target: string) => void;
   onClose: () => void;
   onPickHour: (hour: number) => void;
   dockPosition?: "bottom" | "top";
@@ -1898,50 +2059,99 @@ export function DayDrawer({
     typeof window === "undefined" ? 812 : window.innerHeight;
   const drawerTravel = Math.max(0, viewportHeight - 72 - 132);
   const show = (id: string) => hourlySettings?.[id] !== false;
-  const environmentalColumns = ENVIRONMENTAL_METRICS.filter(
-    (metric) =>
-      metric.hourlyColumnAvailable ?? metric.defaultVisibility.hourlyGrid,
-  )
-    .filter((metric) => metric.id !== "pressure" && metric.id !== "cloud")
-    .filter(
-      (metric) =>
-        !metric.hourlyColumnToggleable ||
-        show(metric.hourlySettingId ?? metric.id),
+  const sections = (hourlySectionOrder ?? HOURLY_SECTIONS.map((section) => section.id))
+    .map((id) => HOURLY_SECTIONS.find((section) => section.id === id))
+    .filter((section): section is NonNullable<typeof section> => Boolean(section));
+  const getOrderedSectionColumns = (sectionId: string) => {
+    const section = HOURLY_SECTIONS.find((entry) => entry.id === sectionId);
+    if (!section) return [];
+    const ordered = hourlyColumnOrder?.[sectionId] ?? section.metricIds;
+    return ordered.filter((metricId) => section.metricIds.includes(metricId));
+  };
+  // Legacy hourly columns live on the hour record itself rather than in environmentalRawValues.
+  const getHourlyCellValue = (
+    sectionId: string,
+    metricId: string,
+    item: ClaudeDayData["hours"][number],
+  ) => {
+    if (sectionId === "fishability") return safe(item.score);
+    if (sectionId === "tide") {
+      return metricId === "tide"
+        ? formatMetricValue("tide", item.tideHeight, unitSystem)
+        : safe(item.tideDirection, "N/A");
+    }
+    if (sectionId === "solunar") {
+      if (metricId === "solunarActive") {
+        return item.solunar === "none"
+          ? "Neutral"
+          : item.solunar === "major"
+            ? "Major"
+            : "Minor";
+      }
+      return safe(item.solunarRating);
+    }
+
+    const legacyValue =
+      metricId === "wind"
+        ? item.wind?.speed
+        : metricId === "gust"
+          ? item.wind?.gust
+          : metricId === "pressure"
+            ? item.pressure
+            : metricId === "airTemperature"
+              ? item.airTemp
+              : metricId === "feelsLike"
+                ? item.feelsLike
+                : metricId === "cloud"
+                  ? item.cloudCover
+                  : metricId === "rainChance"
+                    ? item.rainChance
+                    : metricId === "rainVolume"
+                      ? item.rainVolume
+                      : metricId === "uv"
+                        ? item.uvIndex
+                        : null;
+
+    return formatMetricValue(
+      metricId,
+      item.environmentalRawValues?.[metricId] ?? legacyValue,
+      unitSystem,
     );
-  const marineColumns = environmentalColumns.filter(
-    (metric) => metric.group === "water",
+  };
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 180, tolerance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
-  const weatherColumns = environmentalColumns.filter(
-    (metric) => metric.group === "weather",
-  );
-  const solunarColumnCount =
-    Number(show("solunarActive")) + Number(show("solunarRating"));
-  const weatherColumnCount =
-    [
-      "wind",
-      "gust",
-      "pressure",
-      "airTemperature",
-      "feelsLike",
-      "cloud",
-      "rainChance",
-      "rainVolume",
-      "uv",
-    ].filter(show).length + weatherColumns.length;
-  const weatherColumnIds = [
-    "wind",
-    "gust",
-    "pressure",
-    "airTemperature",
-    "feelsLike",
-    "cloud",
-    "rainChance",
-    "rainVolume",
-    "uv",
-    ...weatherColumns.map((metric) => metric.id),
-  ].filter(show);
-  const getWeatherColumnBorderClass = (metricId: string) =>
-    `border-r border-hull-700/70 ${weatherColumnIds[0] === metricId ? "border-l-2 border-l-hull-600" : ""} ${weatherColumnIds.at(-1) === metricId ? "border-r-2 border-r-hull-600" : ""}`;
+  const handleHourlyDragEnd = (event: DragEndEvent) => {
+    const activeId = String(event.active.id);
+    const overId = event.over ? String(event.over.id) : null;
+    if (!overId || activeId === overId) return;
+
+    if (activeId.startsWith("hourly-section:")) {
+      const activeValue = activeId.replace("hourly-section:", "");
+      const overValue = overId.replace("hourly-section:", "");
+      if (activeValue && overValue && onMoveHourlySection) {
+        onMoveHourlySection(activeValue, overValue);
+      }
+      return;
+    }
+
+    if (activeId.startsWith("hourly-column:")) {
+      const [, sectionId, itemId] = activeId.split(":");
+      const [, overSectionId, overItemId] = overId.split(":");
+      if (
+        sectionId &&
+        itemId &&
+        overSectionId &&
+        overItemId &&
+        sectionId === overSectionId &&
+        onMoveHourlyColumn
+      ) {
+        onMoveHourlyColumn(sectionId, itemId, overItemId);
+      }
+    }
+  };
   const tableScrollContainerRef = useRef<HTMLDivElement | null>(null);
   const tableRowRefs = useRef<Record<number, HTMLTableRowElement | null>>({});
   const selectedHourRef = useRef(selectedHour);
@@ -1988,21 +2198,13 @@ export function DayDrawer({
 
   return (
     <>
-      {/* Full-screen backdrop sitting behind the constrained container */}
       <button
         type="button"
         aria-label="Close full day view"
         onClick={onClose}
-        className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 ${drawerVisible ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
+        className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 ${drawerVisible ? "opacity-100" : "pointer-events-none opacity-0"}`}
       />
-
-      {/* Fixed positioning & max-width container */}
-      <div
-        className={`fixed inset-x-0 z-50 mx-auto w-full max-w-screen-2xl px-0 sm:px-4 lg:px-16 pointer-events-none ${isTopDock ? "top-[204px]" : "bottom-[132px]"
-          }`}
-      >
-        {/* Drawer panel (restores pointer events and respects container width) */}
+      <div className={`fixed inset-x-0 z-50 mx-auto w-full max-w-screen-2xl px-0 sm:px-4 lg:px-16 pointer-events-none ${isTopDock ? "top-[204px]" : "bottom-[132px]"}`}>
         <section
           role="dialog"
           aria-modal="true"
@@ -2019,320 +2221,115 @@ export function DayDrawer({
             shouldScrollSelectedHourRef.current = false;
             scrollSelectedHourToCenter();
           }}
-          className={`pointer-events-auto relative flex w-full flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"
-            } ${isTopDock ? "rounded-b-3xl border-b" : "rounded-t-3xl border-t"}`}
+          className={`pointer-events-auto relative flex w-full flex-col overflow-hidden border-hull-700 bg-hull-900 ${isDragging ? "" : "transition-[height] duration-300 ease-out"} ${isTopDock ? "rounded-b-3xl border-b" : "rounded-t-3xl border-t"}`}
           style={{ height: `${expansionProgress * drawerTravel}px` }}
         >
-          <div
-            className={`flex shrink-0 items-center justify-between px-5 pb-2 pt-3 ${isTopDock ? "order-first" : ""}`}
-          >
+          <div className={`flex shrink-0 items-center justify-between px-5 pb-2 pt-3 ${isTopDock ? "order-first" : ""}`}>
             <div>
-              <h2 className="font-display text-lg font-semibold text-white">
-                Full day forecast
-              </h2>
-              <p className="font-body text-[12.5px] text-slate-500">
-                Tap a row to jump there
-              </p>
+              <h2 className="font-display text-lg font-semibold text-white">Full day forecast</h2>
+              <p className="font-body text-[12.5px] text-slate-500">Tap a row to jump there</p>
             </div>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close full day view"
-              className="flex h-12 w-12 items-center justify-center text-slate-400"
-            >
+            <button type="button" onClick={onClose} aria-label="Close full day view" className="flex h-12 w-12 items-center justify-center text-slate-400">
               <X size={22} />
             </button>
           </div>
 
-          <div
-            ref={tableScrollContainerRef}
-            className="no-scrollbar min-h-0 flex-1 overflow-x-auto overflow-y-auto overscroll-contain px-5 pb-4"
-          >
-            <table className="min-w-[880px] w-full border-separate border-spacing-0 border-4 border-hull-600">
-              <thead className="sticky top-0 z-10 bg-hull-900">
-                <tr className="border-x-2 border-t-2 border-b-2 border-hull-600 bg-hull-800 text-center align-top font-body text-[10px] font-semibold uppercase text-slate-300">
-                  <th
-                    scope="col"
-                    rowSpan={2}
-                    className="border-x-2 border-hull-600 px-2 py-2 text-center align-top font-semibold"
-                  >
-                    Time
-                  </th>
-                  {show("hourlyScore") && (
-                    <th scope="colgroup" colSpan={1} className="border-x-2 border-hull-600 px-2 py-2 text-center align-top">
-                      Fishability
-                    </th>
-                  )}
-                  {show("tide") && (
-                    <th scope="colgroup" colSpan={2} className="border-x-2 border-hull-600 px-2 py-2 text-center align-top">
-                      Tide
-                    </th>
-                  )}
-                  {solunarColumnCount > 0 && (
-                    <th
-                      scope="colgroup"
-                      colSpan={solunarColumnCount}
-                      className="border-x-2 border-hull-600 px-2 py-2 text-center align-top"
+          <div ref={tableScrollContainerRef} className="no-scrollbar min-h-0 flex-1 overflow-x-auto overflow-y-auto overscroll-contain px-5 pb-4">
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleHourlyDragEnd}>
+              <table className="min-w-[880px] w-full border-separate border-spacing-0 border-4 border-hull-600">
+                <thead className="sticky top-0 z-10 bg-hull-900">
+                  <tr className="border-x-2 border-t-2 border-b-2 border-hull-600 bg-hull-800 text-center align-top font-body text-[10px] font-semibold uppercase text-slate-300">
+                    <th scope="col" rowSpan={2} className="border-x-2 border-hull-600 px-2 py-2 text-center align-top font-semibold">Time</th>
+                    <SortableContext
+                      items={sections.map((section) => `hourly-section:${section.id}`)}
+                      strategy={horizontalListSortingStrategy}
                     >
-                      Solunar
-                    </th>
-                  )}
-                  {marineColumns.length > 0 && (
-                    <th
-                      scope="colgroup"
-                      colSpan={marineColumns.length}
-                      className="border-x-2 border-hull-600 px-2 py-2 text-center align-top"
-                    >
-                      {marineColumns[0].groupLabel}
-                    </th>
-                  )}
-                  {weatherColumnCount > 0 && (
-                    <th
-                      scope="colgroup"
-                      colSpan={weatherColumnCount}
-                      className="border-x-2 border-hull-600 px-2 py-2 text-center align-top"
-                    >
-                      {weatherColumns[0].groupLabel}
-                    </th>
-                  )}
-                </tr>
-                <tr className="border-x-2 border-b-4 border-hull-600 bg-hull-700/70 text-center align-top font-body text-[11px] uppercase text-slate-300">
-                  {show("hourlyScore") && (
-                    <th scope="col" className="border-x-2 border-hull-600 px-2 py-2 text-center align-top font-semibold">
-                      {formatMetricLabel("hourlyScore", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("tide") && (
-                    <th scope="col" className="border-l-2 border-l-hull-600 border-r border-r-hull-700/70 px-2 py-2 text-center align-top font-semibold">
-                      {formatMetricLabel("tide", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("tide") && (
-                    <th scope="col" className="border-r-2 border-r-hull-600 px-2 py-2 text-center align-top font-semibold">
-                      {formatMetricLabel("tideDirection", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("solunarActive") && (
-                    <th scope="col" className={`border-r border-hull-700/70 px-2 py-2 text-center align-top font-semibold ${show("solunarRating") ? "border-l-2 border-l-hull-600" : "border-x-2 border-x-hull-600"}`}>
-                      {formatMetricLabel("solunarActive", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("solunarRating") && (
-                    <th scope="col" className={`border-r-2 border-r-hull-600 px-2 py-2 text-center align-top font-semibold ${show("solunarActive") ? "" : "border-l-2 border-l-hull-600"}`}>
-                      {formatMetricLabel("solunarRating", unitSystem, true)}
-                    </th>
-                  )}
-                  {marineColumns.map((metric, columnIndex) => (
-                    <th
-                      key={metric.id}
-                      scope="col"
-                      className={`border-r border-hull-700/70 px-2 py-2 text-center align-top font-semibold ${columnIndex === 0 ? "border-l-2 border-l-hull-600" : ""} ${columnIndex === marineColumns.length - 1 ? "border-r-2 border-r-hull-600" : ""}`}
-                    >
-                      {formatMetricLabel(metric.id, unitSystem, true)}
-                    </th>
-                  ))}
-                  {show("wind") && (
-                    <th scope="col" className={`${getWeatherColumnBorderClass("wind")} px-2 py-2 text-center align-top font-semibold`}>
-                      {formatMetricLabel("wind", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("gust") && (
-                    <th scope="col" className={`${getWeatherColumnBorderClass("gust")} px-2 py-2 text-center align-top font-semibold`}>
-                      {formatMetricLabel("gust", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("pressure") && (
-                    <th scope="col" className={`${getWeatherColumnBorderClass("pressure")} px-2 py-2 text-center align-top font-semibold`}>
-                      {formatMetricLabel("pressure", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("airTemperature") && (
-                    <th scope="col" className={`${getWeatherColumnBorderClass("airTemperature")} px-2 py-2 text-center align-top font-semibold`}>
-                      {formatMetricLabel("airTemperature", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("feelsLike") && (
-                    <th scope="col" className={`${getWeatherColumnBorderClass("feelsLike")} px-2 py-2 text-center align-top font-semibold`}>
-                      {formatMetricLabel("feelsLike", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("cloud") && (
-                    <th scope="col" className={`${getWeatherColumnBorderClass("cloud")} px-2 py-2 text-center align-top font-semibold`}>
-                      {formatMetricLabel("cloud", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("rainChance") && (
-                    <th scope="col" className={`${getWeatherColumnBorderClass("rainChance")} px-2 py-2 text-center align-top font-semibold`}>
-                      {formatMetricLabel("rainChance", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("rainVolume") && (
-                    <th scope="col" className={`${getWeatherColumnBorderClass("rainVolume")} px-2 py-2 text-center align-top font-semibold`}>
-                      {formatMetricLabel("rainVolume", unitSystem, true)}
-                    </th>
-                  )}
-                  {show("uv") && (
-                    <th scope="col" className={`${getWeatherColumnBorderClass("uv")} px-2 py-2 text-center align-top font-semibold`}>
-                      {formatMetricLabel("uv", unitSystem, true)}
-                    </th>
-                  )}
-                  {weatherColumns.map((metric) => (
-                    <th
-                      key={metric.id}
-                      scope="col"
-                      className={`${getWeatherColumnBorderClass(metric.id)} px-2 py-2 text-center align-top font-semibold`}
-                    >
-                      {formatMetricLabel(metric.id, unitSystem, true)}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="[&_td]:align-top [&_td]:text-left [&_th]:align-top [&_th]:text-left">
-                {day.hours.map((item) => {
-                  const activate = () => {
-                    onPickHour(item.hour);
-                    onClose();
-                  };
-                  return (
-                    <tr
-                      key={item.hour}
-                      ref={(element) => {
-                        tableRowRefs.current[item.hour] = element;
-                      }}
-                      role="button"
-                      tabIndex={0}
-                      onClick={activate}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault();
-                          activate();
-                        }
-                      }}
-                      className={`min-h-[48px] cursor-pointer border-b border-hull-700/50 text-left ${item.hour === selectedHour ? "bg-tide-500/10" : ""
-                        }`}
-                    >
-                      <th
-                        scope="row"
-                        className={`border-x-2 border-hull-600 px-3 py-3 text-left font-body text-[13px] font-semibold tabular-nums ${item.hour === selectedHour ? "text-tide-400" : "text-white"}`}
+                      {sections.map((section) => {
+                        const visibleIds = getOrderedSectionColumns(section.id).filter(show);
+                        if (!visibleIds.length) return null;
+                        return (
+                          <SortableSectionHeader
+                            key={section.id}
+                            id={`hourly-section:${section.id}`}
+                            label={section.label}
+                            colSpan={visibleIds.length}
+                          />
+                        );
+                      })}
+                    </SortableContext>
+                  </tr>
+                  <tr className="border-x-2 border-b-4 border-hull-600 bg-hull-700/70 text-center align-top font-body text-[11px] uppercase text-slate-300">
+                    {sections.map((section) => {
+                      const visibleIds = getOrderedSectionColumns(section.id).filter(show);
+                      if (!visibleIds.length) return null;
+                      return (
+                        <SortableContext
+                          key={section.id}
+                          items={visibleIds.map((metricId) => `hourly-column:${section.id}:${metricId}`)}
+                          strategy={horizontalListSortingStrategy}
+                        >
+                          {visibleIds.map((metricId, columnIndex) => (
+                            <SortableColumnHeader
+                              key={metricId}
+                              id={`hourly-column:${section.id}:${metricId}`}
+                              label={formatMetricLabel(metricId, unitSystem, true)}
+                              sectionLabel={section.label}
+                              isFirstColumn={columnIndex === 0}
+                              isLastColumn={columnIndex === visibleIds.length - 1}
+                            />
+                          ))}
+                        </SortableContext>
+                      );
+                    })}
+                  </tr>
+                </thead>
+                <tbody className="[&_td]:align-top [&_td]:text-left [&_th]:align-top [&_th]:text-left">
+                  {day.hours.map((item) => {
+                    const activate = () => {
+                      onPickHour(item.hour);
+                      onClose();
+                    };
+                    return (
+                      <tr
+                        key={item.hour}
+                        ref={(element) => {
+                          tableRowRefs.current[item.hour] = element;
+                        }}
+                        role="button"
+                        tabIndex={0}
+                        onClick={activate}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            activate();
+                          }
+                        }}
+                        className={`min-h-[48px] cursor-pointer border-b border-hull-700/50 text-left ${item.hour === selectedHour ? "bg-tide-500/10" : ""}`}
                       >
-                        {formatHour(item.hour)}
-                      </th>
-                      {show("hourlyScore") && (
-                        <td className="border-x-2 border-hull-600 px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300">
-                          {safe(item.score)}
-                        </td>
-                      )}
-                      {show("tide") && (
-                        <td className="border-l-2 border-l-hull-600 border-r border-r-hull-700/70 px-3 py-3 font-body text-[13px] tabular-nums text-slate-300">
-                          {formatMetricValue("tide", item.tideHeight, unitSystem)}
-                        </td>
-                      )}
-                      {show("tide") && (
-                        <td className="border-r-2 border-r-hull-600 px-3 py-3 font-body text-[12.5px] text-slate-400">
-                          {safe(item.tideDirection, "N/A")}
-                        </td>
-                      )}
-                      {show("solunarActive") && (
-                        <td className={`border-r border-hull-700/70 px-3 py-3 font-body text-[12.5px] text-slate-400 ${show("solunarRating") ? "border-l-2 border-l-hull-600" : "border-x-2 border-x-hull-600"}`}>
-                          {item.solunar === "none"
-                            ? "Neutral"
-                            : item.solunar === "major"
-                              ? "Major"
-                              : "Minor"}
-                        </td>
-                      )}
-                      {show("solunarRating") && (
-                        <td className={`border-r-2 border-r-hull-600 px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300 ${show("solunarActive") ? "" : "border-l-2 border-l-hull-600"}`}>
-                          {safe(item.solunarRating)}
-                        </td>
-                      )}
-                      {marineColumns.map((metric, columnIndex) => (
-                        <td
-                          key={metric.id}
-                          className={`border-r border-hull-700/70 px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300 ${columnIndex === 0 ? "border-l-2 border-l-hull-600" : ""} ${columnIndex === marineColumns.length - 1 ? "border-r-2 border-r-hull-600" : ""}`}
-                        >
-                          {formatMetricValue(metric.id, item.environmentalRawValues?.[metric.id], unitSystem)}
-                        </td>
-                      ))}
-                      {show("wind") && (
-                        <td className={`${getWeatherColumnBorderClass("wind")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {formatMetricValue("wind", item.wind?.speed, unitSystem)} {safe(item.wind?.dir, "")}
-                        </td>
-                      )}
-                      {show("gust") && (
-                        <td className={`${getWeatherColumnBorderClass("gust")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {formatMetricValue("gust", item.wind?.gust, unitSystem)}
-                        </td>
-                      )}
-                      {show("pressure") && (
-                        <td className={`${getWeatherColumnBorderClass("pressure")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {formatMetricValue("pressure", item.pressure, unitSystem)}
-                        </td>
-                      )}
-                      {show("airTemperature") && (
-                        <td className={`${getWeatherColumnBorderClass("airTemperature")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {formatMetricValue("airTemperature", item.airTemp, unitSystem)}
-                        </td>
-                      )}
-                      {show("feelsLike") && (
-                        <td className={`${getWeatherColumnBorderClass("feelsLike")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {formatMetricValue("feelsLike", item.feelsLike, unitSystem)}
-                        </td>
-                      )}
-                      {show("cloud") && (
-                        <td className={`${getWeatherColumnBorderClass("cloud")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {formatMetricValue("cloud", item.cloudCover, unitSystem)}
-                        </td>
-                      )}
-                      {show("rainChance") && (
-                        <td className={`${getWeatherColumnBorderClass("rainChance")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {formatMetricValue("rainChance", item.rainChance, unitSystem)}
-                        </td>
-                      )}
-                      {show("rainVolume") && (
-                        <td className={`${getWeatherColumnBorderClass("rainVolume")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {formatMetricValue("rainVolume", item.rainVolume, unitSystem)}
-                        </td>
-                      )}
-                      {show("uv") && (
-                        <td className={`${getWeatherColumnBorderClass("uv")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {formatMetricValue("uv", item.uvIndex, unitSystem, true, "N/A")}
-                        </td>
-                      )}
-                      {weatherColumns.map((metric) => (
-                        <td
-                          key={metric.id}
-                          className={`${getWeatherColumnBorderClass(metric.id)} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}
-                        >
-                          {formatMetricValue(metric.id, item.environmentalRawValues?.[metric.id], unitSystem)}
-                        </td>
-                      ))}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        <th scope="row" className={`border-x-2 border-hull-600 px-3 py-3 text-left font-body text-[13px] font-semibold tabular-nums ${item.hour === selectedHour ? "text-tide-400" : "text-white"}`}>
+                          {formatHour(item.hour)}
+                        </th>
+                        {sections.flatMap((section) => {
+                          const metricIds = (getOrderedSectionColumns(section.id) ?? []).filter(show);
+                          return metricIds.map((metricId, columnIndex) => (
+                            <td
+                              key={`${section.id}:${metricId}`}
+                              className={`border-r border-hull-700/70 px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300 ${columnIndex === 0 ? "border-l-2 border-l-hull-600" : ""} ${columnIndex === metricIds.length - 1 ? "border-r-2 border-r-hull-600" : ""}`}
+                            >
+                              {getHourlyCellValue(section.id, metricId, item)}
+                            </td>
+                          ));
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </DndContext>
           </div>
 
           {onDragStart && onDragMove && onDragEnd && (
-            <div
-              className={`flex h-8 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${isTopDock
-                ? "order-last border-t border-hull-700/60"
-                : "order-first border-b border-hull-700/60"
-                }`}
-              onPointerDown={(event) => {
-                event.currentTarget.setPointerCapture(event.pointerId);
-                onDragStart(event.clientY);
-              }}
-              onPointerMove={(event) => onDragMove(event.clientY)}
-              onPointerUp={onDragEnd}
-              onPointerCancel={onDragEnd}
-              aria-label={
-                isTopDock
-                  ? "Slide the full day forecast back up"
-                  : "Slide the full day forecast back down"
-              }
-            >
+            <div className={`flex h-8 shrink-0 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${isTopDock ? "order-last border-t border-hull-700/60" : "order-first border-b border-hull-700/60"}`} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); onDragStart(event.clientY); }} onPointerMove={(event) => onDragMove(event.clientY)} onPointerUp={onDragEnd} onPointerCancel={onDragEnd} aria-label={isTopDock ? "Slide the full day forecast back up" : "Slide the full day forecast back down"}>
               <div className="h-1 w-10 rounded-full bg-hull-600/90" />
             </div>
           )}

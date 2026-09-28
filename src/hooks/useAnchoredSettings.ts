@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { DAILY_GROUPS, HOURLY_GRID_METRICS } from "../config/metricMatrix";
+import { arrayMove } from "@dnd-kit/sortable";
+import {
+  DAILY_GROUPS,
+  HOURLY_GRID_METRICS,
+  HOURLY_SECTIONS,
+} from "../config/metricMatrix";
 
 export interface AnchoredSettingsState {
   wind: boolean;
@@ -28,6 +33,9 @@ export interface MatrixSettings {
   hourly: MetricVisibilitySettings;
   heroOrder: string[];
   cardOrder: string[];
+  conditionsOrder: string[];
+  hourlySectionOrder: string[];
+  hourlyColumnOrder: Record<string, string[]>;
 }
 
 type AnchoredMetric = keyof AnchoredSettingsState;
@@ -52,6 +60,15 @@ const DEFAULT_CARD_SETTINGS: DashboardCardSettings = {
   swell: true,
 };
 
+const DEFAULT_DASHBOARD_GROUP_ORDER = [
+  "fishability",
+  "tide",
+  "solunar",
+  "water",
+  "weather",
+  "sunMoon",
+] as const;
+
 const DEFAULT_MATRIX_SETTINGS: MatrixSettings = {
   groups: Object.fromEntries(DAILY_GROUPS.map((group) => [group.id, true])),
   metrics: Object.fromEntries(
@@ -62,9 +79,14 @@ const DEFAULT_MATRIX_SETTINGS: MatrixSettings = {
   hourly: Object.fromEntries(
     HOURLY_GRID_METRICS.map((metric) => [metric.id, metric.defaultVisible]),
   ),
-  heroOrder: DAILY_GROUPS.map((group) => group.id),
-  cardOrder: DAILY_GROUPS.flatMap((group) =>
-    group.metrics.map((metric) => metric.id),
+  heroOrder: [...DEFAULT_DASHBOARD_GROUP_ORDER],
+  cardOrder: DEFAULT_DASHBOARD_GROUP_ORDER.flatMap((groupId) =>
+    DAILY_GROUPS.find((group) => group.id === groupId)?.metrics.map((metric) => metric.id) ?? [],
+  ),
+  conditionsOrder: ["dailySummary", "tide", "solunar", "water", "weather"],
+  hourlySectionOrder: HOURLY_SECTIONS.map((section) => section.id),
+  hourlyColumnOrder: Object.fromEntries(
+    HOURLY_SECTIONS.map((section) => [section.id, [...section.metricIds]]),
   ),
 };
 
@@ -156,6 +178,36 @@ function getStoredMatrixSettings(): MatrixSettings {
         DEFAULT_MATRIX_SETTINGS.cardOrder.includes(id),
       )
       : [];
+    const conditionsOrder = Array.isArray(parsed.conditionsOrder)
+      ? parsed.conditionsOrder.filter((id) =>
+        DEFAULT_MATRIX_SETTINGS.conditionsOrder.includes(id),
+      )
+      : [];
+    const hourlySectionOrder = Array.isArray(parsed.hourlySectionOrder)
+      ? parsed.hourlySectionOrder.filter((id) =>
+        DEFAULT_MATRIX_SETTINGS.hourlySectionOrder.includes(id),
+      )
+      : [];
+    const storedHourlyColumnOrder =
+      parsed.hourlyColumnOrder && typeof parsed.hourlyColumnOrder === "object"
+        ? parsed.hourlyColumnOrder
+        : {};
+    const hourlyColumnOrder = Object.fromEntries(
+      HOURLY_SECTIONS.map((section) => {
+        const storedOrder = Array.isArray(storedHourlyColumnOrder[section.id])
+          ? storedHourlyColumnOrder[section.id].filter((id) =>
+            section.metricIds.includes(id),
+          )
+          : [];
+        return [
+          section.id,
+          [
+            ...storedOrder,
+            ...section.metricIds.filter((id) => !storedOrder.includes(id)),
+          ],
+        ];
+      }),
+    );
     return {
       groups: { ...DEFAULT_MATRIX_SETTINGS.groups, ...(parsed.groups ?? {}) },
       metrics: {
@@ -175,6 +227,19 @@ function getStoredMatrixSettings(): MatrixSettings {
           (id) => !cardOrder.includes(id),
         ),
       ],
+      conditionsOrder: [
+        ...conditionsOrder,
+        ...DEFAULT_MATRIX_SETTINGS.conditionsOrder.filter(
+          (id) => !conditionsOrder.includes(id),
+        ),
+      ],
+      hourlySectionOrder: [
+        ...hourlySectionOrder,
+        ...DEFAULT_MATRIX_SETTINGS.hourlySectionOrder.filter(
+          (id) => !hourlySectionOrder.includes(id),
+        ),
+      ],
+      hourlyColumnOrder,
     };
   } catch {
     return DEFAULT_MATRIX_SETTINGS;
@@ -222,6 +287,13 @@ export function useAnchoredSettings() {
       hourly: { ...DEFAULT_MATRIX_SETTINGS.hourly },
       heroOrder: [...DEFAULT_MATRIX_SETTINGS.heroOrder],
       cardOrder: [...DEFAULT_MATRIX_SETTINGS.cardOrder],
+      conditionsOrder: [...DEFAULT_MATRIX_SETTINGS.conditionsOrder],
+      hourlySectionOrder: [...DEFAULT_MATRIX_SETTINGS.hourlySectionOrder],
+      hourlyColumnOrder: Object.fromEntries(
+        Object.entries(DEFAULT_MATRIX_SETTINGS.hourlyColumnOrder).map(
+          ([section, order]) => [section, [...order]],
+        ),
+      ),
     });
   }, []);
 
@@ -249,14 +321,51 @@ export function useAnchoredSettings() {
   const moveDashboardItem = useCallback(
     (item: string, target: string, area: "heroOrder" | "cardOrder") => {
       setMatrixSettings((current) => {
-        // Reorder by removing the dragged item and reinserting it just before/after the drop target
-        const order = [...current[area]];
+        const order = current[area];
         const from = order.indexOf(item);
         const to = order.indexOf(target);
         if (from < 0 || to < 0 || from === to) return current;
-        order.splice(from, 1);
-        order.splice(from < to ? to - 1 : to, 0, item);
-        return { ...current, [area]: order };
+        return { ...current, [area]: arrayMove(order, from, to) };
+      });
+    },
+    [],
+  );
+
+  const moveConditionsItem = useCallback((item: string, target: string) => {
+    setMatrixSettings((current) => {
+      const order = current.conditionsOrder;
+      const from = order.indexOf(item);
+      const to = order.indexOf(target);
+      if (from < 0 || to < 0 || from === to) return current;
+      return { ...current, conditionsOrder: arrayMove(order, from, to) };
+    });
+  }, []);
+
+  const moveHourlySection = useCallback((item: string, target: string) => {
+    setMatrixSettings((current) => {
+      const order = current.hourlySectionOrder;
+      const from = order.indexOf(item);
+      const to = order.indexOf(target);
+      if (from < 0 || to < 0 || from === to) return current;
+      return { ...current, hourlySectionOrder: arrayMove(order, from, to) };
+    });
+  }, []);
+
+  const moveHourlyColumn = useCallback(
+    (sectionId: string, item: string, target: string) => {
+      setMatrixSettings((current) => {
+        const order = current.hourlyColumnOrder[sectionId];
+        if (!order) return current;
+        const from = order.indexOf(item);
+        const to = order.indexOf(target);
+        if (from < 0 || to < 0 || from === to) return current;
+        return {
+          ...current,
+          hourlyColumnOrder: {
+            ...current.hourlyColumnOrder,
+            [sectionId]: arrayMove(order, from, to),
+          },
+        };
       });
     },
     [],
@@ -271,6 +380,9 @@ export function useAnchoredSettings() {
     toggleGroup,
     toggleMatrixMetric,
     moveDashboardItem,
+    moveConditionsItem,
+    moveHourlySection,
+    moveHourlyColumn,
     resetSettings,
   };
 }

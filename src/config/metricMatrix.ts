@@ -266,6 +266,23 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
   },
 ];
 
+export const DEFAULT_DASHBOARD_GROUP_ORDER = [
+  "fishability",
+  "tide",
+  "solunar",
+  "water",
+  "weather",
+  "sunMoon",
+];
+
+export const DEFAULT_FULL_CONDITIONS_ORDER = [
+  "dailySummary",
+  "tide",
+  "solunar",
+  "water",
+  "weather",
+];
+
 export const HOURLY_METRICS = [
   { id: "hourlyScore", label: getMetricLabel("hourlyScore") },
   { id: "tide", label: getMetricLabel("tide") },
@@ -599,6 +616,60 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     dailyKeys: { range: "swellWavePeriodRange", maximum: "swellWavePeriodMax" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
     precision: 1,
+  },
+];
+
+export interface HourlySectionDefinition {
+  id: string;
+  label: string;
+  metricIds: string[];
+}
+
+export const HOURLY_SECTIONS: HourlySectionDefinition[] = [
+  { id: "fishability", label: "Fishability", metricIds: ["hourlyScore"] },
+  { id: "tide", label: "Tide", metricIds: ["tide", "tideDirection"] },
+  {
+    id: "solunar",
+    label: "Solunar",
+    metricIds: ["solunarActive", "solunarRating"],
+  },
+  {
+    id: "water",
+    label: "Water & marine conditions",
+    metricIds: [
+      "waterTemperature",
+      "waveHeight",
+      "waveDirection",
+      "wavePeriod",
+      "windWaveHeight",
+      "windWaveDirection",
+      "windWavePeriod",
+      "swell",
+      "swellWaveDirection",
+      "swellWavePeriod",
+    ],
+  },
+  {
+    id: "weather",
+    label: "Weather & atmospheric conditions",
+    metricIds: [
+      "wind",
+      "gust",
+      "pressure",
+      "airTemperature",
+      "feelsLike",
+      "cloud",
+      "rainChance",
+      "rainVolume",
+      "uv",
+      "humidity",
+      "dewPoint",
+      "cloudCoverLow",
+      "cloudCoverMid",
+      "cloudCoverHigh",
+      "cloudBase",
+      "visibility",
+    ],
   },
 ];
 
