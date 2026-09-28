@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { buildDayData } from "../../data/conditions";
+import { applyCurrentObservation } from "../../data/runtimeConditions.js";
+import { useApp } from "../../state/useApp";
+import { getRuntimeTodayIndex } from "../../data/runtimeConditions";
 import { useConditions } from "../../hooks/useConditions";
 import { useLayoutPrototype } from "../../hooks/useLayoutPrototype";
 import MainDashboard from "../MainDashboard";
@@ -7,39 +10,47 @@ import { DEFAULT_HOUR } from "./shared";
 import Option0Current from "./Option0Current";
 import Option1BottomDock from "./Option1BottomDock";
 
-function getTodayDateKey(): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+function getLocationHour(timezone: string): number {
+  const hour = new Intl.DateTimeFormat("en-GB", {
+    timeZone: timezone,
+    hour: "2-digit",
+    hourCycle: "h23",
+  }).format(new Date());
+  return Number(hour);
 }
 
 // Owns the date/hour and prototype selection so they survive switching between prototypes.
 export default function PrototypeSwitcher() {
+  const { activeLocation } = useApp();
   const { prototype, selectPrototype } = useLayoutPrototype();
-  const { days, loading, error } = useConditions();
+  const { days, loading, error, current } = useConditions(activeLocation);
   const [offset, setOffset] = useState(0);
   const [hour, setHour] = useState(DEFAULT_HOUR);
-  // Once data arrives, jump to today's date/hour instead of staying on day index 0
-  const [hasSyncedToNow, setHasSyncedToNow] = useState(false);
+  const [syncedLocationId, setSyncedLocationId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (hasSyncedToNow || days.length === 0) return;
-    const todayIndex = days.findIndex(
-      (item) => item.date === getTodayDateKey(),
+    if (syncedLocationId === activeLocation.id || days.length === 0) return;
+    const todayIndex = getRuntimeTodayIndex(
+      days,
+      activeLocation.timezone,
     );
     if (todayIndex >= 0) setOffset(todayIndex);
-    setHour(new Date().getHours());
-    setHasSyncedToNow(true);
-  }, [days, hasSyncedToNow]);
+    setHour(getLocationHour(activeLocation.timezone));
+    setSyncedLocationId(activeLocation.id);
+  }, [activeLocation, days, syncedLocationId]);
 
   const maxOffset = Math.max(0, days.length - 1);
   // Clamp so an out-of-range offset (e.g. stale localStorage) can't index past the loaded days
   const clampedOffset = Math.min(Math.max(offset, 0), maxOffset);
+  const forecastDay = useMemo(
+    () => (days.length ? buildDayData(days, clampedOffset, activeLocation.timezone) : null),
+    [activeLocation.timezone, days, clampedOffset],
+  );
   const day = useMemo(
-    () => (days.length ? buildDayData(days, clampedOffset) : null),
-    [days, clampedOffset],
+    () => forecastDay
+      ? applyCurrentObservation(forecastDay, current, activeLocation.timezone)
+      : null,
+    [activeLocation.timezone, current, forecastDay],
   );
 
   if (loading) {
@@ -60,6 +71,9 @@ export default function PrototypeSwitcher() {
 
   const dashboardProps = {
     day,
+    locationName: activeLocation.name,
+    timezone: activeLocation.timezone,
+    isLiveWeather: day.hours[hour]?.weatherSource === "current",
     hour,
     offset: clampedOffset,
     canGoPrevious: clampedOffset > 0,

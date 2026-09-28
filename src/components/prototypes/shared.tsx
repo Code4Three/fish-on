@@ -25,6 +25,9 @@ import type { PrototypeId } from "../../hooks/useLayoutPrototype";
 
 export interface DashboardStateProps {
   day: ClaudeDayData;
+  locationName: string;
+  timezone: string;
+  isLiveWeather?: boolean;
   hour: number;
   offset: number;
   canGoPrevious: boolean;
@@ -113,16 +116,33 @@ export function formatOptionalHour(
   return hour == null ? "--" : formatHour(hour, minutes);
 }
 
-export function formatDate(dateValue: string) {
-  const date = new Date(`${dateValue}T00:00:00`);
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const dayDifference = Math.round(
-    (date.getTime() - today.getTime()) / 86400000,
+export function formatDate(dateValue: string, timezone: string) {
+  const [year, monthNumber, day] = dateValue.split("-").map(Number);
+  const date = new Date(Date.UTC(year, monthNumber - 1, day, 12));
+  const todayParts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const todayValues = Object.fromEntries(
+    todayParts.map(({ type, value }) => [type, Number(value)]),
   );
-  const day = date.getDate();
-  const month = date.toLocaleDateString("en-AU", { month: "short" });
-  const weekday = date.toLocaleDateString("en-AU", { weekday: "short" });
+  const todayTimestamp = Date.UTC(
+    todayValues.year,
+    todayValues.month - 1,
+    todayValues.day,
+  );
+  const dateTimestamp = Date.UTC(year, monthNumber - 1, day);
+  const dayDifference = Math.round((dateTimestamp - todayTimestamp) / 86400000);
+  const month = date.toLocaleDateString("en-AU", {
+    month: "short",
+    timeZone: timezone,
+  });
+  const weekday = date.toLocaleDateString("en-AU", {
+    weekday: "short",
+    timeZone: timezone,
+  });
   if (dayDifference === 0) return `Today, ${day} ${month}`;
   if (dayDifference === 1) return `Tomorrow, ${day} ${month}`;
   if (dayDifference === -1) return `Yesterday, ${day} ${month}`;

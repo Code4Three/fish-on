@@ -28,6 +28,7 @@ function DashboardDock({
   offset,
   hour,
   day,
+  timezone,
   canGoPrevious,
   canGoNext,
   onOffsetChange,
@@ -42,6 +43,7 @@ function DashboardDock({
   offset: number;
   hour: number;
   day: DashboardStateProps["day"];
+  timezone: string;
   canGoPrevious: boolean;
   canGoNext: boolean;
   onOffsetChange: (offset: number) => void;
@@ -95,7 +97,7 @@ function DashboardDock({
           onClick={() => onOffsetChange(offset - 1)}
         />
         <span className="min-h-12 flex-1 truncate bg-transparent px-2 text-center font-body text-[13px] font-semibold leading-[48px] text-white">
-          {formatDate(day.date)}
+          {formatDate(day.date, timezone)}
         </span>
         <StepButton
           label="Next Day"
@@ -119,6 +121,8 @@ function DashboardDock({
 // Production dashboard: bottom-dock thumb-first layout (formerly Prototype 1). Settings live in the header only.
 export default function MainDashboard({
   day,
+  locationName,
+  timezone,
   hour,
   offset,
   canGoPrevious,
@@ -258,6 +262,7 @@ export default function MainDashboard({
     offset,
     hour,
     day,
+    timezone,
     canGoPrevious,
     canGoNext,
     onOffsetChange,
@@ -271,8 +276,8 @@ export default function MainDashboard({
 
   return (
     // Centers the fixed-width mobile column within any wider viewport
-    <div className="flex min-h-screen w-full mx-auto px-0 sm:px-4 lg:px-16 max-w-screen-2xl justify-center bg-hull-950">
-      <main className="dashboard-shell overscroll-x-none relative w-full mx-auto flex h-[100dvh] min-h-[100svh] flex-col overflow-hidden bg-hull-950 font-body touch-pan-y">
+    <div className="mx-auto flex min-h-screen w-full max-w-screen-2xl justify-center bg-hull-950 px-0 sm:px-4 lg:px-16">
+      <main className="dashboard-shell relative mx-auto flex h-[100dvh] min-h-[100svh] w-full flex-col overflow-hidden bg-hull-950 font-body touch-pan-y overscroll-x-none">
         {/* ================= HEADER ================= */}
         {/* Header: location name, current tide/solunar summary, and the settings button */}
         <header className="sticky top-0 z-20 shrink-0 bg-hull-950/95 px-4 py-3 backdrop-blur">
@@ -283,10 +288,11 @@ export default function MainDashboard({
               </div>
               <div className="min-w-0">
                 <h1 className="truncate font-display text-[16px] font-semibold text-white">
-                  Mooloolaba River Mouth
+                  {locationName}
                 </h1>
                 <p className="flex items-center gap-1.5 truncate font-body text-[12px] text-slate-400">
                   <Waves size={12} className="shrink-0 text-tide-400" />
+                  {current.weatherSource === "current" ? "Live weather" : "Hourly forecast"} ·{" "}
                   {formatTideHeight(current.tideHeight)}m{" "}
                   {rising ? "rising" : "falling"} ·{" "}
                   {ratingTier(day.solunarRating)} solunar
@@ -335,7 +341,7 @@ export default function MainDashboard({
           >
             {/* Left panel: draggable hero group cards, then the grid of individual metric cards */}
             <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y md:border-r md:border-hull-600/40">
-              <div className="px-[20px] pt-4">
+              <div className="px-4 pt-4">
                 <h2 className="font-display text-xl font-semibold text-white">
                   Conditions Dashboard
                 </h2>

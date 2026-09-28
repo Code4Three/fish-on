@@ -6,6 +6,7 @@
       "region": "Sunshine Coast, QLD",
       "lat": -26.7075,
       "lon": 153.132,
+      "timezone": "Australia/Brisbane",
       "water": "Salt",
       "tide": "Tidal",
       "datumOffset": 0.95
@@ -16,6 +17,7 @@
       "region": "Noosa, QLD",
       "lat": -26.391,
       "lon": 153.064,
+      "timezone": "Australia/Brisbane",
       "water": "Salt",
       "tide": "Tidal"
     },
@@ -25,6 +27,7 @@
       "region": "Moreton Bay, QLD",
       "lat": -27.229,
       "lon": 152.984,
+      "timezone": "Australia/Brisbane",
       "water": "Fresh",
       "tide": "Non-tidal"
     }

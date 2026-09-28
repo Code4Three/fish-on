@@ -1,5 +1,7 @@
-// Adapts the generated /conditions.json payload into the shape the dashboard cards expect.
+// Adapts runtime condition slices into the shape the dashboard cards expect.
 import scoringRules from "../config/scoringRules.json";
+import { TIME_ZONE } from "../config/constants.js";
+import { getZonedInstant } from "./runtimeAstronomy.js";
 import {
   ENVIRONMENTAL_METRICS,
   type EnvironmentalMetricDefinition,
@@ -20,22 +22,22 @@ export interface ConditionsTideEntry {
 
 export interface ConditionsSolunarPeak {
   type: string;
-  time: string;
-  start: { date: string; time: string };
-  end: { date: string; time: string };
+  time: string | null;
+  start: { date: string; time: string } | null;
+  end: { date: string; time: string } | null;
 }
 
 export interface ConditionsAnchored {
   highTides: ConditionsTideEntry[];
   lowTides: ConditionsTideEntry[];
-  sunrise: string;
-  sunset: string;
-  firstLight: string;
-  lastLight: string;
-  moonrise: string;
-  moonset: string;
-  moonPhase: string;
-  illumination: number;
+  sunrise: string | null;
+  sunset: string | null;
+  firstLight: string | null;
+  lastLight: string | null;
+  moonrise: string | null;
+  moonset: string | null;
+  moonPhase: string | null;
+  illumination: number | null;
   moonDistance: number | null;
   solunarPeaks: ConditionsSolunarPeak[];
   weatherSummary: string;
@@ -122,13 +124,10 @@ export interface ConditionsDay {
   hours: ConditionsHour[];
 }
 
-export interface ConditionsResponse {
-  days: ConditionsDay[];
-}
-
 export interface ClaudeHourlyData {
   time: string;
   hour: number;
+  weatherSource?: "current" | "hourly";
   tideHeight: number;
   tideStage: string;
   wind: { speed: number; gust: number | null; dir: string };
@@ -256,13 +255,15 @@ export interface AnchoredMetrics {
   secondaryMetrics: SecondaryMetrics;
 }
 
-function parseTimeToHour(time: string): number {
+function parseTimeToHour(time: string | null): number | null {
+  if (!time) return null;
   const [hours, minutes] = time.split(":").map(Number);
   return hours + minutes / 60;
 }
 
-function toTimestamp(date: string, time: string): number {
-  return new Date(`${date}T${time}:00`).getTime();
+function toTimestamp(date: string, time: string, timezone: string): number {
+  const [hours, minutes] = time.split(":").map(Number);
+  return getZonedInstant(date, hours, minutes, timezone).getTime();
 }
 
 function toSolunarTag(
@@ -294,16 +295,17 @@ function toScoreBand(
 
 function buildTideEventTimeline(
   days: ConditionsDay[],
+  timezone: string,
 ): Array<{ type: "High" | "Low"; at: number }> {
   return days
     .flatMap((day) => [
       ...(day.anchored.lowTides ?? []).map((tide) => ({
         type: "Low" as const,
-        at: toTimestamp(day.date, tide.time),
+        at: toTimestamp(day.date, tide.time, timezone),
       })),
       ...(day.anchored.highTides ?? []).map((tide) => ({
         type: "High" as const,
-        at: toTimestamp(day.date, tide.time),
+        at: toTimestamp(day.date, tide.time, timezone),
       })),
     ])
     .sort((a, b) => a.at - b.at);
@@ -423,29 +425,17 @@ export function getEnvironmentalMetricDisplayValues(
   };
 }
 
-export async function fetchConditionsDays(): Promise<ConditionsDay[]> {
-  // Always bypass the HTTP cache so a fresh build:data run is reflected immediately
-  const response = await fetch("/conditions.json", { cache: "no-store" });
-  if (!response.ok) {
-    throw new Error(`Failed to load conditions (status ${response.status})`);
-  }
-  const data: ConditionsResponse = await response.json();
-  if (!data || !Array.isArray(data.days) || data.days.length === 0) {
-    throw new Error("Conditions data is missing or malformed");
-  }
-  return data.days;
-}
-
 // Pure transform: given the full days list (for tide continuity) and the day index, build the dashboard-ready day.
 export function buildDayData(
   days: ConditionsDay[],
   index: number,
+  timezone = TIME_ZONE,
 ): ClaudeDayData {
   const day = days[index];
-  const tideTimeline = buildTideEventTimeline(days);
+  const tideTimeline = buildTideEventTimeline(days, timezone);
 
   const hours: ClaudeHourlyData[] = day.hours.map((item, hourIndex) => {
-    const at = toTimestamp(day.date, item.time);
+    const at = toTimestamp(day.date, item.time, timezone);
     const tideRating = calculateTideRating(at, tideTimeline, scoringRules);
     const solunarRating = calculateSolunarHourRating(
       day,
@@ -461,6 +451,7 @@ export function buildDayData(
     return {
       time: item.time,
       hour: parseTimeToHour(item.time),
+      weatherSource: "hourly",
       tideHeight: item.height,
       tideStage: item.tideStage,
       wind: {
@@ -527,7 +518,9 @@ export function buildDayData(
 
   const peaks = day.anchored.solunarPeaks ?? [];
   const majorWindows = peaks
-    .filter((peak) => peak.type.includes("Major"))
+    .filter(
+      (peak) => peak.type.includes("Major") && peak.start && peak.end,
+    )
     .map((peak) => ({
       start: windowHour(peak.start, day.date),
       end: windowHour(peak.end, day.date),
@@ -535,7 +528,9 @@ export function buildDayData(
     }))
     .sort((firstWindow, secondWindow) => firstWindow.start - secondWindow.start);
   const minorWindows = peaks
-    .filter((peak) => peak.type.includes("Minor"))
+    .filter(
+      (peak) => peak.type.includes("Minor") && peak.start && peak.end,
+    )
     .map((peak) => ({
       start: windowHour(peak.start, day.date),
       end: windowHour(peak.end, day.date),

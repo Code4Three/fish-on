@@ -22,6 +22,8 @@ import {
 // Prototype 1: thumb-first layout - minimal header, scrollable feed, fixed bottom dock for all controls.
 export default function Option1BottomDock({
   day,
+  locationName,
+  timezone,
   hour,
   offset,
   canGoPrevious,
@@ -48,10 +50,11 @@ export default function Option1BottomDock({
           </div>
           <div className="min-w-0">
             <h1 className="truncate font-display text-[16px] font-semibold text-white">
-              Mooloolaba River Mouth
+              {locationName}
             </h1>
             <p className="flex items-center gap-1.5 truncate font-body text-[12px] text-slate-400">
               <Waves size={12} className="shrink-0 text-tide-400" />
+              {current?.weatherSource === "current" ? "Live weather" : "Hourly forecast"} ·{" "}
               {formatTideHeight(current?.tideHeight)}m{" "}
               {rising ? "rising" : "falling"} · {ratingTier(day.solunarRating)}{" "}
               solunar
@@ -125,7 +128,7 @@ export default function Option1BottomDock({
             onClick={() => onOffsetChange(offset - 1)}
           />
           <span className="min-h-12 flex-2 truncate bg-transparent px-2 text-center font-body text-[13px] font-semibold leading-[48px] text-white">
-            {formatDate(day.date)}
+            {formatDate(day.date, timezone)}
           </span>
           <StepButton
             label="Next Day"

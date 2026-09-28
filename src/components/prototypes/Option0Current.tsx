@@ -96,6 +96,8 @@ function TimeBar({
 // Prototype 0: the original stacked layout, unchanged apart from sharing state/cards with the other prototypes.
 export default function Option0Current({
   day,
+  locationName,
+  timezone,
   hour,
   offset,
   canGoPrevious,
@@ -120,10 +122,10 @@ export default function Option0Current({
             </div>
             <div className="min-w-0">
               <p className="font-body text-[10px] text-slate-500">
-                Fish On · Current spot
+                Fish On · {day.hours[hour]?.weatherSource === "current" ? "Live weather" : "Hourly forecast"}
               </p>
               <h1 className="truncate font-display text-[16px] font-semibold text-white">
-                Mooloolaba River Mouth
+                {locationName}
               </h1>
             </div>
           </div>
@@ -146,7 +148,7 @@ export default function Option0Current({
             />
             <div className="flex items-center gap-1.5 font-body text-[14px] font-semibold text-white">
               <Calendar size={14} className="text-slate-500" />
-              {formatDate(day.date)}
+              {formatDate(day.date, timezone)}
             </div>
             <StepButton
               label="Next Day"

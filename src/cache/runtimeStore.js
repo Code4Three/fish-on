@@ -1,11 +1,12 @@
 const DATABASE_NAME = "fish-on-runtime-data";
-const DATABASE_VERSION = 1;
+const DATABASE_VERSION = 2;
 
 const STORE_NAMES = [
   "locations",
   "current",
   "history",
   "forecast",
+  "astronomy",
   "tides",
   "refresh",
 ];
@@ -33,7 +34,7 @@ export function openRuntimeDatabase() {
         database.createObjectStore("current", { keyPath: "locationKey" });
       }
 
-      for (const storeName of ["history", "forecast"]) {
+      for (const storeName of ["history", "forecast", "astronomy"]) {
         if (!database.objectStoreNames.contains(storeName)) {
           const store = database.createObjectStore(storeName, {
             keyPath: ["locationKey", "date"],
@@ -143,12 +144,38 @@ export function putRuntimeRecords(storeName, records) {
   });
 }
 
+export function replaceRuntimeLocationRecords(storeName, locationKey, records) {
+  return runTransaction([storeName], "readwrite", (transaction) => {
+    const store = transaction.objectStore(storeName);
+    const cursorRequest = store.index("byLocationKey").openCursor(
+      IDBKeyRange.only(locationKey),
+    );
+
+    cursorRequest.onsuccess = () => {
+      const cursor = cursorRequest.result;
+      if (cursor) {
+        cursor.delete();
+        cursor.continue();
+        return;
+      }
+
+      records.forEach((record) => store.put(record));
+    };
+  });
+}
+
 export function deleteRuntimeLocation(locationKey) {
   return runTransaction(STORE_NAMES, "readwrite", (transaction) => {
     transaction.objectStore("locations").delete(locationKey);
     transaction.objectStore("current").delete(locationKey);
 
-    for (const storeName of ["history", "forecast", "tides", "refresh"]) {
+    for (const storeName of [
+      "history",
+      "forecast",
+      "astronomy",
+      "tides",
+      "refresh",
+    ]) {
       const store = transaction.objectStore(storeName);
       const cursorRequest = store.index("byLocationKey").openCursor(
         IDBKeyRange.only(locationKey),
