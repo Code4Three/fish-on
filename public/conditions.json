@@ -8,7 +8,7 @@
     "lon": 153.132,
     "timezone": "Australia/Brisbane"
   },
-  "snapshotAt": "2026-09-28T11:15:15.391Z",
+  "snapshotAt": "2026-09-28T11:21:55.168Z",
   "days": [
     {
       "date": "2026-09-28",
@@ -7212,25 +7212,25 @@
     "current": {
       "locationKey": "-26.7075|153.132|Australia/Brisbane",
       "locationId": "mooloolaba",
-      "timestamp": "2026-09-28T21:00",
-      "fetchedAt": "2026-09-28T11:01:45.782Z",
+      "timestamp": "2026-09-28T21:15",
+      "fetchedAt": "2026-09-28T11:19:04.096Z",
       "values": {
-        "time": "2026-09-28T21:00",
+        "time": "2026-09-28T21:15",
         "interval": 900,
         "temperature_2m": 18.2,
-        "relative_humidity_2m": 90,
-        "apparent_temperature": 17.6,
+        "relative_humidity_2m": 91,
+        "apparent_temperature": 17.5,
         "is_day": 0,
-        "precipitation": 0.2,
-        "rain": 0.1,
+        "precipitation": 0.1,
+        "rain": 0,
         "showers": 0.1,
         "snowfall": 0,
-        "weather_code": 53,
-        "cloud_cover": 93,
+        "weather_code": 51,
+        "cloud_cover": 92,
         "surface_pressure": 1028,
         "wind_speed_10m": 20.3,
         "wind_direction_10m": 140,
-        "wind_gusts_10m": 37.8
+        "wind_gusts_10m": 38.2
       }
     },
     "history": [
@@ -20600,7 +20600,7 @@
       {
         "locationKey": "-26.7075|153.132|Australia/Brisbane",
         "slice": "current",
-        "fetchedAt": "2026-09-28T11:01:45.782Z"
+        "fetchedAt": "2026-09-28T11:19:04.096Z"
       },
       {
         "locationKey": "-26.7075|153.132|Australia/Brisbane",
@@ -20620,7 +20620,7 @@
         "locationKey": "-26.7075|153.132|Australia/Brisbane",
         "slice": "tides",
         "localDate": "2026-09-28",
-        "fetchedAt": "2026-09-28T11:15:14.568Z"
+        "fetchedAt": "2026-09-28T11:21:54.377Z"
       }
     ]
   }

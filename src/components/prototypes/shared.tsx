@@ -617,6 +617,7 @@ export function SolunarCard({
     windows.find((window) => window.start >= hour) ??
     windows[0];
   const current = day.hours[hour];
+  const values = day.hours.map((item) => item.solunarRating);
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800">
@@ -626,17 +627,26 @@ export function SolunarCard({
           Solunar rating
         </div>
         {isVisible(visibleMetrics, "solunarFeedingWindows") && (
-          <div className="mt-1 flex flex-wrap items-baseline gap-2">
-            <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
-              {current?.solunarRating ?? 0}
-              <span className="ml-0.5 align-top text-lg font-medium text-slate-400">
-                /{day.solunarRating}
+          <div className="mt-1 flex items-center gap-3">
+            <div className="flex flex-wrap items-baseline gap-2">
+              <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
+                {current?.solunarRating ?? 0}
+                <span className="ml-0.5 align-top text-lg font-medium text-slate-400">
+                  /{day.solunarRating}
+                </span>
               </span>
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-tide-500/15 px-2.5 py-1 font-body text-xs font-semibold text-tide-400">
-              <Fish size={14} />
-              {ratingTier(current?.solunarRating ?? 0)}
-            </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-tide-500/15 px-2.5 py-1 font-body text-xs font-semibold text-tide-400">
+                <Fish size={14} />
+                {ratingTier(current?.solunarRating ?? 0)}
+              </span>
+            </div>
+            <Sparkline
+              values={values}
+              activeIndex={hour}
+              stroke="#A78BFA"
+              dotColor="#C4B5FD"
+              label="Solunar rating trend"
+            />
           </div>
         )}
         {isVisible(visibleMetrics, "solunarStatus") && (
@@ -1239,22 +1249,32 @@ function SolunarGroupContent({
     windows.find((window) => window.start >= hour) ??
     windows[0];
   const current = day.hours[hour];
+  const values = day.hours.map((item) => item.solunarRating);
 
   return (
     <div className="px-4 pb-3 pt-3">
       <GroupHeader icon={Moon} tint="text-indigo-300" label={formatMetricLabel("solunarRating", unitSystem)} />
       {isVisible(visibleMetrics, "solunarFeedingWindows") && (
-        <div className="mt-1 flex flex-wrap items-baseline gap-2">
-          <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
-            {current?.solunarRating ?? 0}
-            <span className="ml-0.5 align-top text-lg font-medium text-slate-400">
-              /{day.solunarRating}
+        <div className="mt-1 flex items-center gap-3">
+          <div className="flex flex-wrap items-baseline gap-2">
+            <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
+              {current?.solunarRating ?? 0}
+              <span className="ml-0.5 align-top text-lg font-medium text-slate-400">
+                /{day.solunarRating}
+              </span>
             </span>
-          </span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-tide-500/15 px-2.5 py-1 font-body text-xs font-semibold text-tide-400">
-            <Fish size={14} />
-            {ratingTier(current?.solunarRating ?? 0)}
-          </span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-tide-500/15 px-2.5 py-1 font-body text-xs font-semibold text-tide-400">
+              <Fish size={14} />
+              {ratingTier(current?.solunarRating ?? 0)}
+            </span>
+          </div>
+          <Sparkline
+            values={values}
+            activeIndex={hour}
+            stroke="#A78BFA"
+            dotColor="#C4B5FD"
+            label="Solunar rating trend"
+          />
         </div>
       )}
       {isVisible(visibleMetrics, "solunarStatus") && activeWindow && (
