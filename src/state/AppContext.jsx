@@ -11,6 +11,17 @@ import { VIEWS } from "./viewConstants";
 
 const ACTIVE_LOCATION_KEY = "fish-on.active-location";
 const SAVED_LOCATIONS_KEY = "fish-on.saved-locations";
+const UNIT_SYSTEM_KEY = "fish-on.unit-system";
+const DEFAULT_UNIT_SYSTEM = "metric";
+
+function getStoredUnitSystem() {
+  try {
+    const storedUnitSystem = window.localStorage.getItem(UNIT_SYSTEM_KEY);
+    return storedUnitSystem === "imperial" ? "imperial" : DEFAULT_UNIT_SYSTEM;
+  } catch {
+    return DEFAULT_UNIT_SYSTEM;
+  }
+}
 
 function isValidLocation(location) {
   return (
@@ -56,6 +67,7 @@ export function AppProvider({ children }) {
   const [activeLocationId, setActiveLocationId] = useState(() => {
     return getStoredLocationId(getStoredLocations());
   });
+  const [unitSystem, setUnitSystem] = useState(getStoredUnitSystem);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -73,6 +85,14 @@ export function AppProvider({ children }) {
     });
   }, [activeLocationId, locations]);
 
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(UNIT_SYSTEM_KEY, unitSystem);
+    } catch {
+      // The in-memory preference remains available when browser storage is unavailable.
+    }
+  }, [unitSystem]);
+
   const activeLocation = useMemo(
     () =>
       locations.find((location) => location.id === activeLocationId) ??
@@ -86,6 +106,12 @@ export function AppProvider({ children }) {
       activeLocation,
       locations,
       preferences: appConfig.preferences,
+      unitSystem,
+      selectUnitSystem: (nextUnitSystem) => {
+        if (nextUnitSystem === "metric" || nextUnitSystem === "imperial") {
+          setUnitSystem(nextUnitSystem);
+        }
+      },
       isMenuOpen,
       addLocation: (location) => {
         const existingLocation = locations.find(
@@ -140,7 +166,7 @@ export function AppProvider({ children }) {
       closeMenu: () => setIsMenuOpen(false),
       toggleMenu: () => setIsMenuOpen((open) => !open),
     }),
-    [activeLocation, activeLocationId, activeView, isMenuOpen, locations],
+    [activeLocation, activeLocationId, activeView, isMenuOpen, locations, unitSystem],
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

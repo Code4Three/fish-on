@@ -1,4 +1,85 @@
 export type MetricDisplayMode = "hero" | "card";
+export type UnitSystem = "metric" | "imperial";
+export type MetricConversion =
+  | "temperature"
+  | "speed"
+  | "metersToFeet"
+  | "kilometersToMiles"
+  | "millimetersToInches"
+  | "pressure"
+  | "none";
+
+export interface MetricDisplayDefinition {
+  label: string;
+  metricUnit: string;
+  imperialUnit: string;
+  conversion: MetricConversion;
+  metricPrecision: number;
+  imperialPrecision: number;
+}
+
+export const METRIC_DISPLAY_DEFINITIONS = {
+  hourlyScore: { label: "Fishing score", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  maxDayScore: { label: "Maximum day score", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  feedingWindows: { label: "Peak feeding windows", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  currentTide: { label: "Tide height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  tideStage: { label: "Tide stage", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  nextTide: { label: "Next high/low tide", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  datumOffset: { label: "Tide datum offset", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 2, imperialPrecision: 2 },
+  waterTemperature: { label: "Water temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  solunarFeedingWindows: { label: "Solunar feeding windows", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  solunarStatus: { label: "Solunar status", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moon: { label: "Moon", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  sunrise: { label: "Sunrise / sunset", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  firstLight: { label: "First / last light", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  pressure: { label: "Barometric pressure", metricUnit: "hPa", imperialUnit: "inHg", conversion: "pressure", metricPrecision: 0, imperialPrecision: 2 },
+  humidity: { label: "Relative humidity", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  dewPoint: { label: "Dew point", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  airTemperature: { label: "Air temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  feelsLike: { label: "Feels-like temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  wind: { label: "Wind speed", metricUnit: "km/h", imperialUnit: "mph", conversion: "speed", metricPrecision: 1, imperialPrecision: 1 },
+  windDirection: { label: "Wind direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  gust: { label: "Gust speed", metricUnit: "km/h", imperialUnit: "mph", conversion: "speed", metricPrecision: 1, imperialPrecision: 1 },
+  cloud: { label: "Cloud cover", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  rainChance: { label: "Rain chance", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  rainVolume: { label: "Rain volume", metricUnit: "mm", imperialUnit: "in", conversion: "millimetersToInches", metricPrecision: 1, imperialPrecision: 2 },
+  rain: { label: "Rain", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  uv: { label: "UV index", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
+  airTemp: { label: "Air temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  moonPhase: { label: "Moon phase", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moonIllumination: { label: "Moon illumination", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moonrise: { label: "Moonrise / moonset", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  solunarCondition: { label: "Current solunar condition", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  tide: { label: "Tide height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  tideDirection: { label: "Tide direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  waterTemp: { label: "Water temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  swell: { label: "Swell height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  solunarActive: { label: "Solunar activity", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  solunarRating: { label: "Solunar score", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  cloudCoverLow: { label: "Low cloud cover", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  cloudCoverMid: { label: "Mid-level cloud cover", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  cloudCoverHigh: { label: "High cloud cover", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  cloudBase: { label: "Cloud base", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 0, imperialPrecision: 0 },
+  visibility: { label: "Visibility", metricUnit: "km", imperialUnit: "mi", conversion: "kilometersToMiles", metricPrecision: 2, imperialPrecision: 2 },
+  waveHeight: { label: "Wave height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  waveDirection: { label: "Wave direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  wavePeriod: { label: "Wave period", metricUnit: "s", imperialUnit: "s", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
+  windWaveHeight: { label: "Wind wave height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  windWaveDirection: { label: "Wind wave direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  windWavePeriod: { label: "Wind wave period", metricUnit: "s", imperialUnit: "s", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
+  swellWaveDirection: { label: "Swell direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  swellWavePeriod: { label: "Swell period", metricUnit: "s", imperialUnit: "s", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
+} as const satisfies Record<string, MetricDisplayDefinition>;
+
+export function getMetricDisplayDefinition(metricId: string) {
+  return METRIC_DISPLAY_DEFINITIONS[
+    metricId as keyof typeof METRIC_DISPLAY_DEFINITIONS
+  ] ?? null;
+}
+
+function getMetricLabel(metricId: keyof typeof METRIC_DISPLAY_DEFINITIONS) {
+  return METRIC_DISPLAY_DEFINITIONS[metricId].label;
+}
 
 export interface DailyMetricDefinition {
   id: string;
@@ -21,19 +102,19 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     metrics: [
       {
         id: "hourlyScore",
-        label: "Hourly/current score",
+        label: getMetricLabel("hourlyScore"),
         displayNotes: "Displayed with score and band",
         canDisplayAlone: true,
       },
       {
         id: "maxDayScore",
-        label: "Max day score",
+        label: getMetricLabel("maxDayScore"),
         displayNotes: "Calculated from the best hourly score",
         canDisplayAlone: true,
       },
       {
         id: "feedingWindows",
-        label: "Peak feeding score windows",
+        label: getMetricLabel("feedingWindows"),
         displayNotes: "Next strong window",
         canDisplayAlone: false,
       },
@@ -45,13 +126,13 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     metrics: [
       {
         id: "currentTide",
-        label: "Current tide height/stage",
+        label: getMetricLabel("currentTide"),
         displayNotes: "Current height and stage",
         canDisplayAlone: false,
       },
       {
         id: "nextTide",
-        label: "Next high/low tide",
+        label: getMetricLabel("nextTide"),
         displayNotes: "Next tide event",
         canDisplayAlone: false,
       },
@@ -63,13 +144,13 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     metrics: [
       {
         id: "waterTemperature",
-        label: "Water temperature/range",
+        label: getMetricLabel("waterTemperature"),
         displayNotes: "Placeholder when unavailable",
         canDisplayAlone: true,
       },
       {
         id: "swell",
-        label: "Swell height/period/direction/range",
+        label: getMetricLabel("swell"),
         displayNotes: "Placeholder when unavailable",
         canDisplayAlone: true,
       },
@@ -81,13 +162,13 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     metrics: [
       {
         id: "solunarFeedingWindows",
-        label: "Major/minor feeding windows",
+        label: getMetricLabel("solunarFeedingWindows"),
         displayNotes: "Shown in Full Conditions",
         canDisplayAlone: false,
       },
       {
         id: "solunarStatus",
-        label: "Current solunar status/trend",
+        label: getMetricLabel("solunarStatus"),
         displayNotes: "Neutral, Building, Peak, or Fading",
         canDisplayAlone: false,
       },
@@ -99,19 +180,19 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     metrics: [
       {
         id: "moon",
-        label: "Moon phase/illumination/moonrise/moonset",
+        label: getMetricLabel("moon"),
         displayNotes: "Displayed",
         canDisplayAlone: true,
       },
       {
         id: "sunrise",
-        label: "Sunrise/sunset",
+        label: getMetricLabel("sunrise"),
         displayNotes: "Displayed",
         canDisplayAlone: true,
       },
       {
         id: "firstLight",
-        label: "First light/last light",
+        label: getMetricLabel("firstLight"),
         displayNotes: "Placeholder when unavailable",
         canDisplayAlone: false,
       },
@@ -123,55 +204,61 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     metrics: [
       {
         id: "pressure",
-        label: "Barometric pressure",
+        label: getMetricLabel("pressure"),
         displayNotes: "Daily trend",
         canDisplayAlone: true,
       },
       {
         id: "airTemperature",
-        label: "Air temperature/range",
+        label: getMetricLabel("airTemperature"),
         displayNotes: "Displayed",
         canDisplayAlone: true,
       },
       {
         id: "feelsLike",
-        label: "Feels-like temperature",
+        label: getMetricLabel("feelsLike"),
         displayNotes: "Minor to air temperature",
         canDisplayAlone: false,
       },
       {
         id: "wind",
-        label: "Wind speed/direction",
+        label: getMetricLabel("wind"),
         displayNotes: "Displayed",
         canDisplayAlone: true,
       },
       {
+        id: "windDirection",
+        label: getMetricLabel("windDirection"),
+        displayNotes: "Current direction",
+        canDisplayAlone: true,
+      },
+      {
         id: "gust",
-        label: "Gust speed",
+        label: getMetricLabel("gust"),
         displayNotes: "Minor to wind",
         canDisplayAlone: false,
       },
       {
         id: "cloud",
-        label: "Cloud baseline",
+        label: getMetricLabel("cloud"),
         displayNotes: "Displayed",
         canDisplayAlone: true,
       },
       {
         id: "rainChance",
-        label: "Rain chance",
+        label: getMetricLabel("rainChance"),
         displayNotes: "Displayed",
         canDisplayAlone: true,
       },
       {
         id: "rainVolume",
-        label: "Rain volume",
+        label: getMetricLabel("rainVolume"),
         displayNotes: "Minor to rain chance",
         canDisplayAlone: false,
       },
       {
         id: "uv",
-        label: "UV Index",
+        label: getMetricLabel("uv"),
         displayNotes: "Placeholder when unavailable",
         canDisplayAlone: true,
       },
@@ -180,22 +267,22 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
 ];
 
 export const HOURLY_METRICS = [
-  { id: "hourlyScore", label: "Hourly score and descriptive band" },
-  { id: "tide", label: "Tide height/stage/direction" },
-  { id: "waterTemp", label: "Water temp" },
-  { id: "swell", label: "Hourly swell" },
-  { id: "solunarActive", label: "Hourly solunar active state" },
-  { id: "solunarStatus", label: "Current solunar status/trend" },
-  { id: "solunarRating", label: "Numeric hourly solunar rating" },
-  { id: "pressure", label: "Pressure" },
-  { id: "airTemperature", label: "Air temperature" },
-  { id: "feelsLike", label: "Feels like temperature" },
-  { id: "wind", label: "Wind speed/direction" },
-  { id: "gust", label: "Gust speed" },
-  { id: "cloud", label: "Cloud cover" },
-  { id: "rainChance", label: "Rain chance" },
-  { id: "rainVolume", label: "Rain volume" },
-  { id: "uv", label: "UV index" },
+  { id: "hourlyScore", label: getMetricLabel("hourlyScore") },
+  { id: "tide", label: getMetricLabel("tide") },
+  { id: "waterTemp", label: getMetricLabel("waterTemp") },
+  { id: "swell", label: getMetricLabel("swell") },
+  { id: "solunarActive", label: getMetricLabel("solunarActive") },
+  { id: "solunarStatus", label: getMetricLabel("solunarStatus") },
+  { id: "solunarRating", label: getMetricLabel("solunarRating") },
+  { id: "pressure", label: getMetricLabel("pressure") },
+  { id: "airTemperature", label: getMetricLabel("airTemperature") },
+  { id: "feelsLike", label: getMetricLabel("feelsLike") },
+  { id: "wind", label: getMetricLabel("wind") },
+  { id: "gust", label: getMetricLabel("gust") },
+  { id: "cloud", label: getMetricLabel("cloud") },
+  { id: "rainChance", label: getMetricLabel("rainChance") },
+  { id: "rainVolume", label: getMetricLabel("rainVolume") },
+  { id: "uv", label: getMetricLabel("uv") },
 ] as const;
 
 export interface EnvironmentalMetricKeys {
@@ -210,6 +297,9 @@ export interface EnvironmentalMetricDefinition {
   key: string;
   label: string;
   unit: string;
+  metricUnit: string;
+  imperialUnit: string;
+  conversion: MetricConversion;
   icon: string;
   group: "weather" | "water";
   groupLabel: string;
@@ -238,8 +328,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "pressure",
     key: "pressure",
-    label: "Surface pressure",
-    unit: "hPa",
+    label: getMetricLabel("pressure"),
+    unit: METRIC_DISPLAY_DEFINITIONS.pressure.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.pressure,
     icon: "Gauge",
     group: "weather",
     groupLabel: "Weather & atmospheric conditions",
@@ -250,8 +341,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "humidity",
     key: "humidity",
-    label: "Relative humidity",
-    unit: "%",
+    label: getMetricLabel("humidity"),
+    unit: METRIC_DISPLAY_DEFINITIONS.humidity.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.humidity,
     icon: "Droplets",
     group: "weather",
     groupLabel: "Weather & atmospheric conditions",
@@ -262,8 +354,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "dewPoint",
     key: "dewPoint",
-    label: "Dew point",
-    unit: "°C",
+    label: getMetricLabel("dewPoint"),
+    unit: METRIC_DISPLAY_DEFINITIONS.dewPoint.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.dewPoint,
     icon: "Thermometer",
     group: "weather",
     groupLabel: "Weather & atmospheric conditions",
@@ -275,56 +368,70 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "cloud",
     key: "cloudCover",
-    label: "Total cloud cover",
-    unit: "%",
+    label: getMetricLabel("cloud"),
+    unit: METRIC_DISPLAY_DEFINITIONS.cloud.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.cloud,
     icon: "Cloud",
     group: "weather",
     groupLabel: "Weather & atmospheric conditions",
     fullConditionsSection: "Current weather & atmospheric",
-    dailyKeys: { baseline: "cloudBaseline" },
+    dailyKeys: { baseline: "cloudBaseline", range: "cloudRange" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
   {
     id: "cloudCoverLow",
     key: "cloudCoverLow",
-    label: "Low cloud cover",
-    unit: "%",
+    label: getMetricLabel("cloudCoverLow"),
+    unit: METRIC_DISPLAY_DEFINITIONS.cloudCoverLow.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.cloudCoverLow,
     icon: "Cloud",
     group: "weather",
     groupLabel: "Weather & atmospheric conditions",
     fullConditionsSection: "Current weather & atmospheric",
-    dailyKeys: { baseline: "cloudCoverLowBaseline" },
+    dailyKeys: {
+      baseline: "cloudCoverLowBaseline",
+      range: "cloudCoverLowRange",
+    },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
   {
     id: "cloudCoverMid",
     key: "cloudCoverMid",
-    label: "Mid-level cloud cover",
-    unit: "%",
+    label: getMetricLabel("cloudCoverMid"),
+    unit: METRIC_DISPLAY_DEFINITIONS.cloudCoverMid.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.cloudCoverMid,
     icon: "Cloud",
     group: "weather",
     groupLabel: "Weather & atmospheric conditions",
     fullConditionsSection: "Current weather & atmospheric",
-    dailyKeys: { baseline: "cloudCoverMidBaseline" },
+    dailyKeys: {
+      baseline: "cloudCoverMidBaseline",
+      range: "cloudCoverMidRange",
+    },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
   {
     id: "cloudCoverHigh",
     key: "cloudCoverHigh",
-    label: "High cloud cover",
-    unit: "%",
+    label: getMetricLabel("cloudCoverHigh"),
+    unit: METRIC_DISPLAY_DEFINITIONS.cloudCoverHigh.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.cloudCoverHigh,
     icon: "Cloud",
     group: "weather",
     groupLabel: "Weather & atmospheric conditions",
     fullConditionsSection: "Current weather & atmospheric",
-    dailyKeys: { baseline: "cloudCoverHighBaseline" },
+    dailyKeys: {
+      baseline: "cloudCoverHighBaseline",
+      range: "cloudCoverHighRange",
+    },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
   {
     id: "cloudBase",
     key: "cloudBase",
-    label: "Cloud base",
-    unit: "m",
+    label: getMetricLabel("cloudBase"),
+    unit: METRIC_DISPLAY_DEFINITIONS.cloudBase.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.cloudBase,
     icon: "Cloud",
     group: "weather",
     groupLabel: "Weather & atmospheric conditions",
@@ -335,20 +442,23 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "visibility",
     key: "visibility",
-    label: "Visibility",
-    unit: "m",
+    label: getMetricLabel("visibility"),
+    unit: METRIC_DISPLAY_DEFINITIONS.visibility.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.visibility,
     icon: "Eye",
     group: "weather",
     groupLabel: "Weather & atmospheric conditions",
     fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: { range: "visibilityRange" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
+    precision: 2,
   },
   {
     id: "waterTemperature",
     key: "seaSurfaceTemperature",
-    label: "Sea surface temperature",
-    unit: "°C",
+    label: getMetricLabel("waterTemperature"),
+    unit: METRIC_DISPLAY_DEFINITIONS.waterTemperature.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.waterTemperature,
     icon: "Thermometer",
     group: "water",
     groupLabel: "Water & marine conditions",
@@ -364,8 +474,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "waveHeight",
     key: "waveHeight",
-    label: "Wave height",
-    unit: "m",
+    label: getMetricLabel("waveHeight"),
+    unit: METRIC_DISPLAY_DEFINITIONS.waveHeight.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.waveHeight,
     icon: "Waves",
     group: "water",
     groupLabel: "Water & marine conditions",
@@ -377,8 +488,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "waveDirection",
     key: "waveDirection",
-    label: "Wave direction",
-    unit: "",
+    label: getMetricLabel("waveDirection"),
+    unit: METRIC_DISPLAY_DEFINITIONS.waveDirection.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.waveDirection,
     icon: "Compass",
     group: "water",
     groupLabel: "Water & marine conditions",
@@ -389,8 +501,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "wavePeriod",
     key: "wavePeriod",
-    label: "Wave period",
-    unit: "s",
+    label: getMetricLabel("wavePeriod"),
+    unit: METRIC_DISPLAY_DEFINITIONS.wavePeriod.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.wavePeriod,
     icon: "Waves",
     group: "water",
     groupLabel: "Water & marine conditions",
@@ -402,8 +515,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "windWaveHeight",
     key: "windWaveHeight",
-    label: "Wind wave height",
-    unit: "m",
+    label: getMetricLabel("windWaveHeight"),
+    unit: METRIC_DISPLAY_DEFINITIONS.windWaveHeight.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.windWaveHeight,
     icon: "Waves",
     group: "water",
     groupLabel: "Water & marine conditions",
@@ -418,8 +532,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "windWaveDirection",
     key: "windWaveDirection",
-    label: "Wind wave direction",
-    unit: "",
+    label: getMetricLabel("windWaveDirection"),
+    unit: METRIC_DISPLAY_DEFINITIONS.windWaveDirection.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.windWaveDirection,
     icon: "Compass",
     group: "water",
     groupLabel: "Water & marine conditions",
@@ -430,8 +545,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "windWavePeriod",
     key: "windWavePeriod",
-    label: "Wind wave period",
-    unit: "s",
+    label: getMetricLabel("windWavePeriod"),
+    unit: METRIC_DISPLAY_DEFINITIONS.windWavePeriod.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.windWavePeriod,
     icon: "Waves",
     group: "water",
     groupLabel: "Water & marine conditions",
@@ -443,8 +559,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "swell",
     key: "swellWaveHeight",
-    label: "Swell height",
-    unit: "m",
+    label: getMetricLabel("swell"),
+    unit: METRIC_DISPLAY_DEFINITIONS.swell.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.swell,
     icon: "Waves",
     group: "water",
     groupLabel: "Water & marine conditions",
@@ -459,8 +576,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "swellWaveDirection",
     key: "swellWaveDirection",
-    label: "Swell direction",
-    unit: "",
+    label: getMetricLabel("swellWaveDirection"),
+    unit: METRIC_DISPLAY_DEFINITIONS.swellWaveDirection.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.swellWaveDirection,
     icon: "Compass",
     group: "water",
     groupLabel: "Water & marine conditions",
@@ -471,8 +589,9 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
   {
     id: "swellWavePeriod",
     key: "swellWavePeriod",
-    label: "Swell period",
-    unit: "s",
+    label: getMetricLabel("swellWavePeriod"),
+    unit: METRIC_DISPLAY_DEFINITIONS.swellWavePeriod.metricUnit,
+    ...METRIC_DISPLAY_DEFINITIONS.swellWavePeriod,
     icon: "Waves",
     group: "water",
     groupLabel: "Water & marine conditions",

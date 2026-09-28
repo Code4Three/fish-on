@@ -9,3 +9,8 @@ export function useApp() {
   }
   return context;
 }
+
+export function useUnitSystem() {
+  const context = useContext(AppContext);
+  return context?.unitSystem ?? "metric";
+}

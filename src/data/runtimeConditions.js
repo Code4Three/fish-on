@@ -66,7 +66,7 @@ function toCompassDirection(degrees) {
 function formatObservedMetric(value, unit = "") {
   if (typeof value !== "number" || !Number.isFinite(value)) return null;
   const normalized = String(Number(value.toFixed(1)));
-  if (unit === "%" || unit === "°C") return `${normalized}${unit}`;
+  if (unit === "%" || unit.startsWith("°")) return `${normalized}${unit}`;
   return unit ? `${normalized} ${unit}` : normalized;
 }
 
@@ -158,6 +158,15 @@ export function applyCurrentObservation(day, currentRecord, timezone, now = new 
     rainVolume: formatObservedMetric(rainVolume, "mm")
       ?? hourRecord.environmentalValues.rainVolume,
   };
+  const environmentalRawValues = {
+    ...hourRecord.environmentalRawValues,
+    airTemperature: airTemp,
+    feelsLike,
+    pressure,
+    humidity,
+    cloud: cloudCover,
+    rainVolume,
+  };
 
   updatedDay.hours[localHour] = {
     ...hourRecord,
@@ -175,6 +184,7 @@ export function applyCurrentObservation(day, currentRecord, timezone, now = new 
     wind: nextWind,
     windLabel: `${nextWind.speed} km/h${nextWind.dir ? ` ${nextWind.dir}` : ""}`,
     environmentalValues,
+    environmentalRawValues,
   };
 
   updatedDay.secondary = {
@@ -269,7 +279,9 @@ function normalizeWeatherHour(hourRecord) {
     cloudCoverMid: weather.cloud_cover_mid ?? null,
     cloudCoverHigh: weather.cloud_cover_high ?? null,
     cloudBase: weather.cloud_base ?? null,
-    visibility: weather.visibility ?? null,
+    visibility: typeof weather.visibility === "number"
+      ? weather.visibility / 1000
+      : null,
     rainChance: weather.precipitation_probability ?? null,
     rainVolume: weather.precipitation ?? null,
     windSpeed,
@@ -376,11 +388,15 @@ function buildAnchored(dateRecord, astronomy, dayHours, tideEvents, location) {
     windRange: windMax == null ? [null, null] : [Math.max(0, windMax - 6), windMax],
     windBaseline: windMax == null ? null : `${windMax} km/h${windDirection ? ` ${windDirection}` : ""}`,
     cloudBaseline,
+    cloudRange: getRange(dayHours.map((hour) => hour.cloudCover)),
     cloudCoverLowBaseline: getAverage(dayHours.map((hour) => hour.cloudCoverLow)),
+    cloudCoverLowRange: getRange(dayHours.map((hour) => hour.cloudCoverLow)),
     cloudCoverMidBaseline: getAverage(dayHours.map((hour) => hour.cloudCoverMid)),
+    cloudCoverMidRange: getRange(dayHours.map((hour) => hour.cloudCoverMid)),
     cloudCoverHighBaseline: getAverage(dayHours.map((hour) => hour.cloudCoverHigh)),
+    cloudCoverHighRange: getRange(dayHours.map((hour) => hour.cloudCoverHigh)),
     cloudBaseRange: getRange(dayHours.map((hour) => hour.cloudBase)),
-    visibilityRange: getRange(dayHours.map((hour) => hour.visibility)),
+    visibilityRange: getRange(dayHours.map((hour) => hour.visibility), 2),
     humidityRange: getRange(dayHours.map((hour) => hour.humidity)),
     humidityBaseline: getAverage(dayHours.map((hour) => hour.humidity)),
     dewPointRange: getRange(dayHours.map((hour) => hour.dewPoint), 1),

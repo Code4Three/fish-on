@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Calendar, Clock, Fish, Settings } from "lucide-react";
 import type { ClaudeDayData } from "../../data/conditions";
 import { useAnchoredSettings } from "../../hooks/useAnchoredSettings";
+import { useApp } from "../../state/useApp";
 import CustomizationBottomSheet from "../settings/CustomizationBottomSheet";
 import type { DashboardStateProps } from "./shared";
 import {
@@ -109,6 +110,7 @@ export default function Option0Current({
 }: DashboardStateProps) {
   const { settings, cardSettings, toggleCard, resetSettings } =
     useAnchoredSettings();
+  const { unitSystem, selectUnitSystem } = useApp();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
 
@@ -199,6 +201,8 @@ export default function Option0Current({
         onReset={resetSettings}
         prototype={prototype}
         onSelectPrototype={onSelectPrototype}
+        unitSystem={unitSystem}
+        onSelectUnitSystem={selectUnitSystem}
       />
     </main>
   );

@@ -11,6 +11,7 @@ import type {
 import type { DockPosition } from "../../hooks/useDashboardSettings";
 import { PROTOTYPE_OPTIONS } from "../../hooks/useLayoutPrototype";
 import type { PrototypeId } from "../../hooks/useLayoutPrototype";
+import type { UnitSystem } from "../../config/metricMatrix";
 
 export interface CustomizationBottomSheetProps {
   isOpen: boolean;
@@ -25,6 +26,8 @@ export interface CustomizationBottomSheetProps {
   onSelectPrototype: (id: PrototypeId) => void;
   dockPosition?: DockPosition;
   onSelectDockPosition?: (position: DockPosition) => void;
+  unitSystem: UnitSystem;
+  onSelectUnitSystem: (unitSystem: UnitSystem) => void;
 }
 
 export default function CustomizationBottomSheet({
@@ -40,6 +43,8 @@ export default function CustomizationBottomSheet({
   onSelectPrototype,
   dockPosition,
   onSelectDockPosition,
+  unitSystem,
+  onSelectUnitSystem,
 }: CustomizationBottomSheetProps) {
   // Let Escape close the sheet while it's open
   useEffect(() => {
@@ -96,6 +101,39 @@ export default function CustomizationBottomSheet({
             </button>
           </div>
 
+          <section
+            className="border-b border-slate-800 px-4 py-3"
+            aria-labelledby="measurement-units-title"
+          >
+            <p
+              id="measurement-units-title"
+              className="mb-2 text-sm font-semibold text-white"
+            >
+              Measurement units
+            </p>
+            <div
+              className="grid grid-cols-2 gap-2"
+              role="group"
+              aria-label="Measurement units"
+            >
+              {(["metric", "imperial"] as const).map((system) => (
+                <button
+                  key={system}
+                  type="button"
+                  aria-pressed={unitSystem === system}
+                  onClick={() => onSelectUnitSystem(system)}
+                  tabIndex={isOpen ? 0 : -1}
+                  className={`min-h-12 rounded-lg border text-sm font-semibold capitalize transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${unitSystem === system
+                    ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
+                    : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
+                    }`}
+                >
+                  {system}
+                </button>
+              ))}
+            </div>
+          </section>
+
           {/* ================= METRIC VISIBILITY TOGGLES ================= */}
           <div className="px-4 py-2">
             {matrixSettings && onToggleGroup && onToggleMatrixMetric ? (
@@ -128,8 +166,8 @@ export default function CustomizationBottomSheet({
                             onClick={() => onToggleGroup(group.id)}
                             tabIndex={isOpen ? 0 : -1}
                             className={`inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border ${matrixSettings.groups[group.id]
-                                ? "border-emerald-300 bg-emerald-400 text-slate-950"
-                                : "border-slate-600 bg-slate-800 text-slate-500"
+                              ? "border-emerald-300 bg-emerald-400 text-slate-950"
+                              : "border-slate-600 bg-slate-800 text-slate-500"
                               }`}
                           >
                             <Check size={17} strokeWidth={3} />
@@ -152,8 +190,8 @@ export default function CustomizationBottomSheet({
                                 onClick={() => onToggleMatrixMetric(metric.id)}
                                 tabIndex={isOpen ? 0 : -1}
                                 className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${matrixSettings.metrics[metric.id]
-                                    ? "border-emerald-300 bg-emerald-400 text-slate-950"
-                                    : "border-slate-600 bg-slate-800 text-slate-500"
+                                  ? "border-emerald-300 bg-emerald-400 text-slate-950"
+                                  : "border-slate-600 bg-slate-800 text-slate-500"
                                   }`}
                               >
                                 <Check size={15} strokeWidth={3} />
@@ -189,8 +227,8 @@ export default function CustomizationBottomSheet({
                         onClick={() => onToggleMatrixMetric(metric.id, true)}
                         tabIndex={isOpen ? 0 : -1}
                         className={`inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border ${matrixSettings.hourly[metric.id]
-                            ? "border-emerald-300 bg-emerald-400 text-slate-950"
-                            : "border-slate-600 bg-slate-800 text-slate-500"
+                          ? "border-emerald-300 bg-emerald-400 text-slate-950"
+                          : "border-slate-600 bg-slate-800 text-slate-500"
                           }`}
                       >
                         <Check size={15} strokeWidth={3} />
@@ -216,8 +254,8 @@ export default function CustomizationBottomSheet({
                     onClick={() => onToggle(key as keyof DashboardCardSettings)}
                     tabIndex={isOpen ? 0 : -1}
                     className={`inline-flex min-h-12 min-w-12 items-center justify-center rounded-full border ${enabled
-                        ? "border-emerald-300 bg-emerald-400 text-slate-950"
-                        : "border-slate-600 bg-slate-800 text-slate-500"
+                      ? "border-emerald-300 bg-emerald-400 text-slate-950"
+                      : "border-slate-600 bg-slate-800 text-slate-500"
                       }`}
                   >
                     <Check size={19} strokeWidth={3} />
@@ -241,8 +279,8 @@ export default function CustomizationBottomSheet({
                   onClick={() => onSelectPrototype(option.id)}
                   tabIndex={isOpen ? 0 : -1}
                   className={`flex min-h-12 items-center justify-between rounded-lg border px-3 text-left transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${prototype === option.id
-                      ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
-                      : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
+                    ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
+                    : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
                     }`}
                 >
                   <span>
@@ -276,8 +314,8 @@ export default function CustomizationBottomSheet({
                     onClick={() => onSelectDockPosition(position)}
                     tabIndex={isOpen ? 0 : -1}
                     className={`min-h-12 rounded-lg border text-sm font-semibold capitalize transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${dockPosition === position
-                        ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
-                        : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
+                      ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
+                      : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
                       }`}
                   >
                     {position}

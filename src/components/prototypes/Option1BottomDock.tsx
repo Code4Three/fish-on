@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Fish, Settings, Waves } from "lucide-react";
 import { useAnchoredSettings } from "../../hooks/useAnchoredSettings";
+import { useApp } from "../../state/useApp";
 import CustomizationBottomSheet from "../settings/CustomizationBottomSheet";
 import type { DashboardStateProps } from "./shared";
 import {
@@ -13,11 +14,11 @@ import {
   StepButton,
   TideCard,
   formatDate,
-  formatTideHeight,
   isTideRising,
   metrics,
   ratingTier,
 } from "./shared";
+import { formatMetricValue } from "../../utils/measurementUnits";
 
 // Prototype 1: thumb-first layout - minimal header, scrollable feed, fixed bottom dock for all controls.
 export default function Option1BottomDock({
@@ -35,6 +36,7 @@ export default function Option1BottomDock({
 }: DashboardStateProps) {
   const { settings, cardSettings, toggleCard, resetSettings } =
     useAnchoredSettings();
+  const { unitSystem, selectUnitSystem } = useApp();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
 
@@ -55,7 +57,7 @@ export default function Option1BottomDock({
             <p className="flex items-center gap-1.5 truncate font-body text-[12px] text-slate-400">
               <Waves size={12} className="shrink-0 text-tide-400" />
               {current?.weatherSource === "current" ? "Live weather" : "Hourly forecast"} ·{" "}
-              {formatTideHeight(current?.tideHeight)}m{" "}
+              {formatMetricValue("tide", current?.tideHeight, unitSystem)}{" "}
               {rising ? "rising" : "falling"} · {ratingTier(day.solunarRating)}{" "}
               solunar
             </p>
@@ -165,6 +167,8 @@ export default function Option1BottomDock({
         onReset={resetSettings}
         prototype={prototype}
         onSelectPrototype={onSelectPrototype}
+        unitSystem={unitSystem}
+        onSelectUnitSystem={selectUnitSystem}
       />
     </main>
   );

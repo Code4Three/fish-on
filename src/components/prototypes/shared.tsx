@@ -22,6 +22,13 @@ import { ENVIRONMENTAL_METRICS } from "../../config/metricMatrix";
 import type { ClaudeDayData } from "../../data/conditions";
 import type { AnchoredSettingsState } from "../../hooks/useAnchoredSettings";
 import type { PrototypeId } from "../../hooks/useLayoutPrototype";
+import {
+  formatMetricLabel,
+  formatMetricRange,
+  formatMetricValue,
+  getMetricUnit,
+} from "../../utils/measurementUnits";
+import { useUnitSystem } from "../../state/useApp";
 
 export interface DashboardStateProps {
   day: ClaudeDayData;
@@ -246,34 +253,48 @@ export function getMetricDisplay(
   id: MetricKey,
   day: ClaudeDayData,
   hour: number,
+  unitSystem: "metric" | "imperial" = "metric",
 ): [string, string, string] {
   const current = day.hours[hour];
   const wind = current.wind;
-  const swell = day.secondary.swell;
   const uv = current.uvIndex ?? day.secondary.uv;
+  const formatValue = (metricId: string, value: number | string | null | undefined) =>
+    formatMetricValue(metricId, value, unitSystem, false);
   const data: Record<MetricKey, [string, string, string]> = {
-    wind: [`${wind.speed}`, "km/h", `${wind.dir} · Gusts ${wind.gust ?? "--"} km/h`],
-    waterTemp: [`${safe(day.secondary.waterTemp)}`, "°C", "Surface reading"],
-    swell: swell
-      ? [swell.height, "m", `@ ${swell.period}s ${swell.dir}`]
-      : ["--", "m", "--"],
+    wind: [
+      formatValue("wind", wind.speed),
+      getMetricUnit("wind", unitSystem),
+      `${wind.dir} · Gusts ${formatMetricValue("gust", wind.gust, unitSystem)}`,
+    ],
+    waterTemp: [
+      formatValue("waterTemp", current.seaSurfaceTemperature),
+      getMetricUnit("waterTemp", unitSystem),
+      "Surface reading",
+    ],
+    swell: [
+      formatValue("swell", current.swellWaveHeight),
+      getMetricUnit("swell", unitSystem),
+      current.swellWaveHeight == null
+        ? "--"
+        : `@ ${formatMetricValue("swellWavePeriod", current.swellWavePeriod, unitSystem, false)}s ${current.swellWaveDirection ?? "--"}`,
+    ],
     moonPhase: [
       `${safe(day.secondary.moon.illum)}`,
       "%",
       `${safe(day.secondary.moon.phaseName)}`,
     ],
     rain: [
-      `${safe(day.secondary.rain.chance)}`,
-      "%",
-      day.secondary.rain.mm == null
+      formatValue("rainChance", current.rainChance),
+      getMetricUnit("rain", unitSystem),
+      current.rainVolume == null
         ? "--"
-        : `${day.secondary.rain.mm.toFixed(1)}mm chance`,
+        : `${formatMetricValue("rainVolume", current.rainVolume, unitSystem)} accumulated`,
     ],
     uv: [`${safe(uv)}`, "", uv == null ? "--" : uvLabel(uv)],
     airTemp: [
-      `${current.airTemp ?? "--"}`,
-      "°C",
-      `Feels ${current.feelsLike ?? day.secondary.airTemp.feels ?? "--"}°C`,
+      formatValue("airTemp", current.airTemp),
+      getMetricUnit("airTemp", unitSystem),
+      `Feels ${formatMetricValue("feelsLike", current.feelsLike, unitSystem)}`,
     ],
   };
   return data[id];
@@ -364,17 +385,33 @@ export function Sparkline({
   height = 46,
   width = 280,
 }: SparklineProps) {
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const points = values
+  const validValues = values
+    .map((value, index) => ({ value, index }))
+    .filter(({ value }) => Number.isFinite(value));
+
+  if (validValues.length === 0) return null;
+
+  const min = Math.min(...validValues.map(({ value }) => value));
+  const max = Math.max(...validValues.map(({ value }) => value));
+  const xDenominator = Math.max(values.length - 1, 1);
+  const points = validValues
     .map(
-      (value, index) =>
-        `${(index / (values.length - 1)) * width},${height - ((value - min) / (max - min || 1)) * height}`,
+      ({ value, index }) =>
+        `${(index / xDenominator) * width},${height - ((value - min) / (max - min || 1)) * height}`,
     )
     .join(" ");
-  const activeX = (activeIndex / (values.length - 1)) * width;
+  const requestedIndex = Number.isFinite(activeIndex)
+    ? Math.max(0, Math.min(activeIndex, values.length - 1))
+    : 0;
+  const activeValue = validValues.reduce((nearest, candidate) =>
+    Math.abs(candidate.index - requestedIndex) <
+      Math.abs(nearest.index - requestedIndex)
+      ? candidate
+      : nearest,
+  );
+  const activeX = (activeValue.index / xDenominator) * width;
   const activeY =
-    height - ((values[activeIndex] - min) / (max - min || 1)) * height;
+    height - ((activeValue.value - min) / (max - min || 1)) * height;
 
   return (
     <svg
@@ -416,6 +453,7 @@ export function ScoreCard({
   hour: number;
   visibleMetrics?: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const values = day.hours.map((item) => item.score);
   const current = day.hours[hour];
   const tone = scoreBandTone(current.scoreBand);
@@ -430,7 +468,7 @@ export function ScoreCard({
       <div className="px-4 pb-3 pt-3">
         <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
           <Fish size={13} className={tone.text} />
-          Fishing score
+          {formatMetricLabel("hourlyScore", unitSystem)}
         </div>
         {isVisible(visibleMetrics, "hourlyScore") && (
           <div className="mt-1 flex items-center gap-3">
@@ -478,6 +516,7 @@ export function TideCard({
   hour: number;
   visibleMetrics?: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const values = day.hours
     .map((item) => item.tideHeight)
     .filter((value): value is number => typeof value === "number");
@@ -491,16 +530,13 @@ export function TideCard({
       <div className="px-4 pb-3 pt-3">
         <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
           <Waves size={13} className="text-tide-400" />
-          Tide height
+          {formatMetricLabel("tide", unitSystem)}
         </div>
         {isVisible(visibleMetrics, "currentTide") && (
           <div className="mt-1 flex items-center gap-3">
             <div className="flex flex-wrap items-baseline gap-2">
               <span className="font-display text-[40px] font-bold leading-none tabular-nums text-white">
-                {formatTideHeight(current?.tideHeight)}
-                <span className="ml-0.5 align-top text-xl font-medium text-slate-400">
-                  m
-                </span>
+                {formatMetricValue("tide", current?.tideHeight, unitSystem)}
               </span>
               <span
                 className={`rounded-full px-2.5 py-1 font-body text-xs font-semibold ${rising ? "bg-tide-500/15 text-tide-400" : "bg-amber-400/15 text-amber-300"}`}
@@ -509,8 +545,8 @@ export function TideCard({
               </span>
             </div>
             <Sparkline
-              values={values.length ? values : [0]}
-              activeIndex={Math.min(hour, values.length - 1 || 0)}
+              values={values}
+              activeIndex={hour}
               stroke="#22C58A"
               dotColor="#4ADE9C"
               label="Tide height trend"
@@ -520,11 +556,11 @@ export function TideCard({
         {isVisible(visibleMetrics, "nextTide") && (
           <div className="mt-1.5 flex items-center justify-between border-t border-hull-700/70 pt-2">
             <span className="font-body text-[13px] font-medium text-slate-300">
-              Next {nextEvent?.type?.toLowerCase() ?? "tide"} tide
+              {formatMetricLabel("nextTide", unitSystem)}
             </span>
             <span className="font-body text-[13px] font-semibold tabular-nums text-white">
               {nextEvent
-                ? `${nextEvent.type}: ${formatHour(nextEvent.hour, true)} (${formatTideHeight(nextEvent.height)}m)`
+                ? `${nextEvent.type}: ${formatHour(nextEvent.hour, true)} (${formatMetricValue("tide", nextEvent.height, unitSystem)})`
                 : safe(null)}
             </span>
           </div>
@@ -612,6 +648,7 @@ export function PressureCard({
   hour: number;
   visibleMetrics?: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const current = day.hours[hour];
   const pressureRange = day.ranges?.pressure;
   const trend = day.secondary.pressure.trend;
@@ -627,14 +664,14 @@ export function PressureCard({
       <div className="px-4 pb-3 pt-3">
         <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
           <Gauge size={13} className="text-amber-300" />
-          Atmospheric pressure
+          {formatMetricLabel("pressure", unitSystem)}
         </div>
         {isVisible(visibleMetrics, "pressure") && (
           <div className="mt-1 flex flex-wrap items-baseline gap-2">
             <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
-              {safe(current?.pressure)}
+              {formatMetricValue("pressure", current?.pressure, unitSystem, false)}
               <span className="ml-1 text-lg font-medium text-slate-400">
-                hPa
+                {getMetricUnit("pressure", unitSystem)}
               </span>
             </span>
             <span
@@ -650,9 +687,7 @@ export function PressureCard({
               Today&apos;s range
             </span>
             <span className="font-body text-[13px] font-semibold tabular-nums text-white">
-              {pressureRange
-                ? `${pressureRange.min} - ${pressureRange.max} hPa`
-                : safe(null)}
+              {formatMetricRange("pressure", pressureRange, unitSystem)}
             </span>
           </div>
         )}
@@ -672,9 +707,10 @@ export function MetricCard({
   hour: number;
   variant?: "hero" | "card";
 }) {
+  const unitSystem = useUnitSystem();
   const metric = metrics.find((item) => item.id === id)!;
   const Icon = metric.icon;
-  const [value, unit, detail] = getMetricDisplay(id, day, hour);
+  const [value, unit, detail] = getMetricDisplay(id, day, hour, unitSystem);
 
   return (
     <article
@@ -687,7 +723,7 @@ export function MetricCard({
           <Icon size={14} className={metric.tint} />
         </div>
         <p className="font-body text-[11.5px] leading-tight text-slate-400">
-          {metric.label}
+          {formatMetricLabel(id, unitSystem)}
         </p>
       </div>
       <div>
@@ -714,6 +750,7 @@ function matrixMetricValue(
   id: string,
   day: ClaudeDayData,
   hour: number,
+  unitSystem: "metric" | "imperial",
 ): [string, string] {
   const current = day.hours[hour];
   const nextPeak = day.hours.find(
@@ -733,7 +770,7 @@ function matrixMetricValue(
       "Next strong window",
     ],
     currentTide: [
-      `${formatTideHeight(current?.tideHeight)}m`,
+      formatMetricValue("tide", current?.tideHeight, unitSystem),
       current?.tideStage ?? "--",
     ],
     nextTide: [
@@ -743,16 +780,12 @@ function matrixMetricValue(
       "Next tide",
     ],
     waterTemperature: [
-      String(day.secondary.waterTemp ?? "--"),
-      range?.waterTemp
-        ? `${range.waterTemp.min}-${range.waterTemp.max}°C`
-        : "Unavailable",
+      formatMetricValue("waterTemperature", current.seaSurfaceTemperature, unitSystem),
+      formatMetricRange("waterTemperature", range?.waterTemp, unitSystem),
     ],
     swell: [
-      day.secondary.swell?.height ?? "--",
-      day.secondary.swell
-        ? `${day.secondary.swell.period}s ${day.secondary.swell.dir}`
-        : "Unavailable",
+      formatMetricValue("swell", current.swellWaveHeight, unitSystem),
+      formatMetricRange("swell", day.environmentalRawSummaries?.swell?.dailyRange, unitSystem),
     ],
     solunarFeedingWindows: [
       String(day.majorWindows.length + day.minorWindows.length),
@@ -772,25 +805,39 @@ function matrixMetricValue(
       "",
     ],
     pressure: [
-      `${current.pressure ?? "--"}`,
-      day.secondary.pressure.trend ?? "Steady",
+      formatMetricValue("pressure", current.pressure, unitSystem),
+      formatMetricRange("pressure", day.environmentalRawSummaries?.pressure?.dailyRange, unitSystem),
     ],
     airTemperature: [
-      `${current.airTemp ?? "--"}°C`,
-      range?.airTemp
-        ? `${range.airTemp.min}-${range.airTemp.max}°C`
-        : "Range unavailable",
+      formatMetricValue("airTemperature", current.airTemp, unitSystem),
+      formatMetricRange("airTemperature", range?.airTemp, unitSystem),
     ],
-    feelsLike: [`${current.feelsLike ?? "--"}°C`, "Feels like"],
-    wind: [`${current.wind.speed} km/h`, current.wind.dir],
-    gust: [`${current.wind.gust ?? "--"} km/h`, "Gust speed"],
-    cloud: [`${current.cloudCover ?? "--"}%`, "Cloud baseline"],
-    rainChance: [`${current.rainChance ?? "--"}%`, "Rain chance"],
+    feelsLike: [
+      formatMetricValue("feelsLike", current.feelsLike, unitSystem),
+      formatMetricRange("feelsLike", range?.feelsLike, unitSystem),
+    ],
+    wind: [
+      formatMetricValue("wind", current.wind.speed, unitSystem),
+      formatMetricRange("wind", range?.wind, unitSystem),
+    ],
+    windDirection: [current.wind.dir ?? "--", ""],
+    gust: [
+      formatMetricValue("gust", current.wind.gust, unitSystem),
+      formatMetricRange("gust", range?.gust, unitSystem),
+    ],
+    cloud: [
+      formatMetricValue("cloud", current.cloudCover, unitSystem),
+      formatMetricRange("cloud", day.environmentalRawSummaries?.cloud?.dailyRange, unitSystem),
+    ],
+    rainChance: [formatMetricValue("rainChance", current.rainChance, unitSystem), "Rain chance"],
     rainVolume: [
-      current.rainVolume == null ? "--" : `${current.rainVolume.toFixed(1)}mm`,
+      formatMetricValue("rainVolume", current.rainVolume, unitSystem),
       "Rain volume",
     ],
-    uv: [String(current.uvIndex ?? "--"), "UV index"],
+    uv: [
+      formatMetricValue("uv", current.uvIndex, unitSystem),
+      formatMetricRange("uv", range?.uv, unitSystem, false),
+    ],
   };
   return values[id] ?? ["--", "Unavailable"];
 }
@@ -813,6 +860,7 @@ const metricIconMap: Record<string, { icon: typeof Wind; tint: string }> = {
   airTemperature: { icon: Thermometer, tint: "text-emerald-200" },
   feelsLike: { icon: Thermometer, tint: "text-emerald-200" },
   wind: { icon: Wind, tint: "text-sky-300" },
+  windDirection: { icon: Compass, tint: "text-sky-300" },
   gust: { icon: Wind, tint: "text-sky-300" },
   cloud: { icon: Cloud, tint: "text-slate-300" },
   rainChance: { icon: CloudRain, tint: "text-blue-300" },
@@ -882,7 +930,9 @@ export function MatrixMetricCard({
   onDragOver?: (event: React.DragEvent<HTMLElement>) => void;
   onDrop?: (event: React.DragEvent<HTMLElement>) => void;
 }) {
-  const [value, detail] = matrixMetricValue(id, day, hour);
+  const unitSystem = useUnitSystem();
+  const [value, detail] = matrixMetricValue(id, day, hour, unitSystem);
+  const metricLabel = formatMetricLabel(id, unitSystem);
   const meta = metricIconMap[id];
   const Icon = meta?.icon;
   return (
@@ -900,7 +950,7 @@ export function MatrixMetricCard({
           </div>
         )}
         <p className="font-body text-[11.5px] leading-tight text-slate-400">
-          {label}
+          {metricLabel === id ? label : metricLabel}
         </p>
       </div>
       <div className="mt-1">
@@ -929,6 +979,7 @@ function FishabilityGroupContent({
   hour: number;
   visibleMetrics: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const values = day.hours.map((item) => item.score);
   const current = day.hours[hour];
   const tone = scoreBandTone(current.scoreBand);
@@ -944,7 +995,7 @@ function FishabilityGroupContent({
 
   return (
     <div className="px-4 pb-3 pt-3">
-      <GroupHeader icon={Fish} tint={tone.text} label="Fishing score" />
+      <GroupHeader icon={Fish} tint={tone.text} label={formatMetricLabel("hourlyScore", unitSystem)} />
       {(showHourly || showMax) && (
         <div className="mt-1 flex items-center gap-3">
           <div className="flex flex-wrap items-baseline gap-2">
@@ -995,6 +1046,7 @@ function TideGroupContent({
   hour: number;
   visibleMetrics: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const values = day.hours
     .map((item) => item.tideHeight)
     .filter((value): value is number => typeof value === "number");
@@ -1005,15 +1057,12 @@ function TideGroupContent({
 
   return (
     <div className="px-4 pb-3 pt-3">
-      <GroupHeader icon={Waves} tint="text-tide-400" label="Tide height" />
+      <GroupHeader icon={Waves} tint="text-tide-400" label={formatMetricLabel("tide", unitSystem)} />
       {isVisible(visibleMetrics, "currentTide") && (
         <div className="mt-1 flex items-center gap-3">
           <div className="flex flex-wrap items-baseline gap-2">
             <span className="font-display text-[40px] font-bold leading-none tabular-nums text-white">
-              {formatTideHeight(current?.tideHeight)}
-              <span className="ml-0.5 align-top text-xl font-medium text-slate-400">
-                m
-              </span>
+              {formatMetricValue("tide", current?.tideHeight, unitSystem)}
             </span>
             <span
               className={`rounded-full px-2.5 py-1 font-body text-xs font-semibold ${rising ? "bg-tide-500/15 text-tide-400" : "bg-amber-400/15 text-amber-300"}`}
@@ -1022,8 +1071,8 @@ function TideGroupContent({
             </span>
           </div>
           <Sparkline
-            values={values.length ? values : [0]}
-            activeIndex={Math.min(hour, values.length - 1 || 0)}
+            values={values}
+            activeIndex={hour}
             stroke="#22C58A"
             dotColor="#4ADE9C"
             label="Tide height trend"
@@ -1033,11 +1082,11 @@ function TideGroupContent({
       {isVisible(visibleMetrics, "nextTide") && (
         <div className="mt-1.5 flex items-center justify-between border-t border-hull-700/70 pt-2">
           <span className="font-body text-[13px] font-medium text-slate-300">
-            Next {nextEvent?.type?.toLowerCase() ?? "tide"} tide
+            {formatMetricLabel("nextTide", unitSystem)}
           </span>
           <span className="font-body text-[13px] font-semibold tabular-nums text-white">
             {nextEvent
-              ? `${nextEvent.type}: ${formatHour(nextEvent.hour, true)} (${formatTideHeight(nextEvent.height)}m)`
+              ? `${nextEvent.type}: ${formatHour(nextEvent.hour, true)} (${formatMetricValue("tide", nextEvent.height, unitSystem)})`
               : safe(null)}
           </span>
         </div>
@@ -1055,6 +1104,7 @@ function SolunarGroupContent({
   hour: number;
   visibleMetrics: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const windows = [
     ...(day.majorWindows ?? []).map((window) => ({
       type: "Major",
@@ -1077,7 +1127,7 @@ function SolunarGroupContent({
 
   return (
     <div className="px-4 pb-3 pt-3">
-      <GroupHeader icon={Moon} tint="text-indigo-300" label="Solunar rating" />
+      <GroupHeader icon={Moon} tint="text-indigo-300" label={formatMetricLabel("solunarRating", unitSystem)} />
       {isVisible(visibleMetrics, "solunarFeedingWindows") && (
         <div className="mt-1 flex flex-wrap items-baseline gap-2">
           <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
@@ -1126,6 +1176,7 @@ function TileGroupContent({
   day: ClaudeDayData;
   hour: number;
 }) {
+  const unitSystem = useUnitSystem();
   const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
     (metric) => metric.group === group.id,
   );
@@ -1160,28 +1211,52 @@ function TileGroupContent({
       <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-3">
         {metricsToShow.map((metric) => {
           const environmentalSummary = metric.environmentalMetric
-            ? day.environmentalSummaries?.[metric.id]
+            ? day.environmentalRawSummaries?.[metric.id]
             : null;
           const [legacyValue, legacyDetail] = matrixMetricValue(
             metric.id,
             day,
             hour,
+            unitSystem,
           );
-          const environmentalValue = environmentalSummary
-            ? [
-              environmentalSummary.dailyRange,
-              environmentalSummary.dailyBaseline,
-              environmentalSummary.dailyMaximum,
-              environmentalSummary.dailyDirection,
-            ].find((value) => value !== "--") ?? "--"
-            : null;
-          const value = environmentalValue ?? legacyValue;
-          const hourlyValue =
-            day.hours[hour]?.environmentalValues?.[metric.id] ?? "--";
+          const hourlyRawValue = day.hours[hour]?.environmentalRawValues?.[metric.id];
+          const hourlyValue = formatMetricValue(
+            metric.id,
+            hourlyRawValue,
+            unitSystem,
+          );
+          const dailyRange = environmentalSummary
+            ? formatMetricRange(metric.id, environmentalSummary.dailyRange, unitSystem)
+            : "--";
+          const dailyDirection = environmentalSummary
+            ? formatMetricValue(metric.id, environmentalSummary.dailyDirection, unitSystem)
+            : "--";
+          const dailyMaximum = environmentalSummary
+            ? formatMetricValue(metric.id, environmentalSummary.dailyMaximum, unitSystem)
+            : "--";
+          const dailyBaseline = environmentalSummary
+            ? formatMetricValue(metric.id, environmentalSummary.dailyBaseline, unitSystem)
+            : "--";
+          const dailyDetail = !environmentalSummary || metric.id === "waveDirection"
+            ? ""
+            : dailyRange !== "--"
+              ? dailyRange
+              : dailyDirection !== "--"
+                ? `Daily ${dailyDirection}`
+                : dailyMaximum !== "--"
+                  ? `Daily max ${dailyMaximum}`
+                  : dailyBaseline !== "--"
+                    ? `Daily ${dailyBaseline}`
+                    : "";
+          const value = metric.environmentalMetric
+            ? metric.id === "waveDirection" && hourlyValue === "--"
+              ? dailyDirection
+              : hourlyValue
+            : legacyValue;
           const detail = metric.environmentalMetric
-            ? hourlyValue === "--"
+            ? dailyDetail === "--"
               ? ""
-              : `Now ${hourlyValue}`
+              : dailyDetail
             : legacyDetail;
           const meta = metricIconMap[metric.id];
           const Icon = meta?.icon;
@@ -1194,7 +1269,7 @@ function TileGroupContent({
                   </div>
                 )}
                 <p className="min-w-0 break-words font-body text-[11.5px] leading-tight text-slate-400">
-                  {metric.label}
+                  {formatMetricLabel(metric.id, unitSystem)}
                 </p>
               </div>
               <p className={`mt-1 min-w-0 break-words font-display font-bold leading-tight tabular-nums text-white ${metric.environmentalMetric ? "text-[16px]" : "text-[21px]"}`}>
@@ -1309,6 +1384,7 @@ export function WaterDetailsCard({
   hour: number;
   visibleMetrics?: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const upcomingHigh =
     day.tideEvents.find(
       (event) => event.type === "High" && event.hour >= hour,
@@ -1331,38 +1407,38 @@ export function WaterDetailsCard({
       <div className="mt-2">
         {isVisible(visibleMetrics, "currentTide") && (
           <DetailRow
-            label="Current tide height"
-            value={`${formatTideHeight(day.hours[hour]?.tideHeight)}m`}
+            label={formatMetricLabel("tide", unitSystem)}
+            value={formatMetricValue("tide", day.hours[hour]?.tideHeight, unitSystem)}
           />
         )}
         {isVisible(visibleMetrics, "currentTide") && (
           <DetailRow
-            label="Current tide stage"
+            label={formatMetricLabel("tideStage", unitSystem)}
             value={safe(day.hours[hour]?.tideStage)}
           />
         )}
         {isVisible(visibleMetrics, "currentTide") && (
           <DetailRow
-            label="Current tide direction"
+            label={formatMetricLabel("tideDirection", unitSystem)}
             value={safe(day.hours[hour]?.tideDirection)}
           />
         )}
         {isVisible(visibleMetrics, "nextTide") && (
           <DetailRow
-            label="Next high tide"
+            label={formatMetricLabel("nextTide", unitSystem)}
             value={
               upcomingHigh
-                ? `${formatHour(upcomingHigh.hour, true)} (${formatTideHeight(upcomingHigh.height)}m)`
+                ? `High: ${formatHour(upcomingHigh.hour, true)} (${formatMetricValue("tide", upcomingHigh.height, unitSystem)})`
                 : safe(null)
             }
           />
         )}
         {isVisible(visibleMetrics, "nextTide") && (
           <DetailRow
-            label="Next low tide"
+            label={formatMetricLabel("nextTide", unitSystem)}
             value={
               upcomingLow
-                ? `${formatHour(upcomingLow.hour, true)} (${formatTideHeight(upcomingLow.height)}m)`
+                ? `Low: ${formatHour(upcomingLow.hour, true)} (${formatMetricValue("tide", upcomingLow.height, unitSystem)})`
                 : safe(null)
             }
           />
@@ -1373,8 +1449,12 @@ export function WaterDetailsCard({
         {environmentalMetrics.map((metric) => (
           <DetailRow
             key={metric.id}
-            label={metric.label}
-            value={day.hours[hour]?.environmentalValues?.[metric.id] ?? "--"}
+            label={formatMetricLabel(metric.id, unitSystem)}
+            value={formatMetricValue(
+              metric.id,
+              day.hours[hour]?.environmentalRawValues?.[metric.id],
+              unitSystem,
+            )}
           />
         ))}
       </div>
@@ -1392,6 +1472,7 @@ export function SolunarDetailsCard({
   hour: number;
   visibleMetrics?: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const status = solunarStatusTrend(day, hour);
   const moon = day.secondary?.moon;
 
@@ -1403,17 +1484,17 @@ export function SolunarDetailsCard({
       </div>
       <div className="mt-2">
         {isVisible(visibleMetrics, "solunarStatus") && (
-          <DetailRow label="Current solunar status" value={status} />
+          <DetailRow label={formatMetricLabel("solunarStatus", unitSystem)} value={status} />
         )}
         {isVisible(visibleMetrics, "solunarStatus") && (
           <DetailRow
-            label="Current solunar condition"
+            label={formatMetricLabel("solunarCondition", unitSystem)}
             value={safe(day.hours[hour]?.solunarCondition)}
           />
         )}
         {isVisible(visibleMetrics, "solunarFeedingWindows") && (
           <DetailRow
-            label="Current solunar score"
+            label={formatMetricLabel("solunarRating", unitSystem)}
             value={safe(day.hours[hour]?.solunarRating)}
           />
         )}
@@ -1421,7 +1502,7 @@ export function SolunarDetailsCard({
           day.majorWindows.map((window, index) => (
             <DetailRow
               key={`major-${index}`}
-              label={`Major feeding window ${index + 1}`}
+              label={`${formatMetricLabel("solunarFeedingWindows", unitSystem)} ${index + 1} (Major)`}
               value={`${formatHour(window.start, true)} - ${formatHour(window.end, true)} [${window.rating}]`}
             />
           ))}
@@ -1429,22 +1510,22 @@ export function SolunarDetailsCard({
           day.minorWindows.map((window, index) => (
             <DetailRow
               key={index}
-              label={`Minor feeding window ${index + 1}`}
+              label={`${formatMetricLabel("solunarFeedingWindows", unitSystem)} ${index + 1} (Minor)`}
               value={`${formatHour(window.start, true)} - ${formatHour(window.end, true)} [${window.rating}]`}
             />
           ))}
         {isVisible(visibleMetrics, "moon") && (
-          <DetailRow label="Moon phase" value={safe(moon?.phaseName, "N/A")} />
+          <DetailRow label={formatMetricLabel("moonPhase", unitSystem)} value={safe(moon?.phaseName, "N/A")} />
         )}
         {isVisible(visibleMetrics, "moon") && (
           <DetailRow
-            label="Moon illumination"
+            label={formatMetricLabel("moonIllumination", unitSystem)}
             value={moon?.illum !== undefined ? `${moon.illum}%` : safe(null)}
           />
         )}
         {isVisible(visibleMetrics, "moon") && (
           <DetailRow
-            label="Moonrise / moonset"
+            label={formatMetricLabel("moonrise", unitSystem)}
             value={
               moon
                 ? `${formatOptionalHour(moon.moonrise, true)} / ${formatOptionalHour(moon.moonset, true)}`
@@ -1454,7 +1535,7 @@ export function SolunarDetailsCard({
         )}
         {isVisible(visibleMetrics, "sunrise") && (
           <DetailRow
-            label="Sunrise / sunset"
+            label={formatMetricLabel("sunrise", unitSystem)}
             value={
               day.sun
                 ? `${formatHour(day.sun.sunrise, true)} / ${formatHour(day.sun.sunset, true)}`
@@ -1464,7 +1545,7 @@ export function SolunarDetailsCard({
         )}
         {isVisible(visibleMetrics, "firstLight") && (
           <DetailRow
-            label="First light / last light"
+            label={formatMetricLabel("firstLight", unitSystem)}
             value={
               day.sun
                 ? `${formatOptionalHour(day.sun.firstLight, true)} / ${formatOptionalHour(day.sun.lastLight, true)}`
@@ -1487,6 +1568,7 @@ export function WeatherDetailsCard({
   hour: number;
   visibleMetrics?: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
     (metric) =>
       metric.group === "weather" && metric.defaultVisibility.fullConditions,
@@ -1501,33 +1583,33 @@ export function WeatherDetailsCard({
       <div className="mt-2">
         {isVisible(visibleMetrics, "airTemperature") && (
           <DetailRow
-            label="Current air temperature"
-            value={`${safe(day.hours[hour]?.airTemp)}°C`}
+            label={formatMetricLabel("airTemperature", unitSystem)}
+            value={formatMetricValue("airTemperature", day.hours[hour]?.airTemp, unitSystem)}
           />
         )}
         {isVisible(visibleMetrics, "feelsLike") && (
           <DetailRow
-            label="Feels like"
+            label={formatMetricLabel("feelsLike", unitSystem)}
             value={
               day.hours[hour]
-                ? `${safe(day.hours[hour].feelsLike)}°C`
+                ? formatMetricValue("feelsLike", day.hours[hour].feelsLike, unitSystem)
                 : safe(null)
             }
           />
         )}
         {isVisible(visibleMetrics, "wind") && (
           <DetailRow
-            label="Current wind"
+            label={formatMetricLabel("wind", unitSystem)}
             value={
               day.hours[hour]
-                ? `${safe(day.hours[hour].wind.speed)} km/h`
+                ? formatMetricValue("wind", day.hours[hour].wind.speed, unitSystem)
                 : safe(null)
             }
           />
         )}
         {isVisible(visibleMetrics, "wind") && (
           <DetailRow
-            label="Wind direction"
+            label={formatMetricLabel("windDirection", unitSystem)}
             value={
               day.hours[hour]
                 ? `${safe(day.hours[hour].wind.dir)}`
@@ -1537,45 +1619,49 @@ export function WeatherDetailsCard({
         )}
         {isVisible(visibleMetrics, "gust") && (
           <DetailRow
-            label="Current gust"
+            label={formatMetricLabel("gust", unitSystem)}
             value={
               day.hours[hour]
-                ? `${safe(day.hours[hour].wind.gust)} km/h`
+                ? formatMetricValue("gust", day.hours[hour].wind.gust, unitSystem)
                 : safe(null)
             }
           />
         )}
         {isVisible(visibleMetrics, "rainChance") && (
           <DetailRow
-            label="Rain chance"
+            label={formatMetricLabel("rainChance", unitSystem)}
             value={
               day.hours[hour]
-                ? `${safe(day.hours[hour].rainChance)}%`
+                ? formatMetricValue("rainChance", day.hours[hour].rainChance, unitSystem)
                 : safe(null)
             }
           />
         )}
         {isVisible(visibleMetrics, "rainVolume") && (
           <DetailRow
-            label="Rain volume"
+            label={formatMetricLabel("rainVolume", unitSystem)}
             value={
               day.hours[hour]
-                ? `${safe(day.hours[hour].rainVolume)} mm`
+                ? formatMetricValue("rainVolume", day.hours[hour].rainVolume, unitSystem)
                 : safe(null)
             }
           />
         )}
         {isVisible(visibleMetrics, "uv") && (
           <DetailRow
-            label="UV index"
-            value={safe(day.hours[hour]?.uvIndex)}
+            label={formatMetricLabel("uv", unitSystem)}
+            value={formatMetricValue("uv", day.hours[hour]?.uvIndex, unitSystem)}
           />
         )}
         {environmentalMetrics.map((metric) => (
           <DetailRow
             key={metric.id}
-            label={metric.label}
-            value={day.hours[hour]?.environmentalValues?.[metric.id] ?? "--"}
+            label={formatMetricLabel(metric.id, unitSystem)}
+            value={formatMetricValue(
+              metric.id,
+              day.hours[hour]?.environmentalRawValues?.[metric.id],
+              unitSystem,
+            )}
           />
         ))}
       </div>
@@ -1590,6 +1676,7 @@ export function DailySummaryCard({
   day: ClaudeDayData;
   visibleMetrics?: VisibleMetrics;
 }) {
+  const unitSystem = useUnitSystem();
   const airTempRange = day.ranges?.airTemp;
   const windRange = day.ranges?.wind;
   const rain = day.secondary.rain;
@@ -1621,56 +1708,69 @@ export function DailySummaryCard({
         )}
         {isVisible(visibleMetrics, "airTemperature") && (
           <DetailRow
-            label="Air temperature"
-            value={
-              airTempRange
-                ? `${safe(airTempRange.max)}° / ${safe(airTempRange.min)}°C`
-                : safe(null)
-            }
+            label={formatMetricLabel("airTemperature", unitSystem)}
+            value={formatMetricRange("airTemperature", airTempRange, unitSystem)}
           />
         )}
         {isVisible(visibleMetrics, "wind") && (
           <DetailRow
-            label="Sustained wind / max gust"
-            value={
-              windRange
-                ? `${safe(windRange.min)}-${safe(windRange.max)} km/h · gust ${safe(windRange.maxGust)} km/h`
-                : safe(null)
-            }
+            label={formatMetricLabel("wind", unitSystem)}
+            value={formatMetricRange(
+              "wind",
+              windRange ? { min: windRange.min, max: windRange.max } : null,
+              unitSystem,
+            )}
+          />
+        )}
+        {isVisible(visibleMetrics, "gust") && (
+          <DetailRow
+            label={formatMetricLabel("gust", unitSystem)}
+            value={formatMetricValue("gust", windRange?.maxGust, unitSystem)}
           />
         )}
         {isVisible(visibleMetrics, "rainChance") && (
           <DetailRow
-            label="Rain chance / volume"
-            value={
-              rain.chance != null || rain.mm != null
-                ? `${safe(rain.chance)}% · ${safe(rain.mm)} mm`
-                : safe(null)
-            }
+            label={formatMetricLabel("rainChance", unitSystem)}
+            value={formatMetricValue("rainChance", rain.chance, unitSystem)}
+          />
+        )}
+        {isVisible(visibleMetrics, "rainVolume") && (
+          <DetailRow
+            label={formatMetricLabel("rainVolume", unitSystem)}
+            value={formatMetricValue("rainVolume", rain.mm, unitSystem)}
           />
         )}
         {isVisible(visibleMetrics, "uv") && (
-          <DetailRow label="Peak UV index" value={safe(day.ranges?.uvPeak)} />
+          <DetailRow label={formatMetricLabel("uv", unitSystem)} value={formatMetricValue("uv", day.ranges?.uvPeak, unitSystem)} />
         )}
         {isVisible(visibleMetrics, "solunarFeedingWindows") && (
-          <DetailRow label="Daily solunar rating" value={safe(day.solunarRating)} />
+          <DetailRow label={formatMetricLabel("solunarRating", unitSystem)} value={safe(day.solunarRating)} />
         )}
         {isVisible(visibleMetrics, "hourlyScore") && (
-          <DetailRow label="Daily fishing score" value={safe(day.dayScore)} />
+          <DetailRow label={formatMetricLabel("hourlyScore", unitSystem)} value={safe(day.dayScore)} />
         )}
         {weatherEnvironmentalMetrics.map((metric) => {
-          const summary = day.environmentalSummaries?.[metric.id];
-          const value = summary
-            ? [
-              summary.dailyRange,
-              summary.dailyBaseline,
-              summary.dailyMaximum,
-              summary.dailyDirection,
-            ].find((candidate) => candidate !== "--") ?? "--"
+          const summary = day.environmentalRawSummaries?.[metric.id];
+          const dailyRange = summary
+            ? formatMetricRange(metric.id, summary.dailyRange, unitSystem)
             : "--";
-          return (
-            <DetailRow key={metric.id} label={metric.label} value={value} />
-          );
+          const dailyBaseline = summary
+            ? formatMetricValue(metric.id, summary.dailyBaseline, unitSystem)
+            : "--";
+          const dailyMaximum = summary
+            ? formatMetricValue(metric.id, summary.dailyMaximum, unitSystem)
+            : "--";
+          const dailyDirection = summary
+            ? formatMetricValue(metric.id, summary.dailyDirection, unitSystem)
+            : "--";
+          const value = dailyRange !== "--"
+            ? dailyRange
+            : dailyDirection !== "--"
+              ? dailyDirection
+              : dailyMaximum !== "--"
+                ? dailyMaximum
+                : dailyBaseline;
+          return <DetailRow key={metric.id} label={formatMetricLabel(metric.id, unitSystem)} value={value} />;
         })}
         {waterEnvironmentalMetrics.length > 0 && (
           <p className="mb-1 mt-3 border-t border-hull-700/70 pt-2 font-body text-[11px] font-semibold text-slate-500">
@@ -1678,18 +1778,27 @@ export function DailySummaryCard({
           </p>
         )}
         {waterEnvironmentalMetrics.map((metric) => {
-          const summary = day.environmentalSummaries?.[metric.id];
-          const value = summary
-            ? [
-              summary.dailyRange,
-              summary.dailyBaseline,
-              summary.dailyMaximum,
-              summary.dailyDirection,
-            ].find((candidate) => candidate !== "--") ?? "--"
+          const summary = day.environmentalRawSummaries?.[metric.id];
+          const dailyRange = summary
+            ? formatMetricRange(metric.id, summary.dailyRange, unitSystem)
             : "--";
-          return (
-            <DetailRow key={metric.id} label={metric.label} value={value} />
-          );
+          const dailyBaseline = summary
+            ? formatMetricValue(metric.id, summary.dailyBaseline, unitSystem)
+            : "--";
+          const dailyMaximum = summary
+            ? formatMetricValue(metric.id, summary.dailyMaximum, unitSystem)
+            : "--";
+          const dailyDirection = summary
+            ? formatMetricValue(metric.id, summary.dailyDirection, unitSystem)
+            : "--";
+          const value = dailyRange !== "--"
+            ? dailyRange
+            : dailyDirection !== "--"
+              ? dailyDirection
+              : dailyMaximum !== "--"
+                ? dailyMaximum
+                : dailyBaseline;
+          return <DetailRow key={metric.id} label={formatMetricLabel(metric.id, unitSystem)} value={value} />;
         })}
       </div>
     </article>
@@ -1782,6 +1891,7 @@ export function DayDrawer({
   onDragMove?: (currentY: number) => void;
   onDragEnd?: () => void;
 }) {
+  const unitSystem = useUnitSystem();
   const isTopDock = dockPosition === "top";
   const drawerVisible = open || isDragging || expansionProgress > 0;
   const viewportHeight =
@@ -1989,27 +2099,27 @@ export function DayDrawer({
                 <tr className="border-x-2 border-b-4 border-hull-600 bg-hull-700/70 text-center align-top font-body text-[11px] uppercase text-slate-300">
                   {show("hourlyScore") && (
                     <th scope="col" className="border-x-2 border-hull-600 px-2 py-2 text-center align-top font-semibold">
-                      Score
+                      {formatMetricLabel("hourlyScore", unitSystem, true)}
                     </th>
                   )}
                   {show("tide") && (
                     <th scope="col" className="border-l-2 border-l-hull-600 border-r border-r-hull-700/70 px-2 py-2 text-center align-top font-semibold">
-                      Tide
+                      {formatMetricLabel("tide", unitSystem, true)}
                     </th>
                   )}
                   {show("tide") && (
                     <th scope="col" className="border-r-2 border-r-hull-600 px-2 py-2 text-center align-top font-semibold">
-                      Direction
+                      {formatMetricLabel("tideDirection", unitSystem, true)}
                     </th>
                   )}
                   {show("solunarActive") && (
                     <th scope="col" className={`border-r border-hull-700/70 px-2 py-2 text-center align-top font-semibold ${show("solunarRating") ? "border-l-2 border-l-hull-600" : "border-x-2 border-x-hull-600"}`}>
-                      Solunar
+                      {formatMetricLabel("solunarActive", unitSystem, true)}
                     </th>
                   )}
                   {show("solunarRating") && (
                     <th scope="col" className={`border-r-2 border-r-hull-600 px-2 py-2 text-center align-top font-semibold ${show("solunarActive") ? "" : "border-l-2 border-l-hull-600"}`}>
-                      Solunar score
+                      {formatMetricLabel("solunarRating", unitSystem, true)}
                     </th>
                   )}
                   {marineColumns.map((metric, columnIndex) => (
@@ -2018,52 +2128,52 @@ export function DayDrawer({
                       scope="col"
                       className={`border-r border-hull-700/70 px-2 py-2 text-center align-top font-semibold ${columnIndex === 0 ? "border-l-2 border-l-hull-600" : ""} ${columnIndex === marineColumns.length - 1 ? "border-r-2 border-r-hull-600" : ""}`}
                     >
-                      {metric.label}
+                      {formatMetricLabel(metric.id, unitSystem, true)}
                     </th>
                   ))}
                   {show("wind") && (
                     <th scope="col" className={`${getWeatherColumnBorderClass("wind")} px-2 py-2 text-center align-top font-semibold`}>
-                      Wind
+                      {formatMetricLabel("wind", unitSystem, true)}
                     </th>
                   )}
                   {show("gust") && (
                     <th scope="col" className={`${getWeatherColumnBorderClass("gust")} px-2 py-2 text-center align-top font-semibold`}>
-                      Gust
+                      {formatMetricLabel("gust", unitSystem, true)}
                     </th>
                   )}
                   {show("pressure") && (
                     <th scope="col" className={`${getWeatherColumnBorderClass("pressure")} px-2 py-2 text-center align-top font-semibold`}>
-                      Press.
+                      {formatMetricLabel("pressure", unitSystem, true)}
                     </th>
                   )}
                   {show("airTemperature") && (
                     <th scope="col" className={`${getWeatherColumnBorderClass("airTemperature")} px-2 py-2 text-center align-top font-semibold`}>
-                      Temp
+                      {formatMetricLabel("airTemperature", unitSystem, true)}
                     </th>
                   )}
                   {show("feelsLike") && (
                     <th scope="col" className={`${getWeatherColumnBorderClass("feelsLike")} px-2 py-2 text-center align-top font-semibold`}>
-                      Feels like
+                      {formatMetricLabel("feelsLike", unitSystem, true)}
                     </th>
                   )}
                   {show("cloud") && (
                     <th scope="col" className={`${getWeatherColumnBorderClass("cloud")} px-2 py-2 text-center align-top font-semibold`}>
-                      Cloud
+                      {formatMetricLabel("cloud", unitSystem, true)}
                     </th>
                   )}
                   {show("rainChance") && (
                     <th scope="col" className={`${getWeatherColumnBorderClass("rainChance")} px-2 py-2 text-center align-top font-semibold`}>
-                      Rain chance
+                      {formatMetricLabel("rainChance", unitSystem, true)}
                     </th>
                   )}
                   {show("rainVolume") && (
                     <th scope="col" className={`${getWeatherColumnBorderClass("rainVolume")} px-2 py-2 text-center align-top font-semibold`}>
-                      Rain volume
+                      {formatMetricLabel("rainVolume", unitSystem, true)}
                     </th>
                   )}
                   {show("uv") && (
                     <th scope="col" className={`${getWeatherColumnBorderClass("uv")} px-2 py-2 text-center align-top font-semibold`}>
-                      UV
+                      {formatMetricLabel("uv", unitSystem, true)}
                     </th>
                   )}
                   {weatherColumns.map((metric) => (
@@ -2072,7 +2182,7 @@ export function DayDrawer({
                       scope="col"
                       className={`${getWeatherColumnBorderClass(metric.id)} px-2 py-2 text-center align-top font-semibold`}
                     >
-                      {metric.label}
+                      {formatMetricLabel(metric.id, unitSystem, true)}
                     </th>
                   ))}
                 </tr>
@@ -2114,7 +2224,7 @@ export function DayDrawer({
                       )}
                       {show("tide") && (
                         <td className="border-l-2 border-l-hull-600 border-r border-r-hull-700/70 px-3 py-3 font-body text-[13px] tabular-nums text-slate-300">
-                          {formatTideHeight(item.tideHeight)}m
+                          {formatMetricValue("tide", item.tideHeight, unitSystem)}
                         </td>
                       )}
                       {show("tide") && (
@@ -2141,52 +2251,52 @@ export function DayDrawer({
                           key={metric.id}
                           className={`border-r border-hull-700/70 px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300 ${columnIndex === 0 ? "border-l-2 border-l-hull-600" : ""} ${columnIndex === marineColumns.length - 1 ? "border-r-2 border-r-hull-600" : ""}`}
                         >
-                          {item.environmentalValues?.[metric.id] ?? "--"}
+                          {formatMetricValue(metric.id, item.environmentalRawValues?.[metric.id], unitSystem)}
                         </td>
                       ))}
                       {show("wind") && (
                         <td className={`${getWeatherColumnBorderClass("wind")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {safe(item.wind?.speed)} km/h {safe(item.wind?.dir, "")}
+                          {formatMetricValue("wind", item.wind?.speed, unitSystem)} {safe(item.wind?.dir, "")}
                         </td>
                       )}
                       {show("gust") && (
                         <td className={`${getWeatherColumnBorderClass("gust")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {safe(item.wind?.gust)} km/h
+                          {formatMetricValue("gust", item.wind?.gust, unitSystem)}
                         </td>
                       )}
                       {show("pressure") && (
                         <td className={`${getWeatherColumnBorderClass("pressure")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {safe(item.pressure)}
+                          {formatMetricValue("pressure", item.pressure, unitSystem)}
                         </td>
                       )}
                       {show("airTemperature") && (
                         <td className={`${getWeatherColumnBorderClass("airTemperature")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {safe(item.airTemp)}°
+                          {formatMetricValue("airTemperature", item.airTemp, unitSystem)}
                         </td>
                       )}
                       {show("feelsLike") && (
                         <td className={`${getWeatherColumnBorderClass("feelsLike")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {safe(item.feelsLike)}°
+                          {formatMetricValue("feelsLike", item.feelsLike, unitSystem)}
                         </td>
                       )}
                       {show("cloud") && (
                         <td className={`${getWeatherColumnBorderClass("cloud")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {safe(item.cloudCover)}%
+                          {formatMetricValue("cloud", item.cloudCover, unitSystem)}
                         </td>
                       )}
                       {show("rainChance") && (
                         <td className={`${getWeatherColumnBorderClass("rainChance")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {safe(item.rainChance)}%
+                          {formatMetricValue("rainChance", item.rainChance, unitSystem)}
                         </td>
                       )}
                       {show("rainVolume") && (
                         <td className={`${getWeatherColumnBorderClass("rainVolume")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {safe(item.rainVolume)} mm
+                          {formatMetricValue("rainVolume", item.rainVolume, unitSystem)}
                         </td>
                       )}
                       {show("uv") && (
                         <td className={`${getWeatherColumnBorderClass("uv")} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}>
-                          {safe(item.uvIndex, "N/A")}
+                          {formatMetricValue("uv", item.uvIndex, unitSystem, true, "N/A")}
                         </td>
                       )}
                       {weatherColumns.map((metric) => (
@@ -2194,7 +2304,7 @@ export function DayDrawer({
                           key={metric.id}
                           className={`${getWeatherColumnBorderClass(metric.id)} px-3 py-3 font-body text-[12.5px] tabular-nums text-slate-300`}
                         >
-                          {item.environmentalValues?.[metric.id] ?? "--"}
+                          {formatMetricValue(metric.id, item.environmentalRawValues?.[metric.id], unitSystem)}
                         </td>
                       ))}
                     </tr>

@@ -327,7 +327,10 @@ export function processWeatherResponse(weather, marine = {}) {
       cloudCoverMid: roundPercentage(weatherHourly.cloud_cover_mid?.[i]),
       cloudCoverHigh: roundPercentage(weatherHourly.cloud_cover_high?.[i]),
       cloudBase: roundNonNegative(weatherHourly.cloud_base?.[i]),
-      visibility: roundNonNegative(weatherHourly.visibility?.[i]),
+      visibility:
+        typeof weatherHourly.visibility?.[i] === "number"
+          ? roundNonNegative(weatherHourly.visibility[i] / 1000, 2)
+          : null,
       rainChance: roundPercentage(weatherHourly.precipitation_probability?.[i]),
       rainVolume: roundNonNegative(weatherHourly.precipitation?.[i], 1),
       windSpeed: roundNonNegative(weatherHourly.wind_speed_10m?.[i]),
@@ -456,11 +459,15 @@ export function processWeatherResponse(weather, marine = {}) {
       rainVolume,
       cloudCover,
       cloudBaseline: cloudCover,
+      cloudRange: getHourlyMetricRange(dailyHours, "cloudCover"),
       cloudCoverLowBaseline,
+      cloudCoverLowRange: getHourlyMetricRange(dailyHours, "cloudCoverLow"),
       cloudCoverMidBaseline,
+      cloudCoverMidRange: getHourlyMetricRange(dailyHours, "cloudCoverMid"),
       cloudCoverHighBaseline,
+      cloudCoverHighRange: getHourlyMetricRange(dailyHours, "cloudCoverHigh"),
       cloudBaseRange: getHourlyMetricRange(dailyHours, "cloudBase"),
-      visibilityRange: getHourlyMetricRange(dailyHours, "visibility"),
+      visibilityRange: getHourlyMetricRange(dailyHours, "visibility", 2),
       humidityRange,
       humidityBaseline: getHourlyMetricAverage(dailyHours, "humidity"),
       dewPointRange,

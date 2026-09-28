@@ -42,12 +42,17 @@ export interface ConditionsAnchored {
   solunarPeaks: ConditionsSolunarPeak[];
   weatherSummary: string;
   tempRange: Array<number | null>;
+  feelsLikeRange?: Array<number | null>;
   windRange: Array<number | null>;
   windBaseline: string;
   cloudBaseline: number;
+  cloudRange?: Array<number | null>;
   cloudCoverLowBaseline?: number | null;
+  cloudCoverLowRange?: Array<number | null>;
   cloudCoverMidBaseline?: number | null;
+  cloudCoverMidRange?: Array<number | null>;
   cloudCoverHighBaseline?: number | null;
+  cloudCoverHighRange?: Array<number | null>;
   cloudBaseRange?: Array<number | null>;
   visibilityRange?: Array<number | null>;
   humidityRange?: Array<number | null>;
@@ -165,6 +170,7 @@ export interface ClaudeHourlyData {
   swellWaveDirection?: string | null;
   swellWavePeriod?: number | null;
   environmentalValues: Record<string, string>;
+  environmentalRawValues: Record<string, number | string | null>;
   swell: { height: number; period: number; dir: string } | null;
 }
 
@@ -178,6 +184,12 @@ export interface ClaudeDayData {
       "dailyBaseline" | "dailyRange" | "dailyMaximum" | "dailyDirection"
     >
   >;
+  environmentalRawSummaries: Record<string, {
+    dailyBaseline: number | string | null;
+    dailyRange: Array<number | null> | null;
+    dailyMaximum: number | string | null;
+    dailyDirection: string | null;
+  }>;
   tideEvents: Array<{ hour: number; type: "High" | "Low"; height: number }>;
   majorWindows: Array<{ start: number; end: number; rating: number }>;
   minorWindows: Array<{ start: number; end: number; rating: number }>;
@@ -192,11 +204,14 @@ export interface ClaudeDayData {
   ranges: {
     waterTemp: { min: number; max: number } | null;
     airTemp: { min: number; max: number } | null;
+    feelsLike: { min: number; max: number } | null;
     pressure: { min: number; max: number } | null;
     wind: { min: number; max: number; maxGust: number | null } | null;
+    gust: { min: number; max: number } | null;
     swell: { min: number; max: number; period: number; dir: string } | null;
     cloudBaseline: number | null;
     uvPeak: number | null;
+    uv: { min: number; max: number } | null;
   };
   secondary: {
     pressure: {
@@ -331,6 +346,19 @@ function computePressureTrend(
   if (delta > 1) return "Rising";
   if (delta < -1) return "Falling";
   return "Steady";
+}
+
+function numericRange(
+  values: Array<number | null | undefined>,
+): { min: number; max: number } | null {
+  const finiteValues = values.filter(
+    (value): value is number => typeof value === "number" && Number.isFinite(value),
+  );
+  if (!finiteValues.length) return null;
+  return {
+    min: Math.min(...finiteValues),
+    max: Math.max(...finiteValues),
+  };
 }
 
 export interface EnvironmentalMetricDisplayValues {
@@ -499,6 +527,12 @@ export function buildDayData(
             ?.hourlyValue ?? "--",
         ]),
       ),
+      environmentalRawValues: Object.fromEntries(
+        ENVIRONMENTAL_METRICS.map((metric) => [
+          metric.id,
+          getMetricProperty(item, metric.key) as number | string | null,
+        ]),
+      ),
       swell: null,
     };
   });
@@ -567,11 +601,23 @@ export function buildDayData(
       }];
     }),
   );
+  const environmentalRawSummaries = Object.fromEntries(
+    ENVIRONMENTAL_METRICS.map((metric) => {
+      const dailyKeys = metric.dailyKeys;
+      return [metric.id, {
+        dailyBaseline: getMetricProperty(day.anchored, dailyKeys?.baseline) as number | string | null,
+        dailyRange: getMetricProperty(day.anchored, dailyKeys?.range) as Array<number | null> | null,
+        dailyMaximum: getMetricProperty(day.anchored, dailyKeys?.maximum) as number | string | null,
+        dailyDirection: getMetricProperty(day.anchored, dailyKeys?.direction) as string | null,
+      }];
+    }),
+  );
 
   return {
     date: day.date,
     hours,
     environmentalSummaries,
+    environmentalRawSummaries,
     tideEvents,
     majorWindows,
     minorWindows,
@@ -588,6 +634,12 @@ export function buildDayData(
       airTemp: day.anchored.tempRange
         ? { min: day.anchored.tempRange[0], max: day.anchored.tempRange[1] }
         : null,
+      feelsLike: day.anchored.feelsLikeRange
+        ? {
+          min: day.anchored.feelsLikeRange[0],
+          max: day.anchored.feelsLikeRange[1],
+        }
+        : null,
       pressure: day.anchored.pressureRange
         ? {
           min: day.anchored.pressureRange[0],
@@ -601,9 +653,11 @@ export function buildDayData(
           maxGust: gustValues.length ? Math.max(...gustValues) : null,
         }
         : null,
+      gust: numericRange(hours.map((item) => item.wind.gust)),
       swell: null,
       cloudBaseline: day.anchored.cloudBaseline ?? null,
       uvPeak: uvValues.length ? Math.max(...uvValues) : null,
+      uv: numericRange(uvValues),
     },
     secondary: {
       pressure: {

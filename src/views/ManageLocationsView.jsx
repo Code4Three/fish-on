@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Check, MapPin, Plus, Trash2 } from "lucide-react";
 import { useApp } from "../state/useApp";
+import { convertDisplayValueToMetric, formatMetricLabel, formatMetricValue } from "../utils/measurementUnits";
 
 export default function ManageLocationsView() {
   const {
@@ -9,6 +10,7 @@ export default function ManageLocationsView() {
     locations,
     removeLocation,
     selectLocation,
+    unitSystem,
   } = useApp();
   const [formValues, setFormValues] = useState({
     name: "",
@@ -25,6 +27,23 @@ export default function ManageLocationsView() {
   function handleFieldChange(event) {
     const { name, value } = event.target;
     setFormValues((currentValues) => ({ ...currentValues, [name]: value }));
+  }
+
+  function handleDatumOffsetChange(event) {
+    const displayedValue = event.target.value;
+    const metricValue = displayedValue === ""
+      ? ""
+      : String(
+        convertDisplayValueToMetric(
+          "datumOffset",
+          Number(displayedValue),
+          unitSystem,
+        ) ?? "",
+      );
+    setFormValues((currentValues) => ({
+      ...currentValues,
+      datumOffset: metricValue,
+    }));
   }
 
   function handleLocationSubmit(event) {
@@ -224,14 +243,20 @@ export default function ManageLocationsView() {
               </label>
               {formValues.tide === "Tidal" && (
                 <label className="space-y-1 font-body text-xs text-slate-300 sm:col-span-2">
-                  Tide datum offset (m)
+                  {formatMetricLabel("datumOffset", unitSystem, true)}
                   <input
                     className="w-full rounded border border-hull-700 bg-hull-900 px-3 py-2.5 text-sm text-white outline-none focus:border-tide-400"
                     name="datumOffset"
                     type="number"
                     step="any"
-                    value={formValues.datumOffset}
-                    onChange={handleFieldChange}
+                    value={formatMetricValue(
+                      "datumOffset",
+                      Number(formValues.datumOffset),
+                      unitSystem,
+                      false,
+                      "0",
+                    )}
+                    onChange={handleDatumOffsetChange}
                   />
                 </label>
               )}

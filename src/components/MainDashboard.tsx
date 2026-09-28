@@ -3,6 +3,7 @@ import { Fish, Settings, Waves } from "lucide-react";
 import { DAILY_GROUPS } from "../config/metricMatrix";
 import { useAnchoredSettings } from "../hooks/useAnchoredSettings";
 import { useDashboardSettings } from "../hooks/useDashboardSettings";
+import { useApp } from "../state/useApp";
 import CustomizationBottomSheet from "./settings/CustomizationBottomSheet";
 import type { DashboardStateProps } from "./prototypes/shared";
 import {
@@ -13,10 +14,10 @@ import {
   MatrixMetricCard,
   StepButton,
   formatDate,
-  formatTideHeight,
   isTideRising,
   ratingTier,
 } from "./prototypes/shared";
+import { formatMetricValue } from "../utils/measurementUnits";
 
 // ==========================================
 // SUB-COMPONENT: Floating Navigation Dock
@@ -144,6 +145,7 @@ export default function MainDashboard({
   } = useAnchoredSettings();
   // Whether the control dock sits at the top or bottom of the screen
   const { dockPosition, selectDockPosition } = useDashboardSettings();
+  const { unitSystem, selectUnitSystem } = useApp();
   // Dialog visibility: display-options sheet and the full-day drawer
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dayViewOpen, setDayViewOpen] = useState(false);
@@ -209,8 +211,7 @@ export default function MainDashboard({
   const handleConditionsPointerMove = (
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
-    if (conditionsStartX.current === null || conditionsStartY.current === null)
-      return;
+    if (conditionsStartX.current === null || conditionsStartY.current === null) { formatDate(day.date, timezone) }
     const deltaX = event.clientX - conditionsStartX.current;
     const deltaY = event.clientY - conditionsStartY.current;
 
@@ -276,8 +277,8 @@ export default function MainDashboard({
 
   return (
     // Centers the fixed-width mobile column within any wider viewport
-    <div className="mx-auto flex min-h-screen w-full max-w-screen-2xl justify-center bg-hull-950 px-0 sm:px-4 lg:px-16">
-      <main className="dashboard-shell relative mx-auto flex h-[100dvh] min-h-[100svh] w-full flex-col overflow-hidden bg-hull-950 font-body touch-pan-y overscroll-x-none">
+    <div className="flex min-h-screen w-full mx-auto px-0 sm:px-4 lg:px-16 max-w-screen-2xl justify-center bg-hull-950">
+      <main className="dashboard-shell overscroll-x-none relative w-full mx-auto flex h-[100dvh] min-h-[100svh] flex-col overflow-hidden bg-hull-950 font-body touch-pan-y">
         {/* ================= HEADER ================= */}
         {/* Header: location name, current tide/solunar summary, and the settings button */}
         <header className="sticky top-0 z-20 shrink-0 bg-hull-950/95 px-4 py-3 backdrop-blur">
@@ -293,7 +294,7 @@ export default function MainDashboard({
                 <p className="flex items-center gap-1.5 truncate font-body text-[12px] text-slate-400">
                   <Waves size={12} className="shrink-0 text-tide-400" />
                   {current.weatherSource === "current" ? "Live weather" : "Hourly forecast"} ·{" "}
-                  {formatTideHeight(current.tideHeight)}m{" "}
+                  {formatMetricValue("tide", current.tideHeight, unitSystem)}{" "}
                   {rising ? "rising" : "falling"} ·{" "}
                   {ratingTier(day.solunarRating)} solunar
                 </p>
@@ -341,7 +342,7 @@ export default function MainDashboard({
           >
             {/* Left panel: draggable hero group cards, then the grid of individual metric cards */}
             <div className="no-scrollbar overscroll-x-none h-full w-1/2 shrink-0 overflow-y-auto touch-pan-y md:border-r md:border-hull-600/40">
-              <div className="px-4 pt-4">
+              <div className="px-[20px] pt-4">
                 <h2 className="font-display text-xl font-semibold text-white">
                   Conditions Dashboard
                 </h2>
@@ -471,6 +472,8 @@ export default function MainDashboard({
           onSelectPrototype={onSelectPrototype}
           dockPosition={dockPosition}
           onSelectDockPosition={selectDockPosition}
+          unitSystem={unitSystem}
+          onSelectUnitSystem={selectUnitSystem}
         />
       </main>
     </div>
