@@ -10,9 +10,7 @@ import {
   MetricCard,
   PressureCard,
   ScoreCard,
-  SolunarCard,
   StepButton,
-  TideCard,
   formatDate,
   formatHour,
   metrics,
@@ -169,8 +167,6 @@ export default function Option0Current({
       </div>
       {/* Stacked summary cards, then the individually-toggleable metric card grid */}
       <ScoreCard day={day} hour={hour} />
-      <TideCard day={day} hour={hour} />
-      <SolunarCard day={day} hour={hour} />
       <PressureCard day={day} hour={hour} />
       <section className="mt-3 px-4">
         <div className="grid grid-cols-2 gap-3">

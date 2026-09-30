@@ -101,7 +101,7 @@ function DashboardDock({
         onPointerCancel={onDragEnd}
         aria-label={`${isBottom ? "Bottom" : "Top"} dashboard dock. Swipe ${isBottom ? "up" : "down"} for the full day forecast.`}
       >
-        <div className="h-1 w-10 rounded-full bg-hull-600/90" />
+        <div className="h-1 w-10 rounded-full bg-hull-600/90 mt-4" />
       </div>
 
       {/* Prev/next day navigation with the current date label */}

@@ -5,7 +5,6 @@ import { buildDayData } from "../../data/conditions";
 import {
   FullConditionsView,
   PressureCard,
-  TideCard,
   WaterDetailsCard,
   SolunarDetailsCard,
   WeatherDetailsCard,
@@ -76,25 +75,5 @@ describe("Dashboard detail cards", () => {
     render(<WeatherDetailsCard day={partialDay} hour={7} />);
     const placeholders = screen.getAllByText("--");
     expect(placeholders.length).toBeGreaterThan(0);
-  });
-
-  it("renders a placeholder instead of crashing when tide height is missing", () => {
-    const partialDay = {
-      ...fullDay,
-      hours: fullDay.hours.map((hourEntry, index) =>
-        index === 7
-          ? { ...hourEntry, tideHeight: null as number | null }
-          : hourEntry,
-      ),
-    };
-
-    render(
-      <TideCard
-        day={partialDay}
-        hour={7}
-        visibleMetrics={{ currentTide: true, nextTide: true }}
-      />,
-    );
-    expect(screen.getAllByText("--").length).toBeGreaterThan(0);
   });
 });

@@ -121,13 +121,13 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     ],
   },
   {
-    id: "tide",
-    label: "Tide",
+    id: "water",
+    label: "Water",
     metrics: [
       {
         id: "currentTide",
         label: getMetricLabel("currentTide"),
-        displayNotes: "Current height and stage",
+        displayNotes: "Current tide height and stage",
         canDisplayAlone: false,
       },
       {
@@ -136,12 +136,6 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
         displayNotes: "Next tide event",
         canDisplayAlone: false,
       },
-    ],
-  },
-  {
-    id: "water",
-    label: "Water",
-    metrics: [
       {
         id: "waterTemperature",
         label: getMetricLabel("waterTemperature"),
@@ -157,27 +151,21 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     ],
   },
   {
-    id: "solunar",
-    label: "Solunar",
+    id: "sunMoon",
+    label: "Sun and moon",
     metrics: [
       {
         id: "solunarFeedingWindows",
         label: getMetricLabel("solunarFeedingWindows"),
-        displayNotes: "Shown in Full Conditions",
+        displayNotes: "Solunar rating and feeding windows",
         canDisplayAlone: false,
       },
       {
         id: "solunarStatus",
         label: getMetricLabel("solunarStatus"),
-        displayNotes: "Neutral, Building, Peak, or Fading",
+        displayNotes: "Active solunar window",
         canDisplayAlone: false,
       },
-    ],
-  },
-  {
-    id: "sunMoon",
-    label: "Sun and moon",
-    metrics: [
       {
         id: "moon",
         label: getMetricLabel("moon"),
@@ -268,8 +256,6 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
 
 export const DEFAULT_DASHBOARD_GROUP_ORDER = [
   "fishability",
-  "tide",
-  "solunar",
   "water",
   "weather",
   "sunMoon",

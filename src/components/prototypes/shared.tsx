@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import {
   CalendarDays,
@@ -48,6 +48,18 @@ import {
   getMetricUnit,
 } from "../../utils/measurementUnits";
 import { useUnitSystem } from "../../state/useApp";
+
+interface CardHandleContextType {
+  attributes: React.HTMLAttributes<HTMLButtonElement>;
+  listeners: React.HTMLAttributes<HTMLButtonElement> | undefined;
+  label: string;
+}
+
+const CardHandleContext = createContext<CardHandleContextType | undefined>(undefined);
+
+function useCardHandle() {
+  return useContext(CardHandleContext);
+}
 
 export interface DashboardStateProps {
   day: ClaudeDayData;
@@ -526,148 +538,6 @@ export function ScoreCard({
   );
 }
 
-export function TideCard({
-  day,
-  hour,
-  visibleMetrics,
-}: {
-  day: ClaudeDayData;
-  hour: number;
-  visibleMetrics?: VisibleMetrics;
-}) {
-  const unitSystem = useUnitSystem();
-  const values = day.hours
-    .map((item) => item.tideHeight)
-    .filter((value): value is number => typeof value === "number");
-  const current = day.hours[hour];
-  const nextEvent =
-    day.tideEvents.find((event) => event.hour >= hour) ?? day.tideEvents[0];
-  const rising = isTideRising(day, hour);
-
-  return (
-    <article className="mx-4 mt-3 overflow-hidden rounded-3xl border border-hull-700/70 bg-gradient-to-b from-hull-800 to-hull-900">
-      <div className="px-4 pb-3 pt-3">
-        <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-          <Waves size={13} className="text-tide-400" />
-          {formatMetricLabel("tide", unitSystem)}
-        </div>
-        {isVisible(visibleMetrics, "currentTide") && (
-          <div className="mt-1 flex items-center gap-3">
-            <div className="flex flex-wrap items-baseline gap-2">
-              <span className="font-display text-[40px] font-bold leading-none tabular-nums text-white">
-                {formatMetricValue("tide", current?.tideHeight, unitSystem)}
-              </span>
-              <span
-                className={`rounded-full px-2.5 py-1 font-body text-xs font-semibold ${rising ? "bg-tide-500/15 text-tide-400" : "bg-amber-400/15 text-amber-300"}`}
-              >
-                {rising ? "Rising" : "Falling"}
-              </span>
-            </div>
-            <Sparkline
-              values={values}
-              activeIndex={hour}
-              stroke="#22C58A"
-              dotColor="#4ADE9C"
-              label="Tide height trend"
-            />
-          </div>
-        )}
-        {isVisible(visibleMetrics, "nextTide") && (
-          <div className="mt-1.5 flex items-center justify-between border-t border-hull-700/70 pt-2">
-            <span className="font-body text-[13px] font-medium text-slate-300">
-              {formatMetricLabel("nextTide", unitSystem)}
-            </span>
-            <span className="font-body text-[13px] font-semibold tabular-nums text-white">
-              {nextEvent
-                ? `${nextEvent.type}: ${formatHour(nextEvent.hour, true)} (${formatMetricValue("tide", nextEvent.height, unitSystem)})`
-                : safe(null)}
-            </span>
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-export function SolunarCard({
-  day,
-  hour,
-  visibleMetrics,
-}: {
-  day: ClaudeDayData;
-  hour: number;
-  visibleMetrics?: VisibleMetrics;
-}) {
-  const windows = [
-    ...(day.majorWindows ?? []).map((window) => ({
-      type: "Major",
-      start: window.start,
-      end: window.end,
-      rating: window.rating,
-    })),
-    ...day.minorWindows.map((window) => ({
-      type: "Minor",
-      start: window.start,
-      end: window.end,
-      rating: window.rating,
-    })),
-  ];
-  const activeWindow =
-    windows.find((window) => hour >= window.start && hour < window.end) ??
-    windows.find((window) => window.start >= hour) ??
-    windows[0];
-  const current = day.hours[hour];
-  const values = day.hours.map((item) => item.solunarRating);
-
-  return (
-    <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800">
-      <div className="px-4 pb-3 pt-3">
-        <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-          <Moon size={13} className="text-indigo-300" />
-          Solunar rating
-        </div>
-        {isVisible(visibleMetrics, "solunarFeedingWindows") && (
-          <div className="mt-1 flex items-center gap-3">
-            <div className="flex flex-wrap items-baseline gap-2">
-              <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
-                {current?.solunarRating ?? 0}
-                <span className="ml-0.5 align-top text-lg font-medium text-slate-400">
-                  /{day.solunarRating}
-                </span>
-              </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-tide-500/15 px-2.5 py-1 font-body text-xs font-semibold text-tide-400">
-                <Fish size={14} />
-                {ratingTier(current?.solunarRating ?? 0)}
-              </span>
-            </div>
-            <Sparkline
-              values={values}
-              activeIndex={hour}
-              stroke="#A78BFA"
-              dotColor="#C4B5FD"
-              label="Solunar rating trend"
-            />
-          </div>
-        )}
-        {isVisible(visibleMetrics, "solunarStatus") && (
-          <div className="mt-2 flex items-center gap-2.5 border-t border-hull-700/70 pt-2">
-            <Fish size={16} className="text-slate-300" />
-            <div className="leading-tight">
-              <p className="font-body text-[11.5px] text-slate-500">
-                Active feeding window
-              </p>
-              <p className="font-display text-[14px] font-semibold text-white">
-                {activeWindow.type}: {formatHour(activeWindow.start, true)} -{" "}
-                {formatHour(activeWindow.end, true)} [{activeWindow.rating}]
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
 export function PressureCard({
   day,
   hour,
@@ -745,7 +615,7 @@ export function MetricCard({
     <article
       className={`${variant === "hero" ? "min-h-[132px] p-4" : "min-h-[92px] p-3"} flex flex-col justify-between rounded-2xl border border-hull-700/70 bg-hull-800`}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 -ml-2">
         <div
           className={`flex h-7 w-7 items-center justify-center rounded-full ${metric.ring}`}
         >
@@ -912,27 +782,13 @@ const metricIconMap: Record<string, { icon: typeof Wind; tint: string }> = {
   swellWavePeriod: { icon: Waves, tint: "text-cyan-300" },
 };
 
-const groupIconMap: Record<string, { icon: typeof Wind; tint: string }> = {
-  fishability: { icon: Fish, tint: "text-tide-400" },
-  tide: { icon: Waves, tint: "text-tide-400" },
-  water: { icon: Waves, tint: "text-cyan-300" },
-  solunar: { icon: Moon, tint: "text-indigo-300" },
-  sunMoon: { icon: Moon, tint: "text-indigo-300" },
-  weather: { icon: Cloud, tint: "text-sky-300" },
-};
-
 function GroupHeader({
-  icon: Icon,
-  tint,
   label,
 }: {
-  icon: typeof Wind;
-  tint: string;
   label: string;
 }) {
   return (
     <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-      <Icon size={13} className={tint} />
       {label}
     </div>
   );
@@ -1120,7 +976,10 @@ function FishabilityGroupContent({
 
   return (
     <div className="px-4 pb-3 pt-3">
-      <GroupHeader icon={Fish} tint={tone.text} label={formatMetricLabel("hourlyScore", unitSystem)} />
+      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+        <Fish size={13} className="text-tide-400" />
+        {formatMetricLabel("hourlyScore", unitSystem)}
+      </div>
       {(showHourly || showMax) && (
         <div className="mt-1 flex items-center gap-3">
           <div className="flex flex-wrap items-baseline gap-2">
@@ -1162,14 +1021,20 @@ function FishabilityGroupContent({
   );
 }
 
-function TideGroupContent({
+function WaterGroupContent({
+  group,
+  visibleMetrics,
   day,
   hour,
-  visibleMetrics,
 }: {
+  group: {
+    id: string;
+    label: string;
+    metrics: Array<{ id: string; label: string }>;
+  };
+  visibleMetrics: VisibleMetrics;
   day: ClaudeDayData;
   hour: number;
-  visibleMetrics: VisibleMetrics;
 }) {
   const unitSystem = useUnitSystem();
   const values = day.hours
@@ -1180,35 +1045,70 @@ function TideGroupContent({
     day.tideEvents.find((event) => event.hour >= hour) ?? day.tideEvents[0];
   const rising = isTideRising(day, hour);
 
+  // Filter metrics: separate tide metrics from water tile metrics
+  const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
+    (metric) => metric.group === "water",
+  );
+  const tideMetrics = ["currentTide", "nextTide"];
+  const waterTileMetrics = [
+    ...group.metrics
+      .filter((metric) => !tideMetrics.includes(metric.id))
+      .map((metric) => ({
+        ...metric,
+        environmentalMetric:
+          environmentalMetrics.find(
+            (environmentalMetric) => environmentalMetric.id === metric.id,
+          ) ?? null,
+      })),
+    ...environmentalMetrics
+      .filter((metric) => !group.metrics.some((item) => item.id === metric.id))
+      .map((metric) => ({
+        id: metric.id,
+        label: metric.label,
+        environmentalMetric: metric,
+      })),
+  ].filter(
+    (metric) =>
+      isVisible(visibleMetrics, metric.id) &&
+      (metric.environmentalMetric?.defaultVisibility.summaryCards ?? true),
+  );
+
   return (
     <div className="px-4 pb-3 pt-3">
-      <GroupHeader icon={Waves} tint="text-tide-400" label={formatMetricLabel("tide", unitSystem)} />
       {isVisible(visibleMetrics, "currentTide") && (
-        <div className="mt-1 flex items-center gap-3">
-          <div className="flex flex-wrap items-baseline gap-2">
-            <span className="font-display text-[40px] font-bold leading-none tabular-nums text-white">
-              {formatMetricValue("tide", current?.tideHeight, unitSystem)}
-            </span>
-            <span
-              className={`rounded-full px-2.5 py-1 font-body text-xs font-semibold ${rising ? "bg-tide-500/15 text-tide-400" : "bg-amber-400/15 text-amber-300"}`}
-            >
-              {rising ? "Rising" : "Falling"}
-            </span>
+        <>
+          <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+            <Waves size={13} className="text-tide-400" />
+            {formatMetricLabel("currentTide", unitSystem)}
           </div>
-          <Sparkline
-            values={values}
-            activeIndex={hour}
-            stroke="#22C58A"
-            dotColor="#4ADE9C"
-            label="Tide height trend"
-          />
-        </div>
+          <div className="mt-1 flex items-center gap-3">
+            <div className="flex flex-wrap items-baseline gap-2">
+              <span className="font-display text-[40px] font-bold leading-none tabular-nums text-white">
+                {formatMetricValue("tide", current?.tideHeight, unitSystem)}
+              </span>
+              <span
+                className={`rounded-full px-2.5 py-1 font-body text-xs font-semibold ${rising ? "bg-tide-500/15 text-tide-400" : "bg-amber-400/15 text-amber-300"}`}
+              >
+                {rising ? "Rising" : "Falling"}
+              </span>
+            </div>
+            <Sparkline
+              values={values}
+              activeIndex={hour}
+              stroke="#22C58A"
+              dotColor="#4ADE9C"
+              label="Tide height trend"
+            />
+          </div>
+        </>
       )}
       {isVisible(visibleMetrics, "nextTide") && (
-        <div className="mt-1.5 flex items-center justify-between border-t border-hull-700/70 pt-2">
-          <span className="font-body text-[13px] font-medium text-slate-300">
-            {formatMetricLabel("nextTide", unitSystem)}
-          </span>
+        <div className="my-1.5 flex items-center justify-between border-t border-b border-hull-700/70 py-2">
+          <div className="flex items-center gap-1.5">
+            <span className="font-body text-[13px] font-medium text-slate-300">
+              {formatMetricLabel("nextTide", unitSystem)}
+            </span>
+          </div>
           <span className="font-body text-[13px] font-semibold tabular-nums text-white">
             {nextEvent
               ? `${nextEvent.type}: ${formatHour(nextEvent.hour, true)} (${formatMetricValue("tide", nextEvent.height, unitSystem)})`
@@ -1216,18 +1116,104 @@ function TideGroupContent({
           </span>
         </div>
       )}
+      {waterTileMetrics.length > 0 && (
+        <>
+          <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-3">
+            {waterTileMetrics.map((metric) => {
+              const environmentalSummary = metric.environmentalMetric
+                ? day.environmentalRawSummaries?.[metric.id]
+                : null;
+              const [legacyValue, legacyDetail] = matrixMetricValue(
+                metric.id,
+                day,
+                hour,
+                unitSystem,
+              );
+              const hourlyRawValue = day.hours[hour]?.environmentalRawValues?.[metric.id];
+              const hourlyValue = formatMetricValue(
+                metric.id,
+                hourlyRawValue,
+                unitSystem,
+              );
+              const dailyRange = environmentalSummary
+                ? formatMetricRange(metric.id, environmentalSummary.dailyRange, unitSystem)
+                : "--";
+              const dailyDirection = environmentalSummary
+                ? formatMetricValue(metric.id, environmentalSummary.dailyDirection, unitSystem)
+                : "--";
+              const dailyMaximum = environmentalSummary
+                ? formatMetricValue(metric.id, environmentalSummary.dailyMaximum, unitSystem)
+                : "--";
+              const dailyBaseline = environmentalSummary
+                ? formatMetricValue(metric.id, environmentalSummary.dailyBaseline, unitSystem)
+                : "--";
+              const dailyDetail = !environmentalSummary || metric.id === "waveDirection"
+                ? ""
+                : dailyRange !== "--"
+                  ? dailyRange
+                  : dailyDirection !== "--"
+                    ? `Daily ${dailyDirection}`
+                    : dailyMaximum !== "--"
+                      ? `Daily max ${dailyMaximum}`
+                      : dailyBaseline !== "--"
+                        ? `Daily ${dailyBaseline}`
+                        : "";
+              const value = metric.environmentalMetric
+                ? metric.id === "waveDirection" && hourlyValue === "--"
+                  ? dailyDirection
+                  : hourlyValue
+                : legacyValue;
+              const detail = metric.environmentalMetric
+                ? dailyDetail === "--"
+                  ? ""
+                  : dailyDetail
+                : legacyDetail;
+              const meta = metricIconMap[metric.id];
+              const Icon = meta?.icon;
+              return (
+                <div key={metric.id}>
+                  <div className="flex items-center gap-2 -ml-2">
+                    {Icon && (
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-hull-700/60">
+                        <Icon size={14} className={meta.tint} />
+                      </div>
+                    )}
+                    <p className="min-w-0 break-words font-body text-[11.5px] leading-tight text-slate-400">
+                      {formatMetricLabel(metric.id, unitSystem)}
+                    </p>
+                  </div>
+                  <p className={`mt-1 min-w-0 break-words font-display font-bold leading-tight tabular-nums text-white ${metric.environmentalMetric ? "text-[16px]" : "text-[21px]"}`}>
+                    {value}
+                  </p>
+                  {detail && (
+                    <p className="mt-1 truncate font-body text-[11px] text-slate-500">
+                      {detail}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
-function SolunarGroupContent({
+function SunMoonGroupContent({
+  group,
+  visibleMetrics,
   day,
   hour,
-  visibleMetrics,
 }: {
+  group: {
+    id: string;
+    label: string;
+    metrics: Array<{ id: string; label: string }>;
+  };
+  visibleMetrics: VisibleMetrics;
   day: ClaudeDayData;
   hour: number;
-  visibleMetrics: VisibleMetrics;
 }) {
   const unitSystem = useUnitSystem();
   const windows = [
@@ -1248,48 +1234,97 @@ function SolunarGroupContent({
     windows.find((window) => hour >= window.start && hour < window.end) ??
     windows.find((window) => window.start >= hour) ??
     windows[0];
+  const isWindowActive = activeWindow && hour >= activeWindow.start && hour < activeWindow.end;
   const current = day.hours[hour];
   const values = day.hours.map((item) => item.solunarRating);
 
+  // Filter metrics: separate solunar metrics from sun/moon tile metrics
+  // Note: sunMoon metrics are all legacy (not in ENVIRONMENTAL_METRICS), so no environmental filtering needed
+  const solunarMetrics = ["solunarFeedingWindows", "solunarStatus"];
+  const sunMoonTileMetrics = group.metrics
+    .filter((metric) => !solunarMetrics.includes(metric.id))
+    .filter(
+      (metric) =>
+        isVisible(visibleMetrics, metric.id),
+    );
+
   return (
     <div className="px-4 pb-3 pt-3">
-      <GroupHeader icon={Moon} tint="text-indigo-300" label={formatMetricLabel("solunarRating", unitSystem)} />
       {isVisible(visibleMetrics, "solunarFeedingWindows") && (
-        <div className="mt-1 flex items-center gap-3">
-          <div className="flex flex-wrap items-baseline gap-2">
-            <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
-              {current?.solunarRating ?? 0}
-              <span className="ml-0.5 align-top text-lg font-medium text-slate-400">
-                /{day.solunarRating}
-              </span>
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-tide-500/15 px-2.5 py-1 font-body text-xs font-semibold text-tide-400">
-              <Fish size={14} />
-              {ratingTier(current?.solunarRating ?? 0)}
-            </span>
+        <>
+          <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+            <Moon size={13} className="text-indigo-300" />
+            {formatMetricLabel("solunarRating", unitSystem)}
           </div>
-          <Sparkline
-            values={values}
-            activeIndex={hour}
-            stroke="#A78BFA"
-            dotColor="#C4B5FD"
-            label="Solunar rating trend"
-          />
-        </div>
+          <div className="mt-1 flex items-center gap-3">
+            <div className="flex flex-wrap items-baseline gap-2">
+              <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
+                {current?.solunarRating ?? 0}
+                <span className="ml-0.5 align-top text-lg font-medium text-slate-400">
+                  /{day.solunarRating}
+                </span>
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-tide-500/15 px-2.5 py-1 font-body text-xs font-semibold text-tide-400">
+                {ratingTier(current?.solunarRating ?? 0)}
+              </span>
+            </div>
+            <Sparkline
+              values={values}
+              activeIndex={hour}
+              stroke="#A78BFA"
+              dotColor="#C4B5FD"
+              label="Solunar rating trend"
+            />
+          </div>
+        </>
       )}
       {isVisible(visibleMetrics, "solunarStatus") && activeWindow && (
-        <div className="mt-2 flex items-center gap-2.5 border-t border-hull-700/70 pt-2">
-          <Fish size={16} className="text-slate-300" />
-          <div className="leading-tight">
-            <p className="font-body text-[11.5px] text-slate-500">
-              Active feeding window
-            </p>
-            <p className="font-display text-[14px] font-semibold text-white">
-              {activeWindow.type}: {formatHour(activeWindow.start, true)} -{" "}
-              {formatHour(activeWindow.end, true)} [{activeWindow.rating}]
-            </p>
-          </div>
+        <div className="my-1.5 flex items-center justify-between border-t border-b border-hull-700/70 py-2">
+          <span className="font-body text-[13px] font-medium text-slate-300">
+            {isWindowActive ? "Active" : "Next"} feeding window
+          </span>
+          <span className="font-body text-[13px] font-semibold tabular-nums text-white">
+            {activeWindow.type}: {formatHour(activeWindow.start, true)} - {formatHour(activeWindow.end, true)} [{activeWindow.rating}]
+          </span>
         </div>
+      )}
+      {sunMoonTileMetrics.length > 0 && (
+        <>
+          <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-3">
+            {sunMoonTileMetrics.map((metric) => {
+              const [legacyValue, legacyDetail] = matrixMetricValue(
+                metric.id,
+                day,
+                hour,
+                unitSystem,
+              );
+              const meta = metricIconMap[metric.id];
+              const Icon = meta?.icon;
+              return (
+                <div key={metric.id}>
+                  <div className="flex items-center gap-2 -ml-2">
+                    {Icon && (
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-hull-700/60">
+                        <Icon size={14} className={meta.tint} />
+                      </div>
+                    )}
+                    <p className="min-w-0 break-words font-body text-[11.5px] leading-tight text-slate-400">
+                      {formatMetricLabel(metric.id, unitSystem)}
+                    </p>
+                  </div>
+                  <p className="mt-1 min-w-0 break-words font-display text-[21px] font-bold leading-tight tabular-nums text-white">
+                    {legacyValue}
+                  </p>
+                  {legacyDetail && (
+                    <p className="mt-1 truncate font-body text-[11px] text-slate-500">
+                      {legacyDetail}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );
@@ -1335,14 +1370,9 @@ function TileGroupContent({
       isVisible(visibleMetrics, metric.id) &&
       (metric.environmentalMetric?.defaultVisibility.summaryCards ?? true),
   );
-  const header = groupIconMap[group.id] ?? {
-    icon: Fish,
-    tint: "text-tide-400",
-  };
 
   return (
     <div className="px-4 pb-3 pt-3">
-      <GroupHeader icon={header.icon} tint={header.tint} label={group.label} />
       <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-3">
         {metricsToShow.map((metric) => {
           const environmentalSummary = metric.environmentalMetric
@@ -1397,7 +1427,7 @@ function TileGroupContent({
           const Icon = meta?.icon;
           return (
             <div key={metric.id}>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 -ml-2">
                 {Icon && (
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-hull-700/60">
                     <Icon size={14} className={meta.tint} />
@@ -1441,10 +1471,7 @@ export function MatrixGroupCard({
   sortId?: string;
 }) {
   const sortable = useSortable({ id: sortId ?? `group-${group.id}` });
-  const header = groupIconMap[group.id] ?? {
-    icon: Fish,
-    tint: "text-tide-400",
-  };
+  const displayLabel = group.id === "water" ? "Water & marine" : group.id === "sunMoon" ? "Sun & Moon" : group.label;
   return (
     <article
       ref={sortable.setNodeRef}
@@ -1455,11 +1482,11 @@ export function MatrixGroupCard({
       className="mx-4 mt-3 overflow-hidden rounded-3xl border border-hull-700/70 bg-gradient-to-b from-hull-800 to-hull-900"
     >
       <div className="flex items-center justify-between gap-1 px-3 pt-3">
-        <GroupHeader icon={header.icon} tint={header.tint} label={group.label} />
+        <GroupHeader label={displayLabel} />
         <SortableHandle
           attributes={sortable.attributes}
           listeners={sortable.listeners}
-          label={`Reorder ${group.label}`}
+          label={`Reorder ${displayLabel}`}
         />
       </div>
       {group.id === "fishability" && (
@@ -1469,23 +1496,25 @@ export function MatrixGroupCard({
           visibleMetrics={visibleMetrics}
         />
       )}
-      {group.id === "tide" && (
-        <TideGroupContent
+      {group.id === "water" && (
+        <WaterGroupContent
+          group={group}
           day={day}
           hour={hour}
           visibleMetrics={visibleMetrics}
         />
       )}
-      {group.id === "solunar" && (
-        <SolunarGroupContent
+      {group.id === "sunMoon" && (
+        <SunMoonGroupContent
+          group={group}
           day={day}
           hour={hour}
           visibleMetrics={visibleMetrics}
         />
       )}
       {group.id !== "fishability" &&
-        group.id !== "tide" &&
-        group.id !== "solunar" && (
+        group.id !== "water" &&
+        group.id !== "sunMoon" && (
           <TileGroupContent
             group={group}
             visibleMetrics={visibleMetrics}
@@ -1528,6 +1557,7 @@ export function WaterDetailsCard({
   visibleMetrics?: VisibleMetrics;
 }) {
   const unitSystem = useUnitSystem();
+  const handle = useCardHandle();
   const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
     (metric) =>
       metric.group === "water" && metric.defaultVisibility.fullConditions,
@@ -1535,9 +1565,12 @@ export function WaterDetailsCard({
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
-      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-        <Waves size={13} className="text-tide-400" />
-        Current water &amp; marine details
+      <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
+        <div className="flex items-center gap-1.5">
+          <Waves size={13} className="text-tide-400" />
+          Current water &amp; marine details
+        </div>
+        {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
       <div className="mt-2">
         {environmentalMetrics.map((metric) => (
@@ -1566,6 +1599,7 @@ export function TideDetailsCard({
   visibleMetrics?: VisibleMetrics;
 }) {
   const unitSystem = useUnitSystem();
+  const handle = useCardHandle();
   const upcomingHigh =
     day.tideEvents.find(
       (event) => event.type === "High" && event.hour >= hour,
@@ -1577,9 +1611,12 @@ export function TideDetailsCard({
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
-      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-        <Waves size={13} className="text-tide-400" />
-        Tide details
+      <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
+        <div className="flex items-center gap-1.5">
+          <Waves size={13} className="text-tide-400" />
+          Tide details
+        </div>
+        {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
       <div className="mt-2">
         {isVisible(visibleMetrics, "currentTide") && (
@@ -1620,14 +1657,18 @@ export function SolunarDetailsCard({
   visibleMetrics?: VisibleMetrics;
 }) {
   const unitSystem = useUnitSystem();
+  const handle = useCardHandle();
   const status = solunarStatusTrend(day, hour);
   const moon = day.secondary?.moon;
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
-      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-        <Moon size={13} className="text-indigo-300" />
-        Current astronomical details
+      <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
+        <div className="flex items-center gap-1.5">
+          <Moon size={13} className="text-indigo-300" />
+          Current astronomical details
+        </div>
+        {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
       <div className="mt-2">
         {isVisible(visibleMetrics, "solunarStatus") && (
@@ -1716,6 +1757,7 @@ export function WeatherDetailsCard({
   visibleMetrics?: VisibleMetrics;
 }) {
   const unitSystem = useUnitSystem();
+  const handle = useCardHandle();
   const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
     (metric) =>
       metric.group === "weather" && metric.defaultVisibility.fullConditions,
@@ -1723,9 +1765,8 @@ export function WeatherDetailsCard({
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
-      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-        <Cloud size={13} className="text-sky-300" />
-        Weather &amp; atmospheric conditions
+      <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
+        {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
       <div className="mt-2">
         {isVisible(visibleMetrics, "airTemperature") && (
@@ -1824,6 +1865,7 @@ export function DailySummaryCard({
   visibleMetrics?: VisibleMetrics;
 }) {
   const unitSystem = useUnitSystem();
+  const handle = useCardHandle();
   const airTempRange = day.ranges?.airTemp;
   const windRange = day.ranges?.wind;
   const rain = day.secondary.rain;
@@ -1843,16 +1885,14 @@ export function DailySummaryCard({
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
-      <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-        <CalendarDays size={13} className="text-emerald-300" />
-        Daily summary
+      <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
+        <div className="flex items-center gap-1.5">
+          <CalendarDays size={13} className="text-emerald-300" />
+          Daily summary
+        </div>
+        {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
       <div className="mt-2">
-        {weatherEnvironmentalMetrics.length > 0 && (
-          <p className="mb-1 font-body text-[11px] font-semibold text-slate-500">
-            Weather &amp; atmospheric conditions
-          </p>
-        )}
         {isVisible(visibleMetrics, "airTemperature") && (
           <DetailRow
             label={formatMetricLabel("airTemperature", unitSystem)}
@@ -2012,7 +2052,6 @@ export function FullConditionsView({
                 key={cardId}
                 id={cardId}
                 label={meta?.label}
-                icon={meta?.icon}
               >
                 {conditionCards[cardId as keyof typeof conditionCards]}
               </SortableConditionsCard>
@@ -2028,12 +2067,10 @@ function SortableConditionsCard({
   id,
   children,
   label,
-  icon: Icon,
 }: {
   id: string;
   children: ReactNode;
   label?: string;
-  icon?: typeof Wind;
 }) {
   const sortable = useSortable({ id: `conditions:${id}` });
   return (
@@ -2045,20 +2082,15 @@ function SortableConditionsCard({
       }}
       className="relative"
     >
-      {label && Icon && (
-        <div className="flex items-center justify-between gap-1 px-4 pb-2 pt-3">
-          <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-            <Icon size={13} className="text-tide-400" />
-            {label}
-          </div>
-          <SortableHandle
-            attributes={sortable.attributes}
-            listeners={sortable.listeners}
-            label={`Reorder ${label}`}
-          />
-        </div>
-      )}
-      {children}
+      <CardHandleContext.Provider
+        value={{
+          attributes: sortable.attributes,
+          listeners: sortable.listeners,
+          label: label ?? "Card",
+        }}
+      >
+        {children}
+      </CardHandleContext.Provider>
     </div>
   );
 }
