@@ -1,59 +1,6 @@
 {
   "days": [
     {
-      "date": "2026-10-01",
-      "peaks": [
-        {
-          "type": "Major 1 (Moon overhead)",
-          "time": "02:52",
-          "start": {
-            "date": "2026-10-01",
-            "time": "01:52"
-          },
-          "end": {
-            "date": "2026-10-01",
-            "time": "03:52"
-          }
-        },
-        {
-          "type": "Major 2 (Moon underfoot)",
-          "time": "15:25",
-          "start": {
-            "date": "2026-10-01",
-            "time": "14:25"
-          },
-          "end": {
-            "date": "2026-10-01",
-            "time": "16:25"
-          }
-        },
-        {
-          "type": "Minor 1 (Moon rise)",
-          "time": "22:43",
-          "start": {
-            "date": "2026-10-01",
-            "time": "22:13"
-          },
-          "end": {
-            "date": "2026-10-01",
-            "time": "23:13"
-          }
-        },
-        {
-          "type": "Minor 2 (Moon set)",
-          "time": "08:10",
-          "start": {
-            "date": "2026-10-01",
-            "time": "07:40"
-          },
-          "end": {
-            "date": "2026-10-01",
-            "time": "08:40"
-          }
-        }
-      ]
-    },
-    {
       "date": "2026-10-02",
       "peaks": [
         {
@@ -361,6 +308,59 @@
           "end": {
             "date": "2026-10-07",
             "time": "15:02"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "peaks": [
+        {
+          "type": "Major 1 (Moon overhead)",
+          "time": "09:34",
+          "start": {
+            "date": "2026-10-08",
+            "time": "08:34"
+          },
+          "end": {
+            "date": "2026-10-08",
+            "time": "10:34"
+          }
+        },
+        {
+          "type": "Major 2 (Moon underfoot)",
+          "time": "21:52",
+          "start": {
+            "date": "2026-10-08",
+            "time": "20:52"
+          },
+          "end": {
+            "date": "2026-10-08",
+            "time": "22:52"
+          }
+        },
+        {
+          "type": "Minor 1 (Moon rise)",
+          "time": "03:36",
+          "start": {
+            "date": "2026-10-08",
+            "time": "03:06"
+          },
+          "end": {
+            "date": "2026-10-08",
+            "time": "04:06"
+          }
+        },
+        {
+          "type": "Minor 2 (Moon set)",
+          "time": "15:33",
+          "start": {
+            "date": "2026-10-08",
+            "time": "15:03"
+          },
+          "end": {
+            "date": "2026-10-08",
+            "time": "16:03"
           }
         }
       ]

@@ -1,18 +1,6 @@
 {
   "days": [
     {
-      "date": "2026-10-01",
-      "sunrise": "05:27",
-      "sunset": "17:47",
-      "firstLight": "05:04",
-      "lastLight": "18:10",
-      "moonrise": "22:43",
-      "moonset": "09:06",
-      "moonPhase": "Waning Gibbous",
-      "illumination": 73,
-      "moonDistance": 369342
-    },
-    {
       "date": "2026-10-02",
       "sunrise": "05:26",
       "sunset": "17:47",
@@ -83,6 +71,18 @@
       "moonPhase": "Waning Crescent",
       "illumination": 11,
       "moonDistance": 378575
+    },
+    {
+      "date": "2026-10-08",
+      "sunrise": "05:19",
+      "sunset": "17:50",
+      "firstLight": "04:56",
+      "lastLight": "18:14",
+      "moonrise": "04:09",
+      "moonset": "15:33",
+      "moonPhase": "Waning Crescent",
+      "illumination": 5,
+      "moonDistance": 381682
     }
   ]
 }

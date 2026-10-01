@@ -129,6 +129,12 @@ export interface ConditionsDay {
   date: string;
   anchored: ConditionsAnchored;
   hours: ConditionsHour[];
+  secondary: {
+    windDirectionShift: string | null;
+    waveDirectionShift: string | null;
+    windWaveDirectionShift: string | null;
+    swellWaveDirectionShift: string | null;
+  };
 }
 
 export interface BarometricResult {
@@ -248,6 +254,10 @@ export interface ClaudeDayData {
     rain: { chance: number | null; mm: number | null };
     uv: number | null;
     airTemp: { temp: number | null; feels: number | null };
+    windDirectionShift: string | null;
+    waveDirectionShift: string | null;
+    windWaveDirectionShift: string | null;
+    swellWaveDirectionShift: string | null;
   };
 }
 
@@ -764,6 +774,10 @@ export function buildDayData(
         temp: hours[0]?.airTemp ?? null,
         feels: hours[0]?.feelsLike ?? null,
       },
+      windDirectionShift: day.secondary?.windDirectionShift ?? null,
+      waveDirectionShift: day.secondary?.waveDirectionShift ?? null,
+      windWaveDirectionShift: day.secondary?.windWaveDirectionShift ?? null,
+      swellWaveDirectionShift: day.secondary?.swellWaveDirectionShift ?? null,
     },
   };
 }

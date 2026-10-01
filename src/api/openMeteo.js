@@ -76,6 +76,17 @@ const WEATHER_DAILY_FIELDS = [
   "surface_pressure_mean",
 ];
 
+const WEATHER_DAILY_ARCHIVE_FIELDS = [
+  "weather_code",
+  "temperature_2m_max",
+  "temperature_2m_min",
+  "apparent_temperature_max",
+  "apparent_temperature_min",
+  "precipitation_sum",
+  "wind_speed_10m_max",
+  "wind_gusts_10m_max",
+];
+
 async function fetchJson(endpoint, parameters) {
   const url = new URL(endpoint);
   Object.entries(parameters).forEach(([key, value]) => {
@@ -143,12 +154,16 @@ export async function fetchOpenMeteoCurrent(location) {
 
 export async function fetchOpenMeteoHistory(location, now = new Date()) {
   const today = getLocationDateKey(now, location.timezone);
+  // The archive API rejects end_date values past the current UTC day, which
+  // local "today" can exceed for timezones ahead of UTC.
+  const utcToday = getLocationDateKey(now, "UTC");
+  const archiveEndDate = today > utcToday ? utcToday : today;
   const weatherParameters = {
     ...getLocationParameters(location),
-    start_date: shiftDateKey(today, -6),
-    end_date: today,
+    start_date: shiftDateKey(archiveEndDate, -6),
+    end_date: archiveEndDate,
     hourly: WEATHER_HOURLY_FIELDS,
-    daily: WEATHER_DAILY_FIELDS,
+    daily: WEATHER_DAILY_ARCHIVE_FIELDS,
   };
   const marineParameters = {
     ...getLocationParameters(location),

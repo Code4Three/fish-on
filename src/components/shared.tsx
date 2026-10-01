@@ -712,7 +712,7 @@ function matrixMetricValue(
       formatMetricValue("wind", current.wind.speed, unitSystem),
       formatMetricRange("wind", range?.wind, unitSystem),
     ],
-    windDirection: [current.wind.dir ?? "--", ""],
+    windDirection: [current.wind.dir ?? "--", day.secondary.windDirectionShift ?? "--"],
     gust: [
       formatMetricValue("gust", current.wind.gust, unitSystem),
       formatMetricRange("gust", range?.gust, unitSystem),
@@ -1181,8 +1181,14 @@ function WaterGroupContent({
               const dailyBaseline = environmentalSummary
                 ? formatMetricValue(metric.id, environmentalSummary.dailyBaseline, unitSystem)
                 : "--";
-              const dailyDetail = !environmentalSummary || metric.id === "waveDirection"
-                ? ""
+              const dailyDetail = !environmentalSummary || ["waveDirection", "windWaveDirection", "swellWaveDirection"].includes(metric.id)
+                ? metric.id === "waveDirection"
+                  ? day.secondary.waveDirectionShift ?? "--"
+                  : metric.id === "windWaveDirection"
+                    ? day.secondary.windWaveDirectionShift ?? "--"
+                    : metric.id === "swellWaveDirection"
+                      ? day.secondary.swellWaveDirectionShift ?? "--"
+                      : ""
                 : dailyRange !== "--"
                   ? dailyRange
                   : dailyDirection !== "--"
@@ -1198,7 +1204,7 @@ function WaterGroupContent({
                   : hourlyValue
                 : legacyValue;
               const detail = metric.environmentalMetric
-                ? dailyDetail === "--"
+                ? dailyDetail === "--" && !["waveDirection", "windWaveDirection", "swellWaveDirection"].includes(metric.id)
                   ? ""
                   : dailyDetail
                 : legacyDetail;
@@ -1499,8 +1505,14 @@ function WeatherGroupContent({
             const dailyBaseline = environmentalSummary
               ? formatMetricValue(metric.id, environmentalSummary.dailyBaseline, unitSystem)
               : "--";
-            const dailyDetail = !environmentalSummary || metric.id === "waveDirection"
-              ? ""
+            const dailyDetail = !environmentalSummary || ["waveDirection", "windWaveDirection", "swellWaveDirection"].includes(metric.id)
+              ? metric.id === "waveDirection"
+                ? day.secondary.waveDirectionShift ?? "--"
+                : metric.id === "windWaveDirection"
+                  ? day.secondary.windWaveDirectionShift ?? "--"
+                  : metric.id === "swellWaveDirection"
+                    ? day.secondary.swellWaveDirectionShift ?? "--"
+                    : ""
               : dailyRange !== "--"
                 ? dailyRange
                 : dailyDirection !== "--"
@@ -1516,7 +1528,7 @@ function WeatherGroupContent({
                 : hourlyValue
               : legacyValue;
             const detail = metric.environmentalMetric
-              ? dailyDetail === "--"
+              ? dailyDetail === "--" && !["waveDirection", "windWaveDirection", "swellWaveDirection"].includes(metric.id)
                 ? ""
                 : dailyDetail
               : legacyDetail;
@@ -1623,8 +1635,14 @@ function TileGroupContent({
           const dailyBaseline = environmentalSummary
             ? formatMetricValue(metric.id, environmentalSummary.dailyBaseline, unitSystem)
             : "--";
-          const dailyDetail = !environmentalSummary || metric.id === "waveDirection"
-            ? ""
+          const dailyDetail = !environmentalSummary || ["waveDirection", "windWaveDirection", "swellWaveDirection"].includes(metric.id)
+            ? metric.id === "waveDirection"
+              ? day.secondary.waveDirectionShift ?? "--"
+              : metric.id === "windWaveDirection"
+                ? day.secondary.windWaveDirectionShift ?? "--"
+                : metric.id === "swellWaveDirection"
+                  ? day.secondary.swellWaveDirectionShift ?? "--"
+                  : ""
             : dailyRange !== "--"
               ? dailyRange
               : dailyDirection !== "--"
@@ -1640,7 +1658,7 @@ function TileGroupContent({
               : hourlyValue
             : legacyValue;
           const detail = metric.environmentalMetric
-            ? dailyDetail === "--"
+            ? dailyDetail === "--" && !["waveDirection", "windWaveDirection", "swellWaveDirection"].includes(metric.id)
               ? ""
               : dailyDetail
             : legacyDetail;

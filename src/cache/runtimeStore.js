@@ -1,5 +1,5 @@
 const DATABASE_NAME = "fish-on-runtime-data";
-const DATABASE_VERSION = 2;
+const DATABASE_VERSION = 3;
 
 const STORE_NAMES = [
   "locations",

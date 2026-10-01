@@ -5,6 +5,7 @@ import { getBuildDateKeys } from "../utils/dateUtils.js";
 import { calculateTideRating } from "../utils/scoringEngine.js";
 import { calculateSolunarHourRating } from "../utils/solunarRating.js";
 import { evalBarometricCondition } from "../utils/barometricRating.js";
+import { getSecondaryDirectionRanges } from "./weather.js";
 
 // Load scoring rules
 const scoringRules = JSON.parse(fs.readFileSync(path.join("src", "config", "scoringRules.json"), "utf-8"));
@@ -107,17 +108,36 @@ export function buildUnifiedConditions() {
       const weatherDay = weather.days.find((d) => d.date === day.date);
       const previousWeatherDay = weather.days.find((d) => d.date === prevDay?.date);
 
+      const hourlyData = buildHourly(
+        day,
+        combinedEvents,
+        solunarDay?.peaks ?? [],
+        weatherDay?.hours ?? [],
+        tides.records,
+        previousWeatherDay?.hours ?? [],
+      );
+
+      // Calculate direction shifts from hourly data
+      const windDirections = hourlyData.map((h) => h.windDirection).filter((d) => d != null);
+      const waveDirections = hourlyData.map((h) => h.waveDirection).filter((d) => d != null);
+      const windWaveDirections = hourlyData.map((h) => h.windWaveDirection).filter((d) => d != null);
+      const swellWaveDirections = hourlyData.map((h) => h.swellWaveDirection).filter((d) => d != null);
+
+      const windShift = windDirections.length ? getSecondaryDirectionRanges(windDirections) : "--";
+      const waveShift = waveDirections.length ? getSecondaryDirectionRanges(waveDirections) : "--";
+      const windWaveShift = windWaveDirections.length ? getSecondaryDirectionRanges(windWaveDirections) : "--";
+      const swellWaveShift = swellWaveDirections.length ? getSecondaryDirectionRanges(swellWaveDirections) : "--";
+
       return {
         date: day.date,
         anchored: buildAnchored(day, sunMoonDay, solunarDay, weatherDay),
-        hours: buildHourly(
-          day,
-          combinedEvents,
-          solunarDay?.peaks ?? [],
-          weatherDay?.hours ?? [],
-          tides.records,
-          previousWeatherDay?.hours ?? [],
-        ),
+        hours: hourlyData,
+        secondary: {
+          windDirectionShift: windShift,
+          waveDirectionShift: waveShift,
+          windWaveDirectionShift: windWaveShift,
+          swellWaveDirectionShift: swellWaveShift,
+        },
       };
     }),
   };

@@ -429,6 +429,32 @@ function buildAnchored(dateRecord, astronomy, dayHours, tideEvents, location) {
   };
 }
 
+function calculateDirectionShift(directions) {
+  if (directions.length < 3) return "--";
+
+  // Calculate direction ranges (inline)
+  const normMap = {
+    N: "N", NNE: "N", NE: "NE", ENE: "E",
+    E: "E", ESE: "E", SE: "SE", SSE: "S",
+    S: "S", SSW: "S", SW: "SW", WSW: "W",
+    W: "W", WNW: "W", NW: "NW", NNW: "N",
+  };
+
+  const normalized = directions.map((d) => normMap[d] ?? d);
+
+  const counts = {};
+  for (const d of normalized) {
+    counts[d] = (counts[d] ?? 0) + 1;
+  }
+
+  return Object.entries(counts)
+    .filter((entry) => entry[1] >= 3)
+    .sort((a, b) => b[1] - a[1])
+    .map(([dir, count]) => `${dir} (${((count / directions.length) * 100).toFixed(1)}%)`)
+    .join(", ") || "--";
+}
+
+
 function buildConditionsDay(dateRecord, astronomy, location, tides) {
   const tideEvents = tides
     .map((event) => ({ ...event, at: Date.parse(event.timestamp) }))
@@ -467,6 +493,12 @@ function buildConditionsDay(dateRecord, astronomy, location, tides) {
     date: dateRecord.date,
     anchored: buildAnchored(dateRecord, astronomy, dayHours, tideEvents, location),
     hours: dayHours,
+    secondary: {
+      windDirectionShift: calculateDirectionShift(dayHours.map((h) => h.windDirection).filter((d) => d != null)),
+      waveDirectionShift: calculateDirectionShift(dayHours.map((h) => h.waveDirection).filter((d) => d != null)),
+      windWaveDirectionShift: calculateDirectionShift(dayHours.map((h) => h.windWaveDirection).filter((d) => d != null)),
+      swellWaveDirectionShift: calculateDirectionShift(dayHours.map((h) => h.swellWaveDirection).filter((d) => d != null)),
+    },
   };
 }
 

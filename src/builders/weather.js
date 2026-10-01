@@ -110,6 +110,47 @@ function getMostCommonHourlyValue(hours, key) {
   return [...counts].sort((first, second) => second[1] - first[1])[0]?.[0] ?? null;
 }
 
+/**
+ * Returns wind/wave direction shifts and percentages for every sector present in the hourly data.
+ * 
+ * @param {Array<number|string>} hourlyData - 24-hour array of wind degrees or direction strings
+ * @param {number} minHours - Minimum duration threshold (default: 3)
+ * @returns {string} Formatted direction ranges (e.g., "SW (12.5%), SE (12.5%)") or "--"
+ */
+export function getSecondaryDirectionRanges(hourlyData, minHours = 3) {
+  if (!hourlyData?.length) return '--';
+
+  const pts = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const normMap = {
+    N: 'N', NNE: 'N', NE: 'NE', ENE: 'E',
+    E: 'E', ESE: 'E', SE: 'SE', SSE: 'S',
+    S: 'S', SSW: 'S', SW: 'SW', WSW: 'W',
+    W: 'W', WNW: 'W', NW: 'NW', NNW: 'N',
+  };
+
+  // Helper to normalize degrees or 16-point strings to 8 primary sectors
+  const to8Point = (v) => typeof v === 'number'
+    ? pts[Math.round((v % 360) / 45) % 8]
+    : (normMap[v?.toUpperCase()] || v?.toUpperCase());
+
+  const counts = {};
+  const total = hourlyData.length;
+
+  for (let i = 0; i < total; i++) {
+    const sector = to8Point(hourlyData[i]);
+    if (sector) counts[sector] = (counts[sector] || 0) + 1;
+  }
+
+  return Object.entries(counts)
+    .filter(([, count]) => count >= minHours)
+    .sort((a, b) => b[1] - a[1])
+    .map(([sector, count]) => {
+      const pct = ((count / total) * 100).toFixed(1).replace('.0', '');
+      return `${sector} (${pct}%)`;
+    })
+    .join(', ') || '--';
+}
+
 async function fetchWeatherWithRetry(url, attempts = 3) {
   let lastError;
 
