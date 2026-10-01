@@ -1,54 +1,6 @@
 {
   "days": [
     {
-      "date": "2026-09-27",
-      "sunrise": "05:31",
-      "sunset": "17:45",
-      "firstLight": "05:08",
-      "lastLight": "18:08",
-      "moonrise": "18:20",
-      "moonset": "06:02",
-      "moonPhase": "Full Moon",
-      "illumination": 99,
-      "moonDistance": 374907
-    },
-    {
-      "date": "2026-09-28",
-      "sunrise": "05:30",
-      "sunset": "17:46",
-      "firstLight": "05:07",
-      "lastLight": "18:09",
-      "moonrise": "19:22",
-      "moonset": "06:39",
-      "moonPhase": "Waning Gibbous",
-      "illumination": 96,
-      "moonDistance": 372310
-    },
-    {
-      "date": "2026-09-29",
-      "sunrise": "05:29",
-      "sunset": "17:46",
-      "firstLight": "05:06",
-      "lastLight": "18:09",
-      "moonrise": "20:27",
-      "moonset": "07:21",
-      "moonPhase": "Waning Gibbous",
-      "illumination": 90,
-      "moonDistance": 370547
-    },
-    {
-      "date": "2026-09-30",
-      "sunrise": "05:28",
-      "sunset": "17:46",
-      "firstLight": "05:05",
-      "lastLight": "18:10",
-      "moonrise": "21:35",
-      "moonset": "08:10",
-      "moonPhase": "Waning Gibbous",
-      "illumination": 82,
-      "moonDistance": 369586
-    },
-    {
       "date": "2026-10-01",
       "sunrise": "05:27",
       "sunset": "17:47",
@@ -83,6 +35,54 @@
       "moonPhase": "Last Quarter",
       "illumination": 51,
       "moonDistance": 370591
+    },
+    {
+      "date": "2026-10-04",
+      "sunrise": "05:24",
+      "sunset": "17:48",
+      "firstLight": "05:00",
+      "lastLight": "18:12",
+      "moonrise": "01:39",
+      "moonset": "11:16",
+      "moonPhase": "Waning Crescent",
+      "illumination": 39,
+      "moonDistance": 371929
+    },
+    {
+      "date": "2026-10-05",
+      "sunrise": "05:23",
+      "sunset": "17:49",
+      "firstLight": "04:59",
+      "lastLight": "18:12",
+      "moonrise": "02:23",
+      "moonset": "12:24",
+      "moonPhase": "Waning Crescent",
+      "illumination": 29,
+      "moonDistance": 373700
+    },
+    {
+      "date": "2026-10-06",
+      "sunrise": "05:22",
+      "sunset": "17:49",
+      "firstLight": "04:58",
+      "lastLight": "18:13",
+      "moonrise": "03:02",
+      "moonset": "13:29",
+      "moonPhase": "Waning Crescent",
+      "illumination": 19,
+      "moonDistance": 375911
+    },
+    {
+      "date": "2026-10-07",
+      "sunrise": "05:20",
+      "sunset": "17:50",
+      "firstLight": "04:57",
+      "lastLight": "18:13",
+      "moonrise": "03:36",
+      "moonset": "14:32",
+      "moonPhase": "Waning Crescent",
+      "illumination": 11,
+      "moonDistance": 378575
     }
   ]
 }

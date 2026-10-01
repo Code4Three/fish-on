@@ -14,6 +14,7 @@ import {
   calculateSolunarHourRating,
   calculateSolunarPeakRating,
 } from "../utils/solunarRating.js";
+import { calculateHourlyScore, type ScoreResult } from "../lib/conditions/scoring";
 
 export interface ConditionsTideEntry {
   time: string;
@@ -140,6 +141,8 @@ export interface ClaudeHourlyData {
   solunar: "none" | "major" | "minor";
   solunarCondition: string;
   solunarRating: number;
+  tideRating: number;
+  v1Score: ScoreResult;
   pressureTrend: string;
   score: number;
   scoreBand: "Peak" | "Strong" | "Favorable" | "Slow";
@@ -475,6 +478,7 @@ export function buildDayData(
       solunarRating,
       scoringRules,
     );
+    const v1Score = calculateHourlyScore(tideRating, solunarRating);
 
     return {
       time: item.time,
@@ -491,6 +495,8 @@ export function buildDayData(
       solunar: toSolunarTag(item.solunarCondition),
       solunarCondition: item.solunarCondition,
       solunarRating,
+      tideRating,
+      v1Score,
       pressureTrend: item.pressureTrend,
       score: Math.round(score),
       scoreBand: toScoreBand(band?.name),

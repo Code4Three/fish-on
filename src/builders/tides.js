@@ -2,12 +2,28 @@ import fs from "fs";
 import path from "path";
 
 import { mergeByDate } from "../cache/cache.js";
-import { updateTideCache } from "../cache/tideCache.js";
-import { LOCATION } from "../config/constants.js";
 import { getBuildDateKeys, formatLocalDate } from "../utils/dateUtils.js";
 
 export async function buildTides() {
-  const cache = await updateTideCache(LOCATION.lat, LOCATION.lon);
+  const staticDataPath = path.join("src", "data", "tides.json");
+
+  // Load static tide data
+  if (!fs.existsSync(staticDataPath)) {
+    throw new Error(
+      `Static tide data not found at ${staticDataPath}. ` +
+      "Run the data build first or ensure tides.json is present.",
+    );
+  }
+
+  let cache;
+  try {
+    const staticData = JSON.parse(fs.readFileSync(staticDataPath, "utf-8"));
+    cache = staticData;
+    console.log("Loaded static tide data from src/data/tides.json");
+  } catch (error) {
+    throw new Error(`Failed to parse tide data: ${error.message}`);
+  }
+
   const buildDateKeys = getBuildDateKeys();
   const buildDateSet = new Set(buildDateKeys);
   const firstBuildDate = buildDateKeys[0];
@@ -24,12 +40,8 @@ export async function buildTides() {
     records.unshift(previousRecord);
   }
 
-  // WorldTides returns MSL heights; shift to Chart Datum (LAT) for the active location
-  const datumOffset = LOCATION.datumOffset ?? 0;
-  const adjustedRecords = records.map((record) => ({
-    ...record,
-    height: record.height + datumOffset,
-  }));
+  // Height values are already in Chart Datum (LAT) from buildAll.js
+  const adjustedRecords = records;
 
   const outputPath = path.join("src", "data", "tides.json");
 

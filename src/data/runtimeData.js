@@ -183,11 +183,13 @@ async function fetchTideRecords(location, locationKey) {
     ) {
       return [];
     }
+    // The static tide dataset is already referenced to the correct chart datum, so no further
+    // offset is applied here (unlike the legacy WorldTides MSL-referenced API response).
     return [{
       locationKey,
       timestamp: eventDate.toISOString(),
       type: extreme.type,
-      height: height + (Number(location.datumOffset) || 0),
+      height,
     }];
   });
 }

@@ -1,3 +1,3 @@
-console.log(
-	"Static conditions generation is disabled; Vite dev mirrors the active browser cache.",
-);
+import { buildUnifiedConditions } from "../builders/unifiedConditions.js";
+
+await buildUnifiedConditions();

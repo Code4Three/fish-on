@@ -1,9 +1,52 @@
-// src/builders/unifiedConditions.js
-
 import fs from "fs";
 import path from "path";
 import { classifyTideStage, groupTidesByDay } from "../utils/tides.js";
 import { getBuildDateKeys } from "../utils/dateUtils.js";
+import { calculateTideRating } from "../utils/scoringEngine.js";
+import { calculateSolunarHourRating } from "../utils/solunarRating.js";
+
+// Load scoring rules
+const scoringRules = JSON.parse(fs.readFileSync(path.join("src", "config", "scoringRules.json"), "utf-8"));
+
+// Helper: Convert date string (YYYY-MM-DD) and time string (HH:MM) to Unix timestamp (UTC)
+function toTimestamp(dateStr, timeStr, timezone = "UTC") {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  return new Date(Date.UTC(year, month - 1, day, hours, minutes, 0)).getTime();
+}
+
+// V1 Parametric Scoring Engine (inlined for Node.js build compatibility)
+const V1_CONFIG = {
+  DEFAULT_WEIGHTS: { tide: 0.6, solunar: 0.4 },
+  TOP_TIER_MIN: 80,
+  MID_TIER_MIN: 50,
+};
+
+function calculateV1Score(tideRating, solunarRating, weights = V1_CONFIG.DEFAULT_WEIGHTS) {
+  const normalizeRating = (rating) => {
+    if (rating == null || isNaN(rating)) return 0;
+    return Math.max(0, Math.min(100, Math.round(rating)));
+  };
+
+  const normalizedTide = normalizeRating(tideRating);
+  const normalizedSolunar = normalizeRating(solunarRating);
+
+  // Calculate combined score with parametric weights
+  const score = Math.round(normalizedTide * weights.tide + normalizedSolunar * weights.solunar);
+  const clampedScore = Math.max(0, Math.min(100, score));
+
+  // Determine tier
+  let tier;
+  if (clampedScore >= V1_CONFIG.TOP_TIER_MIN) {
+    tier = 'TOP';
+  } else if (clampedScore >= V1_CONFIG.MID_TIER_MIN) {
+    tier = 'MID';
+  } else {
+    tier = 'NEUTRAL';
+  }
+
+  return { score: clampedScore, tier };
+}
 
 export function buildUnifiedConditions() {
   // Load each generated data source; weather is optional (may not exist yet in early builds)
@@ -70,6 +113,7 @@ export function buildUnifiedConditions() {
           combinedEvents,
           solunarDay?.peaks ?? [],
           weatherDay?.hours ?? [],
+          tides.records,
         ),
       };
     }),
@@ -234,7 +278,7 @@ function findBoundingTides(hourStr, tideEvents) {
   };
 }
 
-function buildHourly(day, tideEvents, solunarPeaks, weatherHours = []) {
+function buildHourly(day, tideEvents, solunarPeaks, weatherHours = [], tideRecords = []) {
   const hours = [];
 
   for (let h = 0; h < 24; h++) {
@@ -250,6 +294,21 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = []) {
     (weatherHours ?? []).map((hour) => [hour.time, hour]),
   );
 
+  // Build tide timeline for rating calculation
+  // Convert raw tide records to the format expected by calculateTideRating
+  const tideTimeline = tideRecords
+    .map((record) => ({
+      type: record.type,
+      at: new Date(record.date).getTime(),
+    }))
+    .sort((a, b) => a.at - b.at);
+
+  // Create a day-like object with anchored solunar peaks for rating calculation
+  const dayForSolunarRating = {
+    date: day.date,
+    anchored: { solunarPeaks }
+  };
+
   return hours.map((hour) => {
     const boundingTides = findBoundingTides(hour.time, tideEvents);
 
@@ -259,10 +318,18 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = []) {
 
     const weather = weatherLookup.get(hour.time) ?? {};
 
+    // Calculate ratings for V1 scoring
+    const at = toTimestamp(day.date, hour.time, "UTC");
+    const tideRating = calculateTideRating(at, tideTimeline, scoringRules);
+    const solunarRating = calculateSolunarHourRating(dayForSolunarRating, hour.time, scoringRules);
+    const v1Score = calculateV1Score(tideRating, solunarRating);
+
     return {
       time: hour.time,
       height: hour.height,
       tideStage,
+      tideRating,
+      v1Score,
 
       solunarCondition: getSolunarCondition(day.date, hour.time, solunarPeaks),
       pressureTrend:
