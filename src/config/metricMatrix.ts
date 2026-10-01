@@ -81,6 +81,12 @@ function getMetricLabel(metricId: keyof typeof METRIC_DISPLAY_DEFINITIONS) {
   return METRIC_DISPLAY_DEFINITIONS[metricId].label;
 }
 
+// Fishability favorable window configuration: hours on either side of Peak/Strong/Favorable score peaks.
+// Note: 1.5-hour margin applied to integer hour indices produces half-hour boundaries.
+// Example: Hour 3 with ±1.5 hours → [1.5, 4.5] displays as "1:30 AM - 4:30 AM".
+// This is mathematically correct and provides a consistent visual pattern for time ranges.
+export const FISHABILITY_FAVORABLE_WINDOW_MARGIN = 1.5;
+
 export interface DailyMetricDefinition {
   id: string;
   label: string;
@@ -98,7 +104,7 @@ export interface DailyGroupDefinition {
 export const DAILY_GROUPS: DailyGroupDefinition[] = [
   {
     id: "fishability",
-    label: "Fishability rating",
+    label: "Fishability",
     metrics: [
       {
         id: "hourlyScore",

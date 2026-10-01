@@ -37,9 +37,10 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { ENVIRONMENTAL_METRICS, HOURLY_SECTIONS } from "../config/metricMatrix";
+import { ENVIRONMENTAL_METRICS, HOURLY_SECTIONS, FISHABILITY_FAVORABLE_WINDOW_MARGIN } from "../config/metricMatrix";
 import type { ClaudeDayData } from "../data/conditions";
 import type { AnchoredSettingsState } from "../hooks/useAnchoredSettings";
+import { identifyFishabilityFavorableWindows } from "../lib/conditions/fishabilityWindows";
 import {
   formatMetricLabel,
   formatMetricRange,
@@ -933,11 +934,44 @@ function FishabilityGroupContent({
   const current = day.hours[hour];
   const tone = scoreBandTone(current.scoreBand);
   const maxScore = Math.max(...values);
-  const nextPeak = day.hours.find(
-    (item) =>
-      item.hour > hour &&
-      (item.scoreBand === "Peak" || item.scoreBand === "Strong"),
+
+  // Identify favorable windows (Peak/Strong/Favorable score hours ± margin)
+  const favorableWindows = identifyFishabilityFavorableWindows(
+    day.hours,
+    FISHABILITY_FAVORABLE_WINDOW_MARGIN,
   );
+
+  // Determine if current hour is in an active favorable window
+  const activeWindow = favorableWindows.find(
+    (w) => hour >= w.start && hour < w.end,
+  );
+
+  // Find next window if not in active window, otherwise use active window
+  const nextWindow = !activeWindow
+    ? favorableWindows.find((w) => w.start >= hour)
+    : activeWindow;
+
+  // "Active" only when current hour is in a favorable window
+  // (Utility only returns Peak/Strong/Favorable windows, never Slow)
+  const isFavorableNow = !!activeWindow;
+
+  const displayWindow = activeWindow || nextWindow;
+
+  // Determine highest score band within the display window
+  const windowScoreBand = displayWindow
+    ? (() => {
+      const startIdx = Math.ceil(displayWindow.start);
+      const endIdx = Math.floor(displayWindow.end);
+      const bandsInWindow = day.hours
+        .slice(startIdx, Math.min(endIdx + 1, day.hours.length))
+        .map((h) => h.scoreBand);
+      if (bandsInWindow.includes("Peak")) return "peak";
+      if (bandsInWindow.includes("Strong")) return "strong";
+      if (bandsInWindow.includes("Favorable")) return "favorable";
+      return "slow";
+    })()
+    : null;
+
   const showHourly = isVisible(visibleMetrics, "hourlyScore");
   const showMax = isVisible(visibleMetrics, "maxDayScore");
   const showWindow = isVisible(visibleMetrics, "feedingWindows");
@@ -976,12 +1010,17 @@ function FishabilityGroupContent({
       {showWindow && (
         <div className="mt-1.5 flex items-center justify-between border-t border-hull-700/70 pt-2">
           <span className="font-body text-[13px] font-medium text-slate-300">
-            {nextPeak ? "Next strong window" : "Based on tide + solunar"}
+            {displayWindow
+              ? `${isFavorableNow ? "Active" : "Next"} ${windowScoreBand} window`
+              : "No favorable window today"}
           </span>
           <span className="font-body text-[13px] font-semibold tabular-nums text-white">
-            {nextPeak
-              ? `${formatHour(nextPeak.hour)} (${nextPeak.score})`
-              : "No stronger window today"}
+            {displayWindow
+              ? `${formatHour(displayWindow.start, true)} - ${formatHour(
+                displayWindow.end,
+                true,
+              )}`
+              : ""}
           </span>
         </div>
       )}
