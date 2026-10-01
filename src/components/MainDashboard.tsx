@@ -20,7 +20,7 @@ import { useAnchoredSettings } from "../hooks/useAnchoredSettings";
 import { useDashboardSettings } from "../hooks/useDashboardSettings";
 import { useApp } from "../state/useApp";
 import CustomizationBottomSheet from "./settings/CustomizationBottomSheet";
-import type { DashboardStateProps } from "./prototypes/shared";
+import type { DashboardStateProps } from "./shared";
 import {
   DayDrawer,
   FullConditionsView,
@@ -31,7 +31,7 @@ import {
   formatDate,
   isTideRising,
   ratingTier,
-} from "./prototypes/shared";
+} from "./shared";
 import { formatMetricValue } from "../utils/measurementUnits";
 
 // ==========================================
@@ -134,7 +134,7 @@ function DashboardDock({
 // ==========================================
 // MAIN COMPONENT: Dashboard Shell
 // ==========================================
-// Production dashboard: bottom-dock thumb-first layout (formerly Prototype 1). Settings live in the header only.
+// Production dashboard: bottom-dock thumb-first layout. Settings live in the header only.
 export default function MainDashboard({
   day,
   locationName,
@@ -145,8 +145,6 @@ export default function MainDashboard({
   canGoNext,
   onHourChange,
   onOffsetChange,
-  prototype,
-  onSelectPrototype,
 }: DashboardStateProps) {
   // Which cards/groups/metrics are visible and in what order, persisted per user
   const {
@@ -505,8 +503,6 @@ export default function MainDashboard({
           onToggleGroup={toggleGroup}
           onToggleMatrixMetric={toggleMatrixMetric}
           onReset={resetSettings}
-          prototype={prototype}
-          onSelectPrototype={onSelectPrototype}
           dockPosition={dockPosition}
           onSelectDockPosition={selectDockPosition}
           unitSystem={unitSystem}

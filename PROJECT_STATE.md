@@ -148,7 +148,7 @@ These derived values are included in the unified conditions data and are display
 ## Important Current Architecture
 
 - The browser application mounts a shared `AppProvider` and selects the active destination view from client-side application state; the global header is currently disabled on this branch.
-- The default weekly route renders `PrototypeSwitcher`, which selects `MainDashboard` by default.
+- The default weekly route renders `WeeklyDashboard`, which owns the selected day/hour state and renders `MainDashboard`.
 - `MainDashboard` owns the selected day/hour presentation, draggable dock, swipeable full-conditions panel, and customization sheet.
 - The browser reads a generated static conditions file rather than calling the external providers directly.
 - The existing global menu component uses a desktop dropdown at widths of 768px and above and a full-width mobile drawer below 768px, but it is not mounted on this branch.
@@ -179,12 +179,12 @@ Fish On is not currently confirmed to be a fishing-success predictor, automated 
 
 This snapshot was established by inspecting:
 
-- The mounted application entry point in `src/App.jsx` and the active prototype dashboard in `src/components/prototypes/`.
+- The mounted application entry point in `src/App.jsx` and the active dashboard in `src/components/WeeklyDashboard.tsx` and `src/components/MainDashboard.tsx`.
 - The unified data builder in `src/builders/unifiedConditions.js` and the generated payload in `public/conditions.json`.
 - The build sequence in `src/scripts/buildAll.js` and the individual data-build scripts.
 - Tide API, cache, and normalization code in `src/api/tides.js`, `src/cache/tideCache.js`, `src/builders/tides.js`, and `src/utils/tides.js`.
 - Weather acquisition and normalization in `src/builders/weather.js`.
 - Sun/Moon and solunar calculations in `src/scripts/buildSunMoon.js` and `src/builders/solunar.js`.
 - Shared location, time zone, and display-day configuration in `src/config/constants.js`.
-- The scoring rules, runtime scoring engine, dashboard score display, and focused tests in `src/config/scoringRules.json`, `src/utils/scoringEngine.js`, `src/components/prototypes/shared.tsx`, and `src/utils/scoringEngine.test.js`.
+- The scoring rules, runtime scoring engine, dashboard score display, and focused tests in `src/config/scoringRules.json`, `src/utils/scoringEngine.js`, `src/components/shared.tsx`, and `src/utils/scoringEngine.test.js`.
 - The customizable metric definitions and hourly metric matrix in `src/config/metricMatrix.ts`, plus the weather metric adaptation in `src/data/conditions.ts`.

@@ -37,17 +37,16 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { ENVIRONMENTAL_METRICS, HOURLY_SECTIONS } from "../../config/metricMatrix";
-import type { ClaudeDayData } from "../../data/conditions";
-import type { AnchoredSettingsState } from "../../hooks/useAnchoredSettings";
-import type { PrototypeId } from "../../hooks/useLayoutPrototype";
+import { ENVIRONMENTAL_METRICS, HOURLY_SECTIONS } from "../config/metricMatrix";
+import type { ClaudeDayData } from "../data/conditions";
+import type { AnchoredSettingsState } from "../hooks/useAnchoredSettings";
 import {
   formatMetricLabel,
   formatMetricRange,
   formatMetricValue,
   getMetricUnit,
-} from "../../utils/measurementUnits";
-import { useUnitSystem } from "../../state/useApp";
+} from "../utils/measurementUnits";
+import { useUnitSystem } from "../state/useApp";
 
 interface CardHandleContextType {
   attributes: React.HTMLAttributes<HTMLButtonElement>;
@@ -72,8 +71,6 @@ export interface DashboardStateProps {
   canGoNext: boolean;
   onHourChange: (hour: number) => void;
   onOffsetChange: (offset: number) => void;
-  prototype: PrototypeId;
-  onSelectPrototype: (id: PrototypeId) => void;
 }
 
 export const DEFAULT_HOUR = 7;
@@ -154,6 +151,22 @@ export function formatOptionalHour(
   return hour == null ? "--" : formatHour(hour, minutes);
 }
 
+// Formats an hour that may fall on a later day (hour >= 24, e.g. from a cross-day timeline
+// lookup). `date` is the calendar day the hour belongs to, used to label windows beyond tomorrow
+// with their weekday instead of an inaccurate "Tomorrow".
+export function formatCrossDayHour(hour: number, date: string) {
+  const timeOfDay = formatHour(hour % 24, true);
+  const dayOffset = Math.floor(hour / 24);
+  if (dayOffset === 0) return timeOfDay;
+  if (dayOffset === 1) return `Tomorrow ${timeOfDay}`;
+  const [year, monthNumber, day] = date.split("-").map(Number);
+  const weekday = new Date(Date.UTC(year, monthNumber - 1, day, 12)).toLocaleDateString(
+    "en-AU",
+    { weekday: "short", timeZone: "UTC" },
+  );
+  return `${weekday} ${timeOfDay}`;
+}
+
 export function formatDate(dateValue: string, timezone: string) {
   const [year, monthNumber, day] = dateValue.split("-").map(Number);
   const date = new Date(Date.UTC(year, monthNumber - 1, day, 12));
@@ -226,6 +239,18 @@ export function scoreBandTone(band: string) {
     chip: "bg-hull-700 text-slate-300",
     stroke: "#94A3B8",
   };
+}
+
+export function barometricStateTone(state: string) {
+  if (state === "PEAK")
+    return { chip: "bg-tide-500/15 text-tide-400", stroke: "#4ADE9C" };
+  if (state === "HIGH")
+    return { chip: "bg-sky-400/15 text-sky-300", stroke: "#38BDF8" };
+  if (state === "MODERATE")
+    return { chip: "bg-amber-400/15 text-amber-300", stroke: "#FCD34D" };
+  if (state === "POOR")
+    return { chip: "bg-orange-400/15 text-orange-300", stroke: "#FB923C" };
+  return { chip: "bg-rose-500/15 text-rose-400", stroke: "#FB7185" };
 }
 
 // Renders a placeholder when mock data for a metric is missing/unavailable (AC3).
@@ -366,7 +391,7 @@ export interface HourPillsProps {
   onHourChange: (hour: number) => void;
 }
 
-// Standalone hour-pill row (≥48px targets) for prototypes that place it away from the top header.
+// Standalone hour-pill row (≥48px targets) for layouts that place it away from the top header.
 export function HourPills({ hour, day, onHourChange }: HourPillsProps) {
   const pillRefs = useRef<Record<number, HTMLButtonElement | null>>({});
   useEffect(() => {
@@ -473,7 +498,7 @@ export function Sparkline({
 }
 
 // ==========================================
-// SUMMARY CARDS (Prototype 0 / 1 stacked feed)
+// SUMMARY CARDS (stacked feed)
 // ==========================================
 export function ScoreCard({
   day,
@@ -530,63 +555,6 @@ export function ScoreCard({
               {nextPeak
                 ? `${formatHour(nextPeak.hour)} (${nextPeak.score})`
                 : "No stronger window today"}
-            </span>
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-export function PressureCard({
-  day,
-  hour,
-  visibleMetrics,
-}: {
-  day: ClaudeDayData;
-  hour: number;
-  visibleMetrics?: VisibleMetrics;
-}) {
-  const unitSystem = useUnitSystem();
-  const current = day.hours[hour];
-  const pressureRange = day.ranges?.pressure;
-  const trend = day.secondary.pressure.trend;
-  const trendTone =
-    trend === "Falling"
-      ? "text-amber-300"
-      : trend === "Rising"
-        ? "text-tide-400"
-        : "text-slate-300";
-
-  return (
-    <article className="mx-4 mt-2 overflow-hidden rounded-3xl border border-hull-700/70 bg-gradient-to-b from-hull-800 to-hull-900">
-      <div className="px-4 pb-3 pt-3">
-        <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
-          <Gauge size={13} className="text-amber-300" />
-          {formatMetricLabel("pressure", unitSystem)}
-        </div>
-        {isVisible(visibleMetrics, "pressure") && (
-          <div className="mt-1 flex flex-wrap items-baseline gap-2">
-            <span className="font-display text-[34px] font-bold leading-none tabular-nums text-white">
-              {formatMetricValue("pressure", current?.pressure, unitSystem, false)}
-              <span className="ml-1 text-lg font-medium text-slate-400">
-                {getMetricUnit("pressure", unitSystem)}
-              </span>
-            </span>
-            <span
-              className={`rounded-full bg-hull-700 px-2.5 py-1 font-body text-xs font-semibold ${trendTone}`}
-            >
-              {safe(trend, "Steady")}
-            </span>
-          </div>
-        )}
-        {isVisible(visibleMetrics, "pressure") && (
-          <div className="mt-2 flex items-center justify-between border-t border-hull-700/70 pt-2">
-            <span className="font-body text-[13px] font-medium text-slate-300">
-              Today&apos;s range
-            </span>
-            <span className="font-body text-[13px] font-semibold tabular-nums text-white">
-              {formatMetricRange("pressure", pressureRange, unitSystem)}
             </span>
           </div>
         )}
@@ -1330,6 +1298,193 @@ function SunMoonGroupContent({
   );
 }
 
+// Weather & atmospheric: barometric pressure scoring (sparkline + state + next favorable window) atop the generic weather tiles.
+function WeatherGroupContent({
+  group,
+  visibleMetrics,
+  day,
+  hour,
+}: {
+  group: {
+    id: string;
+    label: string;
+    metrics: Array<{ id: string; label: string }>;
+  };
+  visibleMetrics: VisibleMetrics;
+  day: ClaudeDayData;
+  hour: number;
+}) {
+  const unitSystem = useUnitSystem();
+  const values = day.hours.map((item) => item.pressure);
+  const current = day.hours[hour];
+  const tone = barometricStateTone(current?.barometric?.state ?? "OFF");
+  const favorableStates = ["PEAK", "HIGH"];
+  const isFavorableNow = favorableStates.includes(current?.barometric?.state);
+  const windowEnd = isFavorableNow
+    ? day.barometricTimeline.find(
+      (item) => item.hour > hour && !favorableStates.includes(item.state),
+    )
+    : undefined;
+  const nextFavorable = !isFavorableNow
+    ? day.barometricTimeline.find(
+      (item) => item.hour > hour && favorableStates.includes(item.state),
+    )
+    : undefined;
+
+  // Generic weather tiles, excluding pressure (shown above with its own sparkline/window row).
+  const environmentalMetrics = ENVIRONMENTAL_METRICS.filter(
+    (metric) => metric.group === group.id,
+  );
+  const weatherTileMetrics = [
+    ...group.metrics
+      .filter((metric) => metric.id !== "pressure")
+      .map((metric) => ({
+        ...metric,
+        environmentalMetric:
+          environmentalMetrics.find(
+            (environmentalMetric) => environmentalMetric.id === metric.id,
+          ) ?? null,
+      })),
+    ...environmentalMetrics
+      .filter((metric) => !group.metrics.some((item) => item.id === metric.id))
+      .map((metric) => ({
+        id: metric.id,
+        label: metric.label,
+        environmentalMetric: metric,
+      })),
+  ].filter(
+    (metric) =>
+      isVisible(visibleMetrics, metric.id) &&
+      (metric.environmentalMetric?.defaultVisibility.summaryCards ?? true),
+  );
+
+  return (
+    <div className="px-4 pb-3 pt-3">
+      {isVisible(visibleMetrics, "pressure") && (
+        <>
+          <div className="flex items-center gap-1.5 font-body text-[12px] text-slate-400">
+            <Gauge size={13} className="text-amber-300" />
+            {formatMetricLabel("pressure", unitSystem)}
+          </div>
+          <div className="mt-1 flex items-center gap-3">
+            <div className="flex flex-wrap items-baseline gap-2">
+              <span className="font-display text-[40px] font-bold leading-none tabular-nums text-white">
+                {formatMetricValue("pressure", current?.pressure, unitSystem, false)}
+                <span className="ml-1 text-lg font-medium text-slate-400">
+                  {getMetricUnit("pressure", unitSystem)}
+                </span>
+              </span>
+              <span
+                className={`rounded-full px-2.5 py-1 font-body text-xs font-semibold ${tone.chip}`}
+              >
+                {current?.barometric?.state ?? "OFF"}
+              </span>
+            </div>
+            <Sparkline
+              values={values}
+              activeIndex={hour}
+              stroke={tone.stroke}
+              label="Barometric pressure trend"
+            />
+          </div>
+          <div className="my-1.5 flex items-center justify-between border-t border-b border-hull-700/70 py-2">
+            <span className="font-body text-[13px] font-medium text-slate-300">
+              {isFavorableNow ? "Active favourable window" : "Next favourable window"}
+            </span>
+            <span className="font-body text-[13px] font-semibold tabular-nums text-white">
+              {isFavorableNow
+                ? windowEnd
+                  ? `Until ${formatCrossDayHour(windowEnd.hour, windowEnd.date)}`
+                  : "Rest of today"
+                : nextFavorable
+                  ? `${formatCrossDayHour(nextFavorable.hour, nextFavorable.date)} (${nextFavorable.state})`
+                  : "No stronger window in forecast"}
+            </span>
+          </div>
+        </>
+      )}
+      {weatherTileMetrics.length > 0 && (
+        <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-3">
+          {weatherTileMetrics.map((metric) => {
+            const environmentalSummary = metric.environmentalMetric
+              ? day.environmentalRawSummaries?.[metric.id]
+              : null;
+            const [legacyValue, legacyDetail] = matrixMetricValue(
+              metric.id,
+              day,
+              hour,
+              unitSystem,
+            );
+            const hourlyRawValue = day.hours[hour]?.environmentalRawValues?.[metric.id];
+            const hourlyValue = formatMetricValue(
+              metric.id,
+              hourlyRawValue,
+              unitSystem,
+            );
+            const dailyRange = environmentalSummary
+              ? formatMetricRange(metric.id, environmentalSummary.dailyRange, unitSystem)
+              : "--";
+            const dailyDirection = environmentalSummary
+              ? formatMetricValue(metric.id, environmentalSummary.dailyDirection, unitSystem)
+              : "--";
+            const dailyMaximum = environmentalSummary
+              ? formatMetricValue(metric.id, environmentalSummary.dailyMaximum, unitSystem)
+              : "--";
+            const dailyBaseline = environmentalSummary
+              ? formatMetricValue(metric.id, environmentalSummary.dailyBaseline, unitSystem)
+              : "--";
+            const dailyDetail = !environmentalSummary || metric.id === "waveDirection"
+              ? ""
+              : dailyRange !== "--"
+                ? dailyRange
+                : dailyDirection !== "--"
+                  ? `Daily ${dailyDirection}`
+                  : dailyMaximum !== "--"
+                    ? `Daily max ${dailyMaximum}`
+                    : dailyBaseline !== "--"
+                      ? `Daily ${dailyBaseline}`
+                      : "";
+            const value = metric.environmentalMetric
+              ? metric.id === "waveDirection" && hourlyValue === "--"
+                ? dailyDirection
+                : hourlyValue
+              : legacyValue;
+            const detail = metric.environmentalMetric
+              ? dailyDetail === "--"
+                ? ""
+                : dailyDetail
+              : legacyDetail;
+            const meta = metricIconMap[metric.id];
+            const Icon = meta?.icon;
+            return (
+              <div key={metric.id}>
+                <div className="flex items-center gap-2 -ml-2">
+                  {Icon && (
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-hull-700/60">
+                      <Icon size={14} className={meta.tint} />
+                    </div>
+                  )}
+                  <p className="min-w-0 break-words font-body text-[11.5px] leading-tight text-slate-400">
+                    {formatMetricLabel(metric.id, unitSystem)}
+                  </p>
+                </div>
+                <p className={`mt-1 min-w-0 break-words font-display font-bold leading-tight tabular-nums text-white ${metric.environmentalMetric ? "text-[16px]" : "text-[21px]"}`}>
+                  {value}
+                </p>
+                {detail && (
+                  <p className="mt-1 truncate font-body text-[11px] text-slate-500">
+                    {detail}
+                  </p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Generic group layout (water, sun & moon, weather): plain metric tiles with icons, no nested/bordered sub-cards.
 function TileGroupContent({
   group,
@@ -1512,9 +1667,18 @@ export function MatrixGroupCard({
           visibleMetrics={visibleMetrics}
         />
       )}
+      {group.id === "weather" && (
+        <WeatherGroupContent
+          group={group}
+          day={day}
+          hour={hour}
+          visibleMetrics={visibleMetrics}
+        />
+      )}
       {group.id !== "fishability" &&
         group.id !== "water" &&
-        group.id !== "sunMoon" && (
+        group.id !== "sunMoon" &&
+        group.id !== "weather" && (
           <TileGroupContent
             group={group}
             visibleMetrics={visibleMetrics}
@@ -1766,6 +1930,10 @@ export function WeatherDetailsCard({
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
       <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
+        <div className="flex items-center gap-1.5">
+          <Cloud size={13} className="text-slate-300" />
+          Weather & atmospheric conditions
+        </div>
         {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
       <div className="mt-2">

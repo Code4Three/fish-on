@@ -4,12 +4,13 @@ import { classifyTideStage, groupTidesByDay } from "../utils/tides.js";
 import { getBuildDateKeys } from "../utils/dateUtils.js";
 import { calculateTideRating } from "../utils/scoringEngine.js";
 import { calculateSolunarHourRating } from "../utils/solunarRating.js";
+import { evalBarometricCondition } from "../utils/barometricRating.js";
 
 // Load scoring rules
 const scoringRules = JSON.parse(fs.readFileSync(path.join("src", "config", "scoringRules.json"), "utf-8"));
 
 // Helper: Convert date string (YYYY-MM-DD) and time string (HH:MM) to Unix timestamp (UTC)
-function toTimestamp(dateStr, timeStr, timezone = "UTC") {
+function toTimestamp(dateStr, timeStr) {
   const [year, month, day] = dateStr.split('-').map(Number);
   const [hours, minutes] = timeStr.split(':').map(Number);
   return new Date(Date.UTC(year, month - 1, day, hours, minutes, 0)).getTime();
@@ -104,6 +105,7 @@ export function buildUnifiedConditions() {
       const sunMoonDay = sunMoon.days.find((d) => d.date === day.date);
       const solunarDay = solunar.days.find((d) => d.date === day.date);
       const weatherDay = weather.days.find((d) => d.date === day.date);
+      const previousWeatherDay = weather.days.find((d) => d.date === prevDay?.date);
 
       return {
         date: day.date,
@@ -114,6 +116,7 @@ export function buildUnifiedConditions() {
           solunarDay?.peaks ?? [],
           weatherDay?.hours ?? [],
           tides.records,
+          previousWeatherDay?.hours ?? [],
         ),
       };
     }),
@@ -278,7 +281,7 @@ function findBoundingTides(hourStr, tideEvents) {
   };
 }
 
-function buildHourly(day, tideEvents, solunarPeaks, weatherHours = [], tideRecords = []) {
+function buildHourly(day, tideEvents, solunarPeaks, weatherHours = [], tideRecords = [], previousDayWeatherHours = []) {
   const hours = [];
 
   for (let h = 0; h < 24; h++) {
@@ -292,6 +295,9 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = [], tideRecor
 
   const weatherLookup = new Map(
     (weatherHours ?? []).map((hour) => [hour.time, hour]),
+  );
+  const previousWeatherLookup = new Map(
+    (previousDayWeatherHours ?? []).map((hour) => [hour.time, hour]),
   );
 
   // Build tide timeline for rating calculation
@@ -309,7 +315,7 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = [], tideRecor
     anchored: { solunarPeaks }
   };
 
-  return hours.map((hour) => {
+  return hours.map((hour, h) => {
     const boundingTides = findBoundingTides(hour.time, tideEvents);
 
     const tideStage = boundingTides
@@ -319,10 +325,20 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = [], tideRecor
     const weather = weatherLookup.get(hour.time) ?? {};
 
     // Calculate ratings for V1 scoring
-    const at = toTimestamp(day.date, hour.time, "UTC");
+    const at = toTimestamp(day.date, hour.time);
     const tideRating = calculateTideRating(at, tideTimeline, scoringRules);
     const solunarRating = calculateSolunarHourRating(dayForSolunarRating, hour.time, scoringRules);
     const v1Score = calculateV1Score(tideRating, solunarRating);
+
+    // 3-hour pressure lookback can span into the previous day near midnight
+    const hourOfLookback = h - 3;
+    const pressure3HoursAgo = hourOfLookback >= 0
+      ? weatherLookup.get(`${hourOfLookback.toString().padStart(2, "0")}:00`)?.pressure ?? null
+      : previousWeatherLookup.get(`${(24 + hourOfLookback).toString().padStart(2, "0")}:00`)?.pressure ?? null;
+    const barometric = evalBarometricCondition(
+      { currentHpa: weather.pressure ?? null, hpa3HoursAgo: pressure3HoursAgo },
+      scoringRules,
+    );
 
     return {
       time: hour.time,
@@ -335,6 +351,7 @@ function buildHourly(day, tideEvents, solunarPeaks, weatherHours = [], tideRecor
       pressureTrend:
         weather.pressure != null ? `${weather.pressure} hPa` : null,
       pressure: weather.pressure ?? null,
+      barometric,
       weatherCondition: weather.weatherCondition ?? null,
       wind:
         weather.windSpeed != null

@@ -15,6 +15,7 @@ import {
   calculateSolunarPeakRating,
 } from "../utils/solunarRating.js";
 import { calculateHourlyScore, type ScoreResult } from "../lib/conditions/scoring";
+import { evalBarometricCondition } from "../utils/barometricRating.js";
 
 export interface ConditionsTideEntry {
   time: string;
@@ -130,6 +131,13 @@ export interface ConditionsDay {
   hours: ConditionsHour[];
 }
 
+export interface BarometricResult {
+  score: number;
+  state: "PEAK" | "HIGH" | "MODERATE" | "POOR" | "OFF";
+  trendDelta: number;
+  description: string;
+}
+
 export interface ClaudeHourlyData {
   time: string;
   hour: number;
@@ -144,6 +152,7 @@ export interface ClaudeHourlyData {
   tideRating: number;
   v1Score: ScoreResult;
   pressureTrend: string;
+  barometric: BarometricResult;
   score: number;
   scoreBand: "Peak" | "Strong" | "Favorable" | "Slow";
   tideDirection: "Flood" | "Ebb" | "Slack";
@@ -194,6 +203,10 @@ export interface ClaudeDayData {
     dailyDirection: string | null;
   }>;
   tideEvents: Array<{ hour: number; type: "High" | "Low"; height: number }>;
+  // Hourly barometric state spanning today through the end of the loaded forecast (hour 0-23 for
+  // today, 24-47 for tomorrow, etc.), so "next favorable window" can find windows multiple days out.
+  // `date` identifies the calendar day each entry belongs to, for labeling windows beyond tomorrow.
+  barometricTimeline: Array<{ hour: number; state: BarometricResult["state"]; date: string }>;
   majorWindows: Array<{ start: number; end: number; rating: number }>;
   minorWindows: Array<{ start: number; end: number; rating: number }>;
   solunarRating: number;
@@ -456,6 +469,21 @@ export function getEnvironmentalMetricDisplayValues(
   };
 }
 
+// Looks back N hours for a pressure reading, spanning into the previous day near midnight.
+// Returns null when no prior day is available (e.g. the first day in the loaded range).
+function getPressureHoursAgo(
+  days: ConditionsDay[],
+  index: number,
+  hourIndex: number,
+  hoursAgo: number,
+): number | null {
+  const targetIndex = hourIndex - hoursAgo;
+  if (targetIndex >= 0) return days[index].hours[targetIndex]?.pressure ?? null;
+  const previousDay = days[index - 1];
+  if (!previousDay) return null;
+  return previousDay.hours[previousDay.hours.length + targetIndex]?.pressure ?? null;
+}
+
 // Pure transform: given the full days list (for tide continuity) and the day index, build the dashboard-ready day.
 export function buildDayData(
   days: ConditionsDay[],
@@ -479,6 +507,13 @@ export function buildDayData(
       scoringRules,
     );
     const v1Score = calculateHourlyScore(tideRating, solunarRating);
+    const barometric = evalBarometricCondition(
+      {
+        currentHpa: item.pressure,
+        hpa3HoursAgo: getPressureHoursAgo(days, index, hourIndex, 3),
+      },
+      scoringRules,
+    );
 
     return {
       time: item.time,
@@ -498,6 +533,7 @@ export function buildDayData(
       tideRating,
       v1Score,
       pressureTrend: item.pressureTrend,
+      barometric,
       score: Math.round(score),
       scoreBand: toScoreBand(band?.name),
       tideDirection: toTideDirection(item.tideStage),
@@ -555,6 +591,23 @@ export function buildDayData(
       height: tide.height,
     })),
   ].sort((a, b) => a.hour - b.hour);
+
+  const barometricTimeline = [
+    ...hours.map((item) => ({ hour: item.hour, state: item.barometric.state, date: day.date })),
+    ...days.slice(index + 1).flatMap((futureDay, dayOffset) =>
+      futureDay.hours.map((item, hourIndex) => ({
+        hour: parseTimeToHour(item.time) + (dayOffset + 1) * 24,
+        state: evalBarometricCondition(
+          {
+            currentHpa: item.pressure,
+            hpa3HoursAgo: getPressureHoursAgo(days, index + dayOffset + 1, hourIndex, 3),
+          },
+          scoringRules,
+        ).state,
+        date: futureDay.date,
+      })),
+    ),
+  ];
 
   const peaks = day.anchored.solunarPeaks ?? [];
   const majorWindows = peaks
@@ -625,6 +678,7 @@ export function buildDayData(
     environmentalSummaries,
     environmentalRawSummaries,
     tideEvents,
+    barometricTimeline,
     majorWindows,
     minorWindows,
     solunarRating,

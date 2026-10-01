@@ -1,10 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import conditionsFixture from "../../../public/conditions.json";
-import { buildDayData } from "../../data/conditions";
+import conditionsFixture from "../../public/conditions.json";
+import { buildDayData } from "../data/conditions";
 import {
   FullConditionsView,
-  PressureCard,
   WaterDetailsCard,
   SolunarDetailsCard,
   WeatherDetailsCard,
@@ -18,8 +17,13 @@ describe("Dashboard detail cards", () => {
     expect(screen.getByText(/Water & marine details/i)).toBeInTheDocument();
   });
 
-  it("renders WaterDetailsCard placeholders when ranges/slack data missing", () => {
-    const partialDay = { ...fullDay, ranges: undefined };
+  it("renders WaterDetailsCard placeholders when hourly data missing", () => {
+    const partialDay = {
+      ...fullDay,
+      hours: fullDay.hours.map((item, index) =>
+        index === 7 ? { ...item, environmentalRawValues: {} } : item,
+      ),
+    };
     render(<WaterDetailsCard day={partialDay} hour={7} />);
     const placeholders = screen.getAllByText("--");
     expect(placeholders.length).toBeGreaterThan(0);
@@ -46,11 +50,6 @@ describe("Dashboard detail cards", () => {
     expect(
       screen.getByText(/Weather & atmospheric conditions/i),
     ).toBeInTheDocument();
-  });
-
-  it("renders the atmospheric pressure hero card", () => {
-    render(<PressureCard day={fullDay} hour={7} />);
-    expect(screen.getByText(/Atmospheric pressure/i)).toBeInTheDocument();
   });
 
   it("renders Full Conditions as the detail-card page without an hourly duplicate", () => {

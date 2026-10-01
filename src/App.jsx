@@ -1,5 +1,5 @@
 // import GlobalHeader from "./components/GlobalHeader";
-import PrototypeSwitcher from "./components/prototypes/PrototypeSwitcher";
+import WeeklyDashboard from "./components/WeeklyDashboard";
 import { AppProvider } from "./state/AppContext";
 import { useApp } from "./state/useApp";
 import { VIEWS } from "./state/viewConstants";
@@ -26,7 +26,7 @@ function ActiveView() {
     case VIEWS.WEEKLY:
     default:
       // Weekly forecast is both the explicit default view and the fallback for any unknown view key
-      return <PrototypeSwitcher />;
+      return <WeeklyDashboard />;
   }
 }
 

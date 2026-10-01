@@ -7,6 +7,47 @@
     "peakWindowHours": 2,
     "decayPerHour": 25
   },
+  "barometric": {
+    "off": {
+      "hpaBelow": 1002,
+      "trendDeltaAtOrBelow": -2.5
+    },
+    "poor": {
+      "hpaAbove": 1022,
+      "trendDeltaAbove": 2.0
+    },
+    "tiers": {
+      "PEAK": {
+        "score": 100,
+        "minHpa": 1008,
+        "maxHpa": 1018,
+        "minTrendDelta": -2.0,
+        "maxTrendDelta": -0.5,
+        "description": "Aggressive Feeding Window: Pre-front pressure drop triggers instinctual feeding frenzy. Lures/baits heavily favored."
+      },
+      "HIGH": {
+        "score": 80,
+        "minHpa": 1012,
+        "maxHpa": 1020,
+        "minTrendDelta": -0.5,
+        "maxTrendDelta": 0.5,
+        "description": "Stable / Predictable: Fish follow standard tide-driven routines. Clear water, consistent feeding."
+      },
+      "MODERATE": {
+        "score": 60,
+        "minHpa": 1008,
+        "maxHpa": 1016,
+        "minTrendDelta": 0.5,
+        "maxTrendDelta": 2.0,
+        "description": "Recovering: Post-front recovery phase. Moderate activity; standard presentations near structure."
+      }
+    },
+    "poorDescription": "Lethargic / Technical: High atmospheric pressure causes fish to hold deep in cover/shade. Slow, downsized retrieves required.",
+    "offDescription": "Shut Down / Storm Active: Active storm front or extreme low pressure locks feeding down completely.",
+    "hpaOutsideRangePenaltyPerHpa": 4,
+    "maxOutsideRangePenalty": 20,
+    "outsideRangeScoreFloor": 10
+  },
   "solunar": {
     "baseWeights": {
       "major": 60,
@@ -39,11 +80,35 @@
     }
   },
   "bands": [
-    { "name": "Neutral", "min": 0, "max": 19 },
-    { "name": "Very Low", "min": 20, "max": 39 },
-    { "name": "Low", "min": 40, "max": 49 },
-    { "name": "Favorable", "min": 50, "max": 64 },
-    { "name": "Strong", "min": 65, "max": 79 },
-    { "name": "Peak", "min": 80, "max": 100 }
+    {
+      "name": "Neutral",
+      "min": 0,
+      "max": 19
+    },
+    {
+      "name": "Very Low",
+      "min": 20,
+      "max": 39
+    },
+    {
+      "name": "Low",
+      "min": 40,
+      "max": 49
+    },
+    {
+      "name": "Favorable",
+      "min": 50,
+      "max": 64
+    },
+    {
+      "name": "Strong",
+      "min": 65,
+      "max": 79
+    },
+    {
+      "name": "Peak",
+      "min": 80,
+      "max": 100
+    }
   ]
 }

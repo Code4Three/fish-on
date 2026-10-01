@@ -9,8 +9,6 @@ import type {
   MatrixSettings,
 } from "../../hooks/useAnchoredSettings";
 import type { DockPosition } from "../../hooks/useDashboardSettings";
-import { PROTOTYPE_OPTIONS } from "../../hooks/useLayoutPrototype";
-import type { PrototypeId } from "../../hooks/useLayoutPrototype";
 import type { UnitSystem } from "../../config/metricMatrix";
 
 export interface CustomizationBottomSheetProps {
@@ -22,8 +20,6 @@ export interface CustomizationBottomSheetProps {
   onToggleGroup?: (group: string) => void;
   onToggleMatrixMetric?: (metric: string, hourly?: boolean) => void;
   onReset: () => void;
-  prototype: PrototypeId;
-  onSelectPrototype: (id: PrototypeId) => void;
   dockPosition?: DockPosition;
   onSelectDockPosition?: (position: DockPosition) => void;
   unitSystem: UnitSystem;
@@ -39,8 +35,6 @@ export default function CustomizationBottomSheet({
   onToggleGroup,
   onToggleMatrixMetric,
   onReset,
-  prototype,
-  onSelectPrototype,
   dockPosition,
   onSelectDockPosition,
   unitSystem,
@@ -238,7 +232,7 @@ export default function CustomizationBottomSheet({
                 </details>
               </>
             ) : (
-              // Fallback for prototypes that only support the simpler flat card toggles
+              // Fallback for layouts that only support the simpler flat card toggles
               Object.entries(settings).map(([key, enabled]) => (
                 <div
                   key={key}
@@ -263,40 +257,6 @@ export default function CustomizationBottomSheet({
                 </div>
               ))
             )}
-          </div>
-
-          {/* ================= LAYOUT PROTOTYPE PICKER ================= */}
-          <div className="border-t border-slate-800 px-4 py-3">
-            <p className="mb-2 text-sm font-semibold text-white">
-              Dashboard layout
-            </p>
-            <div className="grid gap-2">
-              {PROTOTYPE_OPTIONS.map((option) => (
-                <button
-                  key={option.id}
-                  type="button"
-                  aria-pressed={prototype === option.id}
-                  onClick={() => onSelectPrototype(option.id)}
-                  tabIndex={isOpen ? 0 : -1}
-                  className={`flex min-h-12 items-center justify-between rounded-lg border px-3 text-left transition focus:outline-none focus:ring-2 focus:ring-cyan-400 ${prototype === option.id
-                    ? "border-emerald-300 bg-emerald-400/15 text-emerald-200"
-                    : "border-slate-700 text-slate-200 hover:border-slate-500 hover:bg-slate-800"
-                    }`}
-                >
-                  <span>
-                    <span className="block text-sm font-semibold">
-                      {option.label}
-                    </span>
-                    <span className="block text-xs text-slate-400">
-                      {option.description}
-                    </span>
-                  </span>
-                  {prototype === option.id && (
-                    <Check size={18} aria-hidden="true" />
-                  )}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* ================= DOCK POSITION PICKER (CONDITIONAL) ================= */}
