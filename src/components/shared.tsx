@@ -660,9 +660,33 @@ function matrixMetricValue(
       "Feeding windows",
     ],
     solunarStatus: [solunarStatusTrend(day, hour), "Current trend"],
+    moonOverhead: [
+      day.secondary.moon.moonOverhead !== null && day.secondary.moon.moonUnderfoot !== null
+        ? `${formatHour(day.secondary.moon.moonOverhead, true)} / ${formatHour(day.secondary.moon.moonUnderfoot, true)}`
+        : "--",
+      day.secondary.moon.moonOverhead !== null && day.secondary.moon.moonUnderfoot !== null
+        ? "Transit times"
+        : "Unavailable",
+    ],
+    moonrise: [
+      day.secondary.moon.moonrise !== null && day.secondary.moon.moonset !== null
+        ? `${formatHour(day.secondary.moon.moonrise, true)} / ${formatHour(day.secondary.moon.moonset, true)}`
+        : "--",
+      day.secondary.moon.moonrise !== null && day.secondary.moon.moonset !== null
+        ? "Rise / set"
+        : "Unavailable",
+    ],
     moon: [
       `${day.secondary.moon.illum ?? "--"}%`,
       day.secondary.moon.phaseName ?? "Unavailable",
+    ],
+    moonDistance: [
+      day.secondary.moon.moonDistance !== null
+        ? formatMetricValue("moonDistance", day.secondary.moon.moonDistance / 1000, unitSystem)
+        : "--",
+      day.secondary.moon.moonDistance !== null
+        ? `Orbital distance (1000s)`
+        : "Unavailable",
     ],
     sunrise: [
       `${formatOptionalHour(day.sun.sunrise, true)} / ${formatOptionalHour(day.sun.sunset, true)}`,
@@ -722,6 +746,9 @@ const metricIconMap: Record<string, { icon: typeof Wind; tint: string }> = {
   solunarFeedingWindows: { icon: Moon, tint: "text-indigo-300" },
   solunarStatus: { icon: Moon, tint: "text-indigo-300" },
   moon: { icon: Moon, tint: "text-indigo-300" },
+  moonOverhead: { icon: Moon, tint: "text-indigo-300" },
+  moonrise: { icon: Moon, tint: "text-indigo-300" },
+  moonDistance: { icon: Moon, tint: "text-indigo-300" },
   sunrise: { icon: Sun, tint: "text-yellow-300" },
   firstLight: { icon: Sun, tint: "text-yellow-300" },
   pressure: { icon: Gauge, tint: "text-amber-300" },

@@ -79,6 +79,37 @@
       "apogeeMultiplier": 0.9
     }
   },
+  "solunar_v2": {
+    "baseScores": {
+      "major": 80,
+      "minor": 50,
+      "none": 0
+    },
+    "phase": {
+      "syzygyIlluminationThreshold": 5,
+      "syzygyMultiplier": 1.15,
+      "neapIlluminationMin": 45,
+      "neapIlluminationMax": 55,
+      "neapMultiplier": 0.85,
+      "defaultMultiplier": 1.0
+    },
+    "solar": {
+      "dawnDuskWindowMinutes": 45,
+      "dawnDuskMultiplier": 1.25,
+      "solarNoonWindowMinutes": 45,
+      "solarNoonMultiplier": 1.1,
+      "defaultMultiplier": 1.0
+    },
+    "distance": {
+      "perigeeKmMin": 356500,
+      "perigeeKmMax": 363350,
+      "perigeeMultiplier": 1.05,
+      "apogeeKmMin": 399850,
+      "apogeeKmMax": 406700,
+      "apogeeMultiplier": 0.95,
+      "defaultMultiplier": 1.0
+    }
+  },
   "bands": [
     {
       "name": "Neutral",

@@ -7,6 +7,7 @@ export type MetricConversion =
   | "kilometersToMiles"
   | "millimetersToInches"
   | "pressure"
+  | "moonDistance1000s"
   | "none";
 
 export interface MetricDisplayDefinition {
@@ -48,7 +49,9 @@ export const METRIC_DISPLAY_DEFINITIONS = {
   airTemp: { label: "Air temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
   moonPhase: { label: "Moon phase", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
   moonIllumination: { label: "Moon illumination", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  moonrise: { label: "Moonrise / moonset", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moonOverhead: { label: "Moon over / under", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moonrise: { label: "Moon rise / set", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moonDistance: { label: "Moon distance", metricUnit: "km", imperialUnit: "mi", conversion: "moonDistance1000s", metricPrecision: 0, imperialPrecision: 0 },
   solunarCondition: { label: "Current solunar condition", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
   tide: { label: "Tide height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
   tideDirection: { label: "Tide direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
@@ -173,8 +176,26 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
         canDisplayAlone: false,
       },
       {
+        id: "moonOverhead",
+        label: getMetricLabel("moonOverhead"),
+        displayNotes: "Displayed",
+        canDisplayAlone: true,
+      },
+      {
+        id: "moonrise",
+        label: getMetricLabel("moonrise"),
+        displayNotes: "Displayed",
+        canDisplayAlone: true,
+      },
+      {
         id: "moon",
         label: getMetricLabel("moon"),
+        displayNotes: "Displayed",
+        canDisplayAlone: true,
+      },
+      {
+        id: "moonDistance",
+        label: getMetricLabel("moonDistance"),
         displayNotes: "Displayed",
         canDisplayAlone: true,
       },

@@ -41,14 +41,14 @@
         },
         {
           "type": "Minor 2 (Moon set)",
-          "time": "09:06",
+          "time": "08:10",
           "start": {
             "date": "2026-10-01",
-            "time": "08:36"
+            "time": "07:40"
           },
           "end": {
             "date": "2026-10-01",
-            "time": "09:36"
+            "time": "08:40"
           }
         }
       ]
@@ -94,9 +94,15 @@
         },
         {
           "type": "Minor 2 (Moon set)",
-          "time": null,
-          "start": null,
-          "end": null
+          "time": "09:06",
+          "start": {
+            "date": "2026-10-02",
+            "time": "08:36"
+          },
+          "end": {
+            "date": "2026-10-02",
+            "time": "09:36"
+          }
         }
       ]
     },
@@ -129,15 +135,9 @@
         },
         {
           "type": "Minor 1 (Moon rise)",
-          "time": "00:47",
-          "start": {
-            "date": "2026-10-03",
-            "time": "00:17"
-          },
-          "end": {
-            "date": "2026-10-03",
-            "time": "01:17"
-          }
+          "time": null,
+          "start": null,
+          "end": null
         },
         {
           "type": "Minor 2 (Moon set)",
@@ -182,14 +182,14 @@
         },
         {
           "type": "Minor 1 (Moon rise)",
-          "time": "01:39",
+          "time": "00:47",
           "start": {
             "date": "2026-10-04",
-            "time": "01:09"
+            "time": "00:17"
           },
           "end": {
             "date": "2026-10-04",
-            "time": "02:09"
+            "time": "01:17"
           }
         },
         {
@@ -235,14 +235,14 @@
         },
         {
           "type": "Minor 1 (Moon rise)",
-          "time": "02:23",
+          "time": "01:39",
           "start": {
             "date": "2026-10-05",
-            "time": "01:53"
+            "time": "01:09"
           },
           "end": {
             "date": "2026-10-05",
-            "time": "02:53"
+            "time": "02:09"
           }
         },
         {
@@ -288,14 +288,14 @@
         },
         {
           "type": "Minor 1 (Moon rise)",
-          "time": "03:02",
+          "time": "02:23",
           "start": {
             "date": "2026-10-06",
-            "time": "02:32"
+            "time": "01:53"
           },
           "end": {
             "date": "2026-10-06",
-            "time": "03:32"
+            "time": "02:53"
           }
         },
         {
@@ -341,14 +341,14 @@
         },
         {
           "type": "Minor 1 (Moon rise)",
-          "time": "03:36",
+          "time": "03:02",
           "start": {
             "date": "2026-10-07",
-            "time": "03:06"
+            "time": "02:32"
           },
           "end": {
             "date": "2026-10-07",
-            "time": "04:06"
+            "time": "03:32"
           }
         },
         {

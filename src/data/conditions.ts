@@ -239,8 +239,11 @@ export interface ClaudeDayData {
     moon: {
       phaseName: string | null;
       illum: number | null;
+      moonOverhead: number | null;
+      moonUnderfoot: number | null;
       moonrise: number | null;
       moonset: number | null;
+      moonDistance: number | null;
     };
     rain: { chance: number | null; mm: number | null };
     uv: number | null;
@@ -729,12 +732,21 @@ export function buildDayData(
       moon: {
         phaseName: day.anchored.moonPhase ?? null,
         illum: day.anchored.illumination ?? null,
+        moonOverhead: (() => {
+          const peak = day.anchored.solunarPeaks?.find((p) => p.type.startsWith("Major 1"));
+          return peak?.time ? parseTimeToHour(peak.time) : null;
+        })(),
+        moonUnderfoot: (() => {
+          const peak = day.anchored.solunarPeaks?.find((p) => p.type.startsWith("Major 2"));
+          return peak?.time ? parseTimeToHour(peak.time) : null;
+        })(),
         moonrise: day.anchored.moonrise
           ? parseTimeToHour(day.anchored.moonrise)
           : null,
         moonset: day.anchored.moonset
           ? parseTimeToHour(day.anchored.moonset)
           : null,
+        moonDistance: day.anchored.moonDistance ?? null,
       },
       rain: {
         chance:

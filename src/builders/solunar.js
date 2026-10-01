@@ -17,26 +17,69 @@ export function buildSolunarDays() {
   // Two "major" peaks (moon overhead/underfoot) and two "minor" peaks (moonrise/moonset) per day
   return getBuildDates().map((date) => {
     const moonTransits = findMoonTransits(date);
-    const moonTimes = SunCalc.getMoonTimes(date, LOCATION.lat, LOCATION.lon);
+    const localDateStr = formatLocalDate(date);
+
+    // Get moonrise/moonset for this local date.
+    // SunCalc.getMoonTimes() expects a UTC date. For timezone-aware locations,
+    // we need to ensure the date passed to SunCalc corresponds to the local calendar day.
+    // Brisbane is UTC+10, so local date Oct 2 spans UTC Oct 1 14:00 - Oct 2 14:00.
+    // Use a time within that range (UTC Oct 1 20:00 - Oct 2 12:00) to ensure accuracy.
+    const moonTimes = getMoonTimesForLocalDate(localDateStr);
 
     return {
-      date: formatLocalDate(date),
+      date: localDateStr,
       peaks: [
         buildPeak(
           "Major 1 (Moon overhead)",
           moonTransits.overhead,
-          formatLocalDate(date),
+          localDateStr,
         ),
         buildPeak(
           "Major 2 (Moon underfoot)",
           moonTransits.underfoot,
-          formatLocalDate(date),
+          localDateStr,
         ),
-        buildPeak("Minor 1 (Moon rise)", moonTimes.rise, formatLocalDate(date)),
-        buildPeak("Minor 2 (Moon set)", moonTimes.set, formatLocalDate(date)),
+        buildPeak("Minor 1 (Moon rise)", moonTimes.rise, localDateStr),
+        buildPeak("Minor 2 (Moon set)", moonTimes.set, localDateStr),
       ],
     };
   });
+}
+
+/**
+ * Get moonrise/moonset times for a specific local calendar date.
+ * Handles timezone offsets by checking multiple adjacent UTC days to ensure
+ * we capture horizon crossings that occur on the local date.
+ */
+function getMoonTimesForLocalDate(localDateStr) {
+  const [year, month, day] = localDateStr.split("-").map(Number);
+
+  // Check a range of UTC dates that might contain events for this local date
+  // Brisbane is UTC+10, so local date Oct 2 (00:00-23:59) corresponds to:
+  // - UTC Oct 1 14:00 to UTC Oct 2 14:00
+  // We'll check UTC dates Oct 1, Oct 2, and Oct 3 to be safe
+  const candidateDates = [
+    new Date(Date.UTC(year, month - 1, day - 1, 20)), // UTC day before, 8 PM
+    new Date(Date.UTC(year, month - 1, day, 12)),     // UTC this day, noon
+    new Date(Date.UTC(year, month - 1, day + 1, 4)),  // UTC day after, 4 AM
+  ];
+
+  let moonTimes = { rise: null, set: null };
+
+  // Check each candidate date and collect any events that occur in local time on the target date
+  for (const candidateDate of candidateDates) {
+    const times = SunCalc.getMoonTimes(candidateDate, LOCATION.lat, LOCATION.lon);
+
+    // Check if rise/set times fall within the local date
+    if (times.rise && formatLocalDate(times.rise) === localDateStr && !moonTimes.rise) {
+      moonTimes.rise = times.rise;
+    }
+    if (times.set && formatLocalDate(times.set) === localDateStr && !moonTimes.set) {
+      moonTimes.set = times.set;
+    }
+  }
+
+  return moonTimes;
 }
 
 function buildPeak(type, eventDate, targetDate) {
