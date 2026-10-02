@@ -1,4 +1,5 @@
 export type MetricDisplayMode = "hero" | "card";
+export type MetricTimeScope = "daily" | "current" | "both";
 export type UnitSystem = "metric" | "imperial";
 export type MetricConversion =
   | "temperature"
@@ -12,6 +13,7 @@ export type MetricConversion =
 
 export interface MetricDisplayDefinition {
   label: string;
+  timeScope: MetricTimeScope;
   metricUnit: string;
   imperialUnit: string;
   conversion: MetricConversion;
@@ -20,59 +22,217 @@ export interface MetricDisplayDefinition {
 }
 
 export const METRIC_DISPLAY_DEFINITIONS = {
-  hourlyScore: { label: "Fishing score", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  maxDayScore: { label: "Maximum day score", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  feedingWindows: { label: "Peak feeding windows", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  currentTide: { label: "Tide height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
-  tideStage: { label: "Tide stage", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  nextTide: { label: "Next high/low tide", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  datumOffset: { label: "Tide datum offset", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 2, imperialPrecision: 2 },
-  waterTemperature: { label: "Water temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
-  solunarFeedingWindows: { label: "Solunar feeding windows", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  solunarStatus: { label: "Solunar status", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  moon: { label: "Moon", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  sunrise: { label: "Sunrise / sunset", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  firstLight: { label: "First / last light", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  pressure: { label: "Barometric pressure", metricUnit: "hPa", imperialUnit: "inHg", conversion: "pressure", metricPrecision: 0, imperialPrecision: 2 },
-  humidity: { label: "Relative humidity", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  dewPoint: { label: "Dew point", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
-  airTemperature: { label: "Air temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
-  feelsLike: { label: "Feels-like temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
-  wind: { label: "Wind speed", metricUnit: "km/h", imperialUnit: "mph", conversion: "speed", metricPrecision: 1, imperialPrecision: 1 },
-  windDirection: { label: "Wind direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  gust: { label: "Gust speed", metricUnit: "km/h", imperialUnit: "mph", conversion: "speed", metricPrecision: 1, imperialPrecision: 1 },
-  cloud: { label: "Cloud cover", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  rainChance: { label: "Rain chance", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  rainVolume: { label: "Rain volume", metricUnit: "mm", imperialUnit: "in", conversion: "millimetersToInches", metricPrecision: 1, imperialPrecision: 2 },
-  rain: { label: "Rain", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  uv: { label: "UV index", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
-  airTemp: { label: "Air temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
-  moonPhase: { label: "Moon phase", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  moonIllumination: { label: "Moon illumination", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  moonOverhead: { label: "Moon over / under", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  moonrise: { label: "Moon rise / set", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  moonDistance: { label: "Moon distance", metricUnit: "km", imperialUnit: "mi", conversion: "moonDistance1000s", metricPrecision: 0, imperialPrecision: 0 },
-  solunarCondition: { label: "Current solunar condition", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  tide: { label: "Tide height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
-  tideDirection: { label: "Tide direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  waterTemp: { label: "Water temperature", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
-  swell: { label: "Swell height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
-  solunarActive: { label: "Solunar activity", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  solunarRating: { label: "Solunar score", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  cloudCoverLow: { label: "Low cloud cover", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  cloudCoverMid: { label: "Mid-level cloud cover", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  cloudCoverHigh: { label: "High cloud cover", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  cloudBase: { label: "Cloud base", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 0, imperialPrecision: 0 },
-  visibility: { label: "Visibility", metricUnit: "km", imperialUnit: "mi", conversion: "kilometersToMiles", metricPrecision: 2, imperialPrecision: 2 },
-  waveHeight: { label: "Wave height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
-  waveDirection: { label: "Wave direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  wavePeriod: { label: "Wave period", metricUnit: "s", imperialUnit: "s", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
-  windWaveHeight: { label: "Wind wave height", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
-  windWaveDirection: { label: "Wind wave direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  windWavePeriod: { label: "Wind wave period", metricUnit: "s", imperialUnit: "s", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
-  swellWaveDirection: { label: "Swell direction", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
-  swellWavePeriod: { label: "Swell period", metricUnit: "s", imperialUnit: "s", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
+  hourlyScore: { label: "Fishing score", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  maxDayScore: { label: "Maximum day score", timeScope: "daily", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  feedingWindows: { label: "Peak feeding windows", timeScope: "both", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  currentTide: { label: "Tide height", timeScope: "current", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  tideStage: { label: "Tide stage", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  nextTide: { label: "Next high/low tide", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  datumOffset: { label: "Tide datum offset", timeScope: "current", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 2, imperialPrecision: 2 },
+  waterTemperature: { label: "Water temperature", timeScope: "both", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  solunarFeedingWindows: { label: "Solunar feeding windows", timeScope: "both", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  solunarStatus: { label: "Solunar status", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moon: { label: "Moon", timeScope: "daily", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  sunrise: { label: "Sunrise / sunset", timeScope: "daily", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  firstLight: { label: "First / last light", timeScope: "daily", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  pressure: { label: "Barometric pressure", timeScope: "both", metricUnit: "hPa", imperialUnit: "inHg", conversion: "pressure", metricPrecision: 0, imperialPrecision: 2 },
+  humidity: { label: "Relative humidity", timeScope: "both", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  dewPoint: { label: "Dew point", timeScope: "both", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  airTemperature: { label: "Air temperature", timeScope: "both", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  feelsLike: { label: "Feels-like temperature", timeScope: "both", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  wind: { label: "Wind speed", timeScope: "both", metricUnit: "km/h", imperialUnit: "mph", conversion: "speed", metricPrecision: 1, imperialPrecision: 1 },
+  windDirection: { label: "Wind direction", timeScope: "both", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  gust: { label: "Gust speed", timeScope: "both", metricUnit: "km/h", imperialUnit: "mph", conversion: "speed", metricPrecision: 1, imperialPrecision: 1 },
+  cloud: { label: "Cloud cover", timeScope: "both", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  rainChance: { label: "Rain chance", timeScope: "both", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  rainVolume: { label: "Rain volume", timeScope: "both", metricUnit: "mm", imperialUnit: "in", conversion: "millimetersToInches", metricPrecision: 1, imperialPrecision: 2 },
+  rain: { label: "Rain", timeScope: "current", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  uv: { label: "UV index", timeScope: "both", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
+  airTemp: { label: "Air temperature", timeScope: "current", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  moonPhase: { label: "Moon phase", timeScope: "daily", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moonIllumination: { label: "Moon illumination", timeScope: "daily", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moonOverhead: { label: "Moon over / under", timeScope: "daily", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moonrise: { label: "Moon rise / set", timeScope: "daily", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  moonDistance: { label: "Moon distance", timeScope: "daily", metricUnit: "km", imperialUnit: "mi", conversion: "moonDistance1000s", metricPrecision: 0, imperialPrecision: 0 },
+  solunarCondition: { label: "Current solunar condition", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  weatherCondition: { label: "Weather condition", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  weatherSummary: { label: "Weather summary", timeScope: "daily", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  tideRating: { label: "Tide score", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  scoreBand: { label: "Score band", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  dayScore: { label: "Day score", timeScope: "daily", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  barometricState: { label: "Barometric state", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  pressureTrend: { label: "Pressure trend", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  windDirectionShift: { label: "Wind direction shift", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  waveDirectionShift: { label: "Wave direction shift", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  windWaveDirectionShift: { label: "Wind wave direction shift", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  swellWaveDirectionShift: { label: "Swell wave direction shift", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  tide: { label: "Tide height", timeScope: "current", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  tideDirection: { label: "Tide direction", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  waterTemp: { label: "Water temperature", timeScope: "current", metricUnit: "°C", imperialUnit: "°F", conversion: "temperature", metricPrecision: 1, imperialPrecision: 1 },
+  swell: { label: "Swell height", timeScope: "both", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  solunarActive: { label: "Solunar activity", timeScope: "current", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  solunarRating: { label: "Solunar score", timeScope: "both", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  cloudCoverLow: { label: "Low cloud cover", timeScope: "both", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  cloudCoverMid: { label: "Mid-level cloud cover", timeScope: "both", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  cloudCoverHigh: { label: "High cloud cover", timeScope: "both", metricUnit: "%", imperialUnit: "%", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  cloudBase: { label: "Cloud base", timeScope: "both", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 0, imperialPrecision: 0 },
+  visibility: { label: "Visibility", timeScope: "both", metricUnit: "km", imperialUnit: "mi", conversion: "kilometersToMiles", metricPrecision: 2, imperialPrecision: 2 },
+  waveHeight: { label: "Wave height", timeScope: "both", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  waveDirection: { label: "Wave direction", timeScope: "both", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  wavePeriod: { label: "Wave period", timeScope: "both", metricUnit: "s", imperialUnit: "s", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
+  windWaveHeight: { label: "Wind wave height", timeScope: "both", metricUnit: "m", imperialUnit: "ft", conversion: "metersToFeet", metricPrecision: 1, imperialPrecision: 1 },
+  windWaveDirection: { label: "Wind wave direction", timeScope: "both", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  windWavePeriod: { label: "Wind wave period", timeScope: "both", metricUnit: "s", imperialUnit: "s", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
+  swellWaveDirection: { label: "Swell direction", timeScope: "both", metricUnit: "", imperialUnit: "", conversion: "none", metricPrecision: 0, imperialPrecision: 0 },
+  swellWavePeriod: { label: "Swell period", timeScope: "both", metricUnit: "s", imperialUnit: "s", conversion: "none", metricPrecision: 1, imperialPrecision: 1 },
 } as const satisfies Record<string, MetricDisplayDefinition>;
+
+export type MetricGroupId = "fishability" | "sunMoon" | "water" | "weather";
+
+export interface MetricSourceDefinition {
+  anchored?: string;
+  hourly?: string;
+  secondary?: string;
+  runtime?: string;
+  dailyBaseline?: string;
+  dailyRange?: string;
+  dailyMaximum?: string;
+  dailyDirection?: string;
+}
+
+export interface MetricDefaultOrder {
+  dashboardGroup: number | null;
+  dashboardMetric: number | null;
+  hourlySection: number | null;
+  hourlyMetric: number | null;
+  fullConditions: number | null;
+}
+
+export interface CatalogMetricDefinition {
+  id: string;
+  label: string;
+  timeScope: MetricTimeScope;
+  group: MetricGroupId;
+  source: MetricSourceDefinition;
+  defaultOrder: MetricDefaultOrder | null;
+}
+
+// Metrics available in the generated/runtime data but intentionally not assigned to a UI surface yet.
+// Keeping these definitions here prevents later views from inventing labels, groups, or source names.
+export const CATALOG_ONLY_METRICS: CatalogMetricDefinition[] = [
+  {
+    id: "weatherCondition",
+    label: getMetricLabel("weatherCondition"),
+    timeScope: "current",
+    group: "weather",
+    source: { hourly: "weatherCondition" },
+    defaultOrder: null,
+  },
+  {
+    id: "weatherSummary",
+    label: getMetricLabel("weatherSummary"),
+    timeScope: "daily",
+    group: "weather",
+    source: { anchored: "weatherSummary" },
+    defaultOrder: null,
+  },
+  {
+    id: "tideStage",
+    label: getMetricLabel("tideStage"),
+    timeScope: "current",
+    group: "water",
+    source: { hourly: "tideStage" },
+    defaultOrder: null,
+  },
+  {
+    id: "tideDirection",
+    label: getMetricLabel("tideDirection"),
+    timeScope: "current",
+    group: "water",
+    source: { runtime: "tideDirection" },
+    defaultOrder: null,
+  },
+  {
+    id: "solunarCondition",
+    label: getMetricLabel("solunarCondition"),
+    timeScope: "current",
+    group: "sunMoon",
+    source: { hourly: "solunarCondition" },
+    defaultOrder: null,
+  },
+  {
+    id: "tideRating",
+    label: getMetricLabel("tideRating"),
+    timeScope: "current",
+    group: "fishability",
+    source: { runtime: "tideRating" },
+    defaultOrder: null,
+  },
+  {
+    id: "scoreBand",
+    label: getMetricLabel("scoreBand"),
+    timeScope: "current",
+    group: "fishability",
+    source: { runtime: "scoreBand" },
+    defaultOrder: null,
+  },
+  {
+    id: "dayScore",
+    label: getMetricLabel("dayScore"),
+    timeScope: "daily",
+    group: "fishability",
+    source: { anchored: "dayScore" },
+    defaultOrder: null,
+  },
+  {
+    id: "barometricState",
+    label: getMetricLabel("barometricState"),
+    timeScope: "current",
+    group: "weather",
+    source: { runtime: "barometric.state" },
+    defaultOrder: null,
+  },
+  {
+    id: "pressureTrend",
+    label: getMetricLabel("pressureTrend"),
+    timeScope: "current",
+    group: "weather",
+    source: { hourly: "pressureTrend", secondary: "pressure.trend" },
+    defaultOrder: null,
+  },
+  {
+    id: "windDirectionShift",
+    label: getMetricLabel("windDirectionShift"),
+    timeScope: "current",
+    group: "weather",
+    source: { secondary: "windDirectionShift" },
+    defaultOrder: null,
+  },
+  {
+    id: "waveDirectionShift",
+    label: getMetricLabel("waveDirectionShift"),
+    timeScope: "current",
+    group: "water",
+    source: { secondary: "waveDirectionShift" },
+    defaultOrder: null,
+  },
+  {
+    id: "windWaveDirectionShift",
+    label: getMetricLabel("windWaveDirectionShift"),
+    timeScope: "current",
+    group: "water",
+    source: { secondary: "windWaveDirectionShift" },
+    defaultOrder: null,
+  },
+  {
+    id: "swellWaveDirectionShift",
+    label: getMetricLabel("swellWaveDirectionShift"),
+    timeScope: "current",
+    group: "water",
+    source: { secondary: "swellWaveDirectionShift" },
+    defaultOrder: null,
+  },
+];
 
 export function getMetricDisplayDefinition(metricId: string) {
   return METRIC_DISPLAY_DEFINITIONS[
@@ -238,6 +398,7 @@ export const DEFAULT_DASHBOARD_GROUP_ORDER = [
 
 export const DEFAULT_FULL_CONDITIONS_ORDER = [
   "dailySummary",
+  "fishability",
   "sunMoon",
   "water",
   "weather",
@@ -273,6 +434,7 @@ export interface EnvironmentalMetricDefinition {
   id: string;
   key: string;
   label: string;
+  timeScope: MetricTimeScope;
   unit: string;
   metricUnit: string;
   imperialUnit: string;
@@ -546,18 +708,48 @@ export interface HourlySectionDefinition {
 }
 
 export const HOURLY_SECTIONS: HourlySectionDefinition[] = [
-  { id: "fishability", label: "Fishability", metricIds: ["hourlyScore"] },
+  {
+    id: "fishability",
+    label: "Fishability",
+    metricIds: [
+      "hourlyScore",
+      "scoreBand",
+      "tideRating",
+      "maxDayScore",
+      "feedingWindows",
+      "dayScore",
+    ],
+  },
   {
     id: "sunMoon",
     label: "Sun and moon",
-    metricIds: ["solunarActive", "solunarRating"],
+    metricIds: [
+      "solunarActive",
+      "solunarStatus",
+      "solunarCondition",
+      "solunarRating",
+      "solunarFeedingWindows",
+      "moon",
+      "moonPhase",
+      "moonIllumination",
+      "moonOverhead",
+      "moonrise",
+      "moonDistance",
+      "sunrise",
+      "firstLight",
+    ],
   },
   {
     id: "water",
     label: "Water",
     metricIds: [
       "tide",
+      "tideStage",
       "tideDirection",
+      "nextTide",
+      "waveDirectionShift",
+      "windWaveDirectionShift",
+      "swellWaveDirectionShift",
       "waterTemperature",
       "waveHeight",
       "waveDirection",
@@ -574,9 +766,15 @@ export const HOURLY_SECTIONS: HourlySectionDefinition[] = [
     id: "weather",
     label: "Weather and atmospheric",
     metricIds: [
+      "weatherCondition",
+      "weatherSummary",
       "wind",
+      "windDirection",
+      "windDirectionShift",
       "gust",
       "pressure",
+      "pressureTrend",
+      "barometricState",
       "airTemperature",
       "feelsLike",
       "cloud",
@@ -622,6 +820,115 @@ export const HOURLY_GRID_METRICS = [
       defaultVisible: metric.defaultVisibility.hourlyGrid,
     })),
 ];
+
+const CATALOG_ONLY_METRICS_BY_ID = new Map(
+  CATALOG_ONLY_METRICS.map((metric) => [metric.id, metric]),
+);
+const METRIC_GROUP_OVERRIDES: Record<string, MetricGroupId> = {
+  datumOffset: "water",
+  airTemp: "weather",
+  moonPhase: "sunMoon",
+  moonIllumination: "sunMoon",
+  rain: "weather",
+  waterTemp: "water",
+};
+const METRIC_SOURCE_OVERRIDES: Record<string, MetricSourceDefinition> = {
+  hourlyScore: { hourly: "score", runtime: "scoreBand" },
+  maxDayScore: { runtime: "max(hours[].score)" },
+  feedingWindows: { runtime: "scoreBand windows" },
+  currentTide: { hourly: "tideHeight", runtime: "tideStage" },
+  nextTide: { runtime: "tideEvents" },
+  solunarFeedingWindows: { runtime: "majorWindows/minorWindows" },
+  solunarStatus: { runtime: "solunarStatusTrend" },
+  moonOverhead: { secondary: "moon.moonOverhead/moonUnderfoot" },
+  moonrise: { secondary: "moon.moonrise/moonset" },
+  moon: { secondary: "moon.phaseName/moon.illum" },
+  moonDistance: { secondary: "moon.moonDistance" },
+  sunrise: { anchored: "sunrise/sunset" },
+  firstLight: { anchored: "firstLight/lastLight" },
+  airTemperature: { hourly: "airTemp", runtime: "ranges.airTemp" },
+  feelsLike: { hourly: "feelsLike", runtime: "ranges.feelsLike" },
+  wind: { hourly: "wind.speed", runtime: "ranges.wind" },
+  windDirection: { hourly: "wind.dir", secondary: "windDirectionShift" },
+  gust: { hourly: "wind.gust", runtime: "ranges.gust" },
+  rainChance: { hourly: "rainChance", anchored: "rainChance" },
+  rainVolume: { hourly: "rainVolume", anchored: "rainVolume" },
+  uv: { hourly: "uvIndex", secondary: "uv" },
+  airTemp: { hourly: "airTemp" },
+  moonPhase: { secondary: "moon.phaseName" },
+  moonIllumination: { secondary: "moon.illum" },
+  tide: { hourly: "tideHeight" },
+  waterTemp: { hourly: "seaSurfaceTemperature" },
+  swell: {
+    hourly: "swellWaveHeight",
+    runtime: "swellWavePeriod/swellWaveDirection",
+  },
+  solunarActive: { hourly: "solunar" },
+  solunarRating: { hourly: "solunarRating", runtime: "day.solunarRating" },
+  rain: { hourly: "rainChance/rainVolume" },
+};
+
+const metricGroupById = new Map<string, MetricGroupId>();
+const dashboardOrderById = new Map<string, [number, number]>();
+DAILY_GROUPS.forEach((group, groupIndex) => {
+  group.metrics.forEach((metric, metricIndex) => {
+    metricGroupById.set(metric.id, group.id as MetricGroupId);
+    dashboardOrderById.set(metric.id, [groupIndex, metricIndex]);
+  });
+});
+ENVIRONMENTAL_METRICS.forEach((metric) => {
+  metricGroupById.set(metric.id, metric.group);
+});
+const hourlyOrderById = new Map<string, [number, number]>();
+HOURLY_SECTIONS.forEach((section, sectionIndex) => {
+  section.metricIds.forEach((metricId, metricIndex) => {
+    metricGroupById.set(metricId, section.id as MetricGroupId);
+    hourlyOrderById.set(metricId, [sectionIndex, metricIndex]);
+  });
+});
+
+export const METRIC_CATALOG: CatalogMetricDefinition[] = Object.entries(
+  METRIC_DISPLAY_DEFINITIONS,
+).map(([id, displayDefinition]) => {
+  const catalogOnlyMetric = CATALOG_ONLY_METRICS_BY_ID.get(id);
+  const group =
+    metricGroupById.get(id) ??
+    catalogOnlyMetric?.group ??
+    METRIC_GROUP_OVERRIDES[id];
+  if (!group) {
+    throw new Error(`Metric ${id} is missing a canonical group`);
+  }
+
+  const environmentalMetric = ENVIRONMENTAL_METRICS.find(
+    (metric) => metric.id === id,
+  );
+  const dashboardOrder = dashboardOrderById.get(id);
+  const hourlyOrder = hourlyOrderById.get(id);
+
+  return {
+    id,
+    label: displayDefinition.label,
+    timeScope: displayDefinition.timeScope,
+    group,
+    source: catalogOnlyMetric?.source ??
+      (environmentalMetric
+        ? {
+          hourly: environmentalMetric.key,
+          dailyBaseline: environmentalMetric.dailyKeys?.baseline,
+          dailyRange: environmentalMetric.dailyKeys?.range,
+          dailyMaximum: environmentalMetric.dailyKeys?.maximum,
+          dailyDirection: environmentalMetric.dailyKeys?.direction,
+        }
+        : METRIC_SOURCE_OVERRIDES[id] ?? { runtime: id }),
+    defaultOrder: {
+      dashboardGroup: dashboardOrder?.[0] ?? null,
+      dashboardMetric: dashboardOrder?.[1] ?? null,
+      hourlySection: hourlyOrder?.[0] ?? null,
+      hourlyMetric: hourlyOrder?.[1] ?? null,
+      fullConditions: null,
+    },
+  };
+});
 
 export type DailyGroupId = (typeof DAILY_GROUPS)[number]["id"];
 export type DailyMetricId =

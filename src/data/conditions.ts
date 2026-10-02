@@ -216,6 +216,7 @@ export interface ClaudeDayData {
   majorWindows: Array<{ start: number; end: number; rating: number }>;
   minorWindows: Array<{ start: number; end: number; rating: number }>;
   solunarRating: number;
+  weatherSummary: string;
   dayScore: number;
   sun: {
     sunrise: number;
@@ -695,6 +696,7 @@ export function buildDayData(
     majorWindows,
     minorWindows,
     solunarRating,
+    weatherSummary: day.anchored.weatherSummary,
     dayScore: hours.length ? Math.max(...hours.map((item) => item.score)) : 0,
     sun: {
       sunrise: parseTimeToHour(day.anchored.sunrise),
