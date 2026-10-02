@@ -2580,49 +2580,49 @@ export function DayDrawer({
           ? "Major"
           : "Minor";
     }
-            if (metricId === "solunarStatus") return solunarStatusTrend(day, item.hour);
-            if (metricId === "solunarCondition") return safe(item.solunarCondition, "N/A");
+    if (metricId === "solunarStatus") return solunarStatusTrend(day, item.hour);
+    if (metricId === "solunarCondition") return safe(item.solunarCondition, "N/A");
     if (metricId === "solunarRating") return safe(item.solunarRating);
-            if (metricId === "moon") {
-              return day.secondary.moon.phaseName
-                ? `${day.secondary.moon.phaseName} (${day.secondary.moon.illum ?? "--"}%)`
-                : "N/A";
-            }
-            if (metricId === "moonPhase") return safe(day.secondary.moon.phaseName, "N/A");
-            if (metricId === "moonIllumination") {
-              return day.secondary.moon.illum == null
-                ? "N/A"
-                : `${day.secondary.moon.illum}%`;
-            }
-            if (metricId === "moonOverhead") {
-              return day.secondary.moon.moonOverhead !== null &&
-                day.secondary.moon.moonUnderfoot !== null
-                ? `${formatHour(day.secondary.moon.moonOverhead, true)} / ${formatHour(day.secondary.moon.moonUnderfoot, true)}`
-                : "N/A";
-            }
-            if (metricId === "moonrise") {
-              return `${formatOptionalHour(day.secondary.moon.moonrise, true)} / ${formatOptionalHour(day.secondary.moon.moonset, true)}`;
-            }
-            if (metricId === "moonDistance") {
-              return day.secondary.moon.moonDistance === null
-                ? "N/A"
-                : formatMetricValue("moonDistance", day.secondary.moon.moonDistance / 1000, unitSystem);
-            }
-            if (metricId === "sunrise") {
-              return `${formatOptionalHour(day.sun.sunrise, true)} / ${formatOptionalHour(day.sun.sunset, true)}`;
-            }
-            if (metricId === "firstLight") {
-              return `${formatOptionalHour(day.sun.firstLight, true)} / ${formatOptionalHour(day.sun.lastLight, true)}`;
-            }
-            if (metricId === "weatherCondition") return safe(item.weatherCondition, "N/A");
-            if (metricId === "weatherSummary") return safe(day.weatherSummary, "N/A");
-            if (metricId === "windDirection") return safe(item.wind.dir, "N/A");
-            if (metricId === "windDirectionShift") return safe(day.secondary.windDirectionShift, "N/A");
-            if (metricId === "waveDirectionShift") return safe(day.secondary.waveDirectionShift, "N/A");
-            if (metricId === "windWaveDirectionShift") return safe(day.secondary.windWaveDirectionShift, "N/A");
-            if (metricId === "swellWaveDirectionShift") return safe(day.secondary.swellWaveDirectionShift, "N/A");
-            if (metricId === "pressureTrend") return safe(item.pressureTrend, "N/A");
-            if (metricId === "barometricState") return safe(item.barometric.state, "N/A");
+    if (metricId === "moon") {
+      return day.secondary.moon.phaseName
+        ? `${day.secondary.moon.phaseName} (${day.secondary.moon.illum ?? "--"}%)`
+        : "N/A";
+    }
+    if (metricId === "moonPhase") return safe(day.secondary.moon.phaseName, "N/A");
+    if (metricId === "moonIllumination") {
+      return day.secondary.moon.illum == null
+        ? "N/A"
+        : `${day.secondary.moon.illum}%`;
+    }
+    if (metricId === "moonOverhead") {
+      return day.secondary.moon.moonOverhead !== null &&
+        day.secondary.moon.moonUnderfoot !== null
+        ? `${formatHour(day.secondary.moon.moonOverhead, true)} / ${formatHour(day.secondary.moon.moonUnderfoot, true)}`
+        : "N/A";
+    }
+    if (metricId === "moonrise") {
+      return `${formatOptionalHour(day.secondary.moon.moonrise, true)} / ${formatOptionalHour(day.secondary.moon.moonset, true)}`;
+    }
+    if (metricId === "moonDistance") {
+      return day.secondary.moon.moonDistance === null
+        ? "N/A"
+        : formatMetricValue("moonDistance", day.secondary.moon.moonDistance / 1000, unitSystem);
+    }
+    if (metricId === "sunrise") {
+      return `${formatOptionalHour(day.sun.sunrise, true)} / ${formatOptionalHour(day.sun.sunset, true)}`;
+    }
+    if (metricId === "firstLight") {
+      return `${formatOptionalHour(day.sun.firstLight, true)} / ${formatOptionalHour(day.sun.lastLight, true)}`;
+    }
+    if (metricId === "weatherCondition") return safe(item.weatherCondition, "N/A");
+    if (metricId === "weatherSummary") return safe(day.weatherSummary, "N/A");
+    if (metricId === "windDirection") return safe(item.wind.dir, "N/A");
+    if (metricId === "windDirectionShift") return safe(day.secondary.windDirectionShift, "N/A");
+    if (metricId === "waveDirectionShift") return safe(day.secondary.waveDirectionShift, "N/A");
+    if (metricId === "windWaveDirectionShift") return safe(day.secondary.windWaveDirectionShift, "N/A");
+    if (metricId === "swellWaveDirectionShift") return safe(day.secondary.swellWaveDirectionShift, "N/A");
+    if (metricId === "pressureTrend") return safe(item.pressureTrend, "N/A");
+    if (metricId === "barometricState") return safe(item.barometric.state, "N/A");
 
     const legacyValue =
       metricId === "wind"
