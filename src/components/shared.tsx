@@ -37,7 +37,12 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { ENVIRONMENTAL_METRICS, HOURLY_SECTIONS, FISHABILITY_FAVORABLE_WINDOW_MARGIN } from "../config/metricMatrix";
+import {
+  DEFAULT_FULL_CONDITIONS_ORDER,
+  ENVIRONMENTAL_METRICS,
+  FISHABILITY_FAVORABLE_WINDOW_MARGIN,
+  HOURLY_SECTIONS,
+} from "../config/metricMatrix";
 import type { ClaudeDayData } from "../data/conditions";
 import type { AnchoredSettingsState } from "../hooks/useAnchoredSettings";
 import { identifyFishabilityFavorableWindows } from "../lib/conditions/fishabilityWindows";
@@ -1370,7 +1375,7 @@ function SunMoonGroupContent({
   );
 }
 
-// Weather & atmospheric: barometric pressure scoring (sparkline + state + next favorable window) atop the generic weather tiles.
+// Weather and atmospheric: barometric pressure scoring (sparkline + state + next favorable window) atop the generic weather tiles.
 function WeatherGroupContent({
   group,
   visibleMetrics,
@@ -1710,7 +1715,7 @@ export function MatrixGroupCard({
   sortId?: string;
 }) {
   const sortable = useSortable({ id: sortId ?? `group-${group.id}` });
-  const displayLabel = group.id === "water" ? "Water & marine" : group.id === "sunMoon" ? "Sun & Moon" : group.label;
+  const displayLabel = group.label;
   return (
     <article
       ref={sortable.setNodeRef}
@@ -1788,7 +1793,7 @@ function DetailRow({ label, value }: { label: string; value: ReactNode }) {
   );
 }
 
-// Water & Marine: next tide peaks, slack water, water temp range, swell range/period/dir.
+// Water: tide, water temperature, swell, and wave conditions.
 type VisibleMetrics = Record<string, boolean>;
 
 function isVisible(visibleMetrics: VisibleMetrics | undefined, id: string) {
@@ -1810,44 +1815,6 @@ export function WaterDetailsCard({
     (metric) =>
       metric.group === "water" && metric.defaultVisibility.fullConditions,
   ).filter((metric) => isVisible(visibleMetrics, metric.id));
-
-  return (
-    <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
-      <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
-        <div className="flex items-center gap-1.5">
-          <Waves size={13} className="text-tide-400" />
-          Current water &amp; marine details
-        </div>
-        {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
-      </div>
-      <div className="mt-2">
-        {environmentalMetrics.map((metric) => (
-          <DetailRow
-            key={metric.id}
-            label={formatMetricLabel(metric.id, unitSystem)}
-            value={formatMetricValue(
-              metric.id,
-              day.hours[hour]?.environmentalRawValues?.[metric.id],
-              unitSystem,
-            )}
-          />
-        ))}
-      </div>
-    </article>
-  );
-}
-
-export function TideDetailsCard({
-  day,
-  hour,
-  visibleMetrics,
-}: {
-  day: ClaudeDayData;
-  hour: number;
-  visibleMetrics?: VisibleMetrics;
-}) {
-  const unitSystem = useUnitSystem();
-  const handle = useCardHandle();
   const upcomingHigh =
     day.tideEvents.find(
       (event) => event.type === "High" && event.hour >= hour,
@@ -1862,7 +1829,7 @@ export function TideDetailsCard({
       <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
         <div className="flex items-center gap-1.5">
           <Waves size={13} className="text-tide-400" />
-          Tide details
+          Water
         </div>
         {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
@@ -1889,13 +1856,24 @@ export function TideDetailsCard({
           />
         )}
         {isVisible(visibleMetrics, "nextTide") && <DetailRow label="Slack water window" value={safe(null)} />}
+        {environmentalMetrics.map((metric) => (
+          <DetailRow
+            key={metric.id}
+            label={formatMetricLabel(metric.id, unitSystem)}
+            value={formatMetricValue(
+              metric.id,
+              day.hours[hour]?.environmentalRawValues?.[metric.id],
+              unitSystem,
+            )}
+          />
+        ))}
       </div>
     </article>
   );
 }
 
-// Astronomical & Solunar: major/minor windows, current status/trend, moon + sun times.
-export function SolunarDetailsCard({
+// Sun and moon: solunar windows, moon data, and daylight times.
+export function SunMoonDetailsCard({
   day,
   hour,
   visibleMetrics,
@@ -1914,7 +1892,7 @@ export function SolunarDetailsCard({
       <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
         <div className="flex items-center gap-1.5">
           <Moon size={13} className="text-indigo-300" />
-          Current astronomical details
+          Sun and moon
         </div>
         {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
@@ -2016,7 +1994,7 @@ export function WeatherDetailsCard({
       <div className="flex items-center justify-between gap-2 font-body text-[12px] text-slate-400">
         <div className="flex items-center gap-1.5">
           <Cloud size={13} className="text-slate-300" />
-          Weather & atmospheric conditions
+          Weather and atmospheric
         </div>
         {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
@@ -2252,7 +2230,7 @@ export function FullConditionsView({
   hour,
   onClose,
   visibleMetrics,
-  conditionsOrder = ["dailySummary", "tide", "solunar", "water", "weather"],
+  conditionsOrder = DEFAULT_FULL_CONDITIONS_ORDER,
 }: {
   day: ClaudeDayData;
   hour: number;
@@ -2262,8 +2240,7 @@ export function FullConditionsView({
 }) {
   const conditionCards = {
     dailySummary: <DailySummaryCard day={day} visibleMetrics={visibleMetrics} />,
-    tide: <TideDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />,
-    solunar: <SolunarDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />,
+    sunMoon: <SunMoonDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />,
     water: <WaterDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />,
     weather: <WeatherDetailsCard day={day} hour={hour} visibleMetrics={visibleMetrics} />,
   } as const;
@@ -2292,11 +2269,10 @@ export function FullConditionsView({
         <div className="mx-auto mt-3 space-y-2">
           {conditionsOrder.map((cardId) => {
             const iconMap = {
-              dailySummary: { icon: Fish, label: "Daily Conditions" },
-              tide: { icon: Waves, label: "Tide details" },
-              solunar: { icon: Moon, label: "Current astronomical details" },
-              water: { icon: Waves, label: "Current water & marine details" },
-              weather: { icon: Cloud, label: "Weather & atmospheric conditions" },
+              dailySummary: { icon: Fish, label: "Daily summary" },
+              sunMoon: { icon: Moon, label: "Sun and moon" },
+              water: { icon: Waves, label: "Water" },
+              weather: { icon: Cloud, label: "Weather and atmospheric" },
             };
             const meta = iconMap[cardId as keyof typeof iconMap];
             return conditionCards[cardId as keyof typeof conditionCards] ? (
@@ -2405,21 +2381,16 @@ export function DayDrawer({
     item: ClaudeDayData["hours"][number],
   ) => {
     if (sectionId === "fishability") return safe(item.score);
-    if (sectionId === "tide") {
-      return metricId === "tide"
-        ? formatMetricValue("tide", item.tideHeight, unitSystem)
-        : safe(item.tideDirection, "N/A");
+    if (metricId === "tide") return formatMetricValue("tide", item.tideHeight, unitSystem);
+    if (metricId === "tideDirection") return safe(item.tideDirection, "N/A");
+    if (metricId === "solunarActive") {
+      return item.solunar === "none"
+        ? "Neutral"
+        : item.solunar === "major"
+          ? "Major"
+          : "Minor";
     }
-    if (sectionId === "solunar") {
-      if (metricId === "solunarActive") {
-        return item.solunar === "none"
-          ? "Neutral"
-          : item.solunar === "major"
-            ? "Major"
-            : "Minor";
-      }
-      return safe(item.solunarRating);
-    }
+    if (metricId === "solunarRating") return safe(item.solunarRating);
 
     const legacyValue =
       metricId === "wind"

@@ -157,6 +157,7 @@ These derived values are included in the unified conditions data and are display
 - Tide records use a local cache and are refreshed at build time when the required display dates are not covered.
 - Daily anchored information and hourly information are separate parts of the unified conditions structure and are rendered in separate areas of each day section.
 - The metric matrix defines customizable daily groups and hourly metrics, including feels-like temperature, gusts, rain volume, and UV index.
+- `src/config/metricMatrix.ts` is the source of truth for the shared condition taxonomy. Dashboard groups, the All Conditions List, and the Full day forecast use the canonical order `fishability`, `sunMoon`, `water`, and `weather`; tide metrics belong to Water and solunar metrics belong to Sun and moon.
 - The configured location and time zone are shared by the data-building and date-formatting logic.
 
 ## Known Limitations / Incomplete Areas

@@ -93,8 +93,6 @@ export const FISHABILITY_FAVORABLE_WINDOW_MARGIN = 1.5;
 export interface DailyMetricDefinition {
   id: string;
   label: string;
-  displayNotes: string;
-  canDisplayAlone: boolean;
 }
 
 export interface DailyGroupDefinition {
@@ -112,20 +110,14 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
       {
         id: "hourlyScore",
         label: getMetricLabel("hourlyScore"),
-        displayNotes: "Displayed with score and band",
-        canDisplayAlone: true,
       },
       {
         id: "maxDayScore",
         label: getMetricLabel("maxDayScore"),
-        displayNotes: "Calculated from the best hourly score",
-        canDisplayAlone: true,
       },
       {
         id: "feedingWindows",
         label: getMetricLabel("feedingWindows"),
-        displayNotes: "Next strong window",
-        canDisplayAlone: false,
       },
     ],
   },
@@ -136,50 +128,34 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
       {
         id: "solunarFeedingWindows",
         label: getMetricLabel("solunarFeedingWindows"),
-        displayNotes: "Solunar rating and feeding windows",
-        canDisplayAlone: false,
       },
       {
         id: "solunarStatus",
         label: getMetricLabel("solunarStatus"),
-        displayNotes: "Active solunar window",
-        canDisplayAlone: false,
       },
       {
         id: "moonOverhead",
         label: getMetricLabel("moonOverhead"),
-        displayNotes: "Displayed",
-        canDisplayAlone: true,
       },
       {
         id: "moonrise",
         label: getMetricLabel("moonrise"),
-        displayNotes: "Displayed",
-        canDisplayAlone: true,
       },
       {
         id: "moon",
         label: getMetricLabel("moon"),
-        displayNotes: "Displayed",
-        canDisplayAlone: true,
       },
       {
         id: "moonDistance",
         label: getMetricLabel("moonDistance"),
-        displayNotes: "Displayed",
-        canDisplayAlone: true,
       },
       {
         id: "sunrise",
         label: getMetricLabel("sunrise"),
-        displayNotes: "Displayed",
-        canDisplayAlone: true,
       },
       {
         id: "firstLight",
         label: getMetricLabel("firstLight"),
-        displayNotes: "Placeholder when unavailable",
-        canDisplayAlone: false,
       },
     ],
   },
@@ -190,26 +166,18 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
       {
         id: "currentTide",
         label: getMetricLabel("currentTide"),
-        displayNotes: "Current tide height and stage",
-        canDisplayAlone: false,
       },
       {
         id: "nextTide",
         label: getMetricLabel("nextTide"),
-        displayNotes: "Next tide event",
-        canDisplayAlone: false,
       },
       {
         id: "waterTemperature",
         label: getMetricLabel("waterTemperature"),
-        displayNotes: "Placeholder when unavailable",
-        canDisplayAlone: true,
       },
       {
         id: "swell",
         label: getMetricLabel("swell"),
-        displayNotes: "Placeholder when unavailable",
-        canDisplayAlone: true,
       },
     ],
   },
@@ -220,62 +188,42 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
       {
         id: "pressure",
         label: getMetricLabel("pressure"),
-        displayNotes: "Daily trend",
-        canDisplayAlone: true,
       },
       {
         id: "airTemperature",
         label: getMetricLabel("airTemperature"),
-        displayNotes: "Displayed",
-        canDisplayAlone: true,
       },
       {
         id: "feelsLike",
         label: getMetricLabel("feelsLike"),
-        displayNotes: "Minor to air temperature",
-        canDisplayAlone: false,
       },
       {
         id: "wind",
         label: getMetricLabel("wind"),
-        displayNotes: "Displayed",
-        canDisplayAlone: true,
       },
       {
         id: "windDirection",
         label: getMetricLabel("windDirection"),
-        displayNotes: "Current direction",
-        canDisplayAlone: true,
       },
       {
         id: "gust",
         label: getMetricLabel("gust"),
-        displayNotes: "Minor to wind",
-        canDisplayAlone: false,
       },
       {
         id: "cloud",
         label: getMetricLabel("cloud"),
-        displayNotes: "Displayed",
-        canDisplayAlone: true,
       },
       {
         id: "rainChance",
         label: getMetricLabel("rainChance"),
-        displayNotes: "Displayed",
-        canDisplayAlone: true,
       },
       {
         id: "rainVolume",
         label: getMetricLabel("rainVolume"),
-        displayNotes: "Minor to rain chance",
-        canDisplayAlone: false,
       },
       {
         id: "uv",
         label: getMetricLabel("uv"),
-        displayNotes: "Placeholder when unavailable",
-        canDisplayAlone: true,
       },
     ],
   },
@@ -290,8 +238,7 @@ export const DEFAULT_DASHBOARD_GROUP_ORDER = [
 
 export const DEFAULT_FULL_CONDITIONS_ORDER = [
   "dailySummary",
-  "tide",
-  "solunar",
+  "sunMoon",
   "water",
   "weather",
 ];
@@ -332,8 +279,6 @@ export interface EnvironmentalMetricDefinition {
   conversion: MetricConversion;
   icon: string;
   group: "weather" | "water";
-  groupLabel: string;
-  fullConditionsSection: string;
   dailyFullConditionsSection?: string;
   dailyKeys?: EnvironmentalMetricKeys;
   hourlySettingId?: string;
@@ -363,8 +308,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.pressure,
     icon: "Gauge",
     group: "weather",
-    groupLabel: "Weather & atmospheric conditions",
-    fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: { baseline: "pressureBaseline", range: "pressureRange" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
@@ -376,8 +319,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.humidity,
     icon: "Droplets",
     group: "weather",
-    groupLabel: "Weather & atmospheric conditions",
-    fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: { baseline: "humidityBaseline", range: "humidityRange" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
@@ -389,8 +330,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.dewPoint,
     icon: "Thermometer",
     group: "weather",
-    groupLabel: "Weather & atmospheric conditions",
-    fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: { baseline: "dewPointBaseline", range: "dewPointRange" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
     precision: 1,
@@ -403,8 +342,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.cloud,
     icon: "Cloud",
     group: "weather",
-    groupLabel: "Weather & atmospheric conditions",
-    fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: { baseline: "cloudBaseline", range: "cloudRange" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
@@ -416,8 +353,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.cloudCoverLow,
     icon: "Cloud",
     group: "weather",
-    groupLabel: "Weather & atmospheric conditions",
-    fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: {
       baseline: "cloudCoverLowBaseline",
       range: "cloudCoverLowRange",
@@ -432,8 +367,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.cloudCoverMid,
     icon: "Cloud",
     group: "weather",
-    groupLabel: "Weather & atmospheric conditions",
-    fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: {
       baseline: "cloudCoverMidBaseline",
       range: "cloudCoverMidRange",
@@ -448,8 +381,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.cloudCoverHigh,
     icon: "Cloud",
     group: "weather",
-    groupLabel: "Weather & atmospheric conditions",
-    fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: {
       baseline: "cloudCoverHighBaseline",
       range: "cloudCoverHighRange",
@@ -464,8 +395,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.cloudBase,
     icon: "Cloud",
     group: "weather",
-    groupLabel: "Weather & atmospheric conditions",
-    fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: { range: "cloudBaseRange" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
@@ -477,8 +406,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.visibility,
     icon: "Eye",
     group: "weather",
-    groupLabel: "Weather & atmospheric conditions",
-    fullConditionsSection: "Current weather & atmospheric",
     dailyKeys: { range: "visibilityRange" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
     precision: 2,
@@ -491,8 +418,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.waterTemperature,
     icon: "Thermometer",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: {
       baseline: "seaSurfaceTemperatureBaseline",
       range: "seaSurfaceTemperatureRange",
@@ -509,8 +434,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.waveHeight,
     icon: "Waves",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: { range: "waveHeightRange", maximum: "waveHeightMax" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
     precision: 1,
@@ -523,8 +446,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.waveDirection,
     icon: "Compass",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: { direction: "waveDirectionDominant" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
@@ -536,8 +457,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.wavePeriod,
     icon: "Waves",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: { range: "wavePeriodRange", maximum: "wavePeriodMax" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
     precision: 1,
@@ -550,8 +469,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.windWaveHeight,
     icon: "Waves",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: {
       range: "windWaveHeightRange",
       maximum: "windWaveHeightMax",
@@ -567,8 +484,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.windWaveDirection,
     icon: "Compass",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: { direction: "windWaveDirectionDominant" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
@@ -580,8 +495,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.windWavePeriod,
     icon: "Waves",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: { range: "windWavePeriodRange", maximum: "windWavePeriodMax" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
     precision: 1,
@@ -594,8 +507,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.swell,
     icon: "Waves",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: {
       range: "swellWaveHeightRange",
       maximum: "swellWaveHeightMax",
@@ -611,8 +522,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.swellWaveDirection,
     icon: "Compass",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: { direction: "swellWaveDirectionDominant" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
   },
@@ -624,8 +533,6 @@ export const ENVIRONMENTAL_METRICS: EnvironmentalMetricDefinition[] = [
     ...METRIC_DISPLAY_DEFINITIONS.swellWavePeriod,
     icon: "Waves",
     group: "water",
-    groupLabel: "Water & marine conditions",
-    fullConditionsSection: "Current water & marine",
     dailyKeys: { range: "swellWavePeriodRange", maximum: "swellWavePeriodMax" },
     defaultVisibility: DEFAULT_ENVIRONMENTAL_VISIBILITY,
     precision: 1,
@@ -640,16 +547,17 @@ export interface HourlySectionDefinition {
 
 export const HOURLY_SECTIONS: HourlySectionDefinition[] = [
   { id: "fishability", label: "Fishability", metricIds: ["hourlyScore"] },
-  { id: "tide", label: "Tide", metricIds: ["tide", "tideDirection"] },
   {
-    id: "solunar",
-    label: "Solunar",
+    id: "sunMoon",
+    label: "Sun and moon",
     metricIds: ["solunarActive", "solunarRating"],
   },
   {
     id: "water",
-    label: "Water & marine conditions",
+    label: "Water",
     metricIds: [
+      "tide",
+      "tideDirection",
       "waterTemperature",
       "waveHeight",
       "waveDirection",
@@ -664,7 +572,7 @@ export const HOURLY_SECTIONS: HourlySectionDefinition[] = [
   },
   {
     id: "weather",
-    label: "Weather & atmospheric conditions",
+    label: "Weather and atmospheric",
     metricIds: [
       "wind",
       "gust",

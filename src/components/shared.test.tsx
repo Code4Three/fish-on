@@ -5,7 +5,7 @@ import { buildDayData } from "../data/conditions";
 import {
   FullConditionsView,
   WaterDetailsCard,
-  SolunarDetailsCard,
+  SunMoonDetailsCard,
   WeatherDetailsCard,
 } from "./shared";
 
@@ -14,7 +14,7 @@ describe("Dashboard detail cards", () => {
 
   it("renders WaterDetailsCard with complete data", () => {
     render(<WaterDetailsCard day={fullDay} hour={7} />);
-    expect(screen.getByText(/Water & marine details/i)).toBeInTheDocument();
+    expect(screen.getByText(/Water/i)).toBeInTheDocument();
   });
 
   it("renders WaterDetailsCard placeholders when hourly data missing", () => {
@@ -29,18 +29,18 @@ describe("Dashboard detail cards", () => {
     expect(placeholders.length).toBeGreaterThan(0);
   });
 
-  it("renders SolunarDetailsCard with complete data", () => {
-    render(<SolunarDetailsCard day={fullDay} hour={7} />);
-    expect(screen.getByText(/Current astronomical details/i)).toBeInTheDocument();
+  it("renders SunMoonDetailsCard with complete data", () => {
+    render(<SunMoonDetailsCard day={fullDay} hour={7} />);
+    expect(screen.getByText(/Sun and moon/i)).toBeInTheDocument();
   });
 
-  it("renders SolunarDetailsCard placeholders when moon/sun data missing", () => {
+  it("renders SunMoonDetailsCard placeholders when moon/sun data missing", () => {
     const partialDay = {
       ...fullDay,
       secondary: { ...fullDay.secondary, moon: undefined },
       sun: undefined,
     };
-    render(<SolunarDetailsCard day={partialDay} hour={7} />);
+    render(<SunMoonDetailsCard day={partialDay} hour={7} />);
     const placeholders = screen.getAllByText("--");
     expect(placeholders.length).toBeGreaterThan(0);
   });
@@ -48,7 +48,7 @@ describe("Dashboard detail cards", () => {
   it("renders WeatherDetailsCard with complete data", () => {
     render(<WeatherDetailsCard day={fullDay} hour={7} />);
     expect(
-      screen.getByText(/Weather & atmospheric conditions/i),
+      screen.getByText(/Weather and atmospheric/i),
     ).toBeInTheDocument();
   });
 
@@ -58,13 +58,13 @@ describe("Dashboard detail cards", () => {
     );
     expect(screen.getByText("All Conditions List")).toBeInTheDocument();
     expect(
-      screen.getAllByText(/Water & marine details/i).length,
+      screen.getAllByText(/Water/i).length,
     ).toBeGreaterThan(0);
     expect(
-      screen.getAllByText(/Current astronomical details/i).length,
+      screen.getAllByText(/Sun and moon/i).length,
     ).toBeGreaterThan(0);
     expect(
-      screen.getAllByText(/Weather & atmospheric conditions/i).length,
+      screen.getAllByText(/Weather and atmospheric/i).length,
     ).toBeGreaterThan(0);
     expect(screen.queryByText("Current conditions")).not.toBeInTheDocument();
   });
