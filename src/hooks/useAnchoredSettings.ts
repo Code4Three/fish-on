@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import {
   DAILY_GROUPS,
+  DEFAULT_DASHBOARD_GROUP_ORDER,
+  DEFAULT_FULL_CONDITIONS_ORDER,
   HOURLY_GRID_METRICS,
   HOURLY_SECTIONS,
 } from "../config/metricMatrix";
@@ -60,15 +62,6 @@ const DEFAULT_CARD_SETTINGS: DashboardCardSettings = {
   swell: true,
 };
 
-const DEFAULT_DASHBOARD_GROUP_ORDER = [
-  "fishability",
-  "tide",
-  "solunar",
-  "water",
-  "weather",
-  "sunMoon",
-] as const;
-
 const DEFAULT_MATRIX_SETTINGS: MatrixSettings = {
   groups: Object.fromEntries(DAILY_GROUPS.map((group) => [group.id, true])),
   metrics: Object.fromEntries(
@@ -83,7 +76,7 @@ const DEFAULT_MATRIX_SETTINGS: MatrixSettings = {
   cardOrder: DEFAULT_DASHBOARD_GROUP_ORDER.flatMap((groupId) =>
     DAILY_GROUPS.find((group) => group.id === groupId)?.metrics.map((metric) => metric.id) ?? [],
   ),
-  conditionsOrder: ["dailySummary", "tide", "solunar", "water", "weather"],
+  conditionsOrder: [...DEFAULT_FULL_CONDITIONS_ORDER],
   hourlySectionOrder: HOURLY_SECTIONS.map((section) => section.id),
   hourlyColumnOrder: Object.fromEntries(
     HOURLY_SECTIONS.map((section) => [section.id, [...section.metricIds]]),

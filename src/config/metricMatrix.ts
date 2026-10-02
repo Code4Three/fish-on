@@ -130,36 +130,6 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
     ],
   },
   {
-    id: "water",
-    label: "Water",
-    metrics: [
-      {
-        id: "currentTide",
-        label: getMetricLabel("currentTide"),
-        displayNotes: "Current tide height and stage",
-        canDisplayAlone: false,
-      },
-      {
-        id: "nextTide",
-        label: getMetricLabel("nextTide"),
-        displayNotes: "Next tide event",
-        canDisplayAlone: false,
-      },
-      {
-        id: "waterTemperature",
-        label: getMetricLabel("waterTemperature"),
-        displayNotes: "Placeholder when unavailable",
-        canDisplayAlone: true,
-      },
-      {
-        id: "swell",
-        label: getMetricLabel("swell"),
-        displayNotes: "Placeholder when unavailable",
-        canDisplayAlone: true,
-      },
-    ],
-  },
-  {
     id: "sunMoon",
     label: "Sun and moon",
     metrics: [
@@ -210,6 +180,36 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
         label: getMetricLabel("firstLight"),
         displayNotes: "Placeholder when unavailable",
         canDisplayAlone: false,
+      },
+    ],
+  },
+  {
+    id: "water",
+    label: "Water",
+    metrics: [
+      {
+        id: "currentTide",
+        label: getMetricLabel("currentTide"),
+        displayNotes: "Current tide height and stage",
+        canDisplayAlone: false,
+      },
+      {
+        id: "nextTide",
+        label: getMetricLabel("nextTide"),
+        displayNotes: "Next tide event",
+        canDisplayAlone: false,
+      },
+      {
+        id: "waterTemperature",
+        label: getMetricLabel("waterTemperature"),
+        displayNotes: "Placeholder when unavailable",
+        canDisplayAlone: true,
+      },
+      {
+        id: "swell",
+        label: getMetricLabel("swell"),
+        displayNotes: "Placeholder when unavailable",
+        canDisplayAlone: true,
       },
     ],
   },
@@ -283,9 +283,9 @@ export const DAILY_GROUPS: DailyGroupDefinition[] = [
 
 export const DEFAULT_DASHBOARD_GROUP_ORDER = [
   "fishability",
+  "sunMoon",
   "water",
   "weather",
-  "sunMoon",
 ];
 
 export const DEFAULT_FULL_CONDITIONS_ORDER = [
