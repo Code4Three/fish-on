@@ -1,84 +1,64 @@
-Details ,,,,,,Conditions dashboard view notes,,,All conditions view notes,Full day forecast notes,
-Group label ,Source/API ,Source metric name ,Calculation ,Metric name ,Time period ,Display as ,Can display alone? ,Can toggle off group? ,Display card/section ,Available column ,Toggle on/off 
-,,,,,,,,,,, 
-Fishability ,Calculated,fishability_score,current(fishability_score) / max(fishability_score),Fishability score ,Current/Daily max ,"Main (numerator/denominator) 
-*56/72 ",Yes ,Yes ,Current Fishability  ,Yes ,Yes 
- ,Calculated,fishability_score,max(fishability_score),Fishability score ,Daily max ,None ,N/A ,N/A ,Current Fishability  ,Yes ,Yes 
- ,Calculated,fishability_score,max(fishability_score) - min(fishability_score),Fishability score ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
- ,Calculated,fishability_score,N/A,Fishability score ,Daily trend ,Chart ,No ,No ,None ,No ,N/A 
- ,Calculated,fishability_window,N/A,Fishability window ,Current or next ,"Foot note 
-*Next strong window 5pm (67) ",No ,No ,None ,No ,N/A 
- ,Calculated,fishability_rating,state_label(fishability_score),Fishability rating ,Current rating ,"Pill 
-*Strong ",No ,No ,Current Fishability ,Yes ,Yes 
-Tide conditions ,World Tides,height / tides,N/A,Tide height ,Current/Next high/low ,"Main (numerator/denominator) 
-*1.0m/1.7m ",Yes ,Yes ,Current tides ,Yes ,Yes 
- ,World Tides,height / tides,N/A,Tide height ,Next high/low ,None ,N/A ,N/A ,Current tides ,Yes ,No 
- ,World Tides,height / tides,max(tide_height),Tide height ,Daily peaks ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
- ,World Tides,height / tides,max(tide_height) - min(tide_height),Tide height ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
- ,World Tides,height / tides,N/A,Tide height ,Daily trend ,Chart ,No ,No ,None ,No ,N/A 
- ,World Tides,height / tides,N/A,Next high/low tide ,Next high/low ,"Foot note 
-*Next high/low tide 5pm (1.2m) ","No 
- ",Yes ,Current tides ,No ,N/A 
- ,Calculated,tide_state,state_label(tide_height),Tide height ,Current state ,Pill ,No ,No ,Current tides ,Yes ,Yes 
-Water & marine conditions ,Open-Meteo,sea_surface_temperature,current(sea_surface_temperature) / max(sea_surface_temperature),Water temperature ,Current/daily max ,"Main (numerator/denominator) 
-*21C/22.6 ",Yes ,Yes ,Current water & marine ,Yes ,Yes 
- ,Open-Meteo,sea_surface_temperature,max(sea_surface_temperature),Water temperature ,Daily max ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
- ,Open-Meteo,sea_surface_temperature,max(sea_surface_temperature) - min(sea_surface_temperature),Water temperature ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
- ,Open-Meteo,swell_wave_height,current(swell_wave_height) / max(swell_wave_height),Swell height ,Current/daily max ,"Main (numerator/denominator) 
-*1m/2.5m ",Yes ,Yes ,Current water & marine ,Yes ,Yes 
- ,Open-Meteo,swell_wave_height,max(swell_wave_height),Swell height ,Daily max ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
- ,Open-Meteo,swell_wave_height,max(swell_wave_height) - min(swell_wave_height),Swell height ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
- ,Open-Meteo,swell_wave_height,state_label(swell_wave_height),Swell height ,Current state ,Pill ,Yes ,Yes ,Current water & marine ,Yes ,Yes 
- ,Open-Meteo,swell_wave_period,N/A,Swell period ,Current ,"Foot note (numerator/denominator) 
-*1m/xx ",Yes ,Yes ,Current water & marine ,Yes ,Yes 
- ,Open-Meteo,swell_wave_period,max(swell_wave_period),Swell period ,Daily max ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
- ,Open-Meteo,swell_wave_period,max(swell_wave_period) - min(swell_wave_period),Swell period ,Daily range ,None ,N/A ,N/A ,Daily summary ,No ,N/A 
- ,Open-Meteo,swell_wave_period,state_label(swell_wave_period),Swell period ,Current state ,Pill ,Yes ,Yes ,Current water & marine ,Yes ,Yes 
- ,Open-Meteo,swell_wave_direction,N/A,Swell direction ,Current ,Pill ,Yes ,Yes ,Current water & marine ,Yes ,Yes 
-Solunar conditions ,SunCalc,solunar_rating / position,current(solunar_rating) / max(solunar_rating),Solunar rating ,Current/daily max ,"Main (numerator/denominator) 
-*12/76 ",Yes ,Yes ,Current solunar ,Yes ,Yes 
- ,SunCalc,solunar_rating / position,max(solunar_rating),Solunar rating ,Daily max ,None ,N/A ,N/A ,Current solunar ,Yes ,Yes 
- ,SunCalc,solunar_rating / position,state_label(solunar_rating),Solunar rating ,Current rating ,"Pill 
-*Good ",Yes ,Yes ,Current solunar ,Yes ,Yes 
- ,SunCalc,solunar_feeding_windows,N/A,Next/active major/minor feeding window ,Next major/minor ,"Foot note 
-*Active feeding window  Major: 9am-11am ",Yes ,Yes ,Current solunar ,Yes ,No 
- ,SunCalc,solunar_feeding_windows,max(solunar_rating),Solunar windows ,Daily peaks ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
-Sun and moon conditions ,SunCalc,sunrise / sunset,N/A,Sunrise/sunset ,Daily sunrise/sunset ,"Main (numerator/denominator) 
-*6am/7pm ",Yes ,Yes ,Daily summary ,Yes ,Yes 
- ,SunCalc,civil_twilight_begin / civil_twilight_end,N/A,First light/Last light ,Daily first light/last light ,Main (numerator/denominator) *6am/7pm ,Yes ,Yes ,Daily summary ,Yes ,Yes 
- ,SunCalc,moonrise / moonset,N/A,Moon rise/ Moon set ,Daily moonrise/moonset ,"Main (numerator/denominator) 
-*3am/4pm ",Yes ,Yes ,Daily summary ,Yes ,Yes 
- ,SunCalc,moon_phase,N/A,Moon phase ,Daily ,Foot note ,Yes ,Yes ,Daily summary ,Yes ,Yes 
- ,SunCalc,moon_fraction,N/A,Moon illumination ,Daily ,Pill ,Yes ,Yes ,Daily summary ,Yes ,Yes 
-Weather & atmospheric conditions ,Open-Meteo,surface_pressure,current(surface_pressure) / max(surface_pressure),Pressure ,Current/daily max ,"Main (numerator/denominator) 
-*1028/1034 ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
- ,Open-Meteo,surface_pressure,max(surface_pressure),Pressure ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,surface_pressure,max(surface_pressure) - min(surface_pressure),Pressure ,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,surface_pressure,N/A,Pressure ,Daily trend ,Chart ,Yes ,Yes ,None ,Yes ,Yes 
- ,Open-Meteo,temperature_2m,current(temperature_2m) / max(temperature_2m),Air temperature,Current/daily max ,"Main (numerator/denominator) 
-*12C/26C ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
- ,Open-Meteo,temperature_2m,max(temperature_2m),Air temperature,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,temperature_2m,max(temperature_2m) - min(temperature_2m),Air temperature,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,apparent_temperature,current(apparent_temperature) / max(apparent_temperature),Feels-like temperature ,Current/daily max ,"Main (numerator/denominator) 
-*14C/28C ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
- ,Open-Meteo,apparent_temperature,max(apparent_temperature),Feels-like temperature ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,apparent_temperature,max(apparent_temperature) - min(apparent_temperature),Feels-like temperature ,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,wind_speed_10m,current(wind_speed_10m) / max(wind_speed_10m),Wind speed ,Current/daily max ,"Main (numerator/denominator) 
-*12kmph/23kmph ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
- ,Open-Meteo,wind_speed_10m,max(wind_speed_10m),Wind speed ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,wind_speed_10m,max(wind_speed_10m) - min(wind_speed_10m),Wind speed ,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,wind_speed_10m,N/A,Wind speed ,Daily trend ,Chart ,Yes ,Yes ,None ,No ,No 
- ,Open-Meteo,wind_direction_10m,N/A,Wind direction ,Current ,Pill ,Yes ,Yes ,Daily summary & Current weather and atmospheric ,Yes ,Yes 
- ,Open-Meteo,wind_gusts_10m,current(wind_gusts_10m) / max(wind_gusts_10m),Wind gust speed ,Current/daily max ,"Main (numerator/denominator) 
-*22kmph/29kmph ",Yes ,Yes ,Current weather & atmospheric ,Yes ,Yes 
- ,Open-Meteo,wind_gusts_10m,max(wind_gusts_10m),Wind gust speed ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,cloud_cover / cloud_base,N/A,Cloud baseline ,Current ,Main ,Yes ,Yes ,Daily summary & Current weather and atmospheric ,Yes ,Yes 
- ,Open-Meteo,cloud_cover / cloud_base,N/A,Cloud baseline ,Daily ,None ,N/A ,N/A , ,Yes ,Yes 
- ,Open-Meteo,precipitation_probability,N/A,Rain chance ,Current ,Main ,Yes ,Yes ,Current weather and atmospheric ,Yes ,Yes 
- ,Open-Meteo,precipitation_probability,N/A,Rain chance ,Daily ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,precipitation,N/A,Rain volume ,Current ,Main ,Yes ,Yes ,Current weather and atmospheric ,Yes ,Yes 
- ,Open-Meteo,precipitation,N/A,Rain volume ,Daily ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,uv_index,current(uv_index) / max(uv_index),Peak UV ,Current/Daily max ,"Main (numerator/denominator) 
-*35/67 ", , ,Current weather & atmospheric ,Yes ,Yes 
- ,Open-Meteo,uv_index,max(uv_index),Peak UV ,Daily max ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
- ,Open-Meteo,uv_index,max(uv_index) - min(uv_index),Peak UV ,Daily range ,None ,N/A ,N/A ,Daily summary ,Yes ,Yes 
+id,label,catalogStatus,timeScope,group,dashboardGroupId,dashboardGroupOrder,dashboardMetricOrder,fullConditionsOrder,hourlySectionId,hourlySectionOrder,hourlyMetricOrder,hourlyGridId,hourlyGridAvailable,hourlyGridToggleable,hourlyGridDefaultVisible,sourceHourly,sourceAnchored,sourceSecondary,sourceRuntime,sourceDailyBaseline,sourceDailyRange,sourceDailyMaximum,sourceDailyDirection,environmentalKey,environmentalIcon,metricUnit,imperialUnit,conversion,metricPrecision,imperialPrecision,summaryCardsVisible,fullConditionsVisible,hourlyGridVisible
+hourlyScore,Fishing score,display-definition,current,fishability,fishability,0,0,,fishability,0,0,hourlyScore,true,true,true,score,,,scoreBand,,,,,,,,,none,0,0,,,
+maxDayScore,Maximum day score,display-definition,daily,fishability,fishability,0,1,,fishability,0,3,,,,,,,,max(hours[].score),,,,,,,,,none,0,0,,,
+feedingWindows,Peak feeding windows,display-definition,both,fishability,fishability,0,2,,fishability,0,4,,,,,,,,scoreBand windows,,,,,,,,,none,0,0,,,
+currentTide,Tide height,display-definition,current,water,water,2,0,,,,,,,,,tideHeight,,,tideStage,,,,,,,m,ft,metersToFeet,1,1,,,
+tideStage,Tide stage,catalog-only,current,water,water,2,,,water,2,1,,,,,tideStage,,,,,,,,,,,,none,0,0,,,
+nextTide,Next high/low tide,display-definition,current,water,water,2,1,,water,2,3,,,,,,,,tideEvents,,,,,,,,,none,0,0,,,
+datumOffset,Tide datum offset,display-definition,current,water,water,2,,,,,,,,,,,,,datumOffset,,,,,,,m,ft,metersToFeet,2,2,,,
+waterTemperature,Water temperature,display-definition,both,water,water,2,2,,water,2,7,waterTemp,true,true,true,seaSurfaceTemperature,,,,seaSurfaceTemperatureBaseline,seaSurfaceTemperatureRange,,,seaSurfaceTemperature,Thermometer,°C,°F,temperature,1,1,true,true,true
+solunarFeedingWindows,Solunar feeding windows,display-definition,both,sunMoon,sunMoon,1,0,,sunMoon,1,4,,,,,,,,majorWindows/minorWindows,,,,,,,,,none,0,0,,,
+solunarStatus,Solunar status,display-definition,current,sunMoon,sunMoon,1,1,,sunMoon,1,1,solunarStatus,true,true,true,,,,solunarStatusTrend,,,,,,,,,none,0,0,,,
+moon,Moon,display-definition,daily,sunMoon,sunMoon,1,4,,sunMoon,1,5,,,,,,,moon.phaseName/moon.illum,,,,,,,,,,none,0,0,,,
+sunrise,Sunrise / sunset,display-definition,daily,sunMoon,sunMoon,1,6,,sunMoon,1,11,,,,,,sunrise/sunset,,,,,,,,,,,none,0,0,,,
+firstLight,First / last light,display-definition,daily,sunMoon,sunMoon,1,7,,sunMoon,1,12,,,,,,firstLight/lastLight,,,,,,,,,,,none,0,0,,,
+pressure,Barometric pressure,display-definition,both,weather,weather,3,0,,weather,3,6,pressure,true,true,true,pressure,,,,pressureBaseline,pressureRange,,,pressure,Gauge,hPa,inHg,pressure,0,2,true,true,true
+humidity,Relative humidity,display-definition,both,weather,weather,3,,,weather,3,15,humidity,true,true,true,humidity,,,,humidityBaseline,humidityRange,,,humidity,Droplets,%,%,none,0,0,true,true,true
+dewPoint,Dew point,display-definition,both,weather,weather,3,,,weather,3,16,dewPoint,true,true,true,dewPoint,,,,dewPointBaseline,dewPointRange,,,dewPoint,Thermometer,°C,°F,temperature,1,1,true,true,true
+airTemperature,Air temperature,display-definition,both,weather,weather,3,1,,weather,3,9,airTemperature,true,true,true,airTemp,,,ranges.airTemp,,,,,,,°C,°F,temperature,1,1,,,
+feelsLike,Feels-like temperature,display-definition,both,weather,weather,3,2,,weather,3,10,feelsLike,true,true,true,feelsLike,,,ranges.feelsLike,,,,,,,°C,°F,temperature,1,1,,,
+wind,Wind speed,display-definition,both,weather,weather,3,3,,weather,3,2,wind,true,true,true,wind.speed,,,ranges.wind,,,,,,,km/h,mph,speed,1,1,,,
+windDirection,Wind direction,display-definition,both,weather,weather,3,4,,weather,3,3,,,,,wind.dir,,windDirectionShift,,,,,,,,,,none,0,0,,,
+gust,Gust speed,display-definition,both,weather,weather,3,5,,weather,3,5,gust,true,true,true,wind.gust,,,ranges.gust,,,,,,,km/h,mph,speed,1,1,,,
+cloud,Cloud cover,display-definition,both,weather,weather,3,6,,weather,3,11,cloud,true,true,true,cloudCover,,,,cloudBaseline,cloudRange,,,cloudCover,Cloud,%,%,none,0,0,true,true,true
+rainChance,Rain chance,display-definition,both,weather,weather,3,7,,weather,3,12,rainChance,true,true,true,rainChance,rainChance,,,,,,,,,%,%,none,0,0,,,
+rainVolume,Rain volume,display-definition,both,weather,weather,3,8,,weather,3,13,rainVolume,true,true,true,rainVolume,rainVolume,,,,,,,,,mm,in,millimetersToInches,1,2,,,
+rain,Rain,display-definition,current,weather,weather,3,,,,,,,,,,rainChance/rainVolume,,,,,,,,,,%,%,none,0,0,,,
+uv,UV index,display-definition,both,weather,weather,3,9,,weather,3,14,uv,true,true,true,uvIndex,,uv,,,,,,,,,,none,1,1,,,
+airTemp,Air temperature,display-definition,current,weather,weather,3,,,,,,,,,,airTemp,,,,,,,,,,°C,°F,temperature,1,1,,,
+moonPhase,Moon phase,display-definition,daily,sunMoon,sunMoon,1,,,sunMoon,1,6,,,,,,,moon.phaseName,,,,,,,,%,%,none,0,0,,,
+moonIllumination,Moon illumination,display-definition,daily,sunMoon,sunMoon,1,,,sunMoon,1,7,,,,,,,moon.illum,,,,,,,,%,%,none,0,0,,,
+moonOverhead,Moon over / under,display-definition,daily,sunMoon,sunMoon,1,2,,sunMoon,1,8,,,,,,,moon.moonOverhead/moonUnderfoot,,,,,,,,,,none,0,0,,,
+moonrise,Moon rise / set,display-definition,daily,sunMoon,sunMoon,1,3,,sunMoon,1,9,,,,,,,moon.moonrise/moonset,,,,,,,,,,none,0,0,,,
+moonDistance,Moon distance,display-definition,daily,sunMoon,sunMoon,1,5,,sunMoon,1,10,,,,,,,moon.moonDistance,,,,,,,,km,mi,moonDistance1000s,0,0,,,
+solunarCondition,Current solunar condition,catalog-only,current,sunMoon,sunMoon,1,,,sunMoon,1,2,,,,,solunarCondition,,,,,,,,,,,,none,0,0,,,
+weatherCondition,Weather condition,catalog-only,current,weather,weather,3,,,weather,3,0,,,,,weatherCondition,,,,,,,,,,,,none,0,0,,,
+weatherSummary,Weather summary,catalog-only,daily,weather,weather,3,,,weather,3,1,,,,,,weatherSummary,,,,,,,,,,,none,0,0,,,
+tideRating,Tide score,catalog-only,current,fishability,fishability,0,,,fishability,0,2,,,,,,,,tideRating,,,,,,,,,none,0,0,,,
+scoreBand,Score band,catalog-only,current,fishability,fishability,0,,,fishability,0,1,,,,,,,,scoreBand,,,,,,,,,none,0,0,,,
+dayScore,Day score,catalog-only,daily,fishability,fishability,0,,,fishability,0,5,,,,,,dayScore,,,,,,,,,,,none,0,0,,,
+barometricState,Barometric state,catalog-only,current,weather,weather,3,,,weather,3,8,,,,,,,,barometric.state,,,,,,,,,none,0,0,,,
+pressureTrend,Pressure trend,catalog-only,current,weather,weather,3,,,weather,3,7,,,,,pressureTrend,,pressure.trend,,,,,,,,,,none,0,0,,,
+windDirectionShift,Wind direction shift,catalog-only,current,weather,weather,3,,,weather,3,4,,,,,,,windDirectionShift,,,,,,,,,,none,0,0,,,
+waveDirectionShift,Wave direction shift,catalog-only,current,water,water,2,,,water,2,4,,,,,,,waveDirectionShift,,,,,,,,,,none,0,0,,,
+windWaveDirectionShift,Wind wave direction shift,catalog-only,current,water,water,2,,,water,2,5,,,,,,,windWaveDirectionShift,,,,,,,,,,none,0,0,,,
+swellWaveDirectionShift,Swell wave direction shift,catalog-only,current,water,water,2,,,water,2,6,,,,,,,swellWaveDirectionShift,,,,,,,,,,none,0,0,,,
+tide,Tide height,display-definition,current,water,water,2,,,water,2,0,tide,true,true,true,tideHeight,,,,,,,,,,m,ft,metersToFeet,1,1,,,
+tideDirection,Tide direction,catalog-only,current,water,water,2,,,water,2,2,,,,,,,,tideDirection,,,,,,,,,none,0,0,,,
+waterTemp,Water temperature,display-definition,current,water,water,2,,,,,,waterTemp,true,true,true,seaSurfaceTemperature,,,,,,,,,,°C,°F,temperature,1,1,,,
+swell,Swell height,display-definition,both,water,water,2,3,,water,2,14,swell,true,true,true,swellWaveHeight,,,,,swellWaveHeightRange,swellWaveHeightMax,,swellWaveHeight,Waves,m,ft,metersToFeet,1,1,true,true,true
+solunarActive,Solunar activity,display-definition,current,sunMoon,sunMoon,1,,,sunMoon,1,0,solunarActive,true,true,true,solunar,,,,,,,,,,,,none,0,0,,,
+solunarRating,Solunar score,display-definition,both,sunMoon,sunMoon,1,,,sunMoon,1,3,solunarRating,true,true,true,solunarRating,,,day.solunarRating,,,,,,,,,none,0,0,,,
+cloudCoverLow,Low cloud cover,display-definition,both,weather,weather,3,,,weather,3,17,cloudCoverLow,true,true,true,cloudCoverLow,,,,cloudCoverLowBaseline,cloudCoverLowRange,,,cloudCoverLow,Cloud,%,%,none,0,0,true,true,true
+cloudCoverMid,Mid-level cloud cover,display-definition,both,weather,weather,3,,,weather,3,18,cloudCoverMid,true,true,true,cloudCoverMid,,,,cloudCoverMidBaseline,cloudCoverMidRange,,,cloudCoverMid,Cloud,%,%,none,0,0,true,true,true
+cloudCoverHigh,High cloud cover,display-definition,both,weather,weather,3,,,weather,3,19,cloudCoverHigh,true,true,true,cloudCoverHigh,,,,cloudCoverHighBaseline,cloudCoverHighRange,,,cloudCoverHigh,Cloud,%,%,none,0,0,true,true,true
+cloudBase,Cloud base,display-definition,both,weather,weather,3,,,weather,3,20,cloudBase,true,true,true,cloudBase,,,,,cloudBaseRange,,,cloudBase,Cloud,m,ft,metersToFeet,0,0,true,true,true
+visibility,Visibility,display-definition,both,weather,weather,3,,,weather,3,21,visibility,true,true,true,visibility,,,,,visibilityRange,,,visibility,Eye,km,mi,kilometersToMiles,2,2,true,true,true
+waveHeight,Wave height,display-definition,both,water,water,2,,,water,2,8,waveHeight,true,true,true,waveHeight,,,,,waveHeightRange,waveHeightMax,,waveHeight,Waves,m,ft,metersToFeet,1,1,true,true,true
+waveDirection,Wave direction,display-definition,both,water,water,2,,,water,2,9,waveDirection,true,true,true,waveDirection,,,,,,,waveDirectionDominant,waveDirection,Compass,,,none,0,0,true,true,true
+wavePeriod,Wave period,display-definition,both,water,water,2,,,water,2,10,wavePeriod,true,true,true,wavePeriod,,,,,wavePeriodRange,wavePeriodMax,,wavePeriod,Waves,s,s,none,1,1,true,true,true
+windWaveHeight,Wind wave height,display-definition,both,water,water,2,,,water,2,11,windWaveHeight,true,true,true,windWaveHeight,,,,,windWaveHeightRange,windWaveHeightMax,,windWaveHeight,Waves,m,ft,metersToFeet,1,1,true,true,true
+windWaveDirection,Wind wave direction,display-definition,both,water,water,2,,,water,2,12,windWaveDirection,true,true,true,windWaveDirection,,,,,,,windWaveDirectionDominant,windWaveDirection,Compass,,,none,0,0,true,true,true
+windWavePeriod,Wind wave period,display-definition,both,water,water,2,,,water,2,13,windWavePeriod,true,true,true,windWavePeriod,,,,,windWavePeriodRange,windWavePeriodMax,,windWavePeriod,Waves,s,s,none,1,1,true,true,true
+swellWaveDirection,Swell direction,display-definition,both,water,water,2,,,water,2,15,swellWaveDirection,true,true,true,swellWaveDirection,,,,,,,swellWaveDirectionDominant,swellWaveDirection,Compass,,,none,0,0,true,true,true
+swellWavePeriod,Swell period,display-definition,both,water,water,2,,,water,2,16,swellWavePeriod,true,true,true,swellWavePeriod,,,,,swellWavePeriodRange,swellWavePeriodMax,,swellWavePeriod,Waves,s,s,none,1,1,true,true,true
