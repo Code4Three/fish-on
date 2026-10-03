@@ -38,12 +38,10 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
-  DAILY_GROUPS,
   DEFAULT_FULL_CONDITIONS_ORDER,
   ENVIRONMENTAL_METRICS,
   FISHABILITY_FAVORABLE_WINDOW_MARGIN,
   HOURLY_SECTIONS,
-  getMetricDisplayDefinition,
 } from "../config/metricMatrix";
 import type { ClaudeDayData } from "../data/conditions";
 import type { AnchoredSettingsState } from "../hooks/useAnchoredSettings";
@@ -2253,116 +2251,22 @@ export function DailySummaryCard({
 }) {
   const unitSystem = useUnitSystem();
   const handle = useCardHandle();
-  const dailyGroups = DAILY_GROUPS.map((group) => ({
-    ...group,
-    metrics: [
-      ...group.metrics,
-      ...ENVIRONMENTAL_METRICS.filter(
-        (metric) =>
-          metric.group === group.id &&
-          metric.defaultVisibility.fullConditions &&
-          !group.metrics.some((groupMetric) => groupMetric.id === metric.id),
-      ).map((metric) => ({ id: metric.id, label: metric.label })),
-    ].filter((metric) => getMetricDisplayDefinition(metric.id)?.timeScope !== "current"),
-  }))
-    .map((group) => ({
-      ...group,
-      metrics: group.metrics.filter((metric) => isVisible(visibleMetrics, metric.id)),
-    }))
-    .filter((group) => group.metrics.length > 0);
-
-  const getDailyMetricValue = (metricId: string) => {
-    const environmentalMetric = ENVIRONMENTAL_METRICS.find(
-      (metric) => metric.id === metricId,
-    );
-    if (environmentalMetric) {
-      const summary = day.environmentalRawSummaries?.[metricId];
-      const dailyRange = summary
-        ? formatMetricRange(metricId, summary.dailyRange, unitSystem)
-        : "--";
-      const dailyBaseline = summary
-        ? formatMetricValue(metricId, summary.dailyBaseline, unitSystem)
-        : "--";
-      const dailyMaximum = summary
-        ? formatMetricValue(metricId, summary.dailyMaximum, unitSystem)
-        : "--";
-      const dailyDirection = summary
-        ? formatMetricValue(metricId, summary.dailyDirection, unitSystem)
-        : "--";
-      return dailyRange !== "--"
-        ? dailyRange
-        : dailyDirection !== "--"
-          ? dailyDirection
-          : dailyMaximum !== "--"
-            ? dailyMaximum
-            : dailyBaseline;
-    }
-
-    switch (metricId) {
-      case "maxDayScore":
-        return formatMetricValue(metricId, day.dayScore, unitSystem);
-      case "airTemperature":
-        return formatMetricRange("airTemperature", day.ranges?.airTemp, unitSystem);
-      case "feelsLike":
-        return formatMetricRange("feelsLike", day.ranges?.feelsLike, unitSystem);
-      case "wind":
-        return formatMetricRange(
-          "wind",
-          day.ranges?.wind
-            ? { min: day.ranges.wind.min, max: day.ranges.wind.max }
-            : null,
-          unitSystem,
-        );
-      case "windDirection":
-        return safe(day.hours[0]?.wind.dir);
-      case "gust":
-        return formatMetricValue("gust", day.ranges?.wind?.maxGust, unitSystem);
-      case "rainChance":
-        return formatMetricValue("rainChance", day.secondary.rain.chance, unitSystem);
-      case "rainVolume":
-        return formatMetricValue("rainVolume", day.secondary.rain.mm, unitSystem);
-      case "uv":
-        return formatMetricValue("uv", day.ranges?.uvPeak, unitSystem);
-      case "feedingWindows":
-      case "solunarFeedingWindows": {
-        const windows = [...day.majorWindows, ...day.minorWindows].sort(
-          (first, second) => first.start - second.start,
-        );
-        if (!windows.length) return "None";
-        const nextWindow = windows.find((window) => window.start >= 0);
-        return `${windows.length}${nextWindow ? `; next ${formatHour(nextWindow.start, true)}` : ""}`;
-      }
-      case "moon":
-        return day.secondary.moon.phaseName
-          ? `${day.secondary.moon.phaseName} (${day.secondary.moon.illum ?? "--"}%)`
-          : "--";
-      case "moonOverhead":
-        return day.secondary.moon.moonOverhead !== null &&
-          day.secondary.moon.moonUnderfoot !== null
-          ? `${formatHour(day.secondary.moon.moonOverhead, true)} / ${formatHour(day.secondary.moon.moonUnderfoot, true)}`
-          : "--";
-      case "moonrise":
-        return `${formatOptionalHour(day.secondary.moon.moonrise, true)} / ${formatOptionalHour(day.secondary.moon.moonset, true)}`;
-      case "moonDistance":
-        return day.secondary.moon.moonDistance === null
-          ? "--"
-          : formatMetricValue(
-            metricId,
-            day.secondary.moon.moonDistance / 1000,
-            unitSystem,
-          );
-      case "sunrise":
-        return day.sun
-          ? `${formatHour(day.sun.sunrise, true)} / ${formatHour(day.sun.sunset, true)}`
-          : "--";
-      case "firstLight":
-        return day.sun
-          ? `${formatOptionalHour(day.sun.firstLight, true)} / ${formatOptionalHour(day.sun.lastLight, true)}`
-          : "--";
-      default:
-        return "--";
-    }
-  };
+  const airTempRange = day.ranges?.airTemp;
+  const windRange = day.ranges?.wind;
+  const rain = day.secondary.rain;
+  const dailyEnvironmentalMetrics = ENVIRONMENTAL_METRICS.filter(
+    (metric) =>
+      metric.defaultVisibility.fullConditions &&
+      metric.dailyKeys &&
+      (metric.dailyFullConditionsSection ?? "Daily summary") ===
+      "Daily summary",
+  );
+  const weatherEnvironmentalMetrics = dailyEnvironmentalMetrics.filter(
+    (metric) => metric.group === "weather",
+  );
+  const waterEnvironmentalMetrics = dailyEnvironmentalMetrics.filter(
+    (metric) => metric.group === "water",
+  );
 
   return (
     <article className="mt-2 rounded-3xl border border-hull-700/70 bg-hull-800 p-4">
@@ -2374,20 +2278,100 @@ export function DailySummaryCard({
         {handle && <SortableHandle attributes={handle.attributes} listeners={handle.listeners} label={handle.label} />}
       </div>
       <div className="mt-2">
-        {dailyGroups.map((group, groupIndex) => (
-          <section key={group.id}>
-            <p className={`mb-1 ${groupIndex === 0 ? "mt-0" : "mt-3"} border-t border-hull-700/70 pt-2 font-body text-[11px] font-semibold text-slate-500`}>
-              {group.label}
-            </p>
-            {group.metrics.map((metric) => (
-              <DetailRow
-                key={metric.id}
-                label={formatMetricLabel(metric.id, unitSystem)}
-                value={getDailyMetricValue(metric.id)}
-              />
-            ))}
-          </section>
-        ))}
+        {isVisible(visibleMetrics, "airTemperature") && (
+          <DetailRow
+            label={formatMetricLabel("airTemperature", unitSystem)}
+            value={formatMetricRange("airTemperature", airTempRange, unitSystem)}
+          />
+        )}
+        {isVisible(visibleMetrics, "wind") && (
+          <DetailRow
+            label={formatMetricLabel("wind", unitSystem)}
+            value={formatMetricRange(
+              "wind",
+              windRange ? { min: windRange.min, max: windRange.max } : null,
+              unitSystem,
+            )}
+          />
+        )}
+        {isVisible(visibleMetrics, "gust") && (
+          <DetailRow
+            label={formatMetricLabel("gust", unitSystem)}
+            value={formatMetricValue("gust", windRange?.maxGust, unitSystem)}
+          />
+        )}
+        {isVisible(visibleMetrics, "rainChance") && (
+          <DetailRow
+            label={formatMetricLabel("rainChance", unitSystem)}
+            value={formatMetricValue("rainChance", rain.chance, unitSystem)}
+          />
+        )}
+        {isVisible(visibleMetrics, "rainVolume") && (
+          <DetailRow
+            label={formatMetricLabel("rainVolume", unitSystem)}
+            value={formatMetricValue("rainVolume", rain.mm, unitSystem)}
+          />
+        )}
+        {isVisible(visibleMetrics, "uv") && (
+          <DetailRow label={formatMetricLabel("uv", unitSystem)} value={formatMetricValue("uv", day.ranges?.uvPeak, unitSystem)} />
+        )}
+        {isVisible(visibleMetrics, "solunarFeedingWindows") && (
+          <DetailRow label={formatMetricLabel("solunarRating", unitSystem)} value={safe(day.solunarRating)} />
+        )}
+        {isVisible(visibleMetrics, "hourlyScore") && (
+          <DetailRow label={formatMetricLabel("hourlyScore", unitSystem)} value={safe(day.dayScore)} />
+        )}
+        {weatherEnvironmentalMetrics.map((metric) => {
+          const summary = day.environmentalRawSummaries?.[metric.id];
+          const dailyRange = summary
+            ? formatMetricRange(metric.id, summary.dailyRange, unitSystem)
+            : "--";
+          const dailyBaseline = summary
+            ? formatMetricValue(metric.id, summary.dailyBaseline, unitSystem)
+            : "--";
+          const dailyMaximum = summary
+            ? formatMetricValue(metric.id, summary.dailyMaximum, unitSystem)
+            : "--";
+          const dailyDirection = summary
+            ? formatMetricValue(metric.id, summary.dailyDirection, unitSystem)
+            : "--";
+          const value = dailyRange !== "--"
+            ? dailyRange
+            : dailyDirection !== "--"
+              ? dailyDirection
+              : dailyMaximum !== "--"
+                ? dailyMaximum
+                : dailyBaseline;
+          return <DetailRow key={metric.id} label={formatMetricLabel(metric.id, unitSystem)} value={value} />;
+        })}
+        {waterEnvironmentalMetrics.length > 0 && (
+          <p className="mb-1 mt-3 border-t border-hull-700/70 pt-2 font-body text-[11px] font-semibold text-slate-500">
+            Water &amp; marine conditions
+          </p>
+        )}
+        {waterEnvironmentalMetrics.map((metric) => {
+          const summary = day.environmentalRawSummaries?.[metric.id];
+          const dailyRange = summary
+            ? formatMetricRange(metric.id, summary.dailyRange, unitSystem)
+            : "--";
+          const dailyBaseline = summary
+            ? formatMetricValue(metric.id, summary.dailyBaseline, unitSystem)
+            : "--";
+          const dailyMaximum = summary
+            ? formatMetricValue(metric.id, summary.dailyMaximum, unitSystem)
+            : "--";
+          const dailyDirection = summary
+            ? formatMetricValue(metric.id, summary.dailyDirection, unitSystem)
+            : "--";
+          const value = dailyRange !== "--"
+            ? dailyRange
+            : dailyDirection !== "--"
+              ? dailyDirection
+              : dailyMaximum !== "--"
+                ? dailyMaximum
+                : dailyBaseline;
+          return <DetailRow key={metric.id} label={formatMetricLabel(metric.id, unitSystem)} value={value} />;
+        })}
       </div>
     </article>
   );
