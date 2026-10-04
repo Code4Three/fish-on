@@ -13,6 +13,6 @@ It should be easily navigable to determine which day and times are the best opti
 
 ## Deployment
 
-The app can be deployed to Vercel as a Vite project. Set the build command to `npm run build` and the output directory to `dist`. No API keys are required — all tide and astronomical data is calculated statically during the build process.
+The app can be deployed to static hosting as a Vite project. Set the build command to `npm run build` and the output directory to `dist`. No tide API route or API key is required at runtime: tide data is bundled into the client as a location-keyed static dataset and synchronized into browser IndexedDB.
 
-Open-Meteo data is fetched from the browser via their free API. The `/api/tides` endpoint serves pre-calculated tide data generated during the build step.
+Open-Meteo data is fetched from the browser via their free API. Additional locations can be added to the static dataset using the same coordinate/timezone location key used by the browser cache.

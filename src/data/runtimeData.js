@@ -10,6 +10,10 @@ import {
   putRuntimeRecord,
   replaceRuntimeLocationRecords,
 } from "../cache/runtimeStore.js";
+import {
+  getStaticRuntimeLocation,
+  STATIC_RUNTIME_DATA_VERSION,
+} from "./staticRuntimeData.js";
 import { buildRuntimeAstronomy } from "./runtimeAstronomy.js";
 
 const CURRENT_MAX_AGE_MS = 15 * 60 * 1000;
@@ -157,23 +161,13 @@ async function storeDailyRecords(storeName, records) {
   await replaceRuntimeLocationRecords(storeName, locationKey, records);
 }
 
-async function fetchTideRecords(location, locationKey) {
-  const parameters = new URLSearchParams({
-    lat: String(location.lat),
-    lon: String(location.lon),
-    days: "14",
-  });
-  const response = await fetch(`/api/tides?${parameters.toString()}`);
-  if (!response.ok) {
-    throw new Error(`Tide request failed (${response.status})`);
+function loadStaticTideRecords(location, locationKey) {
+  const staticLocation = getStaticRuntimeLocation(location);
+  if (!staticLocation || !Array.isArray(staticLocation.tides)) {
+    throw new Error(`No bundled tide data is available for ${location.name}`);
   }
 
-  const payload = await response.json();
-  if (!Array.isArray(payload?.extremes)) {
-    throw new Error("Tide response is missing extremes");
-  }
-
-  return payload.extremes.flatMap((extreme) => {
+  return staticLocation.tides.flatMap((extreme) => {
     const eventDate = new Date(extreme.date);
     const height = Number(extreme.height);
     if (
@@ -183,8 +177,6 @@ async function fetchTideRecords(location, locationKey) {
     ) {
       return [];
     }
-    // The static tide dataset is already referenced to the correct chart datum, so no further
-    // offset is applied here (unlike the legacy WorldTides MSL-referenced API response).
     return [{
       locationKey,
       timestamp: eventDate.toISOString(),
@@ -344,14 +336,18 @@ export async function loadRuntimeLocationData(
     );
   }
 
-  if (isDailySliceStale(refreshBySlice.get("tides"), today)) {
+  const isTideDataStale =
+    refreshBySlice.get("tides")?.dataVersion !== STATIC_RUNTIME_DATA_VERSION ||
+    !tides.length;
+
+  if (isTideDataStale) {
     refreshTasks.push(
       refreshOnce(
         locationKey,
         "tides",
         () => location.tide === "Non-tidal"
           ? Promise.resolve([])
-          : fetchTideRecords(location, locationKey),
+          : Promise.resolve(loadStaticTideRecords(location, locationKey)),
       )
         .then(async (records) => {
           await replaceRuntimeLocationRecords("tides", locationKey, records);
@@ -359,6 +355,7 @@ export async function loadRuntimeLocationData(
             locationKey,
             slice: "tides",
             localDate: today,
+            dataVersion: STATIC_RUNTIME_DATA_VERSION,
             fetchedAt: new Date().toISOString(),
           });
         })
