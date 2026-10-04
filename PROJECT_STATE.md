@@ -150,22 +150,22 @@ These derived values are included in the unified conditions data and are display
 - The browser application mounts a shared `AppProvider` and selects the active destination view from client-side application state; the global header is currently disabled on this branch.
 - The default weekly route renders `WeeklyDashboard`, which owns the selected day/hour state and renders `MainDashboard`.
 - `MainDashboard` owns the selected day/hour presentation, draggable dock, swipeable full-conditions panel, and customization sheet.
-- The browser reads a generated static conditions file rather than calling the external providers directly.
+- The browser loads a location-keyed static runtime seed and persists runtime slices in IndexedDB; live weather and marine refreshes still call Open-Meteo directly.
 - The existing global menu component uses a desktop dropdown at widths of 768px and above and a full-width mobile drawer below 768px, but it is not mounted on this branch.
 - Saved locations are seeded by an expandable configuration document, while the active location key is persisted in browser storage.
-- Separate build scripts prepare tides, Sun/Moon values, solunar values, weather, and the final unified conditions dataset.
-- Tide records use a local cache and are refreshed at build time when the required display dates are not covered.
+- Separate build scripts prepare tides, Sun/Moon values, solunar values, weather, and the location-keyed static runtime dataset.
+- Bundled tide records are synchronized into the browser's IndexedDB cache by location and dataset version; no `/api/tides` route is required.
 - Daily anchored information and hourly information are separate parts of the unified conditions structure and are rendered in separate areas of each day section.
 - The metric matrix defines customizable daily groups and hourly metrics, including feels-like temperature, gusts, rain volume, and UV index.
 - `src/config/metricMatrix.ts` is the source of truth for the shared condition taxonomy. Dashboard groups, the All Conditions List, and the Full day forecast use the canonical order `fishability`, `sunMoon`, `water`, and `weather`; tide metrics belong to Water and solunar metrics belong to Sun and moon.
-- The configured location and time zone are shared by the data-building and date-formatting logic.
+- The configured location and time zone are shared by the data-building and date-formatting logic. Static runtime data uses the same coordinate/timezone location key as IndexedDB.
 
 ## Known Limitations / Incomplete Areas
 
 - Fishing scores use a V1 heuristic and are not species-calibrated. The generated conditions payload remains raw; calculated scores and display bands are derived in the browser. Dynamic species selection and user-facing weight controls remain outside the current product boundary.
 - The current application does not provide editable location management, map picking, or a user-facing way to change date range or time zone. The menu exposes placeholder destinations for these future capabilities.
 - Selecting a seeded location changes client-side application state but does not yet refresh provider data or recalculate environmental conditions for that location.
-- The current application does not confirm live provider refresh from the browser. Data availability and freshness depend on generated files and the build process.
+- The current application refreshes live weather and marine data from the browser. Tide availability and freshness depend on the bundled location dataset and its version.
 - The separate tide-only component is not connected to the current app entry point.
 - Some individual daily or hourly values can be unavailable and are displayed as placeholders by the dashboard.
 - The scoring engine has focused unit tests. Broader UI and data-pipeline test coverage is not confirmed.
@@ -181,9 +181,9 @@ Fish On is not currently confirmed to be a fishing-success predictor, automated 
 This snapshot was established by inspecting:
 
 - The mounted application entry point in `src/App.jsx` and the active dashboard in `src/components/WeeklyDashboard.tsx` and `src/components/MainDashboard.tsx`.
-- The unified data builder in `src/builders/unifiedConditions.js` and the generated payload in `public/conditions.json`.
+- The unified data builder in `src/builders/unifiedConditions.js`, the generated payload in `public/conditions.json`, and the location-keyed seed in `src/data/runtimeData.json`.
 - The build sequence in `src/scripts/buildAll.js` and the individual data-build scripts.
-- Tide API, cache, and normalization code in `src/api/tides.js`, `src/cache/tideCache.js`, `src/builders/tides.js`, and `src/utils/tides.js`.
+- Tide build, seed, cache, and normalization code in `src/cache/tideCache.js`, `src/builders/tides.js`, `src/scripts/buildRuntimeData.js`, `src/data/staticRuntimeData.js`, and `src/utils/tides.js`.
 - Weather acquisition and normalization in `src/builders/weather.js`.
 - Sun/Moon and solunar calculations in `src/scripts/buildSunMoon.js` and `src/builders/solunar.js`.
 - Shared location, time zone, and display-day configuration in `src/config/constants.js`.
